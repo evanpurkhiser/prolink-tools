@@ -20,8 +20,7 @@ type track struct {
 }
 
 type trackStatus struct {
-	Event    string `json:"event"`
-	Metadata *track `json:"metadata"`
+	Event string `json:"event"`
 }
 
 type playerStatus struct {
@@ -34,9 +33,9 @@ type playerStatus struct {
 }
 
 type message struct {
-	EventType string      `json:"event_type"`
-	PlayerID  int         `json:"player_id"`
-	Object    interface{} `json:"object"`
+	Type     string      `json:"type"`
+	PlayerID int         `json:"player_id"`
+	Object   interface{} `json:"object"`
 }
 
 func mapTrack(t2 *prolink.Track) *track {
@@ -95,23 +94,32 @@ func (m *StatusMapper) Start() {
 	sm.OnStatusUpdate(trackstatus.NewHandler(m.TrackStatusConfig, m.trackStatus))
 }
 
-func (m *StatusMapper) trackStatus(event trackstatus.Event, status *prolink.CDJStatus) {
+func (m *StatusMapper) trackMetadata(status *prolink.CDJStatus) {
 	rdb := m.Network.RemoteDB()
 
-	object := trackStatus{Event: string(event)}
-
-	nowPlaying := event == trackstatus.NowPlaying
-	trackQuery := status.TrackQuery()
-
-	// Only include metadata for now playing tracks
-	if track, err := rdb.GetTrack(trackQuery); nowPlaying && err == nil {
-		object.Metadata = mapTrack(track)
+	track, err := rdb.GetTrack(status.TrackQuery())
+	if err != nil {
+		return
 	}
 
 	m.MessageHandler(message{
-		EventType: "track_status",
-		PlayerID:  int(status.PlayerID),
-		Object:    object,
+		Type:     "track_metadata",
+		PlayerID: int(status.PlayerID),
+		Object:   mapTrack(track),
+	})
+}
+
+func (m *StatusMapper) trackStatus(event trackstatus.Event, status *prolink.CDJStatus) {
+	object := trackStatus{Event: string(event)}
+
+	if event == trackstatus.NowPlaying {
+		m.trackMetadata(status)
+	}
+
+	m.MessageHandler(message{
+		Type:     "track_status",
+		PlayerID: int(status.PlayerID),
+		Object:   object,
 	})
 }
 
@@ -140,8 +148,8 @@ func (m *StatusMapper) playerStatus(status *prolink.CDJStatus) {
 	m.prevStatus[status.PlayerID] = status
 
 	m.MessageHandler(message{
-		EventType: "player_status",
-		PlayerID:  int(status.PlayerID),
-		Object:    mapStatus(status),
+		Type:     "player_status",
+		PlayerID: int(status.PlayerID),
+		Object:   mapStatus(status),
 	})
 }
