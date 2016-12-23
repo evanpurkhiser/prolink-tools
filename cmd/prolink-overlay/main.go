@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"go.evanpurkhiser.com/prolink"
+	overlay "go.evanpurkhiser.com/prolink-overlay"
 	"go.evanpurkhiser.com/prolink/trackstatus"
-	"go.evanpurkhiser.com/prolinksink"
 )
 
 func main() {
@@ -23,10 +23,10 @@ func main() {
 		BeatsUntilReported:    128,
 	}
 
-	wss := prolinksink.NewWebsocketServer()
+	wss := overlay.NewWebsocketServer()
 	http.Handle("/status", wss)
 
-	statusMapper := prolinksink.StatusMapper{
+	statusMapper := overlay.StatusMapper{
 		Network:           network,
 		TrackStatusConfig: tsConfig,
 		MessageHandler:    wss.SendJSONMessage,
@@ -34,5 +34,5 @@ func main() {
 
 	statusMapper.Start()
 
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8033", nil)
 }
