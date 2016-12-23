@@ -1,0 +1,32 @@
+{
+  "name": "overlay-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "Evan Purkhiser",
+  "license": "MIT",
+  "scripts": {
+    "build": "webpack"
+  },
+  "dependencies": {
+    "react": "^15.4.0",
+    "react-addons-css-transition-group": "^15.4.1",
+    "react-dom": "^15.4.0",
+    "react-redux": "^5.0.1",
+    "redux": "^3.6.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.18.2",
+    "babel-loader": "^6.2.8",
+    "babel-plugin-transform-object-assign": "^6.8.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "css-loader": "^0.26.0",
+    "node-sass": "^3.13.0",
+    "sass-loader": "^4.0.2",
+    "static-site-generator-webpack-plugin": "^3.1.0",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.13.3",
+    "webpack-dev-server": "^1.16.2"
+  }
+}
