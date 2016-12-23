@@ -9,6 +9,7 @@ import (
 )
 
 type track struct {
+	ID      int    `json:"id"`
 	Title   string `json:"title"`
 	Artist  string `json:"artist"`
 	Album   string `json:"album"`
@@ -40,6 +41,7 @@ type message struct {
 
 func mapTrack(t2 *prolink.Track) *track {
 	t := track{
+		ID:      int(t2.ID),
 		Title:   t2.Title,
 		Artist:  t2.Artist,
 		Album:   t2.Album,
