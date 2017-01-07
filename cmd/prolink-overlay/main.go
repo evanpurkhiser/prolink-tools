@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"go.evanpurkhiser.com/prolink"
-	overlay "go.evanpurkhiser.com/prolink-overlay"
+	"go.evanpurkhiser.com/prolink-overlay"
 	"go.evanpurkhiser.com/prolink/trackstatus"
 )
 
