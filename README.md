@@ -32,8 +32,41 @@ Webkit plugin](https://github.com/bazukas/obs-qtwebkit) for Linux).
 
 ### Project Status
 
-This project is currently a work in progress. I would like to add a lot of
-functionality to support various other features DJs may find useful.
+This project is currently a **work in progress**. I have not yet added
+documentation for how to use this software as there are currently no public
+builds available due to the stability of the software.
+
+Currently various expected functionality is broken due to bugs in the [prolink
+library](https://github.com/EvanPurkhiser/prolink-go) used to communicate with
+the equipment. The readme outlines specifics on that project as to what has not
+yet been implemented.
+
+#### Possible Upcoming Features
+
+ * Configuration interface for various settings
+
+   - Change how many bars until a track is considered playing.
+   - How many beats can a track be interrupted before the next tracks is
+     considered to be playing.
+   - Position and style of track details.
+
+ * Display waveform for each track, including visual progress indicator for the
+   playing tracks.
+
+ * Recognize "mix sessions" by some heuristic allowing track list details to be
+   stored for that mix session
+
+   - Save track lists in various formats, including timestamps.
+
+     - Text for soundcloud and youtube
+     - `cue` file for association to a recorded audio file
+     - JSON for rendering on a track custom list website
+
+   - Indicate on the live stream how many tracks have been mixed and how long
+     the stream has been happening for.
+
+ * Live music collection web interface to allow the audience to make live track
+   requests that can then be display in the overlay as being a requested track.
 
 ### Compatible Equipment
 
