@@ -4,6 +4,8 @@ Generate a real time "now playing" track and player information overlays for DJ
 live streams using PRO DJ LINK Pioneer equipment. Engage your audience and
 avoid nagging "what track was that!" questions!
 
+[![](https://img.shields.io/badge/follow-twitch.tv-blue.png?colorB=6441Aa)](https://twitch.tv/thecheezyp)
+
 ![](http://img.pixady.com/2017/02/570457_20170202230944.png)
 
 ### How It Works
@@ -44,27 +46,20 @@ yet been implemented.
 #### Possible Upcoming Features
 
  * Configuration interface for various settings
-
    - Change how many bars until a track is considered playing.
    - How many beats can a track be interrupted before the next tracks is
      considered to be playing.
    - Position and style of track details.
-
  * Display waveform for each track, including visual progress indicator for the
    playing tracks.
-
  * Recognize "mix sessions" by some heuristic allowing track list details to be
    stored for that mix session
-
    - Save track lists in various formats, including timestamps.
-
      - Text for soundcloud and youtube
      - `cue` file for association to a recorded audio file
      - JSON for rendering on a track custom list website
-
    - Indicate on the live stream how many tracks have been mixed and how long
      the stream has been happening for.
-
  * Live music collection web interface to allow the audience to make live track
    requests that can then be display in the overlay as being a requested track.
 
