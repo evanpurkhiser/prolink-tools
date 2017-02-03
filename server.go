@@ -27,6 +27,10 @@ func NewWebsocketServer() *WebsocketServer {
 type WebsocketServer struct {
 	conns    map[*websocket.Conn]bool
 	connLock sync.Mutex
+
+	// newClientMessages is a function called that is expected to return a list
+	// of objects that will be sent to the client upon connecting.
+	newClientMessages func() []interface{}
 }
 
 // ServeHTTP implements the http.Handler interface.
@@ -41,6 +45,14 @@ func (s *WebsocketServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	s.conns[conn] = true
 	go s.closeWaiter(conn)
+
+	if s.newClientMessages == nil {
+		return
+	}
+
+	// Write all messages as an array. The websocket listener will understand
+	// an array of messages
+	conn.WriteJSON(s.newClientMessages())
 }
 
 func (s *WebsocketServer) closeWaiter(conn *websocket.Conn) {
@@ -60,4 +72,8 @@ func (s *WebsocketServer) SendJSONMessage(object interface{}) {
 	for conn := range s.conns {
 		conn.WriteJSON(object)
 	}
+}
+
+func (s *WebsocketServer) SetNewClientHandler(ch func() []interface{}) {
+	s.newClientMessages = ch
 }

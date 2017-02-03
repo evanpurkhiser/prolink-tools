@@ -24,7 +24,6 @@ func main() {
 	}
 
 	wss := overlay.NewWebsocketServer()
-	http.Handle("/status", wss)
 
 	statusMapper := overlay.StatusMapper{
 		Network:           network,
@@ -32,7 +31,10 @@ func main() {
 		MessageHandler:    wss.SendJSONMessage,
 	}
 
+	wss.SetNewClientHandler(statusMapper.LastMessages)
+
 	statusMapper.Start()
 
+	http.Handle("/status", wss)
 	http.ListenAndServe(":8033", nil)
 }

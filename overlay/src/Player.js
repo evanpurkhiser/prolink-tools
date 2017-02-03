@@ -2,8 +2,8 @@ import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 const Metadata = (track) => {
-  if (track === undefined) {
-    return <div className="metadata"></div>;
+  if (track === undefined || Object.keys(track).length === 0) {
+    return <div className="metadata empty" />;
   }
 
   let artwork = <div className="artwork">
@@ -37,14 +37,18 @@ const PlayerStatus = (info) => {
   const currentBPM = ((pitch / 100) * bpm) + bpm;
   const pitchSign  = pitch > 0 ? '+' : (pitch < 0 ? '−' : '');
 
+  const bpmDetails = bpm === undefined ? null : <span>
+    <span className="bpm-original">{bpm.toFixed(1)}</span>
+    <span className="bpm-pitch-sign">{pitchSign}</span>
+    <span className="bpm-pitch">{Math.abs(pitch).toFixed(2)}%</span>
+  </span>;
+
   return <div className="player-info">
     <div className="bpm-current">
       {currentBPM.toFixed(1)}
     </div>
     <div className="bpm-details">
-      <span className="bpm-original">{bpm.toFixed(1)}</span>
-      <span className="bpm-pitch-sign">{pitchSign}</span>
-      <span className="bpm-pitch">{Math.abs(pitch).toFixed(2)}%</span>
+      {bpmDetails}
     </div>
     <div className={["play-state", info.play_state].join(' ')}>
       {info.play_state}
@@ -70,7 +74,7 @@ export default props => <div className={["player", props.status].join(' ')}>
     transitionName="metadata-changed"
     transitionEnterTimeout={2000}
     transitionLeaveTimeout={2000}>
-    <Metadata key={props.metadata.id} {...props.metadata} />
+    <Metadata key={props.metadata && props.metadata.id} {...props.metadata} />
   </ReactCSSTransitionGroup>
   <PlayerStatus {...props.info} />
 </div>;

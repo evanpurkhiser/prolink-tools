@@ -7,6 +7,11 @@ import { Provider, connect } from 'react-redux';
 import Player from './Player'
 
 function messageReducer(state, msg) {
+  // Handle an array of messages
+  if (msg.constructor === Array) {
+    return msg.reduce((s, m) => messageReducer(s, m), {});
+  }
+
   const player  = msg.player_id
   const partial = Object.assign({}, {[player]: {}}, state);
 
@@ -37,7 +42,15 @@ const store = createStore(messageReducer, reduxDevtools)
 
 // Subscribe to websocket messages from the status server
 const socket = new WebSocket("ws://localhost:8033/status");
-socket.onmessage = (m) => store.dispatch(JSON.parse(m.data));
+socket.onmessage = (m) => {
+  let message = JSON.parse(m.data);
+
+  if (message.constructor !== Array) {
+    message = [message];
+  }
+
+  message.forEach(m => store.dispatch(m));
+};
 
 // Overlay component
 const Overlay = (props) => {
@@ -55,7 +68,7 @@ const Overlay = (props) => {
   players = players.filter(n => n)
 
   return <div className="overlay">
-    {players.map((p, i) => <Player key={i} {...p} />)}
+    {players.map((p, i) => <Player key={i} id={i} {...p} />)}
   </div>;
 }
 

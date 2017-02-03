@@ -79,6 +79,9 @@ type StatusMapper struct {
 
 	prevStatus map[prolink.DeviceID]*prolink.CDJStatus
 	started    bool
+
+	// Used to respond to last status queries
+	lastMessages map[string]message
 }
 
 // Start begins listening for status on the network and will delgate messages
@@ -88,10 +91,31 @@ func (m *StatusMapper) Start() {
 		return
 	}
 
+	m.prevStatus = map[prolink.DeviceID]*prolink.CDJStatus{}
+	m.lastMessages = map[string]message{}
+
 	sm := m.Network.CDJStatusMonitor()
 
 	sm.OnStatusUpdate(prolink.StatusHandlerFunc(m.playerStatus))
 	sm.OnStatusUpdate(trackstatus.NewHandler(m.TrackStatusConfig, m.trackStatus))
+}
+
+// LastMessages returns the most recent messages the StatusMapper recieved.
+func (m *StatusMapper) LastMessages() []interface{} {
+	messages := []interface{}{}
+
+	for _, message := range m.lastMessages {
+		messages = append(messages, message)
+	}
+
+	return messages
+}
+
+func (m *StatusMapper) dispatchMessage(msg message) {
+	m.MessageHandler(msg)
+
+	messageKey := fmt.Sprintf("%d-%s", msg.PlayerID, msg.Type)
+	m.lastMessages[messageKey] = msg
 }
 
 func (m *StatusMapper) trackMetadata(status *prolink.CDJStatus) {
@@ -102,7 +126,7 @@ func (m *StatusMapper) trackMetadata(status *prolink.CDJStatus) {
 		return
 	}
 
-	m.MessageHandler(message{
+	m.dispatchMessage(message{
 		Type:     "track_metadata",
 		PlayerID: int(status.PlayerID),
 		Object:   mapTrack(track),
@@ -116,7 +140,7 @@ func (m *StatusMapper) trackStatus(event trackstatus.Event, status *prolink.CDJS
 		m.trackMetadata(status)
 	}
 
-	m.MessageHandler(message{
+	m.dispatchMessage(message{
 		Type:     "track_status",
 		PlayerID: int(status.PlayerID),
 		Object:   object,
@@ -124,10 +148,6 @@ func (m *StatusMapper) trackStatus(event trackstatus.Event, status *prolink.CDJS
 }
 
 func (m *StatusMapper) playerStatus(status *prolink.CDJStatus) {
-	if m.prevStatus == nil {
-		m.prevStatus = map[prolink.DeviceID]*prolink.CDJStatus{}
-	}
-
 	opStatus := m.prevStatus[status.PlayerID]
 
 	if opStatus == nil {
@@ -147,7 +167,7 @@ func (m *StatusMapper) playerStatus(status *prolink.CDJStatus) {
 
 	m.prevStatus[status.PlayerID] = status
 
-	m.MessageHandler(message{
+	m.dispatchMessage(message{
 		Type:     "player_status",
 		PlayerID: int(status.PlayerID),
 		Object:   mapStatus(status),
