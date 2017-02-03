@@ -59,7 +59,7 @@ const Overlay = (props) => {
   }
 
   // Reorder the players for display on the overlay
-  const playerOrder = [2, 3];
+  const playerOrder = [3, 2];
   let players = playerOrder.map((id) => {
     return props.players[id] ? props.players[id] : null;
   });

@@ -11,7 +11,7 @@ const Metadata = (track) => {
   </div>;
 
   if (!track.artwork) {
-    artwork = <div className="artwork empty"></div>
+    artwork = <div className="artwork blank"></div>;
   }
 
   return <div className="metadata">
@@ -68,7 +68,8 @@ const MetadataAnimateWrapper = (props) => {
   </div>
 };
 
-export default props => <div className={["player", props.status].join(' ')}>
+export default props => <div
+  className={['player', props.status].join(' ')}>
   <ReactCSSTransitionGroup
     component={MetadataAnimateWrapper}
     transitionName="metadata-changed"

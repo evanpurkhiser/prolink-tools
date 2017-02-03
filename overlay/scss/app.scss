@@ -14,15 +14,24 @@ body {
 }
 
 .overlay {
+  display: flex;
   position: absolute;
   bottom: 0;
   width: 100%;
   padding: 20px;
   background: rgba(0, 0, 0, 0.25);
+
+  &:empty:after {
+    content: "Track information currently unavailable";
+    font: 26px "Pragati Narrow";
+    color: #fff;
+    text-align: center;
+    flex: 1 0 0;
+  }
 }
 
 .player {
-  display: inline-block;
+  flex: 1 0 0;
 
   // Force height of the player so we can expand the metadata container to make
   // room for animations.
@@ -35,16 +44,12 @@ body {
 }
 
 // Align 2nd players to the right
-.player:nth-child(2n+1) {
-  float: right;
+.player:nth-child(2n) {
   text-align: right;
 
+  .metadata,
   .player-info {
     flex-direction: row-reverse;
-  }
-
-  .artwork {
-    float: right;
   }
 
   .metadata .new-track-indicator {
@@ -211,6 +216,8 @@ body {
 }
 
 .metadata {
+  height: 120px;
+  display: flex;
   position: relative;
   padding-top: 10px;
   top: 190px
@@ -258,13 +265,12 @@ body {
   height: 100px;
   width: 100px;
   overflow: hidden;
-  display: inline-block;
 
   img {
     height: 100%;
   }
 
-  &.empty {
+  &.blank {
     background: rgba(38, 51, 64, 0.85);
 
     &:after {
@@ -282,7 +288,6 @@ body {
 
 .details {
   padding: 2px 0;
-  display: inline-block;
   vertical-align: top;
   font-family: Roboto;
   line-height: 20px;
