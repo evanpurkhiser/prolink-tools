@@ -41,7 +41,7 @@ const reduxDevtools = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVT
 const store = createStore(messageReducer, reduxDevtools)
 
 // Subscribe to websocket messages from the status server
-const socket = new WebSocket("ws://localhost:8033/status");
+const socket = new WebSocket(`ws://${window.location.host}/status`);
 socket.onmessage = (m) => {
   let message = JSON.parse(m.data);
 
