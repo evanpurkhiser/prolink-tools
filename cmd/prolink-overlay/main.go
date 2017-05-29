@@ -4,7 +4,8 @@ import (
 	"net/http"
 
 	"go.evanpurkhiser.com/prolink"
-	"go.evanpurkhiser.com/prolink-overlay"
+
+	"go.evanpurkhiser.com/prolink-overlay/server"
 	"go.evanpurkhiser.com/prolink/trackstatus"
 )
 
@@ -23,9 +24,9 @@ func main() {
 		BeatsUntilReported:    128,
 	}
 
-	wss := overlay.NewWebsocketServer()
+	wss := server.NewWebsocketServer()
 
-	statusMapper := overlay.StatusMapper{
+	statusMapper := server.StatusMapper{
 		Network:           network,
 		TrackStatusConfig: tsConfig,
 		MessageHandler:    wss.SendJSONMessage,

@@ -1,4 +1,4 @@
-package overlay
+package server
 
 import (
 	"encoding/base64"

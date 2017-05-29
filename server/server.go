@@ -1,4 +1,4 @@
-package overlay
+package server
 
 import (
 	"net/http"
