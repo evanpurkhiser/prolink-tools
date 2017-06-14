@@ -42,7 +42,8 @@ const store = createStore(messageReducer, reduxDevtools)
 
 // Subscribe to websocket messages from the status server
 const socket = new WebSocket(`ws://${window.location.host}/status`);
-socket.onmessage = (m) => {
+
+socket.onmessage = m => {
   let message = JSON.parse(m.data);
 
   if (message.constructor !== Array) {
