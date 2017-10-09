@@ -1,5 +1,5 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './src/app.js',
@@ -13,14 +13,11 @@ module.exports = {
     loaders: [{
       test:   /\.js$/,
       loader: 'babel-loader',
-      query: {
-        presets: ['es2015', 'react'],
-        plugins: ['transform-object-assign'],
-      },
+      query: { presets: ['env', 'stage-1', 'react'] },
     },
     {
       test: /\.scss$/,
-      loaders: ['style', 'css', 'sass'],
+      loaders: ['style-loader', 'css-loader', 'sass-loader'],
     }],
   },
   plugins: [new HtmlWebpackPlugin({ template: 'index.html' })],
