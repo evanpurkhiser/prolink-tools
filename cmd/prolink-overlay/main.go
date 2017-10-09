@@ -25,7 +25,7 @@ func main() {
 	flag.Parse()
 
 	prolinkConfig := prolink.Config{
-		VirtualCDJID: 0x04,
+		VirtualCDJID: 0x03,
 	}
 
 	network, err := prolink.Connect(prolinkConfig)
