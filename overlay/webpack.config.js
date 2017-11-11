@@ -18,6 +18,10 @@ module.exports = {
     {
       test: /\.scss$/,
       loaders: ['style-loader', 'css-loader', 'sass-loader'],
+    },
+    {
+      test:   /\.(eot|woff|woff2|ttf|svg|png|jpe?g|gif)(\?\S*)?$/,
+      loader: 'file-loader',
     }],
   },
   plugins: [new HtmlWebpackPlugin({ template: 'index.html' })],

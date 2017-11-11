@@ -2,7 +2,10 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto+Condensed");
 @import url("https://fonts.googleapis.com/css?family=Pragati+Narrow");
 @import url("https://fonts.googleapis.com/css?family=Abel");
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css");
+
+$fa-font-path: '~font-awesome/fonts/';
+@import '~font-awesome/scss/_variables';
+@import '~font-awesome/scss/_path';
 
 * { box-sizing: border-box; }
 
