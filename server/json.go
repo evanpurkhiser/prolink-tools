@@ -3,6 +3,7 @@ package server
 import (
 	"encoding/base64"
 	"fmt"
+	"sync"
 
 	"go.evanpurkhiser.com/prolink"
 	"go.evanpurkhiser.com/prolink/trackstatus"
@@ -81,7 +82,8 @@ type StatusMapper struct {
 	started    bool
 
 	// Used to respond to last status queries
-	lastMessages map[string]message
+	lastMessages    map[string]message
+	lastMessageLock *sync.Mutex
 }
 
 // Start begins listening for status on the network and will delgate messages
@@ -93,6 +95,7 @@ func (m *StatusMapper) Start() {
 
 	m.prevStatus = map[prolink.DeviceID]*prolink.CDJStatus{}
 	m.lastMessages = map[string]message{}
+	m.lastMessageLock = &sync.Mutex{}
 
 	sm := m.Network.CDJStatusMonitor()
 
@@ -113,6 +116,9 @@ func (m *StatusMapper) LastMessages() []interface{} {
 
 func (m *StatusMapper) dispatchMessage(msg message) {
 	m.MessageHandler(msg)
+
+	m.lastMessageLock.Lock()
+	defer m.lastMessageLock.Unlock()
 
 	messageKey := fmt.Sprintf("%d-%s", msg.PlayerID, msg.Type)
 	m.lastMessages[messageKey] = msg
