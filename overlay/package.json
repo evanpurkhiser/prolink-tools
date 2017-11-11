@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack -p",
-    "dev": "webpack-dev-server --inline"
+    "server": "webpack-dev-server --watch"
   },
   "dependencies": {
     "react": "^16.0.0",
