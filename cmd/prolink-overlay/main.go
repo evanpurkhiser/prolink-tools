@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"time"
 
 	"github.com/GeertJohan/go.rice"
 	"github.com/gorilla/mux"
@@ -24,16 +25,19 @@ var webpackProxyEnabled = flag.Bool("webpack-proxy", false, "Proxy to the webpac
 func main() {
 	flag.Parse()
 
-	prolinkConfig := prolink.Config{
-		VirtualCDJID: 0x03,
-	}
-
-	network, err := prolink.Connect(prolinkConfig)
+	network, err := prolink.Connect()
 	if err != nil {
 		panic(err)
 	}
 
-	logrus.Info("Connected to prolink network")
+	logrus.Info("Connected to prolink network, autoconfiguring...")
+
+	if err := network.AutoConfigure(3 * time.Second); err != nil {
+		logrus.Error(err)
+	} else {
+		logrus.Infof("Listening on interface %q", network.TargetInterface.Name)
+		logrus.Infof("Reporting as Virtual CDJ ID %d", network.VirtualCDJID)
+	}
 
 	deviceLogger := func(dev *prolink.Device) {
 		log := logrus.WithFields(logrus.Fields{
