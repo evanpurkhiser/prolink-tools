@@ -11,9 +11,6 @@ $fa-font-path: '~font-awesome/fonts/';
 
 body {
   margin:0;
-
-  // Force hardware acceleration
-  -webkit-transform: translate3d(0, 0, 0);
 }
 
 .overlay {
