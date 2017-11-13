@@ -40,19 +40,25 @@
 [[projects]]
   name = "github.com/sirupsen/logrus"
   packages = ["."]
-  revision = "a3f95b5c423586578a4e099b11a46c2479628cac"
-  version = "1.0.2"
+  revision = "f006c2ac4710855cf0f916dd6b77acf6b048dc6e"
+  version = "v1.0.3"
 
 [[projects]]
   branch = "master"
   name = "go.evanpurkhiser.com/prolink"
   packages = [".","bpm","trackstatus"]
-  revision = "2f60374bae171a308ed0821e4f937b4e17f97a84"
+  revision = "f5a59a8f3fa9e2c290e6b6545aef8acc22c28136"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/crypto"
+  packages = ["ssh/terminal"]
+  revision = "6a293f2d4b14b8e6d3f0539e383f6d0d30fce3fd"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
-  packages = ["unix"]
+  packages = ["unix","windows"]
   revision = "1e2299c37cc91a509f1b12369872d27be0ce98a6"
 
 [solve-meta]
