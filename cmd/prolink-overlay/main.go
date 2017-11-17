@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -16,14 +15,9 @@ import (
 	"go.evanpurkhiser.com/prolink/trackstatus"
 )
 
-// webpackDevServer specifies the HTTP address of the webpack dev server. When
-// the webpack-proxy flag is enabled content will be proxied to the dev server.
 const webpackDevServer = "http://localhost:9000"
 
-var webpackProxyEnabled = flag.Bool("webpack-proxy", false, "Proxy to the webpack dev server")
-
 func main() {
-	flag.Parse()
 
 	network, err := prolink.Connect()
 	if err != nil {
@@ -79,8 +73,9 @@ func main() {
 // getStaticHandler determines if a overlay proxie is configured, if so all
 // requests will be proxied through the URL, otherwise the rice will be served.
 func getStaticHandler() http.Handler {
-	if !*webpackProxyEnabled {
-		return http.FileServer(rice.MustFindBox("../../dist/assets").HTTPBox())
+	box, _ := rice.FindBox("../../dist/assets")
+	if box != nil {
+		return http.FileServer(box.HTTPBox())
 	}
 
 	target, _ := url.Parse(webpackDevServer)
