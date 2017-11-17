@@ -2,6 +2,7 @@ import '../scss/app.scss'
 
 import React from 'react';
 import ReactDom from 'react-dom';
+import camelize from 'camelize';
 import { createStore } from 'redux';
 import { Provider, connect } from 'react-redux';
 import Player from './Player'
@@ -12,7 +13,7 @@ function messageReducer(state, msg) {
     return msg.reduce((s, m) => messageReducer(s, m), {});
   }
 
-  const player  = msg.player_id
+  const player  = msg.playerId
   const partial = Object.assign({}, {[player]: {}}, state);
 
   if (player === undefined) {
@@ -44,7 +45,7 @@ const store = createStore(messageReducer, reduxDevtools)
 const socket = new WebSocket(`ws://${window.location.host}/status`);
 
 socket.onmessage = m => {
-  let message = JSON.parse(m.data);
+  let message = camelize(JSON.parse(m.data));
 
   if (message.constructor !== Array) {
     message = [message];

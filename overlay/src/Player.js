@@ -50,11 +50,11 @@ const PlayerStatus = (info) => {
     <div className="bpm-details">
       {bpmDetails}
     </div>
-    <div className={["play-state", info.play_state].join(' ')}>
-      {info.play_state}
+    <div className={["play-state", info.playState].join(' ')}>
+      {info.playState}
     </div>
-    <div className={["on-air", info.on_air ? "true" : "false"].join(' ')}>
-      {info.on_air ? "on-air" : "off-air"}
+    <div className={["on-air", info.onAir ? "true" : "false"].join(' ')}>
+      {info.onAir ? "on-air" : "off-air"}
     </div>
     <div className={["synced", info.synced ? "true" : "false"].join(' ')}>
       {info.synced ? 'sync on' : 'sync off'}

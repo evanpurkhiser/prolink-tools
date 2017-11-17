@@ -10,6 +10,7 @@
     "server": "webpack-dev-server --watch"
   },
   "dependencies": {
+    "camelize": "^1.0.0",
     "font-awesome": "^4.7.0",
     "react": "^16.0.0",
     "react-addons-css-transition-group": "^15.6.2",
