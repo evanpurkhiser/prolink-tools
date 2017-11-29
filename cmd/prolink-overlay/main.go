@@ -48,6 +48,7 @@ func main() {
 	tsConfig := trackstatus.Config{
 		AllowedInterruptBeats: 10,
 		BeatsUntilReported:    128,
+		TimeBetweenSets:       5 * time.Second,
 	}
 
 	wss := server.NewWebsocketServer()

@@ -47,19 +47,19 @@
   branch = "master"
   name = "go.evanpurkhiser.com/prolink"
   packages = [".","bpm","trackstatus"]
-  revision = "5e9312fa2e800d119e99b93161594cc4268fa798"
+  revision = "cc41bf091a1cfbae64c6c4315e2b22b4e16b11fb"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
-  revision = "9f005a07e0d31d45e6656d241bb5c0f2efd4bc94"
+  revision = "94eea52f7b742c7cbe0b03b22f0c4c8631ece122"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix","windows"]
-  revision = "bf42f188b9bc6f2cf5b8ee5a912ef1aedd0eba4c"
+  revision = "1006bb3484c92b19a5b6612452e038b554fadb9c"
 
 [solve-meta]
   analyzer-name = "dep"
