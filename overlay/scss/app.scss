@@ -23,7 +23,7 @@ body {
 
   &:empty:after {
     content: "Track information currently unavailable";
-    font: 26px "Pragati Narrow";
+    font: 26px "Pragati Narrow", Helvetica, Arial, sans-serif;
     color: #fff;
     text-align: center;
     flex: 1 0 0;
@@ -68,7 +68,7 @@ body {
   margin-top: 10px;
   padding: 0 6px;
   text-transform: uppercase;
-  font: 16px "Pragati Narrow";
+  font: 16px "Pragati Narrow", Helvetica, Arial, sans-serif;
   border-radius: 3px;
   color: #ecf0f1;
   background: #2c3e50;
