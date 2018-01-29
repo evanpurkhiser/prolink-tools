@@ -17,7 +17,11 @@ import (
 
 const webpackDevServer = "http://localhost:9000"
 
+// Version declares the revision of the software. Set at compile time.
+var Version = "dev"
+
 func main() {
+	logrus.Infof("Running version %s", Version)
 
 	network, err := prolink.Connect()
 	if err != nil {
