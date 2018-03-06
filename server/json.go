@@ -78,8 +78,9 @@ type StatusMapper struct {
 	TrackStatusConfig trackstatus.Config
 	MessageHandler    func(interface{})
 
-	prevStatus map[prolink.DeviceID]*prolink.CDJStatus
-	started    bool
+	prevStatus     map[prolink.DeviceID]*prolink.CDJStatus
+	prevStatusLock *sync.Mutex
+	started        bool
 
 	// Used to respond to last status queries
 	lastMessages    map[string]message
@@ -94,6 +95,7 @@ func (m *StatusMapper) Start() {
 	}
 
 	m.prevStatus = map[prolink.DeviceID]*prolink.CDJStatus{}
+	m.prevStatusLock = &sync.Mutex{}
 	m.lastMessages = map[string]message{}
 	m.lastMessageLock = &sync.Mutex{}
 
@@ -154,6 +156,9 @@ func (m *StatusMapper) trackStatus(event trackstatus.Event, status *prolink.CDJS
 }
 
 func (m *StatusMapper) playerStatus(status *prolink.CDJStatus) {
+	m.prevStatusLock.Lock()
+	defer m.prevStatusLock.Unlock()
+
 	opStatus := m.prevStatus[status.PlayerID]
 
 	if opStatus == nil {
