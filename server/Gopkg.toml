@@ -1,17 +1,19 @@
 [[constraint]]
-  name = "github.com/GeertJohan/go.rice"
-
-[[constraint]]
   name = "github.com/gorilla/mux"
-  version = "1.4.0"
+  version = "1.6.2"
 
 [[constraint]]
   name = "github.com/gorilla/websocket"
-  version = "1.1.0"
+  version = "1.4.0"
 
 [[constraint]]
-  name = "github.com/sirupsen/logrus"
-  version = "1.0.0"
+  name = "github.com/inconshreveable/log15"
+  version = "2.14.0"
 
 [[constraint]]
+  branch = "master"
   name = "go.evanpurkhiser.com/prolink"
+
+[prune]
+  go-tests = true
+  unused-packages = true

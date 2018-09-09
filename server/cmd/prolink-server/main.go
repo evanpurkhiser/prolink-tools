@@ -2,39 +2,42 @@ package main
 
 import (
 	"net/http"
-	"net/http/httputil"
-	"net/url"
 	"time"
 
-	"github.com/GeertJohan/go.rice"
 	"github.com/gorilla/mux"
+	"github.com/inconshreveable/log15"
 	"github.com/sirupsen/logrus"
 	"go.evanpurkhiser.com/prolink"
 
-	"go.evanpurkhiser.com/prolink-overlay/server"
+	"go.evanpurkhiser.com/prolink-tools/server"
 	"go.evanpurkhiser.com/prolink/trackstatus"
 )
-
-const webpackDevServer = "http://localhost:9000"
 
 // Version declares the revision of the software. Set at compile time.
 var Version = "dev"
 
+// Log is used for logging
+var Log = log15.New()
+
+func init() {
+	Log.SetHandler(log15.LvlFilterHandler(
+		log15.LvlInfo,
+		log15.StdoutHandler,
+	))
+}
+
 func main() {
-	logrus.Infof("Running version %s", Version)
+	Log.Info("Starting prolink server", Version)
+
+	prolink.Log = log15.New("module", "prolink-lib")
 
 	network, err := prolink.Connect()
 	if err != nil {
 		panic(err)
 	}
 
-	logrus.Info("Connected to prolink network, autoconfiguring...")
-
 	if err := network.AutoConfigure(3 * time.Second); err != nil {
-		logrus.Error(err)
-	} else {
-		logrus.Infof("Listening on interface %q", network.TargetInterface.Name)
-		logrus.Infof("Reporting as Virtual CDJ ID %d", network.VirtualCDJID)
+		Log.Error(err.Error())
 	}
 
 	deviceLogger := func(dev *prolink.Device) {
@@ -70,20 +73,6 @@ func main() {
 
 	router := mux.NewRouter()
 	router.Handle("/status", wss)
-	router.NewRoute().Handler(getStaticHandler())
 
 	http.ListenAndServe(":8080", router)
-}
-
-// getStaticHandler determines if a overlay proxie is configured, if so all
-// requests will be proxied through the URL, otherwise the rice will be served.
-func getStaticHandler() http.Handler {
-	box, _ := rice.FindBox("../../dist/assets")
-	if box != nil {
-		return http.FileServer(box.HTTPBox())
-	}
-
-	target, _ := url.Parse(webpackDevServer)
-
-	return httputil.NewSingleHostReverseProxy(target)
 }
