@@ -5,6 +5,13 @@ communicating with devices on the PROLINK network. This tool uses the
 [`prolink-go`](https://github.com/EvanPurkhiser/prolink-go) library and is
 constrained to the limitations of the library.
 
+### Documentation
+
+- [Event Streaming](#event-streaming)
+- [Mix Status](#mix-status)
+- [REST API](#rest-api)
+- [Building and running](#wip)
+
 ### Startup
 
 When started the server will attempt to auto-configure itself by looking for
