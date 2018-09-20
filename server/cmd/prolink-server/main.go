@@ -1,78 +1,71 @@
 package main
 
 import (
-	"net/http"
 	"time"
 
-	"github.com/gorilla/mux"
 	"github.com/inconshreveable/log15"
-	"github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
 	"go.evanpurkhiser.com/prolink"
 
 	"go.evanpurkhiser.com/prolink-tools/server"
-	"go.evanpurkhiser.com/prolink/trackstatus"
 )
 
-// Version declares the revision of the software. Set at compile time.
+// Version declares the revision of the software. This variable will be updated
+// at compile time.
 var Version = "dev"
 
-// Log is used for logging
-var Log = log15.New()
+func startServer(cmd *cobra.Command, args []string) error {
+	var log = log15.New()
 
-func init() {
-	Log.SetHandler(log15.LvlFilterHandler(
-		log15.LvlInfo,
+	logLevel := log15.LvlInfo
+
+	if debug, _ := cmd.Flags().GetBool("debug"); debug {
+		logLevel = log15.LvlDebug
+	}
+
+	log.SetHandler(log15.LvlFilterHandler(
+		logLevel,
 		log15.StdoutHandler,
 	))
-}
 
-func main() {
-	Log.Info("Starting prolink server", Version)
+	log.Info("Starting prolink server", "version", Version)
 
-	prolink.Log = log15.New("module", "prolink-lib")
+	prolink.Log = log.New("module", "prolink-lib")
 
 	network, err := prolink.Connect()
 	if err != nil {
 		panic(err)
 	}
 
-	if err := network.AutoConfigure(3 * time.Second); err != nil {
-		Log.Error(err.Error())
+	go func() {
+		log.Info("Attempting to auto configure...")
+		if err := network.AutoConfigure(3 * time.Second); err != nil {
+			log.Warn(err.Error())
+		}
+	}()
+
+	port, _ := cmd.Flags().GetInt("port")
+
+	config := server.ServerConfig{
+		Port: port,
 	}
 
-	deviceLogger := func(dev *prolink.Device) {
-		log := logrus.WithFields(logrus.Fields{
-			"device": dev,
-		})
+	server.Log = log
+	prolinkServer := server.NewServer(network, config)
 
-		log.Info("New device detected on network")
+	return prolinkServer.Start()
+}
+
+func main() {
+	var rootCmd = &cobra.Command{
+		Use:   "prolink-server",
+		Short: "prolink-server provides a HTTP / websocket interface to a prolink network.",
+		RunE:  startServer,
 	}
 
-	network.DeviceManager().OnDeviceAdded(prolink.DeviceListenerFunc(
-		deviceLogger,
-	))
+	flags := rootCmd.Flags()
+	flags.IntP("port", "p", 8000, "port to start the HTTP server on")
+	flags.BoolP("debug", "d", false, "enables debug output")
 
-	tsConfig := trackstatus.Config{
-		AllowedInterruptBeats: 10,
-		BeatsUntilReported:    128,
-		TimeBetweenSets:       5 * time.Second,
-	}
-
-	wss := server.NewWebsocketServer()
-
-	statusMapper := server.StatusMapper{
-		Network:           network,
-		TrackStatusConfig: tsConfig,
-		MessageHandler:    wss.SendJSONMessage,
-	}
-
-	wss.SetNewClientHandler(statusMapper.LastMessages)
-
-	statusMapper.Start()
-	logrus.Info("Listening for status on prolink network")
-
-	router := mux.NewRouter()
-	router.Handle("/status", wss)
-
-	http.ListenAndServe(":8080", router)
+	rootCmd.Execute()
 }

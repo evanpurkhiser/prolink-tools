@@ -282,7 +282,7 @@ The full list of events is as follows:
       </td>
     </tr>
     <tr valign="top">
-      <td><code>status:synced</code></td>
+      <td><code>status:sync_enabled</code></td>
       <td colspan="2">
         Emitted when sync is turned on or off on a player. A boolean value.
       </td>

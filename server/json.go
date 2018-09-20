@@ -3,59 +3,153 @@ package server
 import (
 	"encoding/base64"
 	"fmt"
-	"sync"
+	"net"
+	"time"
 
 	"go.evanpurkhiser.com/prolink"
-	"go.evanpurkhiser.com/prolink/trackstatus"
+	"go.evanpurkhiser.com/prolink/mixstatus"
 )
 
-type track struct {
-	ID      int    `json:"id"`
-	Title   string `json:"title"`
-	Artist  string `json:"artist"`
-	Album   string `json:"album"`
-	Label   string `json:"label"`
-	Release string `json:"release"`
-	Artwork string `json:"artwork"`
-	Length  int    `json:"length"`
+type config struct {
+	// Interfaces declares what network interface should be bound to for
+	// broadcasting network packets.
+	Interface string `json:"interface"`
+
+	// PlayerID specifies what player ID should be used when broadcasting
+	// ourselves as a CDJ on the network.
+	PlayerID int `json:"player_id"`
+
+	// MixStatus represents the configuration for the mix status handler.
+	MixStatus configMixStatus `json:"mix_status"`
 }
 
-type trackStatus struct {
-	Event string `json:"event"`
+type configMixStatus struct {
+	AllowedInterruptBeats *int `json:"allowed_interrupt_beats"`
+	BeatsUntilReported    *int `json:"beats_until_reported"`
+	TimeBetweenSets       *int `json:"time_between_sets"`
+}
+
+func mapConfig(n *prolink.Network, ms *mixstatus.Processor) config {
+	tbs := int(ms.Config.TimeBetweenSets.Seconds())
+
+	msConfig := configMixStatus{
+		AllowedInterruptBeats: &ms.Config.AllowedInterruptBeats,
+		BeatsUntilReported:    &ms.Config.BeatsUntilReported,
+		TimeBetweenSets:       &tbs,
+	}
+
+	iface := ""
+	if n.TargetInterface != nil {
+		iface = n.TargetInterface.Name
+	}
+
+	return config{
+		Interface: iface,
+		PlayerID:  int(n.VirtualCDJID),
+		MixStatus: msConfig,
+	}
+}
+
+// configAnnotated provides additional details about configuration that may be
+// useful for clients requesting configuration details.
+type configAnnotated struct {
+	config
+
+	// The current list of interfaces
+	AvailableInterfaces []string `json:"available_interfaces"`
+
+	// UnusedPlayerIDs is a list of player IDs that are not currently used on
+	// the network.
+	UnusedPlayerIDs []int `json:"unused_player_ids"`
+}
+
+type device struct {
+	ID         int       `json:"player_id"`
+	Name       string    `json:"name"`
+	Type       string    `json:"type"`
+	MacAddr    string    `json:"mac"`
+	IP         net.IP    `json:"ip"`
+	LastActive time.Time `json:"last_active"`
+}
+
+func mapDevice(d *prolink.Device) device {
+	return device{
+		ID:         int(d.ID),
+		Name:       d.Name,
+		Type:       d.Type.String(),
+		MacAddr:    d.MacAddr.String(),
+		IP:         d.IP,
+		LastActive: d.LastActive,
+	}
+}
+
+type track struct {
+	ID        int       `json:"id"`
+	Path      string    `json:"path"`
+	Title     string    `json:"title"`
+	Artist    string    `json:"artist"`
+	Album     string    `json:"album"`
+	Label     string    `json:"label"`
+	Genre     string    `json:"genre"`
+	Comment   string    `json:"comment"`
+	Key       string    `json:"key"`
+	Length    int       `json:"length"`
+	DateAdded time.Time `json:"date_added"`
+	Artwork   string    `json:"artwork"`
+}
+
+func mapTrack(pt *prolink.Track) *track {
+	t := track{
+		ID:        int(pt.ID),
+		Path:      pt.Path,
+		Title:     pt.Title,
+		Artist:    pt.Artist,
+		Album:     pt.Album,
+		Label:     pt.Label,
+		Comment:   pt.Comment,
+		Key:       pt.Key,
+		Length:    int(pt.Length.Seconds()),
+		DateAdded: pt.DateAdded,
+	}
+
+	if len(pt.Artwork) > 0 {
+		artworkBase64 := base64.StdEncoding.EncodeToString(pt.Artwork)
+		t.Artwork = fmt.Sprintf("data:%s;base64,%s", "image/jpeg", artworkBase64)
+	}
+
+	return &t
+}
+
+type trackID struct {
+	ID     int    `json:"id"`
+	Device int    `json:"device"`
+	Slot   string `json:"slot"`
+	Type   string `json:"type"`
+}
+
+func mapTrackID(s *prolink.CDJStatus) *trackID {
+	tid := trackID{
+		ID:     int(s.TrackID),
+		Device: int(s.PlayerID),
+		Slot:   s.TrackSlot.String(),
+		Type:   s.TrackType.String(),
+	}
+
+	return &tid
 }
 
 type playerStatus struct {
+	TrackID        trackID `json:"track_id"`
 	PlayState      string  `json:"play_state"`
 	BPM            float32 `json:"bpm"`
 	Pitch          float32 `json:"pitch"`
 	EffectivePitch float32 `json:"effective_pitch"`
 	OnAir          bool    `json:"on_air"`
 	Synced         bool    `json:"synced"`
-}
-
-type message struct {
-	Type     string      `json:"type"`
-	PlayerID int         `json:"player_id"`
-	Object   interface{} `json:"object"`
-}
-
-func mapTrack(t2 *prolink.Track) *track {
-	t := track{
-		ID:      int(t2.ID),
-		Title:   t2.Title,
-		Artist:  t2.Artist,
-		Album:   t2.Album,
-		Label:   t2.Label,
-		Release: t2.Comment,
-		Length:  int(t2.Length.Seconds()),
-	}
-
-	if len(t2.Artwork) > 0 {
-		artworkBase64 := base64.StdEncoding.EncodeToString(t2.Artwork)
-		t.Artwork = fmt.Sprintf("data:%s;base64,%s", "image/jpeg", artworkBase64)
-	}
-
-	return &t
+	IsMaster       bool    `json:"is_master"`
+	Beat           int     `json:"beat"`
+	BeatInMeasure  int     `json:"beat_in_measure"`
+	BeatsUntilCue  int     `json:"beats_until_cue"`
 }
 
 func mapStatus(s2 *prolink.CDJStatus) *playerStatus {
@@ -71,116 +165,59 @@ func mapStatus(s2 *prolink.CDJStatus) *playerStatus {
 	return &s
 }
 
-// StatusMapper constructs status messages upon player and track status
-// updates of CDJs on the pro link network.
-type StatusMapper struct {
-	Network           *prolink.Network
-	TrackStatusConfig trackstatus.Config
-	MessageHandler    func(interface{})
-
-	prevStatus     map[prolink.DeviceID]*prolink.CDJStatus
-	prevStatusLock *sync.Mutex
-	started        bool
-
-	// Used to respond to last status queries
-	lastMessages    map[string]message
-	lastMessageLock *sync.Mutex
+type beat struct {
+	AbsoluteBeat  int `json:"absolute_beat"`
+	BeatInMeasure int `json:"beat_in_measure"`
+	BeatsUntilCue int `json:"beats_until_cue"`
 }
 
-// Start begins listening for status on the network and will delgate messages
-// to the MessageHandler provided.
-func (m *StatusMapper) Start() {
-	if m.started {
-		return
+func mapBeat(s *prolink.CDJStatus) *beat {
+	b := beat{
+		AbsoluteBeat:  int(s.Beat),
+		BeatInMeasure: int(s.BeatInMeasure),
+		BeatsUntilCue: int(s.BeatsUntilCue),
 	}
 
-	m.prevStatus = map[prolink.DeviceID]*prolink.CDJStatus{}
-	m.prevStatusLock = &sync.Mutex{}
-	m.lastMessages = map[string]message{}
-	m.lastMessageLock = &sync.Mutex{}
-
-	sm := m.Network.CDJStatusMonitor()
-
-	sm.OnStatusUpdate(prolink.StatusHandlerFunc(m.playerStatus))
-	sm.OnStatusUpdate(trackstatus.NewHandler(m.TrackStatusConfig, m.trackStatus))
+	return &b
 }
 
-// LastMessages returns the most recent messages the StatusMapper recieved.
-func (m *StatusMapper) LastMessages() []interface{} {
-	messages := []interface{}{}
+type event struct {
+	// Type represents the event type being emitted
+	Type string `json:"event"`
 
-	for _, message := range m.lastMessages {
-		messages = append(messages, message)
+	// When an event is emmited from a particular device on the network (and
+	// not a event inferred from the state of multiple device) the player ID
+	// will be set. Otherwise the player ID will be `null`.
+	PlayerID *int `json:"player_id"`
+
+	// The precise event timestamp, formatted as a RFC3339Nano
+	Timestamp string `json:"ts"`
+
+	// The data object describing the event. This will usually be the place of
+	// interest. Each event contains a different data object.
+	Data interface{} `json:"data"`
+}
+
+func mapEvent(t string, playerID *prolink.DeviceID, data interface{}) event {
+	var playerNumber *int = nil
+
+	if playerID != nil {
+		n := int(*playerID)
+		playerNumber = &n
 	}
 
-	return messages
-}
-
-func (m *StatusMapper) dispatchMessage(msg message) {
-	m.MessageHandler(msg)
-
-	m.lastMessageLock.Lock()
-	defer m.lastMessageLock.Unlock()
-
-	messageKey := fmt.Sprintf("%d-%s", msg.PlayerID, msg.Type)
-	m.lastMessages[messageKey] = msg
-}
-
-func (m *StatusMapper) trackMetadata(status *prolink.CDJStatus) {
-	rdb := m.Network.RemoteDB()
-
-	track, err := rdb.GetTrack(status.TrackQuery())
-	if err != nil {
-		return
+	e := event{
+		Type:      t,
+		PlayerID:  playerNumber,
+		Timestamp: time.Now().Format(time.RFC3339Nano),
+		Data:      data,
 	}
 
-	m.dispatchMessage(message{
-		Type:     "track_metadata",
-		PlayerID: int(status.PlayerID),
-		Object:   mapTrack(track),
-	})
+	return e
 }
 
-func (m *StatusMapper) trackStatus(event trackstatus.Event, status *prolink.CDJStatus) {
-	object := trackStatus{Event: string(event)}
-
-	if event == trackstatus.NowPlaying {
-		m.trackMetadata(status)
-	}
-
-	m.dispatchMessage(message{
-		Type:     "track_status",
-		PlayerID: int(status.PlayerID),
-		Object:   object,
-	})
+type subscriptions struct {
+	Subscriptions []string `json:"subscriptions"`
 }
 
-func (m *StatusMapper) playerStatus(status *prolink.CDJStatus) {
-	m.prevStatusLock.Lock()
-	defer m.prevStatusLock.Unlock()
-
-	opStatus := m.prevStatus[status.PlayerID]
-
-	if opStatus == nil {
-		opStatus = &prolink.CDJStatus{}
-	}
-
-	sameStatus := status.TrackBPM == opStatus.TrackBPM &&
-		status.EffectivePitch == opStatus.EffectivePitch &&
-		status.SliderPitch == opStatus.SliderPitch &&
-		status.PlayState == opStatus.PlayState &&
-		status.IsOnAir == opStatus.IsOnAir &&
-		status.IsSync == opStatus.IsSync
-
-	if sameStatus {
-		return
-	}
-
-	m.prevStatus[status.PlayerID] = status
-
-	m.dispatchMessage(message{
-		Type:     "player_status",
-		PlayerID: int(status.PlayerID),
-		Object:   mapStatus(status),
-	})
-}
+type message struct{}

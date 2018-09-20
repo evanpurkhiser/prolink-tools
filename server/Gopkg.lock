@@ -42,6 +42,14 @@
   version = "v2.14"
 
 [[projects]]
+  digest = "1:870d441fe217b8e689d7949fef6e43efbc787e50f200cb1e70dbca9204a1d6be"
+  name = "github.com/inconshreveable/mousetrap"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75"
+  version = "v1.0"
+
+[[projects]]
   digest = "1:c658e84ad3916da105a761660dcaeb01e63416c8ec7bc62256a9b411a05fcd67"
   name = "github.com/mattn/go-colorable"
   packages = ["."]
@@ -58,43 +66,40 @@
   version = "v0.0.4"
 
 [[projects]]
-  digest = "1:d867dfa6751c8d7a435821ad3b736310c2ed68945d05b50fb9d23aee0540c8cc"
-  name = "github.com/sirupsen/logrus"
+  digest = "1:645cabccbb4fa8aab25a956cbcbdf6a6845ca736b2c64e197ca7cbb9d210b939"
+  name = "github.com/spf13/cobra"
   packages = ["."]
   pruneopts = "UT"
-  revision = "3e01752db0189b9157070a0e1668a620f9a85da2"
-  version = "v1.0.6"
+  revision = "ef82de70bb3f60c65fb8eebacbb2d122ef517385"
+  version = "v0.0.3"
+
+[[projects]]
+  digest = "1:dab83a1bbc7ad3d7a6ba1a1cc1760f25ac38cdf7d96a5cdd55cd915a4f5ceaf9"
+  name = "github.com/spf13/pflag"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "9a97c102cda95a86cec2345a6f09f55a939babf5"
+  version = "v1.0.2"
 
 [[projects]]
   branch = "master"
-  digest = "1:e728f7a619070316c70c5526f056bb5c742812baf8c5a95196b774c6a8ba8d3c"
+  digest = "1:3f447a6b8c04917b1454ab56f3fe37da5abfcedf5acdfca086e670b7066e49a2"
   name = "go.evanpurkhiser.com/prolink"
   packages = [
     ".",
     "bpm",
-    "trackstatus",
+    "mixstatus",
   ]
   pruneopts = "UT"
-  revision = "a535d8916bd59b350f96e56c201fd612d198d25b"
+  revision = "b01dfe29a8145c586e59db68158c518c2af09cc9"
 
 [[projects]]
   branch = "master"
-  digest = "1:3f3a05ae0b95893d90b9b3b5afdb79a9b3d96e4e36e099d841ae602e4aca0da8"
-  name = "golang.org/x/crypto"
-  packages = ["ssh/terminal"]
-  pruneopts = "UT"
-  revision = "0709b304e793a5edb4a2c0145f281ecdc20838a4"
-
-[[projects]]
-  branch = "master"
-  digest = "1:374fc90fcb026e9a367e3fad29e988e5dd944b68ca3f24a184d77abc5307dda4"
+  digest = "1:199248809ceaae02531db528e4e72d0d46eac33028bdf416ec5839bd8b35a1f7"
   name = "golang.org/x/sys"
-  packages = [
-    "unix",
-    "windows",
-  ]
+  packages = ["unix"]
   pruneopts = "UT"
-  revision = "4526dd3c8b56729dc6b5a24d9dafb1915e89945b"
+  revision = "1561086e645b2809fb9f8a1e2a38160bf8d53bf4"
 
 [solve-meta]
   analyzer-name = "dep"
@@ -103,9 +108,9 @@
     "github.com/gorilla/mux",
     "github.com/gorilla/websocket",
     "github.com/inconshreveable/log15",
-    "github.com/sirupsen/logrus",
+    "github.com/spf13/cobra",
     "go.evanpurkhiser.com/prolink",
-    "go.evanpurkhiser.com/prolink/trackstatus",
+    "go.evanpurkhiser.com/prolink/mixstatus",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
