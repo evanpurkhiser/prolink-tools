@@ -5,6 +5,10 @@ communicating with devices on the PROLINK network. This tool uses the
 [`prolink-go`](https://github.com/EvanPurkhiser/prolink-go) library and is
 constrained to the limitations of the library.
 
+The goal of this service is to provide a basic building block for creating
+tools such as OBS overlays, m3u playlists for recorded sets, live tracklist
+tweeters, and more.
+
 ### Documentation
 
 - [Event Streaming](#event-streaming)
