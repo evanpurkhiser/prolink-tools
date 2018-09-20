@@ -108,20 +108,18 @@ The full list of events is as follows:
         <details>
           <summary>ᴇxᴀᴍᴘʟᴇ ᴇᴠᴇɴᴛ <code>data</code> ᴏʙᴊᴇᴄᴛ</summary>
           <pre lang="json">{
-  "track": {
-    "id": 125,
-    "path": "/Users/evan/Music/my-track.mp3",
-    "title": "Shivers",
-    "artist": "Armin Van Buuren",
-    "album": "Shivers",
-    "label": "Armada",
-    "genre": "Trance",
-    "comment": "ARMA034",
-    "key": "5B",
-    "length": 453,
-    "date_added": "2018-09-09T05:59:37-00:00",
-    "artwork": "data:image/png;base64,..."
-  }
+  "id": 125,
+  "path": "/Users/evan/Music/my-track.mp3",
+  "title": "Shivers",
+  "artist": "Armin Van Buuren",
+  "album": "Shivers",
+  "label": "Armada",
+  "genre": "Trance",
+  "comment": "ARMA034",
+  "key": "5B",
+  "length": 453,
+  "date_added": "2018-09-09T05:59:37-00:00",
+  "artwork": "data:image/png;base64,..."
 }</pre>
         </details>
       </td>
@@ -138,20 +136,18 @@ The full list of events is as follows:
         <details>
           <summary>ᴇxᴀᴍᴘʟᴇ ᴇᴠᴇɴᴛ <code>data</code> ᴏʙᴊᴇᴄᴛ</summary>
           <pre lang="json">{
-  "track": {
-    "id": 125,
-    "path": "/Users/evan/Music/my-track.mp3",
-    "title": "Shivers",
-    "artist": "Armin Van Buuren",
-    "album": "Shivers",
-    "label": "Armada",
-    "genre": "Trance",
-    "comment": "ARMA034",
-    "key": "5B",
-    "length": 453,
-    "date_added": "2018-09-09T05:59:37-00:00",
-    "artwork": "data:image/png;base64,..."
-  }
+  "id": 125,
+  "path": "/Users/evan/Music/my-track.mp3",
+  "title": "Shivers",
+  "artist": "Armin Van Buuren",
+  "album": "Shivers",
+  "label": "Armada",
+  "genre": "Trance",
+  "comment": "ARMA034",
+  "key": "5B",
+  "length": 453,
+  "date_added": "2018-09-09T05:59:37-00:00",
+  "artwork": "data:image/png;base64,..."
 }</pre>
         </details>
       </td>
