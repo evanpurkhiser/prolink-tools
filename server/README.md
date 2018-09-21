@@ -43,7 +43,7 @@ need to tell the server what events you would like to subscribe to.
 // Subscribe to track load events and to set start and end events. In this
 // example we could use this to keep a log of all tracks the DJ loaded.
 const subscriptions = {
-  subscriptions: ['status:track_id', 'set_started', 'set_ended'],
+  subscriptions: ['status:track_key', 'set_started', 'set_ended'],
 };
 
 socket.send(JSON.stringify(subscriptions));
@@ -59,7 +59,7 @@ Events will always be JSON messages with a common structure:
 ```py
 {
   # The event type emmited. This will match the event type keys below.
-  "type": "status:track_id",
+  "type": "status:track_key",
 
   # When an event is emmited from a particular device on the network (and not a
   # event inferred from the state of multiple device) the player ID will be
@@ -213,11 +213,11 @@ The full list of events is as follows:
       <td align="center"><strong>YES</strong></td>
     </tr>
     <tr valign="top">
-      <td><code>status:track_id</code></td>
+      <td><code>status:track_key</code></td>
       <td colspan="2">
         <p>
           Emitted when the track currently loaded into a player has been
-          changed. The track ID returned within the data will be an object
+          changed. The track Key returned within the data will be an object
           which may be used with the <a href="#"><code>GET /track</code>
           endpoint</a> to query for the track.
         </p>

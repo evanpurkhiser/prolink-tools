@@ -151,9 +151,9 @@ func (e *CDJStatusEmitter) OnStatusUpdate(status *prolink.CDJStatus) {
 
 	if prevStatus.TrackID != status.TrackID {
 		e.emitter.emittEvent(mapEvent(
-			"status:track_id",
+			"status:track_key",
 			playerId,
-			mapTrackID(status),
+			mapTrackKey(status),
 		))
 	}
 
@@ -266,7 +266,7 @@ func (e *MixStatusEmitter) OnMixStatus(event mixstatus.Event, status *prolink.CD
 	}
 
 	if _, ok := trackEvents[event]; ok {
-		t, err := e.remoteDB.GetTrack(status.TrackQuery())
+		t, err := e.remoteDB.GetTrack(status.TrackKey())
 		if err != nil {
 			Log.Error("Failed to retrieve track from Remote DB", "error", err)
 		}

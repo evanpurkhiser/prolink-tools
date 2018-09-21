@@ -120,15 +120,15 @@ func mapTrack(pt *prolink.Track) *track {
 	return &t
 }
 
-type trackID struct {
+type trackKey struct {
 	ID     int    `json:"id"`
 	Device int    `json:"device"`
 	Slot   string `json:"slot"`
 	Type   string `json:"type"`
 }
 
-func mapTrackID(s *prolink.CDJStatus) *trackID {
-	tid := trackID{
+func mapTrackKey(s *prolink.CDJStatus) *trackKey {
+	tid := trackKey{
 		ID:     int(s.TrackID),
 		Device: int(s.PlayerID),
 		Slot:   s.TrackSlot.String(),
@@ -139,17 +139,17 @@ func mapTrackID(s *prolink.CDJStatus) *trackID {
 }
 
 type playerStatus struct {
-	TrackID        trackID `json:"track_id"`
-	PlayState      string  `json:"play_state"`
-	BPM            float32 `json:"bpm"`
-	Pitch          float32 `json:"pitch"`
-	EffectivePitch float32 `json:"effective_pitch"`
-	OnAir          bool    `json:"on_air"`
-	Synced         bool    `json:"synced"`
-	IsMaster       bool    `json:"is_master"`
-	Beat           int     `json:"beat"`
-	BeatInMeasure  int     `json:"beat_in_measure"`
-	BeatsUntilCue  int     `json:"beats_until_cue"`
+	TrackKey       trackKey `json:"track_key"`
+	PlayState      string   `json:"play_state"`
+	BPM            float32  `json:"bpm"`
+	Pitch          float32  `json:"pitch"`
+	EffectivePitch float32  `json:"effective_pitch"`
+	OnAir          bool     `json:"on_air"`
+	Synced         bool     `json:"synced"`
+	IsMaster       bool     `json:"is_master"`
+	Beat           int      `json:"beat"`
+	BeatInMeasure  int      `json:"beat_in_measure"`
+	BeatsUntilCue  int      `json:"beats_until_cue"`
 }
 
 func mapStatus(s2 *prolink.CDJStatus) *playerStatus {
@@ -219,5 +219,3 @@ func mapEvent(t string, playerID *prolink.DeviceID, data interface{}) event {
 type subscriptions struct {
 	Subscriptions []string `json:"subscriptions"`
 }
-
-type message struct{}
