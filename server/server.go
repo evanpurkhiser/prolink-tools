@@ -70,6 +70,7 @@ func (s *Server) makeRoutes() *mux.Router {
 		{"GET", "/config", getConfig},
 		{"PUT", "/config", setConfig},
 		{"POST", "/config", autoConfigure},
+		{"POST", "/track", getTrack},
 	} {
 		router.
 			Methods(r.method).

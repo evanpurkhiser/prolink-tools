@@ -116,3 +116,28 @@ func listDevices(w http.ResponseWriter, r *http.Request, s services) {
 
 	respondJSON(w, activeDevices)
 }
+
+func getTrack(w http.ResponseWriter, r *http.Request, s services) {
+	key := trackKey{}
+
+	if err := json.NewDecoder(r.Body).Decode(&key); err != nil {
+		respondError(w, err)
+		return
+	}
+
+	track, err := s.network.RemoteDB().GetTrack(
+		prolink.NewTrackKey(key.ID, key.Slot, key.Type, key.Device),
+	)
+
+	if err, ok := err.(net.Error); ok && err.Timeout() {
+		respondError(w, fmt.Errorf("Invalid track query")
+		return
+	}
+
+	if err != nil {
+		respondError(w, err)
+		return
+	}
+
+	respondJSON(w, mapTrack(track))
+}
