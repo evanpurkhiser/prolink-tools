@@ -47,36 +47,34 @@ type Server struct {
 	mixStatus *mixstatus.Processor
 }
 
-func (s *Server) handlerWithContext(fn handler) http.Handler {
-	c := context{
+func (s *Server) handlerWithServices(fn handler) http.Handler {
+	services := services{
 		network:   s.network,
 		mixStatus: s.mixStatus,
 	}
 
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fn(w, r, c)
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fn(w, r, services)
 	})
 }
 
 func (s *Server) makeRoutes() *mux.Router {
 	router := mux.NewRouter()
 
-	routes := []struct {
+	for _, r := range []struct {
 		method  string
 		path    string
 		handler handler
 	}{
+		{"GET", "/devices", listDevices},
 		{"GET", "/config", getConfig},
 		{"PUT", "/config", setConfig},
-		{"POST", "/config/auto", autoConfigure},
-		{"GET", "/devices", listDevices},
-	}
-
-	for _, r := range routes {
+		{"POST", "/config", autoConfigure},
+	} {
 		router.
 			Methods(r.method).
 			Path(r.path).
-			Handler(s.handlerWithContext(r.handler))
+			Handler(s.handlerWithServices(r.handler))
 	}
 
 	router.Handle("/events", NewEventEmitter(s.network, s.mixStatus))
@@ -91,9 +89,9 @@ func (s *Server) Start() error {
 	return http.ListenAndServe(fmt.Sprintf(":%d", s.config.Port), router)
 }
 
-type context struct {
+type services struct {
 	network   *prolink.Network
 	mixStatus *mixstatus.Processor
 }
 
-type handler func(http.ResponseWriter, *http.Request, context)
+type handler func(http.ResponseWriter, *http.Request, services)

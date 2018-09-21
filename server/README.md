@@ -1,4 +1,4 @@
-# PROLINK Server
+# prolink-server
 
 `prolink-server` is a daemon that provides a unified HTTP + websocket API for
 communicating with devices on the PROLINK network. This tool uses the

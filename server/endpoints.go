@@ -14,28 +14,27 @@ type errorResp struct {
 	Error string `json:"error"`
 }
 
-func respondWithError(w http.ResponseWriter, err error) {
+func respondError(w http.ResponseWriter, err error) {
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(http.StatusInternalServerError)
 	json.NewEncoder(w).Encode(errorResp{Error: err.Error()})
 }
 
-func getConfig(w http.ResponseWriter, r *http.Request, c context) {
-	cfg := mapConfig(c.network, c.mixStatus)
+func respondJSON(w http.ResponseWriter, v interface{}) {
+	w.Header().Add("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(v)
+}
 
-	ifaces, err := net.Interfaces()
+func getConfig(w http.ResponseWriter, r *http.Request, s services) {
+	cfg := mapConfig(s.network, s.mixStatus)
+
+	ifaces, err := getInterfaceList()
 	if err != nil {
-		respondWithError(w, fmt.Errorf("Unable to retrieve list of network interfaces"))
+		respondError(w, err)
 		return
 	}
 
-	interfaces := []string{}
-
-	for _, iface := range ifaces {
-		interfaces = append(interfaces, iface.Name)
-	}
-
-	devices := c.network.DeviceManager().ActiveDeviceMap()
+	devices := s.network.DeviceManager().ActiveDeviceMap()
 	openDevices := []int{}
 
 	for _, possiblyAvailable := range []int{1, 2, 3, 4} {
@@ -44,91 +43,70 @@ func getConfig(w http.ResponseWriter, r *http.Request, c context) {
 		}
 	}
 
-	cfgAnnotated := configAnnotated{
+	respondJSON(w, configAnnotated{
 		config:              cfg,
-		AvailableInterfaces: interfaces,
+		AvailableInterfaces: ifaces,
 		UnusedPlayerIDs:     openDevices,
-	}
-
-	w.Header().Add("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(cfgAnnotated)
+	})
 }
 
-func setConfig(w http.ResponseWriter, r *http.Request, c context) {
+func setConfig(w http.ResponseWriter, r *http.Request, s services) {
 	cfg := &config{}
 
 	if err := json.NewDecoder(r.Body).Decode(cfg); err != nil {
-		respondWithError(w, fmt.Errorf("JSON decode error: %s", err))
+		respondError(w, fmt.Errorf("JSON decode error: %s", err))
 		return
 	}
 
 	// Configure the network interface to bind to
 	if cfg.Interface != "" {
-		ifaces, err := net.Interfaces()
+		iface, err := getInterfaceByName(cfg.Interface)
 		if err != nil {
-			respondWithError(w, fmt.Errorf("Unable to retrieve list of network interfaces"))
+			respondError(w, err)
 			return
 		}
 
-		interfaceSet := false
-
-		for _, iface := range ifaces {
-			if iface.Name == cfg.Interface {
-				interfaceSet = true
-				err = c.network.SetInterface(&iface)
-				break
-			}
-		}
-
-		if err != nil {
-			respondWithError(w, err)
-			return
-		}
-
-		if !interfaceSet {
-			respondWithError(w, fmt.Errorf("Invalid interface: %s", cfg.Interface))
+		if err = s.network.SetInterface(iface); err != nil {
+			respondError(w, err)
 			return
 		}
 	}
 
 	// Configure the player ID to use
 	if cfg.PlayerID != 0 {
-		c.network.SetVirtualCDJID(prolink.DeviceID(cfg.PlayerID))
+		s.network.SetVirtualCDJID(prolink.DeviceID(cfg.PlayerID))
 	}
 
 	if cfg.MixStatus.AllowedInterruptBeats != nil {
-		c.mixStatus.Config.AllowedInterruptBeats = *cfg.MixStatus.AllowedInterruptBeats
+		v := cfg.MixStatus.AllowedInterruptBeats
+		s.mixStatus.Config.AllowedInterruptBeats = *v
 	}
 
 	if cfg.MixStatus.BeatsUntilReported != nil {
-		c.mixStatus.Config.BeatsUntilReported = *cfg.MixStatus.BeatsUntilReported
+		v := cfg.MixStatus.BeatsUntilReported
+		s.mixStatus.Config.BeatsUntilReported = *v
 	}
 
 	if cfg.MixStatus.TimeBetweenSets != nil {
-		c.mixStatus.Config.TimeBetweenSets = time.Duration(*cfg.MixStatus.TimeBetweenSets) * time.Second
+		v := time.Duration(*cfg.MixStatus.TimeBetweenSets) * time.Second
+		s.mixStatus.Config.TimeBetweenSets = v
 	}
 
-	newCfg := mapConfig(c.network, c.mixStatus)
-
-	w.Header().Add("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(newCfg)
+	respondJSON(w, mapConfig(s.network, s.mixStatus))
 }
 
-func autoConfigure(w http.ResponseWriter, r *http.Request, c context) {
-	err := c.network.AutoConfigure(0)
+func autoConfigure(w http.ResponseWriter, r *http.Request, s services) {
+	err := s.network.AutoConfigure(0)
 	if err != nil {
-		respondWithError(w, err)
+		respondError(w, err)
 		return
 	}
 
-	cfg := mapConfig(c.network, c.mixStatus)
-
-	w.Header().Add("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(cfg)
+	respondJSON(w, mapConfig(s.network, s.mixStatus))
 }
 
-func listDevices(w http.ResponseWriter, r *http.Request, c context) {
-	dm := c.network.DeviceManager()
+func listDevices(w http.ResponseWriter, r *http.Request, s services) {
+	dm := s.network.DeviceManager()
 
 	activeDevices := []device{}
 
@@ -136,6 +114,5 @@ func listDevices(w http.ResponseWriter, r *http.Request, c context) {
 		activeDevices = append(activeDevices, mapDevice(dev))
 	}
 
-	w.Header().Add("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(activeDevices)
+	respondJSON(w, activeDevices)
 }
