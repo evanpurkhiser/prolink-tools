@@ -12,8 +12,10 @@ tweeters, and more.
 ### Documentation
 
 - [Event Streaming](#event-streaming)
+- [Event History](#event-history)
 - [Mix Status](#mix-status)
-- [REST API](#rest-api)
+- [HTTP API](#http-api)
+- [Configuration](#configuration)
 - [Building and running](#wip)
 
 ### Startup
@@ -21,7 +23,7 @@ tweeters, and more.
 When started the server will attempt to auto-configure itself by looking for
 active PROLINK devices on the network. If it is unable to locate other devices
 on the network it will require manual configuration to begin broadcasting
-itself as a device on the prolink network.
+itself as a device on the PROLINK network.
 
 ### Event Streaming
 
@@ -106,7 +108,7 @@ The full list of events is as follows:
         <p>
           Emitted when a new track is considered to be playing. This event
           follows the rules configured in the mix status feature of the server.
-          See the <a href="#mix-status-now-playing">now playing</a> section for
+          See the <a href="#now_playing">now playing</a> section for
           more information.
         </p>
         <details>
@@ -135,7 +137,7 @@ The full list of events is as follows:
         <p>
           Emitted when a new track has been loaded into a CDJ, however the
           player has not yet been marked as live.  See the <a
-          href="#mix-status">coming soon</a> section for more information.
+          href="#coming_soon">coming soon</a> section for more information.
         </p>
         <details>
           <summary>ᴇxᴀᴍᴘʟᴇ ᴇᴠᴇɴᴛ <code>data</code> ᴏʙᴊᴇᴄᴛ</summary>
@@ -218,8 +220,8 @@ The full list of events is as follows:
         <p>
           Emitted when the track currently loaded into a player has been
           changed. The track Key returned within the data will be an object
-          which may be used with the <a href="#"><code>GET /track</code>
-          endpoint</a> to query for the track.
+          which may be used with the <a href="#get-track"><code>GET
+          /track</code> endpoint</a> to query for the track.
         </p>
         <details>
           <summary>ᴇxᴀᴍᴘʟᴇ ᴇᴠᴇɴᴛ <code>data</code> ᴏʙᴊᴇᴄᴛ</summary>
@@ -315,24 +317,95 @@ The full list of events is as follows:
   </tbody>
 </table>
 
----
-
-NOTE: The rest of this document is not complete.
-
----
-
 ### Event History
+
+All events are stored for a period of configured time (defaults to four hours).
+This data can later be retrieved using the `GET /events` API endpoint. This
+can be useful if you've just connected to the websocket and would like to query
+for events that happened prior to connecting.
+
+<details>
+  <summary>
+    <code>GET /events</code>
+    <p>
+      Retrieve a list of historical event messages. Can be filtered and limited.
+    </p>
+  </summary>
+
+  <pre lang="HTTP">More HERE</pre>
+</details>
 
 ### Mix Status
 
-The following HTTP APIs are avilable:
+The prolink server provides events derived from the player statuses to
+determine when a track is being mixed in, selected as an upcoming track, and
+when a "set" has started and ended. The following events will be omitted as
+situations arise.
 
-#### `GET /devices`
+See the [mix status configuration](#mix_status-configuration) section for configuration of this functionality.
 
-Retrieves the list of all active devices on the PROLINK network.
+##### `now_playing`
 
-```json
-[
+Emitted when the next track in a DJ set has started. There are various
+conditions for this to have happened outlined below:
+
+- Track A is play and Track B is brought in playing and is on air. After a
+  configurable number of beats have elapsed Track B will be reported as now
+  playing. If Track B was not on air after the configured number of beats
+  elapsed it will not be reported as now playing.
+
+- Track A is playing and Track B is brought in playing and is on air. If
+  track A is cued Track B will immediately be reported as now playing.
+
+- Track A is playing and Track B is brought in playing and is on air. If
+  track A is paused or goes off air, after the configured number of interrupt
+  beats has passed Track B will be reported as now playing.
+
+  The interrupt beats allow for a Track A to be taken "off air" (paused,
+  fader-cut, etc) for small moments of time _without_ Track B being immediately
+  reported as playing. This is useful for example, cutting only parts of track
+  B in to tease the audience.
+
+##### `stopped`
+
+Emitted when a track stops playing. This is either that the track has been
+cued, unloaded from the deck, or has been taken off air for long enough that
+the configured interrupt interval has elapsed and the track is not considered
+on air anymore, even if it is still playing on the player.
+
+##### `coming_soon`
+
+Emitted when the previously stopped track has been replaced by a new track,
+indicating that the DJ has selected his next track and is prepared to make the
+transition from the currently playing track. This event will include the track
+details, but depending on the application, the client may wish to hide this to
+keep the 'coming soon' mystery of the transition.
+
+##### `set_started`
+
+Emitted when a new DJ set has started. This implies that no tracks had been
+playing for the period of time configured between sets and that a track has
+been started and is on-air.
+
+##### `set_ended`
+
+Emitted when the DJ set has ended. This implies that no tracks were live for
+the configured period of time after some track had been playing.
+
+### HTTP API
+
+In addition to the websocket API for receiving events, the following HTTP
+endpoints are also exposed for interacting with the PROLINK network.
+
+<details>
+  <summary>
+    <code>GET /devices</code>
+    <p>
+      Retrieves the list of all active devices on the PROLINK network.
+    </p>
+  </summary>
+
+  <pre lang="json">[
   {
     "player_id": 1,
     "name": "CDJ-2000nexus",
@@ -357,36 +430,118 @@ Retrieves the list of all active devices on the PROLINK network.
     "ip": "10.0.0.31",
     "last_active": "2018-09-09T05:59:37.216936-07:00"
   }
-]
-```
+]</pre>
+</details>
 
----
+<details id="get-track">
+  <summary>
+    <code>POST /track</code>
+    <p>
+      Queries the network for details about a particular track query.
+    </p>
+  </summary>
 
-#### `GET /config`
+  <pre lang="HTTP">POST /track HTTP1.1
 
-Retrives the current server configuration. Note that if the configuration could
-not be auto-detected the interface and player_id may be null.
-
-```json
 {
-  "interface": "enp0"
+  "id": 14,
+  "device": 1,
+  "slot": "usb"
+}</pre>
+
+  <pre lang="json">POST /track HTTP1.1
+
+{
+  "id": 14,
+  "path": "/Users/evan/Music/my-track.mp3",
+  "title": "Shivers",
+  "artist": "Armin Van Buuren",
+  "album": "Shivers",
+  "label": "Armada",
+  "genre": "Trance",
+  "comment": "ARMA034",
+  "key": "5B",
+  "length": 453,
+  "date_added": "2018-09-09T05:59:37-00:00",
+  "artwork": "data:image/png;base64,..."
+}</pre>
+</details>
+
+### Configuration
+
+The server is configured at runtime via the `/config` API endpoint.
+
+<details>
+  <summary>
+    <code>GET /config</code>
+    <p>
+      Retrieves the current server configuration.<br />Includes some additional
+      information to provide knowledge of configuration values, such as the
+      list of available network devices to listen on.
+    </p>
+  </summary>
+
+  <pre lang="json">{
+  "interface": "enp0",
   "player_id": 2,
-  "available_interfaces": ["enp0", "bridge0"]
+  "available_interfaces": ["enp0", "bridge0"],
+  "unused_player_ids": [2, 3],
   "mix_status": {
     "allowed_interrupt_beats": 8,
     "beats_until_reported": 128,
     "time_between_sets": 360
   }
-}
-```
+}</pre>
+</details>
 
-##### `mix_status` configuration
+<details>
+  <summary>
+    <code>PUT /config</code>
+    <p>
+      Updates the server configuration with new values.<br />Not all values need to
+      be included in the request JUST body. Omitted configuration keys will not
+      be changed.
+    </p>
+  </summary>
 
-The prolink server provides events derrived from the the player statuses to
-determine when a track is being mixed in, selected as an upcoming trck, and
-when a "set" has started and ended. This functionaliy is configurable:
+  <pre lang="http">PUT /config HTTP/1.1
+
+{
+  "interface": "bridge0",
+  "player_id": 1,
+  "mix_status": {
+    "allowed_interrupt_beats": 16,
+    "beats_until_reported": 64,
+    "time_between_sets": 120
+  }
+}</pre>
+</details>
+
+#### Network configuration
+
+- `interface`
+
+  Interface specifies what network interface the server should use to broadcast
+  itself over the network. It's important that this be configured to the
+  interface that is on the same network as other PROLINK equipment, otherwise
+  the server will not be recognized by the equipment as being on the network
+  and will not receive status information from players.
+
+- `player_id`
+
+  The Player ID that the server will broadcast itself as. The server emulates a
+  CDJ on the network in order to become part of the network, this "virtual CDJ"
+  must have a player number, this should _not_ overlap with any of the CDJ
+  player IDs in your setup.
+
+  This may be null if the `player_id` has not yet been configured.
+
+#### `mix_status` configuration
+
+Configuration for the [mix status functionality](#mix-status):
 
 - `allowed_interrupt_beats`
+
   The number of beats that a track may be off-air before it is considered to
   be "stopped" and the next upcoming on-air track will be promoted to playing.
   This is useful to allow for "cutting" of your tracks. Generally you will
@@ -399,35 +554,26 @@ when a "set" has started and ended. This functionaliy is configurable:
 
   The downside of configuring this longer is that when you cut a track with the
   intentions of not bringing it back in (for a transition), the next track will
-  not be reported as started (unless the cut track is cued or pauses)
+  not be reported as started until the configured interrupt beats pass (unless
+  the cut track is cued or pauses).
 
 - `beats_until_reported`
 
----
+  The number of beats until a track is to be considered to be "now playing".
+  For example if this is configure to 128 beats (32 bars) and you are ready to
+  transition from track A to track B, once track B has been playing for 32
+  bars, and the track is live and on-air (the CDJs jogwheel is red).
 
-#### `PUT /config`
+- `time_between_sets`
 
-- `POST /config/autodetect`
+  Time in seconds until the `set_ended` status will be reported after all
+  tracks have been stopped from playing.
 
-Making this request will ask the prolink server to re-detech
+#### Automatic configuration
 
-- `GET /status`
+`POST /config/autodetect`
 
-- `GET /events`
-
-Making a request to this endpoing will upgrade it to a websocket, where
-events will be streamed. When the socket is first opened no events will be
-recieved and you will have to send a message with a list of events you wish
-to recieve.
-
-`device_added`
-`device_removed`
-`now_playing`
-`stopped`
-`coming_soon`
-`set_started`
-`set_ended`
-
-```
-
-```
+The `interface` and `player_id` may be automatically configured for the server
+by POSTing to the `/config/autodetect` endpoint. This will cause the server to
+locate the interface which is on the same subnet as the first player connected
+on the network, and choose a Player ID that is not on the network.
