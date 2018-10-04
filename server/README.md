@@ -566,10 +566,10 @@ on the network, and choose a Player ID that is not on the network.
 Ensure that you have [`dep`](https://github.com/golang/dep) installed as it is used to vendor packages.
 
 ```shell
-$ git clone https://github.com/EvanPurkhiser/prolink-tools.git $GOPATH/src/go.evanpurkhiser.com/prolink-tools
-$ cd $GOPATH/src/go.evanpurkhiser.com/prolink-tools/server
-$ dep ensure
-$ make
+git clone https://github.com/EvanPurkhiser/prolink-tools.git $GOPATH/src/go.evanpurkhiser.com/prolink-tools
+cd $GOPATH/src/go.evanpurkhiser.com/prolink-tools/server
+dep ensure
+make
 
 # Start the server
 ./prolink-server
