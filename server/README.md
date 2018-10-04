@@ -16,7 +16,7 @@ tweeters, and more.
 - [Mix Status](#mix-status)
 - [HTTP API](#http-api)
 - [Configuration](#configuration)
-- [Building and running](#wip)
+- [Building and running](#building-and-running)
 
 ### Startup
 
@@ -24,6 +24,9 @@ When started the server will attempt to auto-configure itself by looking for
 active PROLINK devices on the network. If it is unable to locate other devices
 on the network it will require manual configuration to begin broadcasting
 itself as a device on the PROLINK network.
+
+**NOTE:** The server cannot be run on the same machine as rekordbox, as a
+single device on the network cannot act as two devices on the PROLINK network.
 
 ### Event Streaming
 
@@ -108,7 +111,7 @@ The full list of events is as follows:
         <p>
           Emitted when a new track is considered to be playing. This event
           follows the rules configured in the mix status feature of the server.
-          See the <a href="#now_playing">now playing</a> section for
+          See the <a href="#mix-status">now playing</a> section for
           more information.
         </p>
         <details>
@@ -137,7 +140,7 @@ The full list of events is as follows:
         <p>
           Emitted when a new track has been loaded into a CDJ, however the
           player has not yet been marked as live.  See the <a
-          href="#coming_soon">coming soon</a> section for more information.
+          href="#mix-status">coming soon</a> section for more information.
         </p>
         <details>
           <summary>ᴇxᴀᴍᴘʟᴇ ᴇᴠᴇɴᴛ <code>data</code> ᴏʙᴊᴇᴄᴛ</summary>
@@ -332,7 +335,7 @@ for events that happened prior to connecting.
     </p>
   </summary>
 
-  <pre lang="HTTP">More HERE</pre>
+  <pre lang="txt">TODO. This feature is not yet available</pre>
 </details>
 
 ### Mix Status
@@ -344,10 +347,11 @@ situations arise.
 
 See the [mix status configuration](#mix_status-configuration) section for configuration of this functionality.
 
-##### `now_playing`
+`now_playing`
 
-Emitted when the next track in a DJ set has started. There are various
-conditions for this to have happened outlined below:
+Potentially the most important event (important enough to be outside of the
+table below), emitted when the next track in a DJ set has started. There are
+various conditions for this to have happened outlined below:
 
 - Track A is play and Track B is brought in playing and is on air. After a
   configurable number of beats have elapsed Track B will be reported as now
@@ -366,31 +370,12 @@ conditions for this to have happened outlined below:
   reported as playing. This is useful for example, cutting only parts of track
   B in to tease the audience.
 
-##### `stopped`
-
-Emitted when a track stops playing. This is either that the track has been
-cued, unloaded from the deck, or has been taken off air for long enough that
-the configured interrupt interval has elapsed and the track is not considered
-on air anymore, even if it is still playing on the player.
-
-##### `coming_soon`
-
-Emitted when the previously stopped track has been replaced by a new track,
-indicating that the DJ has selected his next track and is prepared to make the
-transition from the currently playing track. This event will include the track
-details, but depending on the application, the client may wish to hide this to
-keep the 'coming soon' mystery of the transition.
-
-##### `set_started`
-
-Emitted when a new DJ set has started. This implies that no tracks had been
-playing for the period of time configured between sets and that a track has
-been started and is on-air.
-
-##### `set_ended`
-
-Emitted when the DJ set has ended. This implies that no tracks were live for
-the configured period of time after some track had been playing.
+| Event         | Description                                                                                                                                                                                                                                                                                                                                                                |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `stopped`     | Emitted when a track stops playing. This is either that the track has been cued, unloaded from the deck, or has been taken off air for long enough that the configured interrupt interval has elapsed and the track is not considered on air anymore, even if it is still playing on the player.                                                                           |
+| `coming_soon` | Emitted when the previously stopped track has been replaced by a new track, indicating that the DJ has selected his next track and is prepared to make the transition from the currently playing track. This event will include the track details, but depending on the application, the client may wish to hide this to keep the 'coming soon' mystery of the transition. |
+| `set_started` | Emitted when a new DJ set has started. This implies that no tracks had been playing for the period of time configured between sets and that a track has been started and is on-air.                                                                                                                                                                                        |
+| `set_ended`   | Emitted when the DJ set has ended. This implies that no tracks were live for the configured period of time after some track had been playing.                                                                                                                                                                                                                              |
 
 ### HTTP API
 
@@ -449,9 +434,7 @@ endpoints are also exposed for interacting with the PROLINK network.
   "slot": "usb"
 }</pre>
 
-  <pre lang="json">POST /track HTTP1.1
-
-{
+  <pre lang="json">{
   "id": 14,
   "path": "/Users/evan/Music/my-track.mp3",
   "title": "Shivers",
@@ -577,3 +560,19 @@ The `interface` and `player_id` may be automatically configured for the server
 by POSTing to the `/config/autodetect` endpoint. This will cause the server to
 locate the interface which is on the same subnet as the first player connected
 on the network, and choose a Player ID that is not on the network.
+
+### Building and running
+
+Checkout the project in a go workspace. The project namespace is
+`go.evanpurkhiser.com/prolink-tools/server`. Ensure that you have
+[`dep`](https://github.com/golang/dep) installed as it is used to vendor
+packages.
+
+```shell
+$ cd $GOPATH/src/go.evanpurkhiser.com/prolink-tools/server
+$ dep ensure
+$ make
+
+# Start the server
+./prolink-server
+```
