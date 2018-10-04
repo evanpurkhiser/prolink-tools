@@ -86,13 +86,14 @@ func (e *EventEmitter) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func (e *EventEmitter) reader(conn *websocket.Conn) {
 	for {
 		err := e.clients[conn].recieveMessage()
-
-		if err != nil {
-			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway) {
-				Log.Warn("Error reading from websocket", "error", err)
-			}
-			break
+		if err == nil {
+			continue
 		}
+
+		if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway) {
+			Log.Warn("Error reading from websocket", "error", err)
+		}
+		break
 	}
 
 	Log.Info("Closing websocket", "addr", conn.RemoteAddr())

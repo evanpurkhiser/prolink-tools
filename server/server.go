@@ -56,6 +56,8 @@ func (s *Server) handlerWithServices(fn handler) http.Handler {
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fn(w, r, services)
 	})
+
+	return handler
 }
 
 func (s *Server) makeRoutes() *mux.Router {

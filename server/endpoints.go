@@ -130,7 +130,7 @@ func getTrack(w http.ResponseWriter, r *http.Request, s services) {
 	)
 
 	if err, ok := err.(net.Error); ok && err.Timeout() {
-		respondError(w, fmt.Errorf("Invalid track query")
+		respondError(w, fmt.Errorf("Invalid track query"))
 		return
 	}
 
