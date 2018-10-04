@@ -563,12 +563,10 @@ on the network, and choose a Player ID that is not on the network.
 
 ### Building and running
 
-Checkout the project in a go workspace. The project namespace is
-`go.evanpurkhiser.com/prolink-tools/server`. Ensure that you have
-[`dep`](https://github.com/golang/dep) installed as it is used to vendor
-packages.
+Ensure that you have [`dep`](https://github.com/golang/dep) installed as it is used to vendor packages.
 
 ```shell
+$ git clone https://github.com/EvanPurkhiser/prolink-tools.git $GOPATH/src/go.evanpurkhiser.com/prolink-tools
 $ cd $GOPATH/src/go.evanpurkhiser.com/prolink-tools/server
 $ dep ensure
 $ make
