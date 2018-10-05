@@ -403,5 +403,14 @@ func NewEventEmitter(network *prolink.Network, ms *mixstatus.Processor) *EventEm
 		remoteDB: network.RemoteDB(),
 	})
 
+	// Cleanup events every minute
+	ticker := time.NewTicker(time.Minute)
+
+	go func() {
+		for range ticker.C {
+			emitter.trimHistory()
+		}
+	}()
+
 	return emitter
 }
