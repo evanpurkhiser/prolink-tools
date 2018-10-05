@@ -139,7 +139,7 @@ type CDJStatusEmitter struct {
 
 // OnStatusUpdate implements the prolink.StatusHandler interface.
 func (e *CDJStatusEmitter) OnStatusUpdate(status *prolink.CDJStatus) {
-	raven.CapturePanic(func() { e.OnStatusUpdate(status) }, nil)
+	raven.CapturePanic(func() { e.onStatusUpdate(status) }, nil)
 }
 
 func (e *CDJStatusEmitter) onStatusUpdate(status *prolink.CDJStatus) {
