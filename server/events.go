@@ -324,11 +324,15 @@ func (e *MixStatusEmitter) onMixStatus(event mixstatus.Event, status *prolink.CD
 	nullPlayerEvents := map[mixstatus.Event]bool{
 		mixstatus.SetStarted: true,
 		mixstatus.SetEnded:   true,
-		mixstatus.Stopped:    true,
 	}
 
 	if _, ok := nullPlayerEvents[event]; ok {
 		e.emitter.emittEvent(mapEvent(string(event), nil, nil))
+		return
+	}
+
+	if event == mixstatus.Stopped {
+		e.emitter.emittEvent(mapEvent(string(event), &status.PlayerID, nil))
 		return
 	}
 
