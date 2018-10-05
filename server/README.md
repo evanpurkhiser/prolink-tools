@@ -554,7 +554,9 @@ The server is configured at runtime via the `/config` API endpoint.
 - `history_ttl`
 
   The time in seconds that events in the event history should persist until
-  they are removed from history. This defaults to 4 hours.
+  they are removed from history.
+
+  Defaults to 4 hours.
 
 #### `mix_status` configuration
 
