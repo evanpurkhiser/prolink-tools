@@ -3,12 +3,26 @@ package server
 import (
 	"net/http"
 	"sync"
+	"time"
 
 	"github.com/getsentry/raven-go"
 	"github.com/gorilla/websocket"
 	"go.evanpurkhiser.com/prolink"
 	"go.evanpurkhiser.com/prolink/mixstatus"
 )
+
+// eventHistoryWhitelist is the list of event types that will be recoreded into
+// history.
+var eventHistoryWhitelist = []string{
+	"device_added",
+	"device_removed",
+	"set_started",
+	"set_ended",
+	"now_playing",
+	"coming_soon",
+	"stopped",
+	"status:track_key",
+}
 
 // upgrade is used to upgrade a HTTP connection to a websocket connection.
 var upgrader = websocket.Upgrader{
@@ -61,6 +75,10 @@ func (c *EventClient) hasSubscription(eventType string) bool {
 type EventEmitter struct {
 	clients  map[*websocket.Conn]*EventClient
 	connLock sync.Mutex
+
+	history     []event
+	historyLock sync.Mutex
+	historyTTL  time.Duration
 }
 
 // ServeHTTP implements the http.Handler interface.
@@ -111,6 +129,7 @@ func (e *EventEmitter) emittEvent(event event) {
 	defer e.connLock.Unlock()
 
 	Log.Debug("Emitting event", "type", event.Type, "data", event.Data)
+	e.storeEvent(event)
 
 	for _, client := range e.clients {
 		if !client.hasSubscription(event.Type) {
@@ -127,6 +146,47 @@ func (e *EventEmitter) emittEvent(event event) {
 			)
 		}
 	}
+}
+
+func (e *EventEmitter) storeEvent(event event) {
+	shouldStore := false
+
+	for _, eventType := range eventHistoryWhitelist {
+		if eventType == event.Type {
+			shouldStore = true
+			break
+		}
+	}
+
+	if !shouldStore {
+		return
+	}
+
+	e.historyLock.Lock()
+	defer e.historyLock.Unlock()
+
+	e.history = append(e.history, event)
+}
+
+// trimHistory removes events in the event history that occured prior to the
+// eventHistory TTL.
+func (e *EventEmitter) trimHistory() {
+	trimTo := time.Now().Add(-e.historyTTL)
+	sliceAt := 0
+
+	for i, evt := range e.history {
+		sliceAt = i
+
+		evtTime, _ := time.Parse(time.RFC3339Nano, evt.Timestamp)
+		if evtTime.After(trimTo) {
+			break
+		}
+	}
+
+	e.historyLock.Lock()
+	defer e.historyLock.Unlock()
+
+	e.history = e.history[sliceAt:]
 }
 
 // CDJStatusEmitter emits events to the EventEmitter any time a particular
@@ -304,6 +364,10 @@ func NewEventEmitter(network *prolink.Network, ms *mixstatus.Processor) *EventEm
 	emitter := &EventEmitter{
 		clients:  map[*websocket.Conn]*EventClient{},
 		connLock: sync.Mutex{},
+
+		history:     []event{},
+		historyLock: sync.Mutex{},
+		historyTTL:  4 * time.Hour,
 	}
 
 	network.CDJStatusMonitor().AddStatusHandler(&CDJStatusEmitter{

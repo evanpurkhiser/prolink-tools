@@ -322,20 +322,48 @@ The full list of events is as follows:
 
 ### Event History
 
-All events are stored for a period of configured time (defaults to four hours).
-This data can later be retrieved using the `GET /events` API endpoint. This
-can be useful if you've just connected to the websocket and would like to query
-for events that happened prior to connecting.
+Some events are stored for a period of configured time (defaults to four
+hours). This data can later be retrieved using the `GET /events/history` API
+endpoint. This can be useful if you've just connected to the websocket and
+would like to query for events that happened prior to connecting. Most player
+status events (`status:track_key` _is_ stored) are not stored as they are
+considered to be ephemeral.
 
 <details>
   <summary>
-    <code>GET /events</code>
+    <code>GET /events/history </code>
     <p>
-      Retrieve a list of historical event messages. Can be filtered and limited.
+      Retrieve a list of historical event objects.
     </p>
   </summary>
 
-  <pre lang="txt">TODO. This feature is not yet available</pre>
+  <pre lang="txt">[
+  {
+    "event": "device_added",
+    "player_id": null,
+    "ts": "2018-10-05T00:55:00.45384-07:00",
+    "data": {
+    "player_id": 33,
+    "name": "DJM-900nexus",
+    "type": "djm",
+    "mac": "74:5e:1c:56:bd:9f",
+    "ip": "10.0.0.31",
+    "last_active": "2018-10-05T00:55:00.453719-07:00"
+  }
+  },
+  {
+    "event": "set_started",
+    "player_id": null,
+    "ts": "2018-10-05T00:55:08.506744-07:00",
+    "data": null
+  },
+  {
+    "event": "now_playing",
+    "player_id": 1,
+    "ts": "2018-10-05T00:55:08.604236-07:00",
+    "data": { }
+  }
+]</pre>
 </details>
 
 ### Mix Status
@@ -469,6 +497,7 @@ The server is configured at runtime via the `/config` API endpoint.
   "player_id": 2,
   "available_interfaces": ["enp0", "bridge0"],
   "unused_player_ids": [2, 3],
+  "history_ttl": 14400,
   "mix_status": {
     "allowed_interrupt_beats": 8,
     "beats_until_reported": 128,
@@ -492,6 +521,7 @@ The server is configured at runtime via the `/config` API endpoint.
 {
   "interface": "bridge0",
   "player_id": 1,
+  "history_ttl": 3600,
   "mix_status": {
     "allowed_interrupt_beats": 16,
     "beats_until_reported": 64,
@@ -518,6 +548,13 @@ The server is configured at runtime via the `/config` API endpoint.
   player IDs in your setup.
 
   This may be null if the `player_id` has not yet been configured.
+
+#### Event history configuration
+
+- `history_ttl`
+
+  The time in seconds that events in the event history should persist until
+  they are removed from history. This defaults to 4 hours.
 
 #### `mix_status` configuration
 

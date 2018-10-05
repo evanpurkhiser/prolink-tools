@@ -21,6 +21,9 @@ type config struct {
 
 	// MixStatus represents the configuration for the mix status handler.
 	MixStatus configMixStatus `json:"mix_status"`
+
+	// HistoryTTL specifies how long events should persist in history.
+	HistoryTTL int `json:"history_ttl"`
 }
 
 type configMixStatus struct {
@@ -29,7 +32,7 @@ type configMixStatus struct {
 	TimeBetweenSets       *int `json:"time_between_sets"`
 }
 
-func mapConfig(n *prolink.Network, ms *mixstatus.Processor) config {
+func mapConfig(n *prolink.Network, ms *mixstatus.Processor, em *EventEmitter) config {
 	tbs := int(ms.Config.TimeBetweenSets.Seconds())
 
 	msConfig := configMixStatus{
@@ -44,9 +47,10 @@ func mapConfig(n *prolink.Network, ms *mixstatus.Processor) config {
 	}
 
 	return config{
-		Interface: iface,
-		PlayerID:  int(n.VirtualCDJID),
-		MixStatus: msConfig,
+		Interface:  iface,
+		PlayerID:   int(n.VirtualCDJID),
+		HistoryTTL: int(em.historyTTL / time.Second),
+		MixStatus:  msConfig,
 	}
 }
 

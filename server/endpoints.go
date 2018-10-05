@@ -26,7 +26,7 @@ func respondJSON(w http.ResponseWriter, v interface{}) {
 }
 
 func getConfig(w http.ResponseWriter, r *http.Request, s services) {
-	cfg := mapConfig(s.network, s.mixStatus)
+	cfg := mapConfig(s.network, s.mixStatus, s.emitter)
 
 	ifaces, err := getInterfaceList()
 	if err != nil {
@@ -92,7 +92,11 @@ func setConfig(w http.ResponseWriter, r *http.Request, s services) {
 		s.mixStatus.Config.TimeBetweenSets = v
 	}
 
-	respondJSON(w, mapConfig(s.network, s.mixStatus))
+	if cfg.HistoryTTL != 0 {
+		s.emitter.historyTTL = time.Duration(cfg.HistoryTTL) * time.Second
+	}
+
+	respondJSON(w, mapConfig(s.network, s.mixStatus, s.emitter))
 }
 
 func autoConfigure(w http.ResponseWriter, r *http.Request, s services) {
@@ -102,7 +106,7 @@ func autoConfigure(w http.ResponseWriter, r *http.Request, s services) {
 		return
 	}
 
-	respondJSON(w, mapConfig(s.network, s.mixStatus))
+	respondJSON(w, mapConfig(s.network, s.mixStatus, s.emitter))
 }
 
 func listDevices(w http.ResponseWriter, r *http.Request, s services) {
@@ -140,4 +144,8 @@ func getTrack(w http.ResponseWriter, r *http.Request, s services) {
 	}
 
 	respondJSON(w, mapTrack(track))
+}
+
+func getEventHistory(w http.ResponseWriter, r *http.Request, s services) {
+	respondJSON(w, s.emitter.history)
 }

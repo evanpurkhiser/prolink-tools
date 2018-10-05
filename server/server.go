@@ -35,10 +35,13 @@ func NewServer(network *prolink.Network, config ServerConfig) *Server {
 	mixStatus := mixstatus.NewProcessor(mixStatusConfig, nil)
 	network.CDJStatusMonitor().AddStatusHandler(mixStatus)
 
+	emitter := NewEventEmitter(network, mixStatus)
+
 	return &Server{
 		config:    config,
 		network:   network,
 		mixStatus: mixStatus,
+		emitter:   emitter,
 	}
 }
 
@@ -46,12 +49,20 @@ type Server struct {
 	config    ServerConfig
 	network   *prolink.Network
 	mixStatus *mixstatus.Processor
+	emitter   *EventEmitter
+}
+
+type services struct {
+	network   *prolink.Network
+	mixStatus *mixstatus.Processor
+	emitter   *EventEmitter
 }
 
 func (s *Server) handlerWithServices(fn handler) http.Handler {
 	services := services{
 		network:   s.network,
 		mixStatus: s.mixStatus,
+		emitter:   s.emitter,
 	}
 
 	handler := func(w http.ResponseWriter, r *http.Request) {
@@ -74,6 +85,7 @@ func (s *Server) makeRoutes() *mux.Router {
 		{"PUT", "/config", setConfig},
 		{"POST", "/config", autoConfigure},
 		{"POST", "/track", getTrack},
+		{"GET", "/events/history", getEventHistory},
 	} {
 		router.
 			Methods(r.method).
@@ -81,7 +93,7 @@ func (s *Server) makeRoutes() *mux.Router {
 			Handler(s.handlerWithServices(r.handler))
 	}
 
-	router.Handle("/events", NewEventEmitter(s.network, s.mixStatus))
+	router.Handle("/events", s.emitter)
 
 	return router
 }
@@ -91,11 +103,6 @@ func (s *Server) Start() error {
 
 	Log.Info("HTTP server started", "port", s.config.Port)
 	return http.ListenAndServe(fmt.Sprintf(":%d", s.config.Port), router)
-}
-
-type services struct {
-	network   *prolink.Network
-	mixStatus *mixstatus.Processor
 }
 
 type handler func(http.ResponseWriter, *http.Request, services)
