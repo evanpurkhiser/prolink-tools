@@ -337,7 +337,7 @@ considered to be ephemeral.
     </p>
   </summary>
 
-  <pre lang="txt">[
+  <pre lang="json">[
   {
     "event": "device_added",
     "player_id": null,
