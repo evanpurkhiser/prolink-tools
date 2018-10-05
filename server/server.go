@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/getsentry/raven-go"
 	"github.com/gorilla/mux"
 	"github.com/inconshreveable/log15"
 	"go.evanpurkhiser.com/prolink"
@@ -53,11 +54,11 @@ func (s *Server) handlerWithServices(fn handler) http.Handler {
 		mixStatus: s.mixStatus,
 	}
 
-	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	handler := func(w http.ResponseWriter, r *http.Request) {
 		fn(w, r, services)
-	})
+	}
 
-	return handler
+	return http.HandlerFunc(raven.RecoveryHandler(handler))
 }
 
 func (s *Server) makeRoutes() *mux.Router {

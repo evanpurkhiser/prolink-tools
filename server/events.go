@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"sync"
 
+	"github.com/getsentry/raven-go"
 	"github.com/gorilla/websocket"
 	"go.evanpurkhiser.com/prolink"
 	"go.evanpurkhiser.com/prolink/mixstatus"
@@ -79,7 +80,7 @@ func (e *EventEmitter) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		conn:          conn,
 	}
 
-	go e.reader(conn)
+	go raven.CapturePanic(func() { e.reader(conn) }, nil)
 }
 
 // reader continuously reads messages from an emitter client.
@@ -138,6 +139,10 @@ type CDJStatusEmitter struct {
 
 // OnStatusUpdate implements the prolink.StatusHandler interface.
 func (e *CDJStatusEmitter) OnStatusUpdate(status *prolink.CDJStatus) {
+	raven.CapturePanic(func() { e.OnStatusUpdate(status) }, nil)
+}
+
+func (e *CDJStatusEmitter) onStatusUpdate(status *prolink.CDJStatus) {
 	e.prevStatusLock.Lock()
 	defer e.prevStatusLock.Unlock()
 
@@ -234,11 +239,13 @@ type DeviceChangeEmitter struct {
 
 // OnChange implements the prolink.DeviceListener interface.
 func (e *DeviceChangeEmitter) OnChange(dev *prolink.Device) {
-	e.emitter.emittEvent(mapEvent(
-		e.changeType,
-		nil,
-		mapDevice(dev),
-	))
+	raven.CapturePanic(func() {
+		e.emitter.emittEvent(mapEvent(
+			e.changeType,
+			nil,
+			mapDevice(dev),
+		))
+	}, nil)
 }
 
 // MixStatusEmitter emits events to the EventEmitter any time the mix status
@@ -250,6 +257,10 @@ type MixStatusEmitter struct {
 
 // OnMixStatus implements the mixstatus.Handler interface.
 func (e *MixStatusEmitter) OnMixStatus(event mixstatus.Event, status *prolink.CDJStatus) {
+	raven.CapturePanic(func() { e.onMixStatus(event, status) }, nil)
+}
+
+func (e *MixStatusEmitter) onMixStatus(event mixstatus.Event, status *prolink.CDJStatus) {
 	nullPlayerEvents := map[mixstatus.Event]bool{
 		mixstatus.SetStarted: true,
 		mixstatus.SetEnded:   true,
@@ -270,6 +281,7 @@ func (e *MixStatusEmitter) OnMixStatus(event mixstatus.Event, status *prolink.CD
 		t, err := e.remoteDB.GetTrack(status.TrackKey())
 		if err != nil {
 			Log.Error("Failed to retrieve track from Remote DB", "error", err)
+			raven.CaptureError(err, nil)
 		}
 
 		e.emitter.emittEvent(mapEvent(

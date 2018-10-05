@@ -38,12 +38,12 @@ func startServer(cmd *cobra.Command, args []string) error {
 		panic(err)
 	}
 
-	go func() {
+	go raven.CapturePanic(func() {
 		log.Info("Attempting to auto configure...")
 		if err := network.AutoConfigure(3 * time.Second); err != nil {
 			log.Warn(err.Error())
 		}
-	}()
+	}, nil)
 
 	port, _ := cmd.Flags().GetInt("port")
 
