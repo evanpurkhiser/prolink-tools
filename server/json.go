@@ -110,6 +110,7 @@ func mapTrack(pt *prolink.Track) *track {
 		Artist:    pt.Artist,
 		Album:     pt.Album,
 		Label:     pt.Label,
+		Genre:     pt.Genre,
 		Comment:   pt.Comment,
 		Key:       pt.Key,
 		Length:    int(pt.Length.Seconds()),
