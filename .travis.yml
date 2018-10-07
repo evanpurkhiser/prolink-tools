@@ -1,27 +1,9 @@
 language: go
 sudo: false
 
-env:
-  global:
-    - DEP_VERSION="0.4.1"
-    - GOARCH=amd64
-  matrix:
-    - BUILD_GOOS=linux
-    - BUILD_GOOS=windows
-    - BUILD_GOOS=darwin
-
-go_import_path: go.evanpurkhiser.com/prolink-overlay
-go: ['1.x']
-
-stage: build
+go_import_path: go.evanpurkhiser.com/prolink-tools
 
 before_install:
-  - curl -L -s https://github.com/golang/dep/releases/download/v${DEP_VERSION}/dep-linux-amd64 -o $GOPATH/bin/dep
-  - chmod +x $GOPATH/bin/dep
+  - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
 
-install:
-  - go get github.com/GeertJohan/go.rice
-  - go get github.com/GeertJohan/go.rice/rice
-  - make deps
-
-script: GOOS=${BUILD_GOOS} make dist/prolink-overlay
+script: make
