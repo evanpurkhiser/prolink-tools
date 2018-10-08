@@ -135,7 +135,7 @@ type trackKey struct {
 func mapTrackKey(s *prolink.CDJStatus) *trackKey {
 	tid := trackKey{
 		ID:     int(s.TrackID),
-		Device: int(s.PlayerID),
+		Device: int(s.TrackDevice),
 		Slot:   s.TrackSlot.String(),
 		Type:   s.TrackType.String(),
 	}
