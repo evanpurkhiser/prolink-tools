@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/getsentry/raven-go"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/inconshreveable/log15"
 	"go.evanpurkhiser.com/prolink"
@@ -72,7 +73,7 @@ func (s *Server) handlerWithServices(fn handler) http.Handler {
 	return http.HandlerFunc(raven.RecoveryHandler(handler))
 }
 
-func (s *Server) makeRoutes() *mux.Router {
+func (s *Server) makeRoutes() http.Handler {
 	router := mux.NewRouter()
 
 	for _, r := range []struct {
@@ -95,7 +96,7 @@ func (s *Server) makeRoutes() *mux.Router {
 
 	router.Handle("/events", s.emitter)
 
-	return router
+	return handlers.CORS()(router)
 }
 
 func (s *Server) Start() error {
