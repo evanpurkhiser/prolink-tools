@@ -1,28 +1,44 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const IS_PROD =
+  process.argv.find(a => a.includes('mode=production')) !== undefined;
+
 module.exports = {
-  entry: './src/app.js',
+  entry: './src/index.js',
   output: {
-    path: path.resolve(__dirname, '../dist/assets'),
-    filename: 'app.js',
+    path: path.resolve(__dirname, './dist'),
+    filename: '[name].[hash].js',
   },
-  devtool: 'source-map',
-  devServer: { port: 9000 },
+  devtool: IS_PROD ? 'source-map' : 'cheap-module-eval-source-map',
+  devServer: { port: 9000, hot: true },
+  optimization: {
+    splitChunks: { chunks: 'all' },
+  },
+
+  resolve: {
+    alias: { app: path.resolve(__dirname, 'src/') },
+  },
+
   module: {
-    loaders: [{
-      test:   /\.js$/,
-      loader: 'babel-loader',
-      query: { presets: ['env', 'stage-1', 'react'] },
-    },
-    {
-      test: /\.scss$/,
-      loaders: ['style-loader', 'css-loader', 'sass-loader'],
-    },
-    {
-      test:   /\.(eot|woff|woff2|ttf|svg|png|jpe?g|gif)(\?\S*)?$/,
-      loader: 'file-loader',
-    }],
+    rules: [
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env', '@babel/preset-react'],
+          plugins: [
+            ['@babel/plugin-proposal-decorators', { legacy: true }],
+            ['@babel/plugin-transform-react-display-name'],
+            ['react-hot-loader/babel'],
+          ],
+        },
+      },
+    ],
   },
-  plugins: [new HtmlWebpackPlugin({ template: 'index.html' })],
+  plugins: [
+    new HtmlWebpackPlugin({ template: 'index.html' }),
+    new webpack.HotModuleReplacementPlugin(),
+  ],
 };
