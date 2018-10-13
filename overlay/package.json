@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@rebass/grid": "^6.0.0-4",
+    "@sentry/browser": "^4.1.1",
     "camelize": "^1.0.0",
     "date-fns": "^2.0.0-alpha.22",
     "emotion": "^9.2.6",
