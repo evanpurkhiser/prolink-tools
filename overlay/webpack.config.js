@@ -31,6 +31,7 @@ module.exports = {
           plugins: [
             ['@babel/plugin-proposal-decorators', { legacy: true }],
             ['@babel/plugin-transform-react-display-name'],
+            ['@babel/plugin-proposal-export-default-from'],
             ['react-hot-loader/babel'],
           ],
         },

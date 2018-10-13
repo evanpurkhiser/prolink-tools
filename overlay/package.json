@@ -12,7 +12,7 @@
   "dependencies": {
     "@rebass/grid": "^6.0.0-4",
     "camelize": "^1.0.0",
-    "date-fns": "^1.29.0",
+    "date-fns": "^2.0.0-alpha.22",
     "emotion": "^9.2.6",
     "mobx": "^5.5.0",
     "mobx-react": "^5.2.8",
@@ -26,14 +26,16 @@
   "devDependencies": {
     "@babel/core": "^7.1.0",
     "@babel/plugin-proposal-decorators": "^7.1.2",
+    "@babel/plugin-proposal-export-default-from": "^7.0.0",
     "@babel/plugin-transform-react-display-name": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.4",
-    "file-loader": "^1.1.5",
+    "file-loader": "2.0.0",
     "html-webpack-plugin": "^3.2.0",
     "react-hot-loader": "^4.3.11",
     "webpack": "^4.14.0",
+    "webpack-bundle-analyzer": "^3.0.2",
     "webpack-cli": "^3.1.1",
     "webpack-dev-server": "^3.1.4"
   }
