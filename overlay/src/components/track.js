@@ -9,11 +9,11 @@ import TimeTicker from './timeTicker';
 
 const MissingArtwork = styled(p => (
   <Flex alignItems="center" justifyContent="center" {...p}>
-    <icons.Image size="50%" />
+    <icons.Disc size="50%" />
   </Flex>
 ))`
   background: #000;
-  color: #eee;
+  color: #aaa;
   opacity: 0.5;
 `;
 
