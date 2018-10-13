@@ -1,7 +1,7 @@
 import camelize from 'camelize';
 import { observable } from 'mobx';
 
-const serverBaseUrl = 'server:5252';
+const serverBaseUrl = window.location.hash.replace('#', '');
 const expectedEvents = ['now_playing', 'stopped'];
 
 const events = observable([]);
