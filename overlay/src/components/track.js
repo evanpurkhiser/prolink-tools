@@ -8,7 +8,7 @@ import * as icons from './icons';
 import TimeTicker from './timeTicker';
 
 const MissingArtwork = styled(p => (
-  <Flex alignItems="center" justifyContent="center" {...p}>
+  <Flex alignItems="center" justifyContent="center" innerRef={p.hostRef} {...p}>
     <icons.Disc size="50%" />
   </Flex>
 ))`
@@ -17,9 +17,14 @@ const MissingArtwork = styled(p => (
   opacity: 0.5;
 `;
 
-const Artwork = styled(
-  p => (p.src ? <img {...p} /> : <MissingArtwork className={p.className} />)
-)`
+let Artwork = ({ hostRef, animateIn, ...p }) =>
+  p.src ? (
+    <img ref={hostRef} {...p} />
+  ) : (
+    <MissingArtwork hostRef={hostRef} className={p.className} />
+  );
+
+Artwork = styled(Artwork)`
   display: flex;
   height: ${p => p.size};
   width: ${p => p.size};
@@ -27,7 +32,28 @@ const Artwork = styled(
   flex-shrink: 0;
 `;
 
-const Text = styled('div')`
+Artwork = posed(Artwork)({
+  start: {
+    clipPath: ({ animateIn }) =>
+      animateIn
+        ? 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)'
+        : 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
+  },
+  enter: {
+    clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
+  },
+  exit: {
+    applyAtStart: { zIndex: 10 }, // Above the next artwork
+    clipPath: 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)',
+    transition: {
+      type: 'spring',
+      stiffness: 700,
+      damping: 100,
+    },
+  },
+});
+
+let Text = styled('div')`
   background: rgba(0, 0, 0, 0.25);
   padding: 0 0.28em;
   border-radius: 1px;
@@ -35,6 +61,18 @@ const Text = styled('div')`
   align-items: center;
   margin-left: 4px;
 `;
+
+Text = posed(Text)({
+  start: {
+    opacity: 0,
+    x: '-20px',
+  },
+  enter: {
+    opacity: 1,
+    x: 0,
+  },
+  exit: { x: 0 },
+});
 
 const Title = styled(Text)`
   font-weight: 600;
@@ -49,17 +87,32 @@ const Artist = styled(Text)`
   margin-bottom: 0.2em;
 `;
 
-const Attributes = styled(Flex)`
+let Attributes = styled('div')`
+  display: flex;
   font-size: 0.9em;
   line-height: 1.4;
   margin-top: 0.1em;
+
+  // Set nowrap to fix a layout bug that occurse when the element is FLIPed in
+  // pose during the animation.
+  white-space: nowrap;
 `;
+
+Attributes = posed(Attributes)({
+  exit: { x: 0 },
+  enter: {
+    x: 0,
+    beforeChildren: true,
+    staggerChildren: 200,
+    staggerDirection: -1,
+  },
+});
 
 const Icon = styled(p => <p.icon className={p.className} size="1em" />)`
   margin-right: 0.25em;
 `;
 
-const Attribute = ({ icon, text, ...p }) =>
+let Attribute = ({ icon, text, ...p }) =>
   text === '' ? null : (
     <Text ml={1} {...p}>
       <Icon icon={icon} />
@@ -73,9 +126,27 @@ const NoAttributes = styled(p => (
   color: rgba(255, 255, 255, 0.6);
 `;
 
-const MetadataWrapper = p => (
+let MetadataWrapper = p => (
   <Flex {...p} flex={1} alignItems="flex-end" flexDirection="column" />
 );
+
+MetadataWrapper = posed(MetadataWrapper)({
+  start: {
+    clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
+  },
+  enter: {
+    staggerChildren: 200,
+    clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
+  },
+  exit: {
+    clipPath: 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)',
+    transition: {
+      type: 'spring',
+      stiffness: 700,
+      damping: 90,
+    },
+  },
+});
 
 const FullMetadata = ({ track, ...p }) => (
   <MetadataWrapper {...p}>
