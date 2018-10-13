@@ -1,48 +1,58 @@
 import { observer } from 'mobx-react';
-import { format } from 'date-fns';
 import { Flex, Box } from '@rebass/grid/emotion';
 import { hot } from 'react-hot-loader';
-import styled, { injectGlobal, css } from 'react-emotion';
+import styled from 'react-emotion';
 import posed, { PoseGroup } from 'react-pose';
 import React from 'react';
-import * as Icons from 'react-feather';
 
 import trackEvents from 'app/trackEvents';
 import Track from './track';
 
-const RecentPlayedHeading = styled(p => <Box {...p}>Recently Played</Box>)`
-  font-size: 0.8em;
-  text-transform: uppercase;
-  line-height: 2;
-  background: #fff;
-  color: #000;
-  text-align: right;
-  padding: 0 1em;
-`;
+const RECENT_LIMIT = 4;
 
-const RecentTracks = observer(p => {
-  const played = trackEvents.played;
-  const currentTrack = played[0];
-
-  const nowPlaying = currentTrack && <Track track={currentTrack} />;
-
-  return (
-    <Flex flexDirection="column" className={p.className}>
-      {nowPlaying}
-    </Flex>
-  );
+const PosedTrack = posed(Track)({
+  enter: {
+    // A prop to 'animate' to allow for the children to be delayed.
+    x: 0,
+    delay: 300,
+    beforeChildren: true,
+  },
 });
 
-const StyledRecentTracks = styled(RecentTracks)`
+const RecentTracks = ({ tracks, ...p }) => (
+  <Box mt={5}>
+    <PoseGroup preEnterPose="start">
+      {tracks.map(t => (
+        <PosedTrack mini mb="14px" track={t} key={t.playedAt} />
+      ))}
+    </PoseGroup>
+  </Box>
+);
+
+const CurrentTrack = ({ track }) => (
+  <PoseGroup preEnterPose="start">
+    {track && <PosedTrack track={track} key={track.playedAt} />}
+  </PoseGroup>
+);
+
+let TracksOverlay = observer(p => (
+  <Flex flexDirection="column" alignItems="flex-end" className={p.className}>
+    <CurrentTrack track={trackEvents.played[0]} />
+    <RecentTracks tracks={trackEvents.played.slice(1, RECENT_LIMIT + 1)} />
+  </Flex>
+));
+
+TracksOverlay = styled(TracksOverlay)`
   margin: 20px;
   position: absolute;
   top: 0;
   right: 0;
+  width: 100vw;
 `;
 
 const App = p => (
   <React.Fragment>
-    <StyledRecentTracks />
+    <TracksOverlay />
   </React.Fragment>
 );
 

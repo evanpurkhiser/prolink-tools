@@ -201,23 +201,11 @@ const MiniTrack = ({ track, hostRef, ...props }) => (
         />
       </PlayedAt>
     </MetadataWrapper>
-    <Artwork src={track.artwork} size="50px" />
+    <Artwork animateIn src={track.artwork} size="50px" />
   </Flex>
 );
 
 const Track = ({ mini, ...props }) =>
   mini ? <MiniTrack {...props} /> : <FullTrack {...props} />;
 
-const getMutedStyles = p =>
-  p.muteStopped &&
-  !p.track.playing &&
-  css`
-    opacity: 0.7;
-  `;
-
-const StyledTrack = styled(Track)`
-  transition: opacity 2s ease-in-out;
-  ${getMutedStyles};
-`;
-
-export default StyledTrack;
+export default Track;

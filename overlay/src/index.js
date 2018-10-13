@@ -17,7 +17,6 @@ injectGlobal`
     color: #fff;
     font-family: Ubuntu, sans-serif;
     font-size: 1em;
-    background: ${window.location.hash === '#debug' ? '#511' : 'none'}
   }
 `;
 
