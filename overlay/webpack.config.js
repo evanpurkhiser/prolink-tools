@@ -13,6 +13,10 @@ const plugins = [
     inlineSource: '.js$',
   }),
   new HtmlWebpackInlineSourcePlugin(),
+  new webpack.DefinePlugin({
+    IS_PROD,
+    VERSION: JSON.stringify(process.env.VERSION || 'dev'),
+  }),
   IS_PROD ? null : new webpack.HotModuleReplacementPlugin(),
 ];
 

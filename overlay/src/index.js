@@ -5,7 +5,11 @@ import { injectGlobal } from 'react-emotion';
 
 import App from 'app/components/app';
 
-init({ dsn: 'https://f4f579e6703645e3bb3bc9cbd3f9b2fc@sentry.io/1300437' });
+init({
+  dsn: 'https://f4f579e6703645e3bb3bc9cbd3f9b2fc@sentry.io/1300437',
+  release: VERSION,
+  environment: IS_PROD ? 'production' : 'development',
+});
 
 injectGlobal`
   * {
