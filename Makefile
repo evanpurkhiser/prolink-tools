@@ -1,2 +1,0 @@
-all:
-	cd server && make
