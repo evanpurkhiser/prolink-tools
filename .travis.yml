@@ -1,10 +1,13 @@
-language: go
 sudo: false
+language: go
+go: [ 1.11.x ]
 
-go_import_path: go.evanpurkhiser.com/prolink-tools
+env:
+  - GO111MODULE=on
 
 install:
-  - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+  # Stop go get from executing
+  - true
 
 script:
   # Build server for various operating systems
