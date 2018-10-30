@@ -1,4 +1,5 @@
-import { observable } from 'mobx';
+import { observable, reaction } from 'mobx';
+import base64url from 'base64-url';
 
 const config = observable({
   /**
@@ -22,5 +23,22 @@ const config = observable({
    */
   detailLineItems: ['album', 'label', 'comment'],
 });
+
+// Update configuration stored in the URL
+reaction(
+  _ => base64url.encode(JSON.stringify(config)),
+  data => (window.location.hash = data)
+);
+
+// Hydrate config from URL
+const encodedConfig = window.location.hash.replace(/^#/, '');
+
+try {
+  Object.entries(JSON.parse(base64url.decode(encodedConfig))).map(
+    ([key, value]) => (config[key] = value)
+  );
+} catch (e) {
+  console.warn(`Failed to decode config: ${e}`);
+}
 
 export default config;

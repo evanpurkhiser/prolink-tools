@@ -4,8 +4,8 @@ import styled, { css } from 'react-emotion';
 import posed from 'react-pose';
 import React from 'react';
 
-import * as icons from './icons';
-import TimeTicker from './timeTicker';
+import * as icons from 'app/components/icons';
+import TimeTicker from 'app/components/timeTicker';
 
 const MissingArtwork = styled(p => (
   <Flex alignItems="center" justifyContent="center" innerRef={p.hostRef} {...p}>

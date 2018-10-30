@@ -5,10 +5,10 @@ import styled from 'react-emotion';
 import posed, { PoseGroup } from 'react-pose';
 import React from 'react';
 
+import Track from 'app/components/track';
+import Settings from 'app/components/settings';
+import config from 'app/config';
 import trackEvents from 'app/trackEvents';
-import Track from './track';
-
-const RECENT_LIMIT = 4;
 
 const PosedTrack = posed(Track)({
   enter: {
@@ -38,7 +38,9 @@ const CurrentTrack = ({ track }) => (
 let TracksOverlay = observer(p => (
   <Flex flexDirection="column" alignItems="flex-end" className={p.className}>
     <CurrentTrack track={trackEvents.played[0]} />
-    <RecentTracks tracks={trackEvents.played.slice(1, RECENT_LIMIT + 1)} />
+    <RecentTracks
+      tracks={trackEvents.played.slice(1, config.historyCutoff + 1)}
+    />
   </Flex>
 ));
 
@@ -50,9 +52,17 @@ TracksOverlay = styled(TracksOverlay)`
   width: 100vw;
 `;
 
+const AppSettings = styled(Settings)`
+  margin: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+`;
+
 const App = p => (
   <React.Fragment>
     <TracksOverlay />
+    <AppSettings />
   </React.Fragment>
 );
 

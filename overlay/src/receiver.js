@@ -5,7 +5,7 @@ import config from 'app/config';
 
 const EXPECTED_EVENTS = ['now_playing', 'stopped'];
 
-const connected = observable.box(false);
+const connected = observable.box(null);
 const events = observable([]);
 const errors = observable([]);
 

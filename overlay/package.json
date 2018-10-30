@@ -12,6 +12,7 @@
   "dependencies": {
     "@rebass/grid": "^6.0.0-4",
     "@sentry/browser": "^4.1.1",
+    "base64-url": "^2.2.0",
     "camelize": "^1.0.0",
     "date-fns": "^2.0.0-alpha.22",
     "emotion": "^9.2.6",
@@ -22,7 +23,8 @@
     "react-dom": "^16.5.2",
     "react-emotion": "^9.2.12",
     "react-feather": "^1.1.4",
-    "react-pose": "^3.3.6"
+    "react-pose": "^3.3.6",
+    "react-rangeslider": "^2.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",
