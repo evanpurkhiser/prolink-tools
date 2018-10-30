@@ -24,6 +24,7 @@ const babelPlugins = [
   ['@babel/plugin-proposal-decorators', { legacy: true }],
   ['@babel/plugin-transform-react-display-name'],
   ['@babel/plugin-proposal-export-default-from'],
+  ['@babel/plugin-proposal-class-properties'],
   IS_PROD ? null : ['react-hot-loader/babel'],
 ];
 

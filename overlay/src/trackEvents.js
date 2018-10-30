@@ -1,5 +1,13 @@
-import { computed } from 'mobx';
-import { events, errors } from './receiver';
+import { computed, action } from 'mobx';
+import { events, errors } from 'app/receiver';
+
+const blobToBase64 = blob =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = reject;
+    reader.onload = () => resolve(reader.result);
+    reader.readAsDataURL(blob);
+  });
 
 /**
  * TrackEvents encapsulates logic for computing data derrived from events
@@ -61,6 +69,34 @@ class TrackEvents {
   @computed
   get nowPlaying() {
     return this.played.get(0, null);
+  }
+
+  /**
+   * Used in the addExample to keep a incrementing example ID.
+   */
+  static exampleId = 0;
+
+  /**
+   * Adds an example track to the track events.
+   */
+  @action
+  async addExample() {
+    const img = await fetch('https://picsum.photos/200/200/?random');
+    const artwork = await blobToBase64(await img.blob());
+
+    const data = {
+      id: this.exampleId++,
+      artist: 'Example Artist',
+      title: 'Example Track Title',
+      album: 'Example Album',
+      label: 'Example Label',
+      genre: 'Example Genre',
+      comment: 'Example Comment',
+      key: '01A',
+      artwork,
+    };
+
+    events.push({ event: 'now_playing', ts: Date.now(), data });
   }
 }
 
