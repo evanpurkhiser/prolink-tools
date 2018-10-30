@@ -45,7 +45,7 @@ autorun(async _ => {
 
   const normalizedEvents = history
     .map(normalizeEvent)
-    .filter(e => expectedEvents.includes(e.event));
+    .filter(e => EXPECTED_EVENTS.includes(e.event));
 
   events.replace(normalizedEvents);
   socket.addEventListener('message', onMessage);
