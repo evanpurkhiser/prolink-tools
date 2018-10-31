@@ -13,8 +13,9 @@ const HistorySlider = styled(Slider)`
   background: #dcdcdc;
   height: 3px;
   border-radius: 2px;
-  margin: 14px 0 24px 0;
+  margin: 14px 0 4px 0;
   position: relative;
+  cursor: grab;
 
   .rangeslider__fill {
     position: absolute;
@@ -31,6 +32,7 @@ const HistorySlider = styled(Slider)`
     background: #f9f9f9;
     border: 1px solid #d6d7dc;
     border-radius: 2px;
+    box-shadow: 2px 0 0px #fff, -2px 0 0 #fff;
 
     &:focus {
       outline: none;

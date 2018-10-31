@@ -1,11 +1,21 @@
 import { Flex } from '@rebass/grid/emotion';
+import { observer } from 'mobx-react';
 import { formatDistance } from 'date-fns';
 import styled, { css } from 'react-emotion';
-import posed from 'react-pose';
+import posed, { PoseGroup } from 'react-pose';
 import React from 'react';
 
 import * as icons from 'app/components/icons';
+import config from 'app/config';
 import TimeTicker from 'app/components/timeTicker';
+
+const attributeIcons = {
+  album: icons.Disc,
+  label: icons.Layers,
+  comment: icons.Hash,
+  key: icons.Music,
+  genre: icons.Star,
+};
 
 const MissingArtwork = styled(p => (
   <Flex alignItems="center" justifyContent="center" innerRef={p.hostRef} {...p}>
@@ -148,20 +158,22 @@ MetadataWrapper = posed(MetadataWrapper)({
   },
 });
 
-const FullMetadata = ({ track, ...p }) => (
+const FullMetadata = observer(({ track, ...p }) => (
   <MetadataWrapper {...p}>
     <Title>{track.title}</Title>
     <Artist>{track.artist}</Artist>
     <Attributes>
-      <Attribute icon={icons.Disc} text={track.album} />
-      <Attribute icon={icons.Layers} text={track.label} />
-      <Attribute icon={icons.Hash} text={track.comment} />
-      {[track.comment, track.label, track.album].join('') === '' && (
-        <NoAttributes />
-      )}
+      <PoseGroup>
+        {config.detailItems.map(f => (
+          <Attribute icon={attributeIcons[f]} text={track[f]} key={f} />
+        ))}
+        {config.detailItems.map(f => track[f]).join('') === '' && (
+          <NoAttributes key="no-field" />
+        )}
+      </PoseGroup>
     </Attributes>
   </MetadataWrapper>
-);
+));
 
 const FullTrack = ({ track, hostRef, ...props }) => (
   <Flex innerRef={hostRef} {...props}>

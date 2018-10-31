@@ -24,7 +24,8 @@
     "react-emotion": "^9.2.12",
     "react-feather": "^1.1.4",
     "react-pose": "^3.3.6",
-    "react-rangeslider": "^2.2.0"
+    "react-rangeslider": "^2.2.0",
+    "react-select": "^2.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",

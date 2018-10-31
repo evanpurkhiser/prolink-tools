@@ -13,15 +13,10 @@ const config = observable({
   historyCutoff: 4,
 
   /**
-   * The color of the text background
-   */
-  textBackground: 'rgba(0, 0, 0, 0.25)',
-
-  /**
    * The list of track metadata items that should be rendered in the track
    * details line.
    */
-  detailLineItems: ['album', 'label', 'comment'],
+  detailItems: ['album', 'label', 'comment'],
 });
 
 // Update configuration stored in the URL
