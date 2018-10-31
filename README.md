@@ -6,9 +6,9 @@ Prolink Tools is a collection of software that can be used to interact with the
 Pioner Pro DJ Link functionality that many of Pioneer's DJ equipment is
 compatable with.
 
-[Development builds](https://github.com/EvanPurkhiser/prolink-tools/releases) are available.
+[Development builds](https://github.com/EvanPurkhiser/prolink-tools/releases/tag/dev-build) are available.
 
-### `prolink-server`
+#### `prolink-server`
 
 The server component is the foundation for other tools to build on top of.
 This component must be run before any other tools are able to communicate with
@@ -20,7 +20,7 @@ This component is a command line tool that should be run as a daemon.
 
 [**Read the documentation**](/server)
 
-### `prolink-overlay`
+#### `prolink-overlay`
 
 The overlay component is a single-file HTML page that connects to the server to
 display real-time now-playing and track history information, intended to be
