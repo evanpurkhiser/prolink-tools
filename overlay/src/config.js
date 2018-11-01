@@ -36,4 +36,11 @@ try {
   console.warn(`Failed to decode config: ${e}`);
 }
 
+// Hydrate address from query string
+const serverAddr = new URLSearchParams(window.location.search).get('server');
+
+if (serverAddr) {
+  config.serverAddress = serverAddr;
+}
+
 export default config;

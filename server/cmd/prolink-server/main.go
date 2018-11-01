@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/getsentry/raven-go"
@@ -53,6 +54,13 @@ func startServer(cmd *cobra.Command, args []string) error {
 
 	server.Log = log
 	prolinkServer := server.NewServer(network, config)
+
+	go func() {
+		time.Sleep(5 * time.Second)
+		addr := fmt.Sprintf("localhost:%d", port)
+		message := fmt.Sprintf("Overlay tool available at: http://prolink.tools/overlay?server=%s", addr)
+		log.Info(message)
+	}()
 
 	return prolinkServer.Start()
 }
