@@ -18,6 +18,8 @@ script:
   - popd
   # Build overlay app
   - make --directory=overlay
+  # Build website
+  - make --directory=website
 
 before_deploy:
   # Replace dev-build tag with latest release
@@ -28,21 +30,28 @@ before_deploy:
   - git remote remove gh
 
 deploy:
-  provider: releases
-  api-key: $GITHUB_API_TOKEN
-  name: Development Build
-  body: Automatic development build of the master branch.
-  file:
-    - server/dist/prolink-server-windows.exe
-    - server/dist/prolink-server-macos
-    - server/dist/prolink-server-linux
-    - overlay/dist/prolink-overlay.html
-  prerelease: true
-  overwrite: true
-  skip_cleanup: true
-  target_commitish: $TRAVIS_COMMIT
-  on:
-    tags: false
+  - provider: releases
+    api-key: $GITHUB_API_TOKEN
+    name: Development Build
+    body: Automatic development build of the master branch.
+    file:
+      - server/dist/prolink-server-windows.exe
+      - server/dist/prolink-server-macos
+      - server/dist/prolink-server-linux
+      - overlay/dist/prolink-overlay.html
+    prerelease: true
+    overwrite: true
+    skip_cleanup: true
+    target_commitish: $TRAVIS_COMMIT
+    on:
+      tags: false
+
+  - provider: pages
+    github-token: $GITHUB_API_TOKEN
+    skip-cleanup: true
+    local-dir: website/dist
+    on:
+      branch: master
 
 branches:
   only: [ master ]
