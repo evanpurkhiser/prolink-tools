@@ -1,5 +1,7 @@
 # prolink-server
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/evanpurkhiser/prolink-tools)](https://goreportcard.com/report/github.com/evanpurkhiser/prolink-tools)
+
 `prolink-server` is a daemon that provides a unified HTTP + websocket API for
 communicating with devices on the PROLINK network. This tool uses the
 [`prolink-go`](https://github.com/EvanPurkhiser/prolink-go) library and is
