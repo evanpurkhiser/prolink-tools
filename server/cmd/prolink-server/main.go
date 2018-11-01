@@ -47,7 +47,7 @@ func startServer(cmd *cobra.Command, args []string) error {
 
 	port, _ := cmd.Flags().GetInt("port")
 
-	config := server.ServerConfig{
+	config := server.Config{
 		Port: port,
 	}
 

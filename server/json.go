@@ -190,7 +190,7 @@ type event struct {
 	// Type represents the event type being emitted
 	Type string `json:"event"`
 
-	// When an event is emmited from a particular device on the network (and
+	// When an event is emitted from a particular device on the network (and
 	// not a event inferred from the state of multiple device) the player ID
 	// will be set. Otherwise the player ID will be `null`.
 	PlayerID *int `json:"player_id"`
@@ -204,7 +204,7 @@ type event struct {
 }
 
 func mapEvent(t string, playerID *prolink.DeviceID, data interface{}) event {
-	var playerNumber *int = nil
+	var playerNumber *int
 
 	if playerID != nil {
 		n := int(*playerID)

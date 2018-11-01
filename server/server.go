@@ -16,15 +16,15 @@ import (
 // Log is the logger that must be configured for logs to be outputted.
 var Log log15.Logger
 
-// ServerConfig specifies configuration needed to construct and start a
-// pronlink server.
-type ServerConfig struct {
+// Config specifies configuration needed to construct and start a
+// prolink server.
+type Config struct {
 	Port int
 }
 
 // NewServer constructs a prolink Server. This does not yet bind the server to
-// a port or wait for rquests.
-func NewServer(network *prolink.Network, config ServerConfig) *Server {
+// a port or wait for requests.
+func NewServer(network *prolink.Network, config Config) *Server {
 	// Default mixstatus configuration. This will be updated by the server
 	// should a configuration be persisted from a previous session.
 	mixStatusConfig := mixstatus.Config{
@@ -46,8 +46,9 @@ func NewServer(network *prolink.Network, config ServerConfig) *Server {
 	}
 }
 
+// Server is the primary HTTP server object.
 type Server struct {
-	config    ServerConfig
+	config    Config
 	network   *prolink.Network
 	mixStatus *mixstatus.Processor
 	emitter   *EventEmitter
@@ -99,6 +100,7 @@ func (s *Server) makeRoutes() http.Handler {
 	return handlers.CORS()(router)
 }
 
+// Start starts the server.
 func (s *Server) Start() error {
 	router := s.makeRoutes()
 

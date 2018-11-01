@@ -11,7 +11,7 @@ import (
 	"go.evanpurkhiser.com/prolink/mixstatus"
 )
 
-// eventHistoryWhitelist is the list of event types that will be recoreded into
+// eventHistoryWhitelist is the list of event types that will be recorded into
 // history.
 var eventHistoryWhitelist = []string{
 	"device_added",
@@ -39,7 +39,7 @@ type EventClient struct {
 	conn *websocket.Conn
 }
 
-// recieveMessage waits to recieve messages over the connection. This method is
+// recieveMessage waits to receive messages over the connection. This method is
 // responsible for updating the list of event subscriptions for the client.
 func (c *EventClient) recieveMessage() error {
 	subs := &subscriptions{}
@@ -168,7 +168,7 @@ func (e *EventEmitter) storeEvent(event event) {
 	e.history = append(e.history, event)
 }
 
-// trimHistory removes events in the event history that occured prior to the
+// trimHistory removes events in the event history that occurred prior to the
 // eventHistory TTL.
 func (e *EventEmitter) trimHistory() {
 	trimTo := time.Now().Add(-e.historyTTL)
@@ -213,12 +213,12 @@ func (e *CDJStatusEmitter) onStatusUpdate(status *prolink.CDJStatus) {
 		return
 	}
 
-	playerId := &status.PlayerID
+	playerID := &status.PlayerID
 
 	if prevStatus.TrackID != status.TrackID {
 		e.emitter.emittEvent(mapEvent(
 			"status:track_key",
-			playerId,
+			playerID,
 			mapTrackKey(status),
 		))
 	}
@@ -226,7 +226,7 @@ func (e *CDJStatusEmitter) onStatusUpdate(status *prolink.CDJStatus) {
 	if prevStatus.PlayState != status.PlayState {
 		e.emitter.emittEvent(mapEvent(
 			"status:play_state",
-			playerId,
+			playerID,
 			status.PlayState.String(),
 		))
 	}
@@ -234,7 +234,7 @@ func (e *CDJStatusEmitter) onStatusUpdate(status *prolink.CDJStatus) {
 	if prevStatus.TrackBPM != status.TrackBPM {
 		e.emitter.emittEvent(mapEvent(
 			"status:bpm",
-			playerId,
+			playerID,
 			status.TrackBPM,
 		))
 	}
@@ -242,7 +242,7 @@ func (e *CDJStatusEmitter) onStatusUpdate(status *prolink.CDJStatus) {
 	if prevStatus.SliderPitch != status.SliderPitch {
 		e.emitter.emittEvent(mapEvent(
 			"status:pitch",
-			playerId,
+			playerID,
 			status.SliderPitch,
 		))
 	}
@@ -250,7 +250,7 @@ func (e *CDJStatusEmitter) onStatusUpdate(status *prolink.CDJStatus) {
 	if prevStatus.EffectivePitch != status.EffectivePitch {
 		e.emitter.emittEvent(mapEvent(
 			"status:effective_pitch",
-			playerId,
+			playerID,
 			status.EffectivePitch,
 		))
 	}
@@ -258,7 +258,7 @@ func (e *CDJStatusEmitter) onStatusUpdate(status *prolink.CDJStatus) {
 	if prevStatus.IsOnAir != status.IsOnAir {
 		e.emitter.emittEvent(mapEvent(
 			"status:on_air",
-			playerId,
+			playerID,
 			status.IsOnAir,
 		))
 	}
@@ -266,7 +266,7 @@ func (e *CDJStatusEmitter) onStatusUpdate(status *prolink.CDJStatus) {
 	if prevStatus.IsSync != status.IsSync {
 		e.emitter.emittEvent(mapEvent(
 			"status:sync_enabled",
-			playerId,
+			playerID,
 			status.IsSync,
 		))
 	}
@@ -274,7 +274,7 @@ func (e *CDJStatusEmitter) onStatusUpdate(status *prolink.CDJStatus) {
 	if prevStatus.IsMaster != status.IsMaster {
 		e.emitter.emittEvent(mapEvent(
 			"status:is_master",
-			playerId,
+			playerID,
 			status.IsMaster,
 		))
 	}
@@ -282,7 +282,7 @@ func (e *CDJStatusEmitter) onStatusUpdate(status *prolink.CDJStatus) {
 	if prevStatus.Beat != status.Beat {
 		e.emitter.emittEvent(mapEvent(
 			"status:beat",
-			playerId,
+			playerID,
 			mapBeat(status),
 		))
 	}
