@@ -342,7 +342,14 @@ func (e *MixStatusEmitter) onMixStatus(event mixstatus.Event, status *prolink.CD
 	}
 
 	if _, ok := trackEvents[event]; ok {
-		t, err := e.remoteDB.GetTrack(status.TrackKey())
+		key := status.TrackKey()
+		if key == nil {
+			Log.Warn("Unable to query track for event, key is nil")
+			e.emitter.emittEvent(mapEvent(string(event), &status.PlayerID, nil))
+			return
+		}
+
+		t, err := e.remoteDB.GetTrack(key)
 		if err != nil {
 			raven.CaptureError(err, nil)
 			Log.Error("Failed to retrieve track from Remote DB", "error", err)
