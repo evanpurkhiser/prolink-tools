@@ -12,6 +12,6 @@ require (
 	github.com/pkg/errors v0.8.0 // indirect
 	github.com/spf13/cobra v0.0.3
 	github.com/spf13/pflag v1.0.3 // indirect
-	go.evanpurkhiser.com/prolink v0.0.0-20181101083039-04bf7d86ce6b
+	go.evanpurkhiser.com/prolink v0.0.0-20181108080411-479767994f75
 	golang.org/x/sys v0.0.0-20181031143558-9b800f95dbbc // indirect
 )
