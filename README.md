@@ -34,7 +34,7 @@ This can be easily used with the [OBS Browser Plugin](https://obsproject.com/for
 It's recommended that you have correctly tagged your music collection (or
 tracks you expect to play) for an optimal viewer experience.
 
-[**Mac OS setup tutorial video**](https://youtu.be/8vzgDZLa3Sc)
+[**Mac OS setup tutorial video**](https://youtu.be/8vzgDZLa3Sc) (minorly outdated as [prolink.tools/overlay](http://prolink.tools/overlay) exists now)
 
 ### How It Works
 
