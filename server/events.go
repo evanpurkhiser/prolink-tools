@@ -421,3 +421,27 @@ func NewEventEmitter(network *prolink.Network, ms *mixstatus.Processor) *EventEm
 
 	return emitter
 }
+
+//
+// WIP Notice Ideas
+//
+// These are just some quick notes as to making things a little more user
+// friendly and debuggable
+//
+//[ OK ] Received first announcement packet from a device on the network. Now
+//       announcing ourselves on the eth0:50000.
+//[ OK ] Received first status packet from CDJ 04 on the network. Devices are
+//       successfully reporting their statuses.
+//[ OK ]
+//
+//// If we didn't get any announce packets
+//[WARN] No announce packet has been received yet from a device on the network
+//       (CDJ, DJM, rekordox). If your equipment is turned on the computer
+//       running this software may be on a different network than the equipment.
+//
+//// If we haven't received any status packets
+//[ OK ] Received first announcement packet from a device on the network. Now
+//       announcing ourselves on the eth0:50000.
+//[WARN] No status packet has been received yet from a CDJ on the network. Check
+//       that the network interface used to announce is the interface with
+//       devices on it's network.
