@@ -54,7 +54,7 @@ module.exports = {
             ['@babel/preset-env', { targets: { chrome: '64' } }],
             ['@babel/preset-react'],
           ],
-          plugins: babelPlugins.filter(x => x != null),
+          plugins: babelPlugins.filter(x => x !== null),
         },
       },
     ],
