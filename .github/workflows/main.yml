@@ -1,0 +1,68 @@
+name: build
+on: [push]
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/setup-go@v2-beta
+      with:
+        go-version: ^1.13
+
+    - name: Setup GOPATH
+      run: |
+        echo "::add-path::${{ github.workspace }}/go/bin"
+        echo "::set-env name=GOPATH::${{ github.workspace }}/go"
+        echo "::set-env name=GO_WORKSPACE::${{ github.workspace }}/go/src/github.com/${{ github.repository }}"
+
+    - uses: actions/checkout@v2
+      with:
+        path: ${{ env.GO_WORKSPACE }}
+
+    - name: Checkout tags
+      run: |
+        cd ${{ env.GO_WORKSPACE }}
+        git fetch --prune --unshallow
+
+    - name: Build server
+      run: |
+        cd ${{ env.GO_WORKSPACE }}
+        pushd server
+        GOOS=linux   make && mv dist/prolink-server{,-linux}
+        GOOS=darwin  make && mv dist/prolink-server{,-macos}
+        GOOS=windows make && mv dist/prolink-server{,-windows.exe}
+
+    - name: Build overlay
+      run: |
+        cd ${{ env.GO_WORKSPACE }}
+        make --directory=overlay
+
+    - name: Build website
+      run: |
+        cd ${{ env.GO_WORKSPACE }}
+        make --directory=website
+
+    - name: Release latest master
+      uses: marvinpinto/action-automatic-releases@latest
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: dev-build
+        prerelease: true
+        title: Development Build
+        files: |
+          ${{ env.GO_WORKSPACE }}/server/dist/prolink-server-linux
+          ${{ env.GO_WORKSPACE }}/server/dist/prolink-server-macos
+          ${{ env.GO_WORKSPACE }}/server/dist/prolink-server-windows.exe
+          ${{ env.GO_WORKSPACE }}/overlay/dist/prolink-overlay.html
+
+    - name: Deploy static site
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        cname: prolink.tools
+        publish_dir: ./go/src/github.com/${{ github.repository }}/website/dist
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        disable_nojekyll: true
+        force_orphan: true
+
