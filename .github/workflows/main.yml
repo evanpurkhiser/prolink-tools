@@ -1,0 +1,58 @@
+name: build
+on: [push]
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/setup-go@v2-beta
+      with:
+        go-version: ^1.13
+
+    - name: Setup GOPATH
+      run: |
+        echo "::add-path::${{ github.workspace }}/go/bin"
+        echo "::set-env name=GOPATH::${{ github.workspace }}/go"
+        echo "::set-env name=PROLIKN_TOOLS_PATH::${{ github.workspace }}/go/src/github.com/${{ github.repository }}"
+
+    - uses: actions/checkout@v2
+      with:
+        path: ${{ env.PROLIKN_TOOLS_PATH }}
+
+    - name: Checkout tags
+      run: |
+        cd ${{ env.PROLIKN_TOOLS_PATH }}
+        git fetch --prune --unshallow
+
+    - name: Build
+      run: |
+        cd ${{ env.PROLIKN_TOOLS_PATH }}
+        pushd server
+        GOOS=linux   make && mv dist/prolink-server{,-linux}
+        GOOS=darwin  make && mv dist/prolink-server{,-macos}
+        GOOS=windows make && mv dist/prolink-server{,-windows.exe}
+        popd
+        make --directory=overlay
+        make --directory=website
+
+    - name: Release latest master
+      uses: marvinpinto/action-automatic-releases@latest
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: dev-build
+        prerelease: true
+        title: Development Build
+        files: |
+          ${{ env.PROLIKN_TOOLS_PATH }}/server/dist/prolink-server-linux
+          ${{ env.PROLIKN_TOOLS_PATH }}/server/dist/prolink-server-macos
+          ${{ env.PROLIKN_TOOLS_PATH }}/server/dist/prolink-server-windows.exe
+          ${{ env.PROLIKN_TOOLS_PATH }}/overlay/dist/prolink-overlay.html
+
+  - name: Deploy static site
+    uses: peaceiris/actions-gh-pages@v3
+    with:
+      github_token: ${{ secrets.GITHUB_TOKEN }}
+      publish_dir: ${{ env.PROLIKN_TOOLS_PATH }}/website/dist
+
