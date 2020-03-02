@@ -1,7 +1,8 @@
 import { Flex } from '@rebass/grid/emotion';
 import { observer } from 'mobx-react';
 import { formatDistance } from 'date-fns';
-import styled, { css } from 'react-emotion';
+import { css } from '@emotion/core';
+import styled from '@emotion/styled';
 import posed, { PoseGroup } from 'react-pose';
 import React from 'react';
 
@@ -17,22 +18,25 @@ const attributeIcons = {
   genre: icons.Star,
 };
 
-const MissingArtwork = styled(p => (
-  <Flex alignItems="center" justifyContent="center" innerRef={p.hostRef} {...p}>
-    <icons.Disc size="50%" />
-  </Flex>
-))`
+const MissingArtwork = styled(
+  React.forwardRef((p, ref) => (
+    <Flex alignItems="center" justifyContent="center" ref={ref} {...p}>
+      <icons.Disc size="50%" />
+    </Flex>
+  ))
+)`
   background: #000;
   color: #aaa;
   opacity: 0.5;
 `;
 
-let Artwork = ({ hostRef, animateIn, ...p }) =>
+let Artwork = React.forwardRef(({ animateIn, ...p }, ref) =>
   p.src ? (
-    <img ref={hostRef} {...p} />
+    <img ref={ref} {...p} />
   ) : (
-    <MissingArtwork hostRef={hostRef} className={p.className} />
-  );
+    <MissingArtwork ref={ref} className={p.className} />
+  )
+);
 
 Artwork = styled(Artwork)`
   display: flex;
@@ -136,9 +140,15 @@ const NoAttributes = styled(p => (
   color: rgba(255, 255, 255, 0.6);
 `;
 
-let MetadataWrapper = p => (
-  <Flex {...p} flex={1} alignItems="flex-end" flexDirection="column" />
-);
+let MetadataWrapper = React.forwardRef((p, ref) => (
+  <Flex
+    {...p}
+    ref={ref}
+    flex={1}
+    alignItems="flex-end"
+    flexDirection="column"
+  />
+));
 
 MetadataWrapper = posed(MetadataWrapper)({
   start: {
@@ -175,12 +185,12 @@ const FullMetadata = observer(({ track, ...p }) => (
   </MetadataWrapper>
 ));
 
-const FullTrack = ({ track, hostRef, ...props }) => (
-  <Flex innerRef={hostRef} {...props}>
+const FullTrack = React.forwardRef(({ track, ...props }, ref) => (
+  <Flex ref={ref} {...props}>
     <FullMetadata track={track} mr={2} />
     <Artwork src={track.artwork} size="80px" />
   </Flex>
-);
+));
 
 const MiniTitle = styled(Text)`
   font-size: 0.85em;
@@ -200,8 +210,8 @@ const PlayedAt = styled(Text)`
   line-height: 1.3;
 `;
 
-const MiniTrack = ({ track, hostRef, ...props }) => (
-  <Flex innerRef={hostRef} {...props}>
+const MiniTrack = React.forwardRef(({ track, ...props }, ref) => (
+  <Flex ref={ref} {...props}>
     <MetadataWrapper mr={1}>
       <MiniTitle>{track.title}</MiniTitle>
       <MiniArtist>{track.artist}</MiniArtist>
@@ -215,9 +225,10 @@ const MiniTrack = ({ track, hostRef, ...props }) => (
     </MetadataWrapper>
     <Artwork animateIn src={track.artwork} size="50px" />
   </Flex>
-);
+));
 
-const Track = ({ mini, ...props }) =>
-  mini ? <MiniTrack {...props} /> : <FullTrack {...props} />;
+const Track = React.forwardRef(({ mini, ...props }, ref) =>
+  mini ? <MiniTrack ref={ref} {...props} /> : <FullTrack ref={ref} {...props} />
+);
 
 export default Track;

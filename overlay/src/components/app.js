@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react';
 import { Flex, Box } from '@rebass/grid/emotion';
 import { hot } from 'react-hot-loader';
-import styled from 'react-emotion';
+import { Global, css } from '@emotion/core';
+import styled from '@emotion/styled';
 import posed, { PoseGroup } from 'react-pose';
 import React from 'react';
 
@@ -19,7 +20,7 @@ const PosedTrack = posed(Track)({
   },
 });
 
-const RecentTracks = ({ tracks, ...p }) => (
+const RecentTracks = ({ tracks }) => (
   <Box mt={5}>
     <PoseGroup preEnterPose="start">
       {tracks.map(t => (
@@ -59,8 +60,26 @@ const AppSettings = styled(Settings)`
   left: 0;
 `;
 
-const App = p => (
+const globalCss = css`
+  * {
+    box-sizing: border-box;
+  }
+
+  body,
+  #container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    color: #fff;
+    font-family: Ubuntu, sans-serif;
+    font-size: 1em;
+  }
+`;
+
+const App = () => (
   <React.Fragment>
+    <Global styles={globalCss} />
     <TracksOverlay />
     <AppSettings />
   </React.Fragment>

@@ -1,13 +1,13 @@
 import { Flex } from '@rebass/grid/emotion';
 import { observer } from 'mobx-react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import React from 'react';
 
 import { Activity, AlertCircle } from 'app/components/icons';
 import { connected } from 'app/receiver';
 
-const StatusIcon = styled(
-  p => (connected.get() ? <Activity {...p} /> : <AlertCircle {...p} />)
+const StatusIcon = styled(p =>
+  connected.get() ? <Activity {...p} /> : <AlertCircle {...p} />
 )`
   margin-right: 0.6em;
 `;

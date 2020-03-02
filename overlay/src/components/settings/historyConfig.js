@@ -1,6 +1,6 @@
 import { Flex, Box } from '@rebass/grid/emotion';
 import { observer } from 'mobx-react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import React from 'react';
 import Slider from 'react-rangeslider';
 
