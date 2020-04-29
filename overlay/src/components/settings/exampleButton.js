@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import React from 'react';
 
-import * as icons from 'app/components/icons';
 import tracks from 'app/trackEvents';
 
 const ExampleButton = styled(p => (

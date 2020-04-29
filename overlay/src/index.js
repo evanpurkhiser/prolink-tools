@@ -10,5 +10,4 @@ Sentry.init({
   environment: IS_PROD ? 'production' : 'development',
 });
 
-console.log('testing');
 ReactDom.render(<App />, document.getElementById('container'));

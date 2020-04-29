@@ -17,6 +17,7 @@
     "base64-url": "^2.2.0",
     "camelize": "^1.0.0",
     "date-fns": "^2.0.0-alpha.22",
+    "framer-motion": "^1.10.3",
     "mobx": "^5.5.0",
     "mobx-react": "^5.2.8",
     "prop-types": "^15.6.2",
@@ -42,6 +43,7 @@
     "react-hot-loader": "^4.3.11",
     "webpack": "^4.14.0",
     "webpack-cli": "^3.1.1",
-    "webpack-dev-server": "^3.1.4"
+    "webpack-dev-server": "^3.1.4",
+    "prettier": "^2.0.5"
   }
 }
