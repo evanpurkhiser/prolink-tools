@@ -22,6 +22,8 @@ This component is a command line tool that should be run as a daemon.
 
 #### `prolink-overlay`
 
+![Screen Shot 2020-05-08 at 00 17 08](https://user-images.githubusercontent.com/1421724/81381295-50636300-90c1-11ea-80b9-1a4ce72adca6.png)
+
 The overlay component is a single-file HTML page that connects to the server to
 display real-time now-playing and track history information, intended to be
 used in live-streaming applications. It features smooth animations on track
