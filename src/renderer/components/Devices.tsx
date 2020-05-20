@@ -6,6 +6,8 @@ import styled from '@emotion/styled';
 import {devices, states, localdbState} from 'src/shared/store';
 import PlayState from 'app/components/PlayState';
 import IconCdj from 'app/icons/cdj';
+import BpmIndicator from './BpmIndicator';
+import BeatCounter from './BeatCounter';
 
 const Devices = observer(() => (
   <React.Fragment>
@@ -15,24 +17,62 @@ const Devices = observer(() => (
         const state = states.get(device.id);
         const fetching = localdbState.fetchProgress.get(device.id);
 
+        console.log(state?.playState)
+
         return (
           <Device key={device.id}>
-            <IconCdj />
+            <Indicator>
+              <PlayerId>{device.id.toString().padStart(2, '0')}</PlayerId>
+              <IconCdj />
+              <OnairIndicator active={!!state?.isOnAir} />
+            </Indicator>
+            <Status>
             <StatusBar>
-              <PlayerId>{device.id}</PlayerId>
               <PlayState playState={state?.playState} />
-              <progress value={fetching?.read} max={fetching?.total} />
+              <BeatCounter beat={state?.beatInMeasure} beatsUntilCue={state?.beatsUntilCue} />
             </StatusBar>
+            <StatusBar>
+              <BpmIndicator pitch={state?.sliderPitch} bpm={state?.trackBPM} />
+            </StatusBar>
+
+            </Status>
+
+
           </Device>
         );
       })}
   </React.Fragment>
 ));
 
+const OnairIndicator = styled('div')<{active: boolean}>`
+  height: 0.5rem;
+  width: 0.5rem;
+  border-radius: 50%;
+
+`;
+
+const Indicator = styled('div')`
+  color: #3B434B;
+  display: grid;
+  grid-template-rows: max-content max-content;
+  grid-gap: 0.5rem;
+  padding-right: 0.5rem;
+  border-right: 1px solid #eee;
+`;
+
+
+const Status = styled('div')`
+  display: grid;
+  grid-template-rows: max-content max-content;
+  grid-gap: 0.5rem;
+
+`;
+
 const Device = styled('div')`
+  color: #3B3B3B;
   display: grid;
   grid-template-columns: max-content 1fr;
-  grid-gap: 1rem;
+  grid-gap: 0.5rem;
   margin: 1rem;
 `;
 
@@ -40,31 +80,20 @@ const StatusBar = styled('div')`
   display: inline-grid;
   grid-auto-flow: column;
   grid-auto-columns: max-content;
-  grid-gap: 0.75rem;
-  max-height: 22px;
+  grid-gap: 0.5rem;
 `;
 
 const PlayerId = styled('div')`
-  font-size: 12px;
+  font-size: 0.825rem;
+  line-height: 22px;
+  width: 34px;
   font-weight: 700;
-  background: #333;
-  text-transform: uppercase;
+  background: #3B434B;
   text-align: center;
-  display: inline-grid;
-  grid-template-columns: 1fr 22px;
   align-items: center;
   color: #fff;
   border-radius: 3px;
   overflow: hidden;
-
-  &:before {
-    content: 'player';
-    display: block;
-    background: #ebebeb;
-    color: #333;
-    padding: 0.25rem 0.5rem;
-    border-radius: 3px 0 0 3px;
-  }
 `;
 
 export default Devices;
