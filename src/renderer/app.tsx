@@ -1,21 +1,20 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { AppContainer } from 'react-hot-loader';
+import {AppContainer} from 'react-hot-loader';
 
-import Application from './components/Application';
+import Application from 'app/components/Application';
+import {connectRenderer} from 'src/shared/store';
 
 // Create main element
 const mainElement = document.createElement('div');
 document.body.appendChild(mainElement);
 
-// Render components
-const render = (Component: () => JSX.Element) => {
-    ReactDOM.render(
-        <AppContainer>
-                <Component />
-        </AppContainer>,
-        mainElement
-    );
-};
+connectRenderer();
 
-render(Application);
+// Render components
+ReactDOM.render(
+  <AppContainer>
+    <Application />
+  </AppContainer>,
+  mainElement
+);
