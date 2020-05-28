@@ -53,6 +53,10 @@ const serializerModelMap = serializableClasses.reduce(
 );
 
 function getAtPath(obj: any, path: string) {
+  if (path === '') {
+    return obj;
+  }
+
   const splitPath = path.split('/');
   let target = obj;
 
@@ -70,6 +74,11 @@ function getAtPath(obj: any, path: string) {
 
 function applyStoreChange({path, change, serializerModel}: SerializedChange) {
   let target = getAtPath(store, path);
+
+  if (target === undefined) {
+    // TODO: Race. Remove this and sometimes things happen
+    return;
+  }
 
   const model = serializerModelMap.get(serializerModel ?? '');
 
@@ -182,12 +191,12 @@ export const registerMainIpc = () =>
  *
  */
 export const registerRendererIpc = () => {
-  ipcRenderer.on('store-init', (_, data: Object) => {
-    set(store, deserialize(AppStore, data));
-  });
-
   ipcRenderer.on('store-update', (_, change: SerializedChange) => {
     applyStoreChange(change);
+  });
+
+  ipcRenderer.on('store-init', (_, data: Object) => {
+    set(store, deserialize(AppStore, data));
   });
 
   // Kick things off

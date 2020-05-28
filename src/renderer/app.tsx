@@ -1,20 +1,14 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {AppContainer} from 'react-hot-loader';
 
 import Application from 'app/components/Application';
-import {connectRenderer} from 'src/shared/store';
+import {registerRendererIpc} from 'src/shared/store/ipc';
 
 // Create main element
 const mainElement = document.createElement('div');
 document.body.appendChild(mainElement);
 
-connectRenderer();
+registerRendererIpc();
 
 // Render components
-ReactDOM.render(
-  <AppContainer>
-    <Application />
-  </AppContainer>,
-  mainElement
-);
+ReactDOM.render(<Application />, mainElement);

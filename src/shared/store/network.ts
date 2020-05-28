@@ -1,4 +1,4 @@
-import {when, runInAction} from 'mobx';
+import {when, runInAction, action} from 'mobx';
 import {applyDiff} from 'deep-diff';
 import {
   ProlinkNetwork,
@@ -43,39 +43,44 @@ const connectDevices = (network: ConnectedProlinkNetwork) => {
   store.devices.replace(new Map(deviceEntries as [DeviceID, DeviceStore][]));
 
   // Create device stores for new devices
-  network.deviceManager.on('connected', device => {
-    store.devices.set(device.id, new DeviceStore(device));
-  });
+  network.deviceManager.on(
+    'connected',
+    action(device => store.devices.set(device.id, new DeviceStore(device)))
+  );
 
   // Remove device stores
-  network.deviceManager.on('disconnected', device => {
-    store.devices.delete(device.id);
-  });
+  network.deviceManager.on(
+    'disconnected',
+    action(device => store.devices.delete(device.id))
+  );
 };
 
 /**
  * Connects the network status emitter to the associated device store
  */
 const connectStatus = (network: ConnectedProlinkNetwork) =>
-  network.statusEmitter.on('status', async state => {
-    const deviceStore = store.devices.get(state.deviceId);
+  network.statusEmitter.on(
+    'status',
+    action(async state => {
+      const deviceStore = store.devices.get(state.deviceId);
 
-    if (deviceStore === undefined) {
-      // We don't know about this device yet
-      return;
-    }
+      if (deviceStore === undefined) {
+        // We don't know about this device yet
+        return;
+      }
 
-    // We don't care about the packet ID
-    state.packetNum = 0;
+      // We don't care about the packet ID
+      state.packetNum = 0;
 
-    if (deviceStore.state === undefined) {
-      deviceStore.state = state;
-      return;
-    }
+      if (deviceStore.state === undefined) {
+        deviceStore.state = state;
+        return;
+      }
 
-    // Only mutate the values that have changed using deep-diff
-    runInAction(() => applyDiff(deviceStore.state, state));
-  });
+      // Only mutate the values that have changed using deep-diff
+      applyDiff(deviceStore.state, state);
+    })
+  );
 
 /**
  * Connects the current track ID to the network metadata loader service,
@@ -122,8 +127,10 @@ const connectTracks = (network: ConnectedProlinkNetwork) =>
         track,
       });
 
-      deviceStore.track = track;
-      deviceStore.artwork = artwork ?? undefined;
+      runInAction(() => {
+        deviceStore.track = track;
+        deviceStore.artwork = artwork ?? undefined;
+      });
     }
   );
 
@@ -131,70 +138,79 @@ const connectTracks = (network: ConnectedProlinkNetwork) =>
  * Connect the local database fetch progress states
  */
 const connectLocaldbFetch = (network: ConnectedProlinkNetwork) =>
-  network.localdb.on('fetchProgress', status => {
-    const deviceStore = store.devices.get(status.device.id);
+  network.localdb.on(
+    'fetchProgress',
+    action(status => {
+      const deviceStore = store.devices.get(status.device.id);
 
-    if (deviceStore === undefined) {
-      return;
-    }
+      if (deviceStore === undefined) {
+        return;
+      }
 
-    const progress = deviceStore.fetchProgress.get(status.slot);
+      const progress = deviceStore.fetchProgress.get(status.slot);
 
-    if (progress === undefined) {
-      deviceStore.fetchProgress.set(status.slot, status.progress);
-      return;
-    }
+      if (progress === undefined) {
+        deviceStore.fetchProgress.set(status.slot, status.progress);
+        return;
+      }
 
-    applyDiff(progress, status.progress);
-  });
+      applyDiff(progress, status.progress);
+    })
+  );
 
 /**
  * Connect the local database hydration progress states
  */
 const connectLocaldbHydrate = (network: ConnectedProlinkNetwork) =>
-  network.localdb.on('hydrationProgress', status => {
-    const deviceStore = store.devices.get(status.device.id);
+  network.localdb.on(
+    'hydrationProgress',
+    action(status => {
+      const deviceStore = store.devices.get(status.device.id);
 
-    if (deviceStore === undefined) {
-      return;
-    }
+      if (deviceStore === undefined) {
+        return;
+      }
 
-    let progress = deviceStore.hydrationProgress.get(status.slot);
+      let progress = deviceStore.hydrationProgress.get(status.slot);
 
-    if (progress === undefined) {
-      progress = new HydrationInfo();
-      deviceStore.hydrationProgress.set(status.slot, progress);
-    }
+      if (progress === undefined) {
+        progress = new HydrationInfo();
+        deviceStore.hydrationProgress.set(status.slot, progress);
+      }
 
-    const tableProgress = progress.perTable.get(status.progress.table);
+      const tableProgress = progress.perTable.get(status.progress.table);
 
-    const {total, complete} = status.progress;
-    const value = {total, complete};
+      const {total, complete} = status.progress;
+      const value = {total, complete};
 
-    if (tableProgress === undefined) {
-      progress.perTable.set(status.progress.table, value);
-      return;
-    }
+      if (tableProgress === undefined) {
+        progress.perTable.set(status.progress.table, value);
+        return;
+      }
 
-    applyDiff(tableProgress, value);
-  });
+      applyDiff(tableProgress, value);
+    })
+  );
 
 const connectMixstatus = (network: ConnectedProlinkNetwork) => {
   const mixstatus = new MixstatusProcessor();
   network.statusEmitter.on('status', s => mixstatus.handleState(s));
 
-  mixstatus.on('nowPlaying', async state => {
-    const playedAt = new Date();
+  mixstatus.on(
+    'nowPlaying',
+    action(async state => {
+      const playedAt = new Date();
 
-    await when(() => store.devices.get(state.deviceId)?.track?.id === state.trackId);
+      await when(() => store.devices.get(state.deviceId)?.track?.id === state.trackId);
 
-    const track = store.devices.get(state.deviceId)?.track;
+      const track = store.devices.get(state.deviceId)?.track;
 
-    // There was a problem loading the track, nothing we can do here
-    if (track === undefined) {
-      return;
-    }
+      // There was a problem loading the track, nothing we can do here
+      if (track === undefined) {
+        return;
+      }
 
-    store.mixstatus.trackHistory.push({playedAt, track});
-  });
+      store.mixstatus.trackHistory.push({playedAt, track});
+    })
+  );
 };

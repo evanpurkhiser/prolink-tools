@@ -1,33 +1,24 @@
+import 'source-map-support/register';
 import 'module-alias/register';
 
 import {app, BrowserWindow} from 'electron';
 import * as path from 'path';
 import * as url from 'url';
-
 import {bringOnline} from 'prolink-connect';
-import {connectToNetwork} from 'src/shared/store';
+
+import connectNetworkStore from 'src/shared/store/network';
+import {registerMainIpc} from 'src/shared/store/ipc';
+import store from 'src/shared/store';
+
+// see https://www.electronjs.org/docs/api/app#appallowrendererprocessreuse
+app.allowRendererProcessReuse = true;
 
 let win: BrowserWindow | null;
 
-const installExtensions = async () => {
-  const installer = require('electron-devtools-installer');
-  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = ['REACT_DEVELOPER_TOOLS'];
-
-  return Promise.all(
-    extensions.map(name => installer.default(installer[name], forceDownload))
-  );
-};
-
-
-
 const createWindow = async () => {
-  if (process.env.NODE_ENV !== 'production') {
-    await installExtensions();
-  }
-
   win = new BrowserWindow({
-    width: 800,
+    width: 700,
+    minWidth: 700,
     height: 400,
     titleBarStyle: 'hiddenInset',
     title: 'Prolink Tools',
@@ -53,16 +44,26 @@ const createWindow = async () => {
     win.webContents.once('dom-ready', () => win!.webContents.openDevTools());
   }
 
-  const network = await bringOnline();
-  await network.autoconfigFromPeers();
-
-  network.connect();
-  connectToNetwork(win, network);
-
   win.on('closed', () => (win = null));
+
+  return win;
 };
 
-app.on('ready', createWindow);
+app.on('ready', async () => {
+  createWindow();
+  registerMainIpc();
+
+  // Open connections to the network
+  const network = await bringOnline();
+  store.networkState = network.state;
+
+  // Attempt to autoconfigure from other devices on the network
+  await network.autoconfigFromPeers();
+  network.connect();
+  store.networkState = network.state;
+
+  connectNetworkStore(network);
+});
 
 app.on('window-all-closed', () => {
   app.quit();

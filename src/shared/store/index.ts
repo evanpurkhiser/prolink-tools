@@ -8,6 +8,7 @@ import {
   FetchProgress,
   HydrationProgress,
   MediaSlot,
+  NetworkState,
 } from 'prolink-connect';
 
 import {PlayedTrack} from './types';
@@ -90,14 +91,14 @@ export class HydrationInfo {
    */
   @computed
   get total() {
-    return [...this.perTable.values()].reduce((total, val) => total + val.total, 0);
+    return [...this.perTable.values()].reduce((sum, val) => sum + val.total, 0);
   }
   /**
    * Reports the total completed hydration entities.
    */
   @computed
   get complete() {
-    return [...this.perTable.values()].reduce((total, val) => total + val.total, 0);
+    return [...this.perTable.values()].reduce((sum, val) => sum + val.complete, 0);
   }
 }
 
@@ -111,6 +112,12 @@ export class MixstatusStore {
 }
 
 export class AppStore {
+  /**
+   * The current state of the prolink network
+   */
+  @serializable
+  @observable
+  networkState = NetworkState.Offline;
   /**
    * The observable list of active devices
    */

@@ -2,9 +2,9 @@ import path from 'path';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 
-const IS_PROD =
-  process.argv.find(a => a.includes('mode=production')) !== undefined;
+const IS_PROD = process.argv.find(a => a.includes('mode=production')) !== undefined;
 
 const config: webpack.Configuration = {
   mode: IS_PROD ? 'production' : 'development',
@@ -25,7 +25,6 @@ const config: webpack.Configuration = {
     alias: {
       app: path.resolve(__dirname, 'src/renderer/'),
       src: path.resolve(__dirname, 'src/'),
-      'react-dom': '@hot-loader/react-dom',
     },
   },
   devtool: 'source-map',
@@ -54,6 +53,11 @@ const config: webpack.Configuration = {
             '@babel/preset-typescript',
             '@babel/preset-react',
           ],
+          plugins: [
+            ['@babel/plugin-proposal-decorators', {legacy: true}],
+            ['@babel/plugin-proposal-class-properties', {loose: true}],
+            !IS_PROD && require.resolve('react-refresh/babel'),
+          ].filter(Boolean),
         },
       },
       {
@@ -85,6 +89,7 @@ const config: webpack.Configuration = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
     }),
+    ...(!IS_PROD ? [new ReactRefreshWebpackPlugin()] : []),
   ],
   devServer: {
     port: 2003,
