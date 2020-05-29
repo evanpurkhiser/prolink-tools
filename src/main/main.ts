@@ -1,10 +1,17 @@
 import 'source-map-support/register';
-import 'module-alias/register';
+import moduleAlias from 'module-alias';
+import * as path from 'path';
+
+moduleAlias.addAliases({
+  src: path.join(__dirname, '../'),
+  app: path.join(__dirname, '../renderer'),
+  main: path.join(__dirname, '../main'),
+});
 
 import {app, BrowserWindow} from 'electron';
-import * as path from 'path';
 import * as url from 'url';
 import {bringOnline} from 'prolink-connect';
+import isDev from 'electron-is-dev';
 
 import connectNetworkStore from 'src/shared/store/network';
 import {registerMainIpc} from 'src/shared/store/ipc';
@@ -15,7 +22,7 @@ app.allowRendererProcessReuse = true;
 
 let win: BrowserWindow | null;
 
-const createWindow = async () => {
+const createWindow = () => {
   win = new BrowserWindow({
     width: 700,
     minWidth: 700,
@@ -27,21 +34,18 @@ const createWindow = async () => {
     },
   });
 
-  if (process.env.NODE_ENV !== 'production') {
+  if (isDev) {
     process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1';
     win.loadURL(`http://localhost:2003`);
+    win.webContents.once('dom-ready', () => win!.webContents.openDevTools());
   } else {
     win.loadURL(
       url.format({
-        pathname: path.join(__dirname, 'index.html'),
+        pathname: path.join(__dirname, '..', 'index.html'),
         protocol: 'file:',
         slashes: true,
       })
     );
-  }
-
-  if (process.env.NODE_ENV !== 'production') {
-    win.webContents.once('dom-ready', () => win!.webContents.openDevTools());
   }
 
   win.on('closed', () => (win = null));

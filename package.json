@@ -1,10 +1,10 @@
 {
   "name": "prolink-tools",
   "version": "0.0.1",
-  "description": "",
+  "description": "A collection of userfriendly tools for DJs using Pioneers PRO DJ LINK feature",
   "author": "Evan Purkhiser <evanpurkhiser@gmail.com>",
   "license": "MIT",
-  "main": "./dist/main.js",
+  "main": "./dist/main/main.js",
   "scripts": {
     "build-main": "cross-env NODE_ENV=production tsc",
     "build-renderer": "cross-env NODE_ENV=production webpack",
@@ -15,16 +15,11 @@
     "pack": "yarn run build && electron-builder --dir",
     "dist": "yarn run build && electron-builder"
   },
-  "_moduleAliases": {
-    "src": "./dist/src",
-    "app": "./dist/src/renderer",
-    "main": "./dist/src/main"
-  },
   "build": {
-    "productName": "ProductName",
-    "appId": "org.your.productname",
+    "productName": "Prolink Tools",
+    "appId": "com.evanpurkhiser.tools.prolink",
     "mac": {
-      "category": "your.app.category.type"
+      "category": "public.app-category.music"
     },
     "directories": {
       "output": "release"
@@ -36,10 +31,6 @@
     "win": {
       "target": "nsis"
     }
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com:Robinfr/electron-react-typescript.git"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
@@ -85,8 +76,10 @@
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
     "@types/deep-diff": "^1.0.0",
+    "@types/module-alias": "^2.0.0",
     "@types/object-path": "^0.11.0",
     "deep-diff": "^1.0.2",
+    "electron-is-dev": "^1.2.0",
     "filesize": "^6.1.0",
     "framer-motion": "^1.11.0",
     "mobx": "^5.15.4",
@@ -94,7 +87,7 @@
     "mobx-utils": "^5.5.7",
     "module-alias": "^2.2.2",
     "object-path": "^0.11.4",
-    "prolink-connect": "../prolink-connect/",
+    "prolink-connect": "0.1.0-prerelease.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-feather": "^2.0.8",
