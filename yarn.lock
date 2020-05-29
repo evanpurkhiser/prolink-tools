@@ -1620,6 +1620,13 @@
   dependencies:
     "@types/node" "*"
 
+"@types/ip-address@^5.8.2":
+  version "5.8.2"
+  resolved "https://registry.yarnpkg.com/@types/ip-address/-/ip-address-5.8.2.tgz#5e413c477f78b3a264745eac937538a6e6e0c1f6"
+  integrity sha512-LFlDGRjJDnahfPyNCZGXvlaevSmZTi/zDxjTdXeTs8TQ9pQkNZKbCWaJXW29a3bGPRsASqeO+jGgZlaTUi9jTw==
+  dependencies:
+    "@types/jsbn" "*"
+
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0", "@types/istanbul-lib-coverage@^2.0.1":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@types/istanbul-lib-coverage/-/istanbul-lib-coverage-2.0.2.tgz#79d7a78bad4219f4c03d6557a1c72d9ca6ba62d5"
@@ -1647,6 +1654,11 @@
   dependencies:
     jest-diff "^25.2.1"
     pretty-format "^25.2.1"
+
+"@types/jsbn@*":
+  version "1.2.29"
+  resolved "https://registry.yarnpkg.com/@types/jsbn/-/jsbn-1.2.29.tgz#28229bc0262c704a1506c3ed69a7d7e115bd7832"
+  integrity sha512-2dVz9LTEGWVj9Ov9zaDnpvqHFV+W4bXtU0EUEGAzWfdRNO3dlUuosdHpENI6/oQW+Kejn0hAjk6P/czs9h/hvg==
 
 "@types/keyv@*":
   version "3.1.1"
@@ -1705,6 +1717,18 @@
   resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-2.0.0.tgz#dc85454b953178cc6043df5208b9e949b54a3bc4"
   integrity sha512-/rM+sWiuOZ5dvuVzV37sUuklsbg+JPOP8d+nNFlo2ZtfpzPiPvh1/gc8liWOLBqe+sR+ZM7guPaIcTt6UZTo7Q==
 
+"@types/promise-retry@^1.1.3":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@types/promise-retry/-/promise-retry-1.1.3.tgz#baab427419da9088a1d2f21bf56249c21b3dd43c"
+  integrity sha512-LxIlEpEX6frE3co3vCO2EUJfHIta1IOmhDlcAsR4GMMv9hev1iTI9VwberVGkePJAuLZs5rMucrV8CziCfuJMw==
+  dependencies:
+    "@types/retry" "*"
+
+"@types/promise-timeout@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@types/promise-timeout/-/promise-timeout-1.3.0.tgz#90649ff6f48c1ead9de142e6dd9f62f8c5a54022"
+  integrity sha512-AtVKSZUtpBoZ4SshXJk5JcTXJllinHKKx615lsRNJUsbbFlI0AI8drlnoiQ+PNvjkeoF9Y8fJUh6UO2khsIBZw==
+
 "@types/prop-types@*":
   version "15.7.3"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"
@@ -1753,6 +1777,11 @@
   integrity sha512-85Y2BjiufFzaMIlvJDvTTB8Fxl2xfLo4HgmHzVBz08w4wDePCTjYw66PdrolO0kzli3yam/YCgRufyo1DdQVTA==
   dependencies:
     "@types/node" "*"
+
+"@types/retry@*":
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/@types/retry/-/retry-0.12.0.tgz#2b35eccfcee7d38cd72ad99232fbd58bffb3c84d"
+  integrity sha512-wWKOClTTiizcZhXnPY4wikVAwmdYHp8q6DmC+EJUzAMsycb7HB32Kh9RN4+0gExjmPmZSAQjgURXIGATPegAvA==
 
 "@types/serve-static@*":
   version "1.13.4"
@@ -9557,11 +9586,14 @@ progress@^2.0.1, progress@^2.0.3:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-prolink-connect@0.1.0-prerelease.2:
-  version "0.1.0-prerelease.2"
-  resolved "https://registry.yarnpkg.com/prolink-connect/-/prolink-connect-0.1.0-prerelease.2.tgz#f295033b6e73b5d2c568857e8a01277f91ec3f37"
-  integrity sha512-opgJmTIRc5KXdzHP/uJWnk5N7n2C5twCM1WZ1yH4F50PWDFGW6n0tCJXxfyLpX75oAd0Q0yfQ7JEhfedSAOGiA==
+prolink-connect@0.1.0-prerelease.5:
+  version "0.1.0-prerelease.5"
+  resolved "https://registry.yarnpkg.com/prolink-connect/-/prolink-connect-0.1.0-prerelease.5.tgz#d094445160ba416fabac754e6667d459dd6c7459"
+  integrity sha512-wG5a6TD3xKNqr/XU4cWGCpyMi+TBc9brVTgtNDmf1OPA0CKauprSxfurh80V5C6KxJhQpwhiyRBgi4AUR0EMUw==
   dependencies:
+    "@types/ip-address" "^5.8.2"
+    "@types/promise-retry" "^1.1.3"
+    "@types/promise-timeout" "^1.3.0"
     async-mutex "^0.1.4"
     dgram-as-promised "^3.0.3"
     ip-address "^6.3.0"
