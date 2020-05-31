@@ -100,6 +100,12 @@ export class HydrationInfo {
   get complete() {
     return [...this.perTable.values()].reduce((sum, val) => sum + val.complete, 0);
   }
+  /**
+   * Reports if the hydration has finished.
+   */
+  @serializable
+  @observable
+  isDone = false;
 }
 
 export class MixstatusStore {

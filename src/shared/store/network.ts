@@ -1,5 +1,6 @@
 import {when, runInAction, action} from 'mobx';
 import {applyDiff} from 'deep-diff';
+import {debounce} from 'lodash';
 import {
   ProlinkNetwork,
   DeviceID,
@@ -28,6 +29,7 @@ export default function connectNetworkStore(network: ProlinkNetwork) {
     connectTracks,
     connectLocaldbFetch,
     connectLocaldbHydrate,
+    connectLocaldbHydrateDone,
     connectMixstatus,
     connectDevices,
   ].forEach(connector => connector(network));
@@ -164,31 +166,59 @@ const connectLocaldbFetch = (network: ConnectedProlinkNetwork) =>
 const connectLocaldbHydrate = (network: ConnectedProlinkNetwork) =>
   network.localdb.on(
     'hydrationProgress',
-    action(status => {
-      const deviceStore = store.devices.get(status.device.id);
+    debounce(
+      // Debounce because hydration generally happens very fast
+      action(status => {
+        const deviceStore = store.devices.get(status.device.id);
+
+        if (deviceStore === undefined) {
+          return;
+        }
+
+        let progress = deviceStore.hydrationProgress.get(status.slot);
+
+        if (progress === undefined) {
+          progress = new HydrationInfo();
+          deviceStore.hydrationProgress.set(status.slot, progress);
+        }
+
+        const tableProgress = progress.perTable.get(status.progress.table);
+
+        const {total, complete} = status.progress;
+        const value = {total, complete};
+
+        if (tableProgress === undefined) {
+          progress.perTable.set(status.progress.table, value);
+          return;
+        }
+
+        applyDiff(tableProgress, value);
+      }),
+      10,
+      {leading: true, trailing: true, maxWait: 10}
+    )
+  );
+
+/**
+ * Connect the local database hydration progress states
+ */
+const connectLocaldbHydrateDone = (network: ConnectedProlinkNetwork) =>
+  network.localdb.on(
+    'hydrationDone',
+    action(({device, slot}) => {
+      const deviceStore = store.devices.get(device.id);
 
       if (deviceStore === undefined) {
         return;
       }
 
-      let progress = deviceStore.hydrationProgress.get(status.slot);
+      const progress = deviceStore.hydrationProgress.get(slot);
 
       if (progress === undefined) {
-        progress = new HydrationInfo();
-        deviceStore.hydrationProgress.set(status.slot, progress);
+        throw new Error('Recieved hydration completion before any progress');
       }
 
-      const tableProgress = progress.perTable.get(status.progress.table);
-
-      const {total, complete} = status.progress;
-      const value = {total, complete};
-
-      if (tableProgress === undefined) {
-        progress.perTable.set(status.progress.table, value);
-        return;
-      }
-
-      applyDiff(tableProgress, value);
+      progress.isDone = true;
     })
   );
 

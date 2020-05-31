@@ -24,7 +24,11 @@
     "directories": {
       "output": "release"
     },
-    "files": ["dist/", "node_modules/", "package.json"],
+    "files": [
+      "dist/",
+      "node_modules/",
+      "package.json"
+    ],
     "linux": {
       "target": "deb"
     },
@@ -76,18 +80,20 @@
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
     "@types/deep-diff": "^1.0.0",
+    "@types/lodash": "^4.14.154",
     "@types/module-alias": "^2.0.0",
     "@types/object-path": "^0.11.0",
     "deep-diff": "^1.0.2",
     "electron-is-dev": "^1.2.0",
     "filesize": "^6.1.0",
     "framer-motion": "^1.11.0",
+    "lodash": "^4.17.15",
     "mobx": "^5.15.4",
     "mobx-react": "^6.2.2",
     "mobx-utils": "^5.5.7",
     "module-alias": "^2.2.2",
     "object-path": "^0.11.4",
-    "prolink-connect": "0.1.0-prerelease.5",
+    "prolink-connect": "0.1.0-prerelease.8",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-feather": "^2.0.8",

@@ -26,13 +26,12 @@ const DbStateIndicator = observer(({deviceId}: Props) => {
       return;
     }
 
-    if (
-      download.read === download.total &&
-      hydration &&
-      hydration?.total === hydration?.complete
-    ) {
+    if (download.read === download.total && hydration && hydration.isDone) {
       return;
     }
+
+    // Database is finishing up when the hydration hasn't been marked as done
+    const isFlushing = hydration && hydration.complete === hydration.total;
 
     return (
       <Wrapper key={slot}>
@@ -41,11 +40,15 @@ const DbStateIndicator = observer(({deviceId}: Props) => {
           color="#FF6666"
           barWidth={4}
           size={32}
-          maxValue={hydration?.total ?? download.total}
+          maxValue={(hydration?.total ?? download.total) || 100}
           value={hydration?.complete ?? download.read}
         />
         <Info>
-          {hydration ? 'Hydrating database' : 'Fetching database'}
+          {!hydration
+            ? 'Fetching database...'
+            : hydration.total !== hydration.complete
+            ? 'Hydrating database...'
+            : 'Flushing database...'}
           <small>
             {hydration
               ? `${hydration.complete} / ${hydration.total} entries`

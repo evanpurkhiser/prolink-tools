@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 type Props = {
   beat?: number;
-  beatsUntilCue?: number;
+  beatsUntilCue?: number | null;
 };
 
 const BeatCounter = ({beat, beatsUntilCue}: Props) => (
@@ -14,7 +14,7 @@ const BeatCounter = ({beat, beatsUntilCue}: Props) => (
         <Beat key={count} active={beat === count} />
       ))}
     </Bar>
-    {beatsUntilCue !== undefined && beatsUntilCue < 64 && (
+    {beatsUntilCue !== undefined && beatsUntilCue !== null && beatsUntilCue < 64 && (
       <CueCountdown important={beatsUntilCue < 17}>
         Cue in{' '}
         {beatsUntilCue === 0

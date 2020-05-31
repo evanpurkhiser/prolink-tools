@@ -4,13 +4,19 @@ import {CDJStatus} from 'prolink-connect';
 import styled from '@emotion/styled';
 
 type Props = React.HTMLAttributes<HTMLDivElement> & {
-  bpm?: number;
+  bpm?: number | null;
   pitch?: number;
 };
 
 const BpmIndicator = styled(({bpm, pitch, ...p}: Props) => (
   <div {...p}>
-    <div>{bpm ? (bpm + (bpm * (pitch ?? 0)) / 100).toFixed(1) : <Blank />}</div>
+    <div>
+      {bpm !== null && bpm !== undefined ? (
+        (bpm + (bpm * (pitch ?? 0)) / 100).toFixed(1)
+      ) : (
+        <Blank />
+      )}
+    </div>
     <div>{pitch?.toFixed(2) ?? <Blank />}</div>
   </div>
 ))`
