@@ -4,7 +4,9 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 
-const IS_PROD = process.argv.find(a => a.includes('mode=production')) !== undefined;
+const IS_PROD =
+  process.argv.find(a => a.includes('mode=production')) !== undefined ||
+  process.env.NODE_ENV === 'production';
 
 const config: webpack.Configuration = {
   mode: IS_PROD ? 'production' : 'development',
