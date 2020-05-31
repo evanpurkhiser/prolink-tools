@@ -30,9 +30,6 @@ const DbStateIndicator = observer(({deviceId}: Props) => {
       return;
     }
 
-    // Database is finishing up when the hydration hasn't been marked as done
-    const isFlushing = hydration && hydration.complete === hydration.total;
-
     return (
       <Wrapper key={slot}>
         <DownloadRing

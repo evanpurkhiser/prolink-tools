@@ -9,6 +9,7 @@ import IconCdj from 'app/icons/cdj';
 import BpmIndicator from './BpmIndicator';
 import BeatCounter from './BeatCounter';
 import DbStateIndicator from './DbStateIndicator';
+import Metadata from './Metadata';
 
 const Devices = observer(() => (
   <React.Fragment>
@@ -16,7 +17,7 @@ const Devices = observer(() => (
       .filter(store => store.device.type === DeviceType.CDJ)
       .sort((a, b) => a.device.id - b.device.id)
       .map(store => {
-        const {device, state, artwork} = store;
+        const {device, state} = store;
 
         return (
           <Device key={device.id}>
@@ -36,10 +37,8 @@ const Devices = observer(() => (
               </StatusBar>
               <StatusBar>
                 <BpmIndicator pitch={state?.sliderPitch} bpm={state?.trackBPM} />
-                {artwork && artwork.length > 0 && (
-                  <Artwork src={`data:image/jpg;base64,${artwork.toString('base64')}`} />
-                )}
                 <DbStateIndicator deviceId={device.id} />
+                <Metadata deviceId={device.id} />
               </StatusBar>
             </Status>
           </Device>
@@ -47,12 +46,6 @@ const Devices = observer(() => (
       })}
   </React.Fragment>
 ));
-
-const Artwork = styled('img')`
-  border-radius: 3px;
-  height: 48px;
-  width: 48px;
-`;
 
 const Indicator = styled('div')`
   display: grid;
