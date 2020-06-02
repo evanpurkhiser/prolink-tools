@@ -42,7 +42,7 @@ const Metadata = observer(({deviceId}: Props) => {
         <Title>{track.title}</Title>
         <Artist>{track.artist?.name}</Artist>
         <Details>
-          <Filetype>{track.fileName.split('.').pop()}</Filetype>
+          <Filetype>{track.filePath.split('.').pop()}</Filetype>
           <div>{formatDuration(track.duration)}</div>
           <div>{track.key?.name}</div>
           <div>{track.genre?.name}</div>
