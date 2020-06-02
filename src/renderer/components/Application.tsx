@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Global, css} from '@emotion/core';
 
-import Titlebar from 'app/components/titlebar';
+import Titlebar from 'app/components/Titlebar';
 import Devices from 'app/components/Devices';
 import styled from '@emotion/styled';
 

@@ -1,4 +1,4 @@
-import * as React from 'React';
+import * as React from 'react';
 import styled from '@emotion/styled';
 import {observer} from 'mobx-react';
 import {NetworkState} from 'prolink-connect';
