@@ -45,8 +45,12 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.3.3",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.3.2",
+    "@types/deep-diff": "^1.0.0",
     "@types/jest": "^25.2.2",
+    "@types/lodash": "^4.14.154",
+    "@types/module-alias": "^2.0.0",
     "@types/node": "12",
+    "@types/object-path": "^0.11.0",
     "@types/react": "^16.8.18",
     "@types/react-dom": "^16.8.4",
     "@types/react-test-renderer": "^16.8.1",
@@ -55,7 +59,6 @@
     "@types/webpack-env": "^1.13.3",
     "babel-loader": "^8.0.6",
     "cross-env": "^7.0.2",
-    "css-loader": "^2.1.1",
     "electron": "^9.0.0",
     "electron-builder": "^22.3.2",
     "file-loader": "^6.0.0",
@@ -70,6 +73,7 @@
     "react-test-renderer": "^16.8.6",
     "source-map-loader": "^0.2.4",
     "spectron": "^10.0.1",
+    "ts-node": "^8.10.1",
     "typescript": "^3.4.5",
     "webpack": "^4.32.2",
     "webpack-cli": "^3.3.2",
@@ -79,10 +83,7 @@
   "dependencies": {
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
-    "@types/deep-diff": "^1.0.0",
-    "@types/lodash": "^4.14.154",
-    "@types/module-alias": "^2.0.0",
-    "@types/object-path": "^0.11.0",
+    "date-fns": "^2.14.0",
     "deep-diff": "^1.0.2",
     "electron-is-dev": "^1.2.0",
     "filesize": "^6.1.0",
@@ -92,16 +93,15 @@
     "mobx-react": "^6.2.2",
     "mobx-utils": "^5.5.7",
     "module-alias": "^2.2.2",
-    "object-path": "^0.11.4",
-    "prolink-connect": "0.1.0-prerelease.8",
+    "prolink-connect": "0.1.0-prerelease.13",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-feather": "^2.0.8",
     "serializr": "^2.0.3",
-    "source-map-support": "^0.5.19",
-    "ts-node": "^8.10.1"
+    "source-map-support": "^0.5.19"
   },
   "volta": {
-    "node": "13.12.0"
+    "node": "14.3.0",
+    "yarn": "1.22.4"
   }
 }
