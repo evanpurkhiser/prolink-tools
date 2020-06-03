@@ -12,8 +12,8 @@
     "start-renderer-dev": "webpack-dev-server",
     "start-main-dev": "tsc --watch && electron ./dist/main.js",
     "start": "electron .",
-    "pack": "yarn run build && electron-builder --dir",
-    "dist": "yarn run build && electron-builder"
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "build": {
     "productName": "Prolink Tools",
@@ -24,11 +24,7 @@
     "directories": {
       "output": "release"
     },
-    "files": [
-      "dist/",
-      "node_modules/",
-      "package.json"
-    ],
+    "files": ["dist/", "node_modules/", "package.json"],
     "linux": {
       "target": "deb"
     },
