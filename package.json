@@ -18,18 +18,19 @@
   "build": {
     "productName": "Prolink Tools",
     "appId": "com.evanpurkhiser.tools.prolink",
-    "mac": {
-      "category": "public.app-category.music"
-    },
     "directories": {
       "output": "release"
     },
+    "publish": null,
     "files": ["dist/", "node_modules/", "package.json"],
     "linux": {
-      "target": "deb"
+      "target": "tar.gz"
     },
     "win": {
-      "target": "nsis"
+      "target": "portable"
+    },
+    "mac": {
+      "category": "public.app-category.music"
     }
   },
   "devDependencies": {
