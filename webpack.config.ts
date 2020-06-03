@@ -8,11 +8,24 @@ const IS_PROD =
   process.argv.find(a => a.includes('mode=production')) !== undefined ||
   process.env.NODE_ENV === 'production';
 
+/**
+ * Becuase prolink-connect bundles mikro-orm, which does not work well in
+ * browser context, we stub it out.
+ *
+ * XXX: This may be brittle...
+ */
+const removeMikroORM = new webpack.NormalModuleReplacementPlugin(
+  /mikro-orm/,
+  (resource: any) => {
+    resource.request = path.join(__dirname, 'src/renderer/mikrormShim.ts');
+  }
+);
+
 const config: webpack.Configuration = {
   mode: IS_PROD ? 'production' : 'development',
   target: 'electron-renderer',
   entry: {
-    app: ['@babel/polyfill', './src/renderer/app.tsx'],
+    app: './src/renderer/app.tsx',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -30,19 +43,12 @@ const config: webpack.Configuration = {
     },
   },
   devtool: 'source-map',
+  /**
+   * TODO: Minification seems to break production builds in odd ways
+   */
+  optimization: {minimize: false},
   module: {
     rules: [
-      {
-        // Avoid loading mikro-orm related drivers, these do not work in browser
-        test: [
-          /acorn-loose/,
-          /mikro-orm\/dist\/connections/,
-          /mikro-orm\/dist\/cli/,
-          /mikro-orm\/dist\/drivers/,
-          /mikro-orm\/dist\/migrations/,
-        ],
-        use: 'null-loader',
-      },
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
@@ -77,9 +83,8 @@ const config: webpack.Configuration = {
     ],
   },
   plugins: [
-    new ForkTsCheckerWebpackPlugin({
-      reportFiles: ['src/renderer/**/*'],
-    }),
+    removeMikroORM,
+    new ForkTsCheckerWebpackPlugin({reportFiles: ['src/renderer/**/*']}),
     new webpack.NamedModulesPlugin(),
     new HtmlWebpackPlugin(),
     new webpack.DefinePlugin({

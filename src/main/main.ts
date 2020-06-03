@@ -1,12 +1,15 @@
 import 'source-map-support/register';
-import moduleAlias from 'module-alias';
+
 import * as path from 'path';
+import moduleAlias from 'module-alias';
 
 moduleAlias.addAliases({
   src: path.join(__dirname, '../'),
   app: path.join(__dirname, '../renderer'),
   main: path.join(__dirname, '../main'),
 });
+
+import 'src/shared/sentry';
 
 import {app, BrowserWindow} from 'electron';
 import * as url from 'url';
