@@ -160,43 +160,51 @@ const connectLocaldbFetch = (network: ConnectedProlinkNetwork) =>
     })
   );
 
+const deboucnedApplyDiff = debounce(applyDiff, 10, {
+  leading: true,
+  trailing: true,
+  maxWait: 10,
+});
+
 /**
  * Connect the local database hydration progress states
  */
 const connectLocaldbHydrate = (network: ConnectedProlinkNetwork) =>
   network.localdb.on(
     'hydrationProgress',
-    debounce(
-      // Debounce because hydration generally happens very fast
-      action(status => {
-        const deviceStore = store.devices.get(status.device.id);
+    // Debounce because hydration generally happens very fast
+    action(status => {
+      const deviceStore = store.devices.get(status.device.id);
 
-        if (deviceStore === undefined) {
-          return;
-        }
+      if (deviceStore === undefined) {
+        return;
+      }
 
-        let progress = deviceStore.hydrationProgress.get(status.slot);
+      let progress = deviceStore.hydrationProgress.get(status.slot);
 
-        if (progress === undefined) {
-          progress = new HydrationInfo();
-          deviceStore.hydrationProgress.set(status.slot, progress);
-        }
+      if (progress === undefined) {
+        progress = new HydrationInfo();
+        deviceStore.hydrationProgress.set(status.slot, progress);
+      }
 
-        const tableProgress = progress.perTable.get(status.progress.table);
+      const tableProgress = progress.perTable.get(status.progress.table);
 
-        const {total, complete} = status.progress;
-        const value = {total, complete};
+      const {total, complete} = status.progress;
+      const value = {total, complete};
 
-        if (tableProgress === undefined) {
-          progress.perTable.set(status.progress.table, value);
-          return;
-        }
+      if (tableProgress === undefined) {
+        progress.perTable.set(status.progress.table, value);
+        return;
+      }
 
+      // Debounce actually updating the progress since it's very rapid, but
+      // always update at 100%
+      if (total === complete) {
         applyDiff(tableProgress, value);
-      }),
-      10,
-      {leading: true, trailing: true, maxWait: 10}
-    )
+      } else {
+        deboucnedApplyDiff(tableProgress, value);
+      }
+    })
   );
 
 /**
