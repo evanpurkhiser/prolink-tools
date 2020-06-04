@@ -3,6 +3,7 @@ import {Global, css} from '@emotion/core';
 
 import Titlebar from 'app/components/Titlebar';
 import Devices from 'app/components/Devices';
+import Version from 'app/components/Version';
 import styled from '@emotion/styled';
 
 const globalCss = css`
@@ -48,6 +49,7 @@ const Application = () => (
     <Frame>
       <Devices />
     </Frame>
+    <Version />
   </React.Fragment>
 );
 
