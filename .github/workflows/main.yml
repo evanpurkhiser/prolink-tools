@@ -18,10 +18,13 @@ jobs:
       - run: yarn build-main
       - run: yarn build-renderer
       - run: yarn dist
+
       - name: Cleanup artifacts
+        shell: bash
         run: |
-          npx rimraf \"release/!(*.exe|*.tar.gz|*.dmg)\"
+          npx rimraf "release/!(*.exe|*.tar.gz|*.dmg)'
       - name: Locate built package
+        shell: bash
         id: locate
         run: |
           pkg_path="$(ls ${{ github.workspace }}/release/*)"
