@@ -31,7 +31,6 @@ jobs:
         with:
           name: ${{ matrix.os }}
           path: ${{ github.workspace }}/release/*.${{ matrix.ext }}
-  
   publish:
     needs: [build]
     runs-on: ubuntu-latest
@@ -40,14 +39,12 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           path: release
-
-    - name: Locate release files
-      id: locate
-      run: |
-        echo ::set-output name=macos::$(ls ${{ github.workspace }}/release/macos-latest/*)
-        echo ::set-output name=ubuntu::$(ls ${{ github.workspace }}/release/ubuntu-latest/*)
-        echo ::set-output name=windows::$(ls ${{ github.workspace }}/release/windows-latest/*)
-
+      - name: Locate release files
+        id: locate
+        run: |
+          echo ::set-output name=macos::$(ls ${{ github.workspace }}/release/macos-latest/*)
+          echo ::set-output name=ubuntu::$(ls ${{ github.workspace }}/release/ubuntu-latest/*)
+          echo ::set-output name=windows::$(ls ${{ github.workspace }}/release/windows-latest/*)
       - name: Release latest master
         uses: marvinpinto/action-automatic-releases@latest
         with:
