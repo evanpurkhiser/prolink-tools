@@ -1,6 +1,5 @@
-import 'source-map-support/register';
 import 'regenerator-runtime/runtime';
-import 'src/shared/sentry';
+import 'src/shared/sentryConfig';
 
 import * as path from 'path';
 import {app, BrowserWindow} from 'electron';
