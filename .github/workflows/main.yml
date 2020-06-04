@@ -20,7 +20,7 @@ jobs:
       - run: yarn dist
       - name: Cleanup artifacts
         run: |
-          npx rimraf 'release/!(*.exe|*.tar.gz|*.dmg)'
+          npx rimraf \"release/!(*.exe|*.tar.gz|*.dmg)\"
       - name: Locate built package
         id: locate
         run: |
