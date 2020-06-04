@@ -41,9 +41,12 @@ jobs:
         with:
           path: release
 
-      - name: Display structure of downloaded files
-        run: ls -R
-        working-directory: release/
+    - name: Locate release files
+      id: locate
+      run: |
+        echo ::set-output name=macos::$(ls ${{ github.workspace }}/release/macos-latest/*)
+        echo ::set-output name=ubuntu::$(ls ${{ github.workspace }}/release/ubuntu-latest/*)
+        echo ::set-output name=windows::$(ls ${{ github.workspace }}/release/windows-latest/*)
 
       - name: Release latest master
         uses: marvinpinto/action-automatic-releases@latest
@@ -53,4 +56,6 @@ jobs:
           prerelease: true
           title: Development Build
           files: |
-            ${{ env.GO_WORKSPACE }}/release/*
+           ${{ steps.locate.outputs.macos }}
+           ${{ steps.locate.outputs.ubuntu }}
+           ${{ steps.locate.outputs.windows }}
