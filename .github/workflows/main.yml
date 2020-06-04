@@ -20,10 +20,14 @@ jobs:
       - run: yarn dist
       - name: Cleanup artifacts
         run: |
-          npx rimraf "release/!(*.exe|*.deb|*.AppImage|*.dmg)"
-      - run: ls release/
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
+          npx rimraf 'release/!(*.exe|*.tar.gz|*.dmg)'
+      - name: Locate built package
+        id: locate
+        run: |
+          pkg_path="$(ls ${{ github.workspace }}/release/*)"
+          echo ::set-output name=path::$pkg_path
+          echo ::set-output name=name::$(basename $pkg_path)
+      - uses: actions/upload-artifact@v2
         with:
-          name: prolink-tools-${{ matrix.os }}
-          path: release
+          name: ${{ steps.locate.outputs.name }}
+          path: ${{ steps.locate.outputs.path }}
