@@ -18,10 +18,10 @@ jobs:
       - run: yarn build-main
       - run: yarn build-renderer
       - run: yarn dist
-      - run: ls release/
       - name: Cleanup artifacts
         run: |
           npx rimraf "release/!(*.exe|*.deb|*.AppImage|*.dmg)"
+      - run: ls release/
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
