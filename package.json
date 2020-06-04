@@ -1,6 +1,6 @@
 {
   "name": "prolink-tools",
-  "version": "0.0.1",
+  "version": "0.1.0-prerelease.0",
   "description": "A collection of userfriendly tools for DJs using Pioneers PRO DJ LINK feature",
   "author": "Evan Purkhiser <evanpurkhiser@gmail.com>",
   "license": "MIT",
@@ -22,7 +22,11 @@
       "output": "release"
     },
     "publish": null,
-    "files": ["dist/", "node_modules/sqlite3/**/*", "package.json"],
+    "files": [
+      "dist/",
+      "node_modules/sqlite3/**/*",
+      "package.json"
+    ],
     "linux": {
       "target": "tar.gz"
     },
@@ -36,15 +40,15 @@
   },
   "devDependencies": {
     "@pmmmwh/react-refresh-webpack-plugin": "^0.3.2",
+    "electron": "^9.0.0",
+    "electron-builder": "^22.3.2",
     "jest": "^26.0.1",
     "lint-staged": "^10.0.7",
     "node-loader": "^0.6.0",
     "null-loader": "^4.0.0",
     "prettier": "^2.0.5",
     "webpack-cli": "^3.3.2",
-    "webpack-dev-server": "^3.4.1",
-    "electron-builder": "^22.3.2",
-    "electron": "^9.0.0"
+    "webpack-dev-server": "^3.4.1"
   },
   "dependencies": {
     "@babel/core": "^7.4.5",
