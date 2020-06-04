@@ -1,6 +1,8 @@
 import path from 'path';
 import webpack from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
+import {execSync} from 'child_process';
+import {prerelease} from 'semver';
 
 export const IS_PROD = process.env.NODE_ENV === 'production';
 
@@ -13,6 +15,29 @@ const babelOptions = {
     ['@babel/plugin-proposal-class-properties', {loose: true}],
     !IS_PROD && require.resolve('react-refresh/babel'),
   ].filter(Boolean),
+};
+
+const releaseId = execSync('git describe').toString().trim();
+const latestTag = execSync('git describe --abbrev=0').toString().trim();
+const commit = execSync('git rev-parse HEAD').toString().trim();
+
+// Are we building a specifically tagged commit?
+const isTagged = latestTag === releaseId;
+
+// Specify the release channel (environment)
+const releaseChannel = isTagged
+  ? prerelease(releaseId) !== null
+    ? 'stable'
+    : 'prerelease'
+  : 'master';
+
+const envConfig = {
+  // Tells MikroORM we're in a webpack build
+  WEBPACK: true,
+  NODE_ENV: 'development',
+  RELEASE: releaseId,
+  RELEASE_CHANNEL: releaseChannel,
+  COMMIT: commit,
 };
 
 export const baseConfig: webpack.Configuration = {
@@ -37,7 +62,7 @@ export const baseConfig: webpack.Configuration = {
   },
   devtool: 'source-map',
 
-  plugins: [new webpack.EnvironmentPlugin({WEBPACK: true, NODE_ENV: 'development'})],
+  plugins: [new webpack.EnvironmentPlugin(envConfig)],
 
   optimization: {
     minimizer: [

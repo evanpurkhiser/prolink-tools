@@ -9,6 +9,8 @@ const dsn = 'https://cda4b79937384c42bb3562e185dd0bb8@o126623.ingest.sentry.io/5
 async function setupSentry() {
   Sentry.init({
     dsn,
+    release: process.env.RELEASE,
+    environment: process.env.RELEASE_CHANNEL,
     sampleRate: 1,
     tracesSampleRate: 1,
   });
