@@ -25,10 +25,6 @@ const config: webpack.Configuration = webpackMerge.smart(baseConfig, {
   entry: {
     app: './src/renderer/app.tsx',
   },
-  node: {
-    __dirname: false,
-    __filename: false,
-  },
   optimization: {minimize: false},
   module: {
     rules: [

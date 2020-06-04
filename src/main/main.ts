@@ -1,16 +1,8 @@
 import 'source-map-support/register';
-
-import * as path from 'path';
-import moduleAlias from 'module-alias';
-
-moduleAlias.addAliases({
-  src: path.join(__dirname, '../'),
-  app: path.join(__dirname, '../renderer'),
-  main: path.join(__dirname, '../main'),
-});
-
+import 'regenerator-runtime/runtime';
 import 'src/shared/sentry';
 
+import * as path from 'path';
 import {app, BrowserWindow} from 'electron';
 import * as url from 'url';
 import {bringOnline} from 'prolink-connect';
@@ -44,7 +36,7 @@ const createWindow = () => {
   } else {
     win.loadURL(
       url.format({
-        pathname: path.join(__dirname, '..', 'index.html'),
+        pathname: path.join(__dirname, 'index.html'),
         protocol: 'file:',
         slashes: true,
       })
