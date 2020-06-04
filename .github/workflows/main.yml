@@ -9,28 +9,30 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+        - os: ubuntu-latest
+          ext: tar.gz
+        - os: windows-latest
+          ext: exe
+        - os: macos-latest
+          ext: dmg
     steps:
       - uses: actions/checkout@v1
       - uses: volta-cli/action@v1
-
-      - name: Cleanup artifacts
-        shell: bash
-        run: |
-          npx rimraf 'release/!(*.exe|*.tar.gz|*.dmg)'
 
       # Build
       - run: yarn install
       - run: yarn build-main
       - run: yarn build-renderer
       - run: yarn dist
-      - name: Locate built package
-        shell: bash
-        id: locate
-        run: |
-          pkg_path="$(ls ${{ github.workspace }}/release/*)"
-          echo ::set-output name=path::$pkg_path
-          echo ::set-output name=name::$(basename $pkg_path)
+
+      - name: Dump matrix context
+        env:
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
+        run: echo "$MATRIX_CONTEXT"
+
+      # Save artifacts
       - uses: actions/upload-artifact@v2
         with:
-          name: ${{ steps.locate.outputs.name }}
-          path: ${{ steps.locate.outputs.path }}
+          name: ${{ matrix.os }}
+          path: ${{ github.workspace }}/release/*.${{ matrix.ext }}
