@@ -26,12 +26,7 @@ jobs:
       - run: yarn build-renderer
       - run: yarn dist
 
-      - name: Dump matrix context
-        env:
-          MATRIX_CONTEXT: ${{ toJson(matrix) }}
-        run: echo "$MATRIX_CONTEXT"
-
-      # Save artifacts
+      # Uplaod built artifacts
       - uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.os }}
