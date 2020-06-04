@@ -18,13 +18,15 @@ const globalCss = css`
     padding: 0;
   }
 
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap');
+
   * {
     box-sizing: border-box;
   }
 
   :root {
     font-size: 16px;
-    font-family: 'SF Mono';
+    font-family: 'DM Mono';
   }
 
   :not(input):not(textarea),
