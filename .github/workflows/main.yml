@@ -31,3 +31,26 @@ jobs:
         with:
           name: ${{ matrix.os }}
           path: ${{ github.workspace }}/release/*.${{ matrix.ext }}
+  
+  publish:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/download-artifact@v2
+        with:
+          path: release
+
+      - name: Display structure of downloaded files
+        run: ls -R
+        working-directory: release/
+
+      - name: Release latest master
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: master-build
+          prerelease: true
+          title: Development Build
+          files: |
+            ${{ env.GO_WORKSPACE }}/release/*
