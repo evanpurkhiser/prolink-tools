@@ -4,7 +4,7 @@
   "description": "A collection of userfriendly tools for DJs using Pioneers PRO DJ LINK feature",
   "author": "Evan Purkhiser <evanpurkhiser@gmail.com>",
   "license": "MIT",
-  "main": "./dist/main/main.js",
+  "main": "./dist/main.js",
   "scripts": {
     "build-main": "cross-env NODE_ENV=production webpack --config=webpack.config.main.ts",
     "build-renderer": "cross-env NODE_ENV=production webpack --config=webpack.config.renderer.ts",
@@ -21,7 +21,7 @@
       "output": "release"
     },
     "publish": null,
-    "files": ["dist/", "package.json"],
+    "files": ["dist/", "node_modules/sqlite3/**/*", "package.json"],
     "linux": {
       "target": "tar.gz"
     },
@@ -40,7 +40,9 @@
     "null-loader": "^4.0.0",
     "prettier": "^2.0.5",
     "webpack-cli": "^3.3.2",
-    "webpack-dev-server": "^3.4.1"
+    "webpack-dev-server": "^3.4.1",
+    "electron-builder": "^22.3.2",
+    "electron": "^9.0.0"
   },
   "dependencies": {
     "@babel/core": "^7.4.5",
@@ -72,8 +74,6 @@
     "cross-env": "^7.0.2",
     "date-fns": "^2.14.0",
     "deep-diff": "^1.0.2",
-    "electron": "^9.0.0",
-    "electron-builder": "^22.3.2",
     "electron-is-dev": "^1.2.0",
     "file-loader": "^6.0.0",
     "filesize": "^6.1.0",
