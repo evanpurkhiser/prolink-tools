@@ -17,6 +17,7 @@
   "build": {
     "productName": "Prolink Tools",
     "appId": "com.evanpurkhiser.tools.prolink",
+    "artifactName": "${name}-${version}-${os}.${ext}",
     "directories": {
       "output": "release"
     },
@@ -29,6 +30,7 @@
       "target": "portable"
     },
     "mac": {
+      "target": "dmg",
       "category": "public.app-category.music"
     }
   },
