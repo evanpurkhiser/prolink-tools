@@ -13,16 +13,16 @@ jobs:
       - uses: actions/checkout@v1
       - uses: volta-cli/action@v1
 
+      - name: Cleanup artifacts
+        shell: bash
+        run: |
+          npx rimraf 'release/!(*.exe|*.tar.gz|*.dmg)'
+
       # Build
       - run: yarn install
       - run: yarn build-main
       - run: yarn build-renderer
       - run: yarn dist
-
-      - name: Cleanup artifacts
-        shell: bash
-        run: |
-          npx rimraf "release/!(*.exe|*.tar.gz|*.dmg)"
       - name: Locate built package
         shell: bash
         id: locate
