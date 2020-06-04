@@ -18,3 +18,4 @@ jobs:
       - run: yarn build-main
       - run: yarn build-renderer
       - run: yarn dist
+      - run: ls -la release/
