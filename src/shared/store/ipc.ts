@@ -97,7 +97,10 @@ function applyStoreChange({path, change, serializerModel}: SerializedChange) {
     return update.newValue;
   };
 
+  // A bit of a TS hack, cast each expected change type
   const objChange = change as IObjectDidChange;
+  const mapChange = change as IMapDidChange;
+  const arrChange = change as IArrayChange | IArraySplice;
 
   // We can update the target object if it has serializeInfo available
   const serializeSchema = target?.constructor?.serializeInfo;
@@ -106,7 +109,9 @@ function applyStoreChange({path, change, serializerModel}: SerializedChange) {
     serializeSchema &&
     !model &&
     isObservableObject(target) &&
-    (objChange.type === 'add' || objChange.type === 'update')
+    (objChange.type === 'add' || objChange.type === 'update') &&
+    objChange.newValue !== null &&
+    objChange.newValue !== undefined
   ) {
     update(serializeSchema, target, {[objChange.name]: objChange.newValue}, () => {});
     return;
@@ -114,8 +119,6 @@ function applyStoreChange({path, change, serializerModel}: SerializedChange) {
 
   // Update arrays
   if (isObservableArray(target)) {
-    const arrChange = change as IArrayChange | IArraySplice;
-
     if (arrChange.type === 'update') {
       set(arrChange.index, getNewValue());
       return;
@@ -131,7 +134,7 @@ function applyStoreChange({path, change, serializerModel}: SerializedChange) {
     set(target, objChange.name, getNewValue());
     return;
   }
-  if (objChange.type === 'remove') {
+  if (objChange.type === 'remove' || mapChange.type === 'delete') {
     remove(target, objChange.name as string);
     return;
   }
