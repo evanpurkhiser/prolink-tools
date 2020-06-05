@@ -40,6 +40,10 @@ const config: webpack.Configuration = webpackMerge.smart(baseConfig, {
           },
         ],
       },
+      {
+        test: /\.ttf$/,
+        use: [{loader: 'file-loader'}],
+      },
     ],
   },
   plugins: [

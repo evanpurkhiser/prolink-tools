@@ -53,7 +53,7 @@ export const baseConfig: webpack.Configuration = {
   },
 
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.tsx', '.ts', '.js', '.ttf'],
     alias: {
       main: path.resolve(__dirname, 'src/main/'),
       app: path.resolve(__dirname, 'src/renderer/'),
