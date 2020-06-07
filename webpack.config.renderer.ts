@@ -5,7 +5,7 @@ import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import webpackMerge from 'webpack-merge';
 
-import {baseConfig, IS_PROD} from './webpack.config.base';
+import {baseConfig, IS_PROD, makeBabelRule} from './webpack.config.base';
 
 /**
  * Becuase prolink-connect bundles mikro-orm, which does not work well in
@@ -28,6 +28,7 @@ const config: webpack.Configuration = webpackMerge.smart(baseConfig, {
   optimization: {minimize: false},
   module: {
     rules: [
+      makeBabelRule({electron: '9'}),
       {
         test: /\.(gif|png|jpe?g|svg)$/,
         use: [
@@ -49,7 +50,7 @@ const config: webpack.Configuration = webpackMerge.smart(baseConfig, {
   plugins: [
     removeMikroORM,
     new HtmlWebpackPlugin(),
-    ...(!IS_PROD ? [new ReactRefreshWebpackPlugin()] : []),
+    new ReactRefreshWebpackPlugin(),
     new ForkTsCheckerWebpackPlugin({
       reportFiles: ['src/renderer/**/*', 'src/shared/**/*'],
     }),

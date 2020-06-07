@@ -1,4 +1,4 @@
-import {Track, Artwork} from 'prolink-connect';
+import {Track} from 'prolink-connect';
 
 export type PlayedTrack = {
   playedAt: Date;

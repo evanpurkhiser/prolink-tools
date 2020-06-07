@@ -2,7 +2,7 @@ import webpack from 'webpack';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import webpackMerge from 'webpack-merge';
 
-import {baseConfig} from './webpack.config.base';
+import {baseConfig, makeBabelRule} from './webpack.config.base';
 
 // And anything MikroORM's packaging can be ignored if it's not on disk. Check
 // these dynamically and ignore the ones we don't have
@@ -39,6 +39,7 @@ const config: webpack.Configuration = webpackMerge.smart(baseConfig, {
   },
   module: {
     rules: [
+      makeBabelRule({node: '12.14'}),
       // We do not want ts-morph bundled up in the application, as it drags in
       // typescript, which is huge. We are not using either of these at runtime, but
       // they can't be ignored using IgnorePlugin because Mikro still requires them,

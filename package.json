@@ -22,11 +22,7 @@
       "output": "release"
     },
     "publish": null,
-    "files": [
-      "dist/",
-      "node_modules/sqlite3/**/*",
-      "package.json"
-    ],
+    "files": ["dist/", "node_modules/sqlite3/**/*", "package.json"],
     "linux": {
       "target": "tar.gz"
     },
@@ -54,6 +50,8 @@
     "@babel/core": "^7.4.5",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/plugin-proposal-decorators": "^7.8.3",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.10.1",
+    "@babel/plugin-syntax-optional-chaining": "^7.8.3",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.3.3",
@@ -93,7 +91,7 @@
     "mobx-react": "^6.2.2",
     "mobx-utils": "^5.5.7",
     "module-alias": "^2.2.2",
-    "prolink-connect": "0.1.0-prerelease.16",
+    "prolink-connect": "0.1.0-prerelease.18",
     "public-ip": "^4.0.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -103,7 +101,7 @@
     "regenerator-runtime": "^0.13.5",
     "semver": "^7.3.2",
     "serializr": "^2.0.3",
-    "source-map-support": "^0.5.19",
+    "source-map-loader": "^1.0.0",
     "spectron": "^10.0.1",
     "terser-webpack-plugin": "^3.0.2",
     "ts-node": "^8.10.1",

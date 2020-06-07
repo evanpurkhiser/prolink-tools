@@ -4449,13 +4449,6 @@ devtools@6.1.11:
     ua-parser-js "^0.7.21"
     uuid "^8.0.0"
 
-dgram-as-promised@^3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/dgram-as-promised/-/dgram-as-promised-3.0.3.tgz#c8e93fa52d979efeeb1e571d6ee0466bc3041626"
-  integrity sha512-qCiV/cnNJ+TE6hUTxEVt6V83ed0nxvw3aRp9FXOeMQp+56zgVO66VR9Y0renbm9rOuaFt+s3ykdCS9CZtpfpLw==
-  dependencies:
-    tslib "^1.10.0"
-
 diff-sequences@^25.2.6:
   version "25.2.6"
   resolved "https://registry.yarnpkg.com/diff-sequences/-/diff-sequences-25.2.6.tgz#5f467c00edd35352b7bca46d7927d60e687a76dd"
@@ -9766,10 +9759,10 @@ progress@^2.0.1, progress@^2.0.3:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-prolink-connect@0.1.0-prerelease.16:
-  version "0.1.0-prerelease.16"
-  resolved "https://registry.yarnpkg.com/prolink-connect/-/prolink-connect-0.1.0-prerelease.16.tgz#27cda6a4aaab89fec69157678d81d7fc3c17f4cd"
-  integrity sha512-X3996AlCOqSxlDr95XTDEXx6DzTdjAC47sPrdQahodPnOt6jbNZIOfIxfkVL+vbo2VGirlGLnI7YaErhjgCKUg==
+prolink-connect@0.1.0-prerelease.18:
+  version "0.1.0-prerelease.18"
+  resolved "https://registry.yarnpkg.com/prolink-connect/-/prolink-connect-0.1.0-prerelease.18.tgz#db875378ca0c82f4e98c220bf11e0dfcfb1ec842"
+  integrity sha512-Q3OU9sd7ol5XUeI3msZXraYa26p0Z0NleRV3zwzVhs7NWgerhV7+f+cvSsYEZ0UpmN8u830OAXRxs9GtfI8jfw==
   dependencies:
     "@sentry/apm" "^5.16.1"
     "@sentry/node" "^5.16.1"
@@ -9777,7 +9770,6 @@ prolink-connect@0.1.0-prerelease.16:
     "@types/promise-retry" "^1.1.3"
     "@types/promise-timeout" "^1.3.0"
     async-mutex "^0.2.2"
-    dgram-as-promised "^3.0.3"
     ip-address "^6.3.0"
     js-xdr "^1.1.4"
     kaitai-struct "^0.9.0-SNAPSHOT.1"
@@ -10995,6 +10987,17 @@ source-list-map@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/source-list-map/-/source-list-map-2.0.1.tgz#3993bd873bfc48479cca9ea3a547835c7c154b34"
   integrity sha512-qnQ7gVMxGNxsiL4lEuJwe/To8UnK7fAnmbGEEH8RpLouuKbeEm0lhbQVFIrNSuB+G7tVrAlVsZgETT5nljf+Iw==
+
+source-map-loader@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/source-map-loader/-/source-map-loader-1.0.0.tgz#240b88575a9b0d27214aeecbd4e7686af95cfa56"
+  integrity sha512-ZayyQCSCrQazN50aCvuS84lJT4xc1ZAcykH5blHaBdVveSwjiFK8UGMPvao0ho54DTb0Jf7m57uRRG/YYUZ2Fg==
+  dependencies:
+    data-urls "^2.0.0"
+    iconv-lite "^0.5.1"
+    loader-utils "^2.0.0"
+    schema-utils "^2.6.6"
+    source-map "^0.6.0"
 
 source-map-resolve@^0.5.0, source-map-resolve@^0.5.2:
   version "0.5.3"
