@@ -1,3 +1,4 @@
+import 'regenerator-runtime/runtime';
 import 'src/shared/sentryConfig';
 
 import * as path from 'path';

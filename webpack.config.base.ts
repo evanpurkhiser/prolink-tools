@@ -6,28 +6,6 @@ import {prerelease} from 'semver';
 
 export const IS_PROD = process.env.NODE_ENV === 'production';
 
-export const makeBabelRule = (targets: any) => ({
-  test: /\.tsx?$/,
-  exclude: /node_modules/,
-  loader: 'babel-loader',
-  options: {
-    cacheDirectory: true,
-    babelrc: false,
-    presets: [
-      ['@babel/preset-env', {targets}],
-      '@babel/preset-typescript',
-      '@babel/preset-react',
-    ],
-    plugins: [
-      ['@babel/plugin-proposal-decorators', {legacy: true}],
-      ['@babel/plugin-proposal-class-properties', {loose: true}],
-      ['@babel/plugin-proposal-optional-chaining'],
-      ['@babel/plugin-proposal-nullish-coalescing-operator'],
-      !IS_PROD && require.resolve('react-refresh/babel'),
-    ].filter(Boolean),
-  },
-});
-
 const releaseId = execSync('git describe').toString().trim();
 const latestTag = execSync('git describe --abbrev=0').toString().trim();
 const commit = execSync('git rev-parse HEAD').toString().trim();
@@ -85,6 +63,27 @@ export const baseConfig: webpack.Configuration = {
 
   module: {
     rules: [
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        options: {
+          cacheDirectory: true,
+          babelrc: false,
+          presets: [
+            '@babel/preset-env',
+            '@babel/preset-typescript',
+            '@babel/preset-react',
+          ],
+          plugins: [
+            ['@babel/plugin-proposal-decorators', {legacy: true}],
+            ['@babel/plugin-proposal-class-properties', {loose: true}],
+            ['@babel/plugin-proposal-optional-chaining'],
+            ['@babel/plugin-proposal-nullish-coalescing-operator'],
+            !IS_PROD && require.resolve('react-refresh/babel'),
+          ].filter(Boolean),
+        },
+      },
       {
         test: /\.js$/,
         enforce: 'pre',
