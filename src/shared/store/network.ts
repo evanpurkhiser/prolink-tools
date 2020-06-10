@@ -8,7 +8,7 @@ import {
   MixstatusProcessor,
 } from 'prolink-connect';
 
-import store, {DeviceStore, HydrationInfo} from '.';
+import store, {DeviceStore, HydrationInfo, PlayedTrack} from '.';
 import {deviceReaction} from './utils';
 
 /**
@@ -248,7 +248,7 @@ const connectMixstatus = (network: ConnectedProlinkNetwork) => {
         return;
       }
 
-      store.mixstatus.trackHistory.push({playedAt, track});
+      store.mixstatus.trackHistory.push(new PlayedTrack(playedAt, track));
     })
   );
 };

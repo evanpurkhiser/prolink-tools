@@ -1,5 +1,5 @@
 import {observable, toJS, computed} from 'mobx';
-import {map, mapAsArray, object, list, custom, serializable} from 'serializr';
+import {map, mapAsArray, object, list, custom, serializable, date} from 'serializr';
 import {
   Track,
   CDJStatus,
@@ -10,8 +10,6 @@ import {
   MediaSlot,
   NetworkState,
 } from 'prolink-connect';
-
-import {PlayedTrack} from './types';
 
 type PerTableHydrationProgress = Omit<HydrationProgress, 'table'>;
 
@@ -108,11 +106,24 @@ export class HydrationInfo {
   isDone = false;
 }
 
+export class PlayedTrack {
+  @serializable(date())
+  playedAt: Date;
+
+  @serializable(rawJS)
+  track: Track;
+
+  constructor(playedAt: Date, track: Track) {
+    this.playedAt = playedAt;
+    this.track = track;
+  }
+}
+
 export class MixstatusStore {
   /**
    * Records an ordered list of every track that was played in the current set
    */
-  @serializable(list(rawJS))
+  @serializable(list(object(PlayedTrack)))
   @observable
   trackHistory = observable.array<PlayedTrack>();
 }

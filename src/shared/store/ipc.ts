@@ -1,5 +1,6 @@
-import {deepObserve} from 'mobx-utils';
 import {WebContents, ipcRenderer, ipcMain} from 'electron';
+import {serialize, deserialize, update} from 'serializr';
+import {deepObserve} from 'mobx-utils';
 import {
   set,
   get,
@@ -13,8 +14,13 @@ import {
   isObservableObject,
 } from 'mobx';
 
-import store, {AppStore, DeviceStore, MixstatusStore, HydrationInfo} from '.';
-import {serialize, deserialize, update} from 'serializr';
+import store, {
+  AppStore,
+  DeviceStore,
+  MixstatusStore,
+  HydrationInfo,
+  PlayedTrack,
+} from '.';
 
 type ValueChange = Omit<
   IObjectDidChange | IArrayChange | IArraySplice | IMapDidChange,
@@ -45,7 +51,13 @@ type SerializedChange = {
  * diffing serializer the information it needs to undersatnd what it's appyling
  * the serialized chnage to.
  */
-const serializableClasses = [AppStore, DeviceStore, HydrationInfo, MixstatusStore];
+const serializableClasses = [
+  AppStore,
+  DeviceStore,
+  HydrationInfo,
+  MixstatusStore,
+  PlayedTrack,
+];
 
 const serializerModelMap = serializableClasses.reduce(
   (acc, klass) => acc.set(klass.name, klass),
