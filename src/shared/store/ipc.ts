@@ -1,4 +1,4 @@
-import {WebContents, ipcRenderer, ipcMain} from 'electron';
+import {ipcRenderer, ipcMain} from 'electron';
 import {serialize, deserialize, update} from 'serializr';
 import {deepObserve} from 'mobx-utils';
 import {
@@ -41,6 +41,12 @@ type SerializedChange = {
 
   serializerModel?: string;
 };
+
+/**
+ * Maintains a list of handlers that will be called in response to a serailized
+ * change in the store.
+ */
+const changeHandlers: Array<(change: SerializedChange) => void> = [];
 
 /**
  * Serializr allows us to easily serialize and deserialize our _entire_ store,
@@ -152,36 +158,34 @@ function applyStoreChange({path, change, serializerModel}: SerializedChange) {
   }
 }
 
-export function subscribeWebcontent(webContents: WebContents) {
-  deepObserve(store, (change, path) => {
-    const anyChange = {...change} as {[k: string]: any} & Object;
+deepObserve(store, (change, path) => {
+  const anyChange = {...change} as {[k: string]: any} & Object;
 
-    // Avoid including the full object and oldValue in the change we're going
-    // to send over IPC. We're not going to serialize these.
-    delete anyChange.object;
-    delete anyChange.oldValue;
+  // Avoid including the full object and oldValue in the change we're going
+  // to send over IPC. We're not going to serialize these.
+  delete anyChange.object;
+  delete anyChange.oldValue;
 
-    const serialzedChange: SerializedChange = {change: anyChange as ValueChange, path};
+  const serialzedChange: SerializedChange = {change: anyChange as ValueChange, path};
 
-    // New values will require serialization. We'll take advantage of the
-    // serialization definitions that have been placed onto our store
-    // objects to do the serialization. The same will be done for
-    // deserialization.
-    if (anyChange.hasOwnProperty('newValue')) {
-      // mark the direct serializer class name for the value if we can
-      serialzedChange.serializerModel = anyChange.newValue?.constructor?.name;
+  // New values will require serialization. We'll take advantage of the
+  // serialization definitions that have been placed onto our store
+  // objects to do the serialization. The same will be done for
+  // deserialization.
+  if (anyChange.hasOwnProperty('newValue')) {
+    // mark the direct serializer class name for the value if we can
+    serialzedChange.serializerModel = anyChange.newValue?.constructor?.name;
 
-      const parentClass = getAtPath(store, path)?.constructor;
-      const serializer = anyChange.newValue?.constructor?.serializeInfo
-        ? serialize
-        : parentClass?.serializeInfo?.props?.[anyChange.name]?.serializer ?? toJS;
+    const parentClass = getAtPath(store, path)?.constructor;
+    const serializer = anyChange.newValue?.constructor?.serializeInfo
+      ? serialize
+      : parentClass?.serializeInfo?.props?.[anyChange.name]?.serializer ?? toJS;
 
-      anyChange.newValue = serializer(anyChange.newValue);
-    }
+    anyChange.newValue = serializer(anyChange.newValue);
+  }
 
-    webContents.send('store-update', serialzedChange);
-  });
-}
+  changeHandlers.forEach(handler => handler(serialzedChange));
+});
 
 /**
  * Listens for IPC from any created windows. Upon registration the current state
@@ -197,13 +201,12 @@ export const registerMainIpc = () =>
     event.sender.send('store-init', serialize(AppStore, store));
 
     // Register this window to recieve store changes over ipc
-    subscribeWebcontent(event.sender);
+    changeHandlers.push(change => event.sender.send('store-update', change));
   });
 
 /**
  * Register this window to have it's store hydrated and synced from the main
  * process' store.
- *
  */
 export const registerRendererIpc = () => {
   ipcRenderer.on('store-update', (_, change: SerializedChange) => {
