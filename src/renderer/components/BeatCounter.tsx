@@ -1,29 +1,37 @@
 import * as React from 'react';
 
 import styled from '@emotion/styled';
+import {observer} from 'mobx-react';
+import store from 'src/shared/store';
 
 type Props = {
-  beat?: number;
-  beatsUntilCue?: number | null;
+  deviceId: number;
 };
 
-const BeatCounter = ({beat, beatsUntilCue}: Props) => (
-  <Wrapper>
-    <Bar>
-      {[1, 2, 3, 4].map(count => (
-        <Beat key={count} active={beat === count} />
-      ))}
-    </Bar>
-    {beatsUntilCue !== undefined && beatsUntilCue !== null && beatsUntilCue < 64 && (
-      <CueCountdown important={beatsUntilCue < 17}>
-        Cue in{' '}
-        {beatsUntilCue === 0
-          ? '0.0'
-          : `${Math.floor((beatsUntilCue - 1) / 4)}.${((beatsUntilCue - 1) % 4) + 1}`}
-      </CueCountdown>
-    )}
-  </Wrapper>
-);
+const BeatCounter = observer(({deviceId}: Props) => {
+  const state = store.devices.get(deviceId)?.state;
+
+  const beat = state?.beatInMeasure;
+  const beatsUntilCue = state?.beatsUntilCue;
+
+  return (
+    <Wrapper>
+      <Bar>
+        {[1, 2, 3, 4].map(count => (
+          <Beat key={count} active={beat === count} />
+        ))}
+      </Bar>
+      {beatsUntilCue !== undefined && beatsUntilCue !== null && beatsUntilCue < 64 && (
+        <CueCountdown important={beatsUntilCue < 17}>
+          Cue in{' '}
+          {beatsUntilCue === 0
+            ? '0.0'
+            : `${Math.floor((beatsUntilCue - 1) / 4)}.${((beatsUntilCue - 1) % 4) + 1}`}
+        </CueCountdown>
+      )}
+    </Wrapper>
+  );
+});
 
 const Beat = styled('div')<{active: boolean}>`
   border-radius: 2px;

@@ -30,10 +30,7 @@ const Devices = observer(() => (
             <Status>
               <StatusBar>
                 <PlayState playState={state?.playState} />
-                <BeatCounter
-                  beat={state?.beatInMeasure}
-                  beatsUntilCue={state?.beatsUntilCue}
-                />
+                <BeatCounter deviceId={device.id} />
               </StatusBar>
               <StatusBar>
                 <BpmIndicator pitch={state?.sliderPitch} bpm={state?.trackBPM} />
