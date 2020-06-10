@@ -8,7 +8,7 @@ import {bringOnline} from 'prolink-connect';
 import isDev from 'electron-is-dev';
 
 import connectNetworkStore from 'src/shared/store/network';
-import {registerMainIpc} from 'src/shared/store/ipc';
+import {registerMainIpc, observeStore} from 'src/shared/store/ipc';
 import store from 'src/shared/store';
 
 // see https://www.electronjs.org/docs/api/app#appallowrendererprocessreuse
@@ -50,6 +50,7 @@ const createWindow = () => {
 app.on('ready', async () => {
   createWindow();
   registerMainIpc();
+  observeStore();
 
   // Open connections to the network
   const network = await bringOnline();

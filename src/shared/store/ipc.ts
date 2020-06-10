@@ -158,34 +158,38 @@ function applyStoreChange({path, change, serializerModel}: SerializedChange) {
   }
 }
 
-deepObserve(store, (change, path) => {
-  const anyChange = {...change} as {[k: string]: any} & Object;
+/**
+ * Start observing the store for changes
+ */
+export const observeStore = () =>
+  deepObserve(store, (change, path) => {
+    const anyChange = {...change} as {[k: string]: any} & Object;
 
-  // Avoid including the full object and oldValue in the change we're going
-  // to send over IPC. We're not going to serialize these.
-  delete anyChange.object;
-  delete anyChange.oldValue;
+    // Avoid including the full object and oldValue in the change we're going
+    // to send over IPC. We're not going to serialize these.
+    delete anyChange.object;
+    delete anyChange.oldValue;
 
-  const serialzedChange: SerializedChange = {change: anyChange as ValueChange, path};
+    const serialzedChange: SerializedChange = {change: anyChange as ValueChange, path};
 
-  // New values will require serialization. We'll take advantage of the
-  // serialization definitions that have been placed onto our store
-  // objects to do the serialization. The same will be done for
-  // deserialization.
-  if (anyChange.hasOwnProperty('newValue')) {
-    // mark the direct serializer class name for the value if we can
-    serialzedChange.serializerModel = anyChange.newValue?.constructor?.name;
+    // New values will require serialization. We'll take advantage of the
+    // serialization definitions that have been placed onto our store
+    // objects to do the serialization. The same will be done for
+    // deserialization.
+    if (anyChange.hasOwnProperty('newValue')) {
+      // mark the direct serializer class name for the value if we can
+      serialzedChange.serializerModel = anyChange.newValue?.constructor?.name;
 
-    const parentClass = getAtPath(store, path)?.constructor;
-    const serializer = anyChange.newValue?.constructor?.serializeInfo
-      ? serialize
-      : parentClass?.serializeInfo?.props?.[anyChange.name]?.serializer ?? toJS;
+      const parentClass = getAtPath(store, path)?.constructor;
+      const serializer = anyChange.newValue?.constructor?.serializeInfo
+        ? serialize
+        : parentClass?.serializeInfo?.props?.[anyChange.name]?.serializer ?? toJS;
 
-    anyChange.newValue = serializer(anyChange.newValue);
-  }
+      anyChange.newValue = serializer(anyChange.newValue);
+    }
 
-  changeHandlers.forEach(handler => handler(serialzedChange));
-});
+    changeHandlers.forEach(handler => handler(serialzedChange));
+  });
 
 /**
  * Listens for IPC from any created windows. Upon registration the current state
