@@ -91,7 +91,7 @@
     "mobx-react": "^6.2.2",
     "mobx-utils": "^5.5.7",
     "module-alias": "^2.2.2",
-    "prolink-connect": "0.1.0-prerelease.18",
+    "prolink-connect": "0.1.0-prerelease.19",
     "public-ip": "^4.0.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",

@@ -9759,10 +9759,10 @@ progress@^2.0.1, progress@^2.0.3:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-prolink-connect@0.1.0-prerelease.18:
-  version "0.1.0-prerelease.18"
-  resolved "https://registry.yarnpkg.com/prolink-connect/-/prolink-connect-0.1.0-prerelease.18.tgz#db875378ca0c82f4e98c220bf11e0dfcfb1ec842"
-  integrity sha512-Q3OU9sd7ol5XUeI3msZXraYa26p0Z0NleRV3zwzVhs7NWgerhV7+f+cvSsYEZ0UpmN8u830OAXRxs9GtfI8jfw==
+prolink-connect@0.1.0-prerelease.19:
+  version "0.1.0-prerelease.19"
+  resolved "https://registry.yarnpkg.com/prolink-connect/-/prolink-connect-0.1.0-prerelease.19.tgz#646ed3e440870d7b89c38d97c290b73ebdd4199e"
+  integrity sha512-d8rSDurAekKwbz5/hkbBzlgg3MG0LNoQjehE5LcHIPBNnv9n6mph39fJ3R78GVOzaaK2NQkHJT4M7PZG0G5/aQ==
   dependencies:
     "@sentry/apm" "^5.16.1"
     "@sentry/node" "^5.16.1"
