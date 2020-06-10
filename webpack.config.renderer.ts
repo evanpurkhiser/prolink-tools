@@ -77,6 +77,8 @@ const overlayConfig: webpack.Configuration = webpackMerge.smart(baseConfig, {
     fs: 'empty',
     dgram: 'empty',
     net: 'empty',
+    tls: 'empty',
+    console: false,
   },
   module: {
     rules: [
