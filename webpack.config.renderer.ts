@@ -20,7 +20,7 @@ const removeMikroORM = new webpack.NormalModuleReplacementPlugin(
   }
 );
 
-const config: webpack.Configuration = webpackMerge.smart(baseConfig, {
+const rendererConfig: webpack.Configuration = webpackMerge.smart(baseConfig, {
   target: 'electron-renderer',
   entry: {
     app: './src/renderer/app.tsx',
@@ -48,7 +48,7 @@ const config: webpack.Configuration = webpackMerge.smart(baseConfig, {
   },
   plugins: [
     removeMikroORM,
-    new HtmlWebpackPlugin(),
+    new HtmlWebpackPlugin({filename: 'app.html'}),
     new ReactRefreshWebpackPlugin(),
     new ForkTsCheckerWebpackPlugin({
       reportFiles: ['src/renderer/**/*', 'src/shared/**/*'],
@@ -62,9 +62,42 @@ const config: webpack.Configuration = webpackMerge.smart(baseConfig, {
     hot: true,
     headers: {'Access-Control-Allow-Origin': '*'},
     historyApiFallback: {
+      disableDotRule: true,
       verbose: true,
     },
   },
 });
 
-export default config;
+const overlayConfig: webpack.Configuration = webpackMerge.smart(baseConfig, {
+  entry: {
+    overlay: './src/overlay/app.tsx',
+  },
+  optimization: {minimize: false},
+  node: {
+    fs: 'empty',
+    dgram: 'empty',
+    net: 'empty',
+  },
+  module: {
+    rules: [
+      {
+        test: /\.ttf$/,
+        use: [{loader: 'file-loader'}],
+      },
+      {
+        test: /@sentry\/node|electron/,
+        use: 'null-loader',
+      },
+    ],
+  },
+  plugins: [
+    removeMikroORM,
+    new HtmlWebpackPlugin({filename: 'overlay.html'}),
+    new ReactRefreshWebpackPlugin(),
+    new ForkTsCheckerWebpackPlugin({
+      reportFiles: ['src/overlay/**/*', 'src/shared/**/*'],
+    }),
+  ],
+});
+
+export default [rendererConfig, overlayConfig];

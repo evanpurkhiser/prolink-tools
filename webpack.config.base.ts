@@ -46,6 +46,7 @@ export const baseConfig: webpack.Configuration = {
     alias: {
       main: path.resolve(__dirname, 'src/main/'),
       app: path.resolve(__dirname, 'src/renderer/'),
+      overlay: path.resolve(__dirname, 'src/overlay/'),
       src: path.resolve(__dirname, 'src/'),
     },
   },

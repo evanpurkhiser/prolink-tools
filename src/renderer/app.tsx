@@ -8,7 +8,7 @@ import {registerRendererIpc} from 'src/shared/store/ipc';
 const mainElement = document.createElement('div');
 document.body.appendChild(mainElement);
 
-registerRendererIpc();
-
 // Render components
 ReactDOM.render(<Application />, mainElement);
+
+registerRendererIpc();

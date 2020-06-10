@@ -1,4 +1,5 @@
 import {ipcRenderer, ipcMain} from 'electron';
+import {Server} from 'socket.io';
 import {serialize, deserialize, update} from 'serializr';
 import {deepObserve} from 'mobx-utils';
 import {
@@ -223,4 +224,25 @@ export const registerRendererIpc = () => {
 
   // Kick things off
   ipcRenderer.send('store-subscribe');
+};
+
+/**
+ * Register a websocket server as a transport to broadcast store changes
+ */
+export const registerMainWebsocket = (wss: Server) => {
+  // Send the current state to all new comections
+  wss.on('connection', client => {
+    client.emit('store-init', serialize(AppStore, store));
+  });
+
+  // Send changes
+  changeHandlers.push(change => wss.sockets.emit('store-update', change));
+};
+
+/**
+ * Register this client to recieve websocket broadcasts to update the store
+ */
+export const registerClientWebsocket = (ws: SocketIOClient.Socket) => {
+  ws.on('store-update', (change: SerializedChange) => applyStoreChange(change));
+  ws.on('store-init', (data: Object) => set(store, deserialize(AppStore, data)));
 };
