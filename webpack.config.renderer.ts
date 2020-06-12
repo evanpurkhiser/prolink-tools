@@ -64,6 +64,7 @@ const rendererConfig: webpack.Configuration = webpackMerge.smart(baseConfig, {
     historyApiFallback: {
       disableDotRule: true,
       verbose: true,
+      rewrites: [{from: /^\/overlay\//, to: '/overlay/index.html'}],
     },
   },
 });
@@ -71,6 +72,9 @@ const rendererConfig: webpack.Configuration = webpackMerge.smart(baseConfig, {
 const overlayConfig: webpack.Configuration = webpackMerge.smart(baseConfig, {
   entry: {
     overlay: './src/overlay/app.tsx',
+  },
+  output: {
+    path: path.resolve(__dirname, 'dist/overlay'),
   },
   optimization: {minimize: false},
   node: {
@@ -94,7 +98,7 @@ const overlayConfig: webpack.Configuration = webpackMerge.smart(baseConfig, {
   },
   plugins: [
     removeMikroORM,
-    new HtmlWebpackPlugin({filename: 'overlay.html'}),
+    new HtmlWebpackPlugin(),
     new ReactRefreshWebpackPlugin(),
     new ForkTsCheckerWebpackPlugin({
       reportFiles: ['src/overlay/**/*', 'src/shared/**/*'],
