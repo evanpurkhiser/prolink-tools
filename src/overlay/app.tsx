@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import socketIOClient from 'socket.io-client';
 
-import Overlay from 'overlay/overlay';
+import Overlay from 'overlay/Overlay';
 import {registerClientWebsocket} from 'src/shared/store/ipc';
 
 // Create main element

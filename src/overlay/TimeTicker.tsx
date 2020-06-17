@@ -1,6 +1,13 @@
 import React from 'react';
 
-class TimeTicker extends React.Component {
+type Props = {
+  randomRange: [number, number];
+  children: () => React.ReactNode;
+};
+
+class TimeTicker extends React.Component<Props> {
+  ticker: number = 0;
+
   componentDidMount() {
     this.tick();
   }
@@ -12,11 +19,11 @@ class TimeTicker extends React.Component {
   tick() {
     const [start, end] = this.props.randomRange;
     const interval = 1000 * (Math.floor(Math.random() * end) + start);
-    this.ticker = setTimeout(_ => this.forceUpdate(this.tick), interval);
+    this.ticker = window.setTimeout(() => this.forceUpdate(this.tick), interval);
   }
 
   render() {
-    return this.props.render();
+    return this.props.children();
   }
 }
 

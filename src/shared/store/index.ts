@@ -14,8 +14,13 @@ import {
 type PerTableHydrationProgress = Omit<HydrationProgress, 'table'>;
 
 const rawJS = custom(
-  (value: any) => toJS(value),
-  (value: any) => value
+  value => toJS(value),
+  data => data
+);
+
+const bufferSerialize = custom(
+  value => (value instanceof Buffer ? Array.from(value) : undefined),
+  data => (Array.isArray(data) ? Buffer.from(data) : data)
 );
 
 /**
@@ -47,12 +52,7 @@ export class DeviceStore {
    * The artwork buffer of the loaded track. May be undefined if there is no
    * artwork for the loaded track.
    */
-  @serializable(
-    custom(
-      value => (value instanceof Buffer ? Array.from(value) : undefined),
-      data => (Array.isArray(data) ? Buffer.from(data) : data)
-    )
-  )
+  @serializable(bufferSerialize)
   @observable
   artwork?: Buffer;
   /**
@@ -112,6 +112,9 @@ export class PlayedTrack {
 
   @serializable(rawJS)
   track: Track;
+
+  @serializable(bufferSerialize)
+  artwork?: Buffer;
 
   constructor(playedAt: Date, track: Track) {
     this.playedAt = playedAt;

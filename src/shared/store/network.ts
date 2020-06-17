@@ -241,14 +241,20 @@ const connectMixstatus = (network: ConnectedProlinkNetwork) => {
 
       await when(() => store.devices.get(state.deviceId)?.track?.id === state.trackId);
 
-      const track = store.devices.get(state.deviceId)?.track;
+      const device = store.devices.get(state.deviceId);
+      const track = device?.track;
 
-      // There was a problem loading the track, nothing we can do here
+      // There was a problem loading the track, nothing we can do here. This
+      // shouldn't happen since the when won't have ran
       if (track === undefined) {
+        console.warn('Failed to mark now playing for track');
         return;
       }
 
-      store.mixstatus.trackHistory.push(new PlayedTrack(playedAt, track));
+      const played = new PlayedTrack(playedAt, track);
+      played.artwork = device?.artwork;
+
+      store.mixstatus.trackHistory.push(played);
     })
   );
 };

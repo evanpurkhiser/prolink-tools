@@ -24,7 +24,7 @@ export async function startOverlayServer() {
   const proxy = httpProxy.createProxy();
   const fileServer = new httpStatic.Server(OVERLAY_ROOT);
 
-  const handler: http.RequestListener = false
+  const handler: http.RequestListener = isDev
     ? (req, resp) => {
         const path = req.url?.startsWith('/sockjs-node') ? '' : 'overlay/';
         proxy.web(req, resp, {target: `http://127.0.0.1:2003/${path}/`, ws: true});
