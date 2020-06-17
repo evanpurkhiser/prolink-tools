@@ -1,10 +1,8 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
 import styled from '@emotion/styled';
-import filesize from 'filesize';
 
 import store from 'src/shared/store';
-import ProgressRing from './ProgressRing';
 
 type Props = {
   deviceId: number;
