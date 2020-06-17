@@ -4,7 +4,7 @@ import React from 'react';
 import {motion} from 'framer-motion';
 
 import * as icons from 'src/shared/components/Icons';
-import TimeTicker from 'src/overlay/timeTicker';
+import TimeTicker from 'src/overlay/TimeTicker';
 import {PlayedTrack} from 'src/shared/store';
 
 const artToSrc = (d: Buffer | undefined) =>
