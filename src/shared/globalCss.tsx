@@ -1,6 +1,6 @@
 import {css} from '@emotion/core';
 
-import fonts from 'app/fonts';
+import fonts from 'src/shared/fonts';
 
 const globalCss = css`
   html,
