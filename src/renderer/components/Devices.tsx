@@ -14,10 +14,10 @@ import Metadata from './Metadata';
 const Devices = observer(() => (
   <React.Fragment>
     {[...store.devices.values()]
-      .filter(store => store.device.type === DeviceType.CDJ)
+      .filter(deviceStore => deviceStore.device.type === DeviceType.CDJ)
       .sort((a, b) => a.device.id - b.device.id)
-      .map(store => {
-        const {device, state} = store;
+      .map(deviceStore => {
+        const {device, state} = deviceStore;
 
         return (
           <Device key={device.id}>
