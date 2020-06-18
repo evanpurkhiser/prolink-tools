@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import Application from 'app/components/Application';
+import Application from 'app/views/Application';
 import {registerRendererIpc} from 'src/shared/store/ipc';
 
 // Create main element
