@@ -87,7 +87,7 @@ const Overlay = observer(() => {
           firstPlayed={store.mixstatus.trackHistory.length === 1}
           played={history[0]}
         />
-        {/* <RecentTracks history={history.slice(1, 4)} /> */}
+        <RecentTracks history={history.slice(1, 4)} />
       </TracksOverlay>
     </div>
   );

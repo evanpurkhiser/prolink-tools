@@ -255,13 +255,9 @@ const MiniTrack = React.forwardRef<HTMLDivElement, BaseTrackProps>(
         <MiniArtist>{played.track.artist?.name}</MiniArtist>
         <PlayedAt>
           <TimeTicker randomRange={[15, 30]}>
-            {() => {
-              // TODO: FIX THIS
-              console.log(played.playedAt);
-              return (
-                played.playedAt && `${formatDistance(Date.now(), played.playedAt)} ago`
-              );
-            }}
+            {() =>
+              played.playedAt && `${formatDistance(Date.now(), played.playedAt)} ago`
+            }
           </TimeTicker>
         </PlayedAt>
       </MetadataWrapper>
