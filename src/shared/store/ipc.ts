@@ -103,17 +103,18 @@ function applyStoreChange({path, change, serializerModel}: SerializedChange) {
 
   // deserialization of our chnage object is a bit of a dance, we keep that
   // dance here
-  const getNewValue = () => {
+  const getNewValue = (override?: any) => {
     const update = change as any;
+    const newValue = override ?? update.newValue;
 
     // First attempt to use the specified serializer model if it maps to a
     // serializableClass
     if (model !== undefined) {
-      return deserialize(model as any, update.newValue);
+      return deserialize(model as any, newValue);
     }
 
     // No deserializer found, assume it is a plain object
-    return update.newValue;
+    return newValue;
   };
 
   // A bit of a TS hack, cast each expected change type
@@ -144,7 +145,11 @@ function applyStoreChange({path, change, serializerModel}: SerializedChange) {
     }
     if (arrChange.type == 'splice') {
       // TODO This neds deserialization toooooo
-      target.splice(arrChange.index, arrChange.removedCount, ...arrChange.added);
+      target.splice(
+        arrChange.index,
+        arrChange.removedCount,
+        ...arrChange.added.map(getNewValue)
+      );
       return;
     }
   }
@@ -187,6 +192,20 @@ export const observeStore = () =>
         : parentClass?.serializeInfo?.props?.[anyChange.name]?.serializer ?? toJS;
 
       anyChange.newValue = serializer(anyChange.newValue);
+    }
+
+    // We do the same thing for spliced values in an arrays, which are handled
+    // slightly differently
+    if (anyChange.hasOwnProperty('added') && anyChange.added.length > 0) {
+      // mark the direct serializer class name for the value if we can
+      serialzedChange.serializerModel = anyChange.added[0]?.constructor?.name;
+
+      const parentClass = getAtPath(store, path)?.constructor;
+      const serializer = anyChange.added[0]?.constructor?.serializeInfo
+        ? serialize
+        : parentClass?.serializeInfo?.props?.[anyChange.name]?.serializer ?? toJS;
+
+      anyChange.added = anyChange.added.map((v: any) => serializer(v));
     }
 
     changeHandlers.forEach(handler => handler(serialzedChange));
