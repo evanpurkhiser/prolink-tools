@@ -195,7 +195,9 @@ const FullMetadata = ({track, ...p}: FullMetadataProps) => (
       <Attribute icon={icons.Disc} text={track.album?.name} />
       <Attribute icon={icons.Layers} text={track.label?.name} />
       <Attribute icon={icons.Hash} text={track.comment} />
-      {!(track.comment || track.label || track.album) && <NoAttributes key="no-field" />}
+      {!(track.comment || track.label?.name || track.album?.name) && (
+        <NoAttributes key="no-field" />
+      )}
     </Attributes>
   </MetadataWrapper>
 );
