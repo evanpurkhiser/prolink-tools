@@ -21,7 +21,7 @@ const NetworkStatus = observer(() => (
 const StatusIndicator = styled('div')<{state: NetworkState}>`
   background: ${p => status[p.state].bg};
   color: ${p => status[p.state].text ?? 'inherit'};
-  font-weight: bold;
+  font-weight: 500;
   padding: 0.25rem 0.5rem;
   font-size: 0.625rem;
   text-transform: uppercase;

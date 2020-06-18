@@ -101,7 +101,7 @@ const Filetype = styled('div')`
 `;
 
 const Title = styled('div')`
-  font-weight: bold;
+  font-weight: 600;
   font-size: 0.85rem;
 `;
 

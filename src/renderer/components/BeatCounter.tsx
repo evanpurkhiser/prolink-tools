@@ -61,7 +61,7 @@ const CueCountdown = styled('div')<{important: boolean}>`
   align-items: center;
   text-transform: uppercase;
   font-size: 11px;
-  font-weight: bold;
+  font-weight: 500;
 `;
 
 export default BeatCounter;
