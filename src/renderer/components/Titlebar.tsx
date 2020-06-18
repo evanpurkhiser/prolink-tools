@@ -2,9 +2,11 @@ import * as React from 'react';
 import styled from '@emotion/styled';
 
 import NetworkStatus from './NetworkStatus';
+import Navigation from './Navigation';
 
 const Toolbar = () => (
   <Container>
+    <Navigation />
     <NetworkStatus />
   </Container>
 );
@@ -17,7 +19,9 @@ const Container = styled('div')`
   padding-left: 75px;
   display: grid;
   justify-content: end;
+  grid-auto-flow: column;
   grid-auto-columns: max-content;
+  grid-gap: 0.5rem;
   align-items: center;
   background: #fafafa;
   border-bottom: 1px solid #eee;

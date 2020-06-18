@@ -16,7 +16,10 @@ const Application = () => (
       <Switch>
         <Redirect from="/" to="/status" exact />
         <Route path="/status" component={Devices} />
-        <Route path="/overlays">TESTING</Route>
+        <Route
+          path="/overlay-config"
+          component={() => <div>For now go to http://localhost:5152</div>}
+        />
       </Switch>
     </Frame>
     <Version />

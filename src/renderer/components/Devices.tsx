@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
-import {DeviceType} from 'prolink-connect';
+import {DeviceType, NetworkState} from 'prolink-connect';
 import styled from '@emotion/styled';
 
 import store from 'src/shared/store';
@@ -11,8 +11,13 @@ import BeatCounter from './BeatCounter';
 import DbStateIndicator from './DbStateIndicator';
 import Metadata from './Metadata';
 
+const ConnectingSplash = () => {
+  return null;
+};
+
 const Devices = observer(() => (
   <React.Fragment>
+    {store.networkState === NetworkState.Online && <ConnectingSplash />}
     {[...store.devices.values()]
       .filter(deviceStore => deviceStore.device.type === DeviceType.CDJ)
       .sort((a, b) => a.device.id - b.device.id)
