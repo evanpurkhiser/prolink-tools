@@ -21,7 +21,6 @@ const RecentTracks = styled(({history, ...p}: RecentTrackProps) => (
     <AnimatePresence>
       {history.map(track => (
         <Track
-          positionTransition
           mini
           played={track}
           variants={trackOutAnimation}
