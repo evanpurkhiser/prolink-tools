@@ -22,6 +22,7 @@ const RecentTracks = styled(({history, ...p}: RecentTrackProps) => (
       {history.map(track => (
         <Track
           mini
+          animate
           played={track}
           variants={trackOutAnimation}
           key={track.playedAt.toString()}
