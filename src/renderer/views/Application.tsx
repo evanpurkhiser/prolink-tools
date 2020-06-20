@@ -28,6 +28,7 @@ const Application = () => (
 
 const Frame = styled('div')`
   display: flex;
+  flex-direction: column;
   background: #fff;
   flex-grow: 1;
 `;
