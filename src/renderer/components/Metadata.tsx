@@ -3,8 +3,9 @@ import {observer} from 'mobx-react';
 import styled from '@emotion/styled';
 
 import store from 'src/shared/store';
+import {motion} from 'framer-motion';
 
-type Props = {
+type Props = React.ComponentProps<typeof motion.div> & {
   deviceId: number;
 };
 
@@ -13,7 +14,7 @@ const formatDuration = (duration: number) =>
     .toString()
     .padStart(2, '0')}m ${(duration % 60).toString().padStart(2, '0')}s`;
 
-const Metadata = observer(({deviceId}: Props) => {
+const Metadata = observer(({deviceId, ...props}: Props) => {
   const deviceStore = store.devices.get(deviceId);
 
   if (!deviceStore) {
@@ -26,13 +27,13 @@ const Metadata = observer(({deviceId}: Props) => {
   }
 
   if (!deviceStore.track) {
-    return <NoTrack />;
+    return <NoTrack {...props} />;
   }
 
   const {track, artwork} = deviceStore;
 
   return (
-    <Wrapper>
+    <Wrapper {...props}>
       {artwork && artwork.length > 0 && (
         <Artwork src={`data:image/jpg;base64,${artwork.toString('base64')}`} />
       )}
@@ -50,7 +51,7 @@ const Metadata = observer(({deviceId}: Props) => {
   );
 });
 
-const NoTrack = styled('div')`
+const NoTrack = styled(motion.div)`
   height: 48px;
   display: flex;
   align-items: center;
@@ -66,7 +67,7 @@ const NoTrack = styled('div')`
   }
 `;
 
-const Wrapper = styled('div')`
+const Wrapper = styled(motion.div)`
   display: grid;
   grid-template-columns: auto auto;
   grid-gap: 0.5rem;
