@@ -4,6 +4,7 @@ import {NavLink, useLocation} from 'react-router-dom';
 import styled from '@emotion/styled';
 import {Menu, Activity, Cast} from 'react-feather';
 import useDropdown from 'src/utils/useDropdown';
+import {AnimatePresence, motion} from 'framer-motion';
 
 const items = [
   {name: 'Device Status', path: '/status', icon: Activity},
@@ -23,16 +24,23 @@ const Navigation = () => {
         {items.find(i => location?.pathname.startsWith(i.path))?.name}
         <Menu size="1rem" />
       </MenuButton>
-      {isOpen && (
-        <MenuContainer ref={dropdownRef}>
-          {items.map(item => (
-            <MenuItem to={item.path} onClick={() => toggleDropdown()}>
-              <item.icon size="1rem" />
-              {item.name}
-            </MenuItem>
-          ))}
-        </MenuContainer>
-      )}
+      <AnimatePresence>
+        {isOpen && (
+          <MenuContainer
+            ref={dropdownRef}
+            initial={{opacity: 0, y: 10}}
+            animate={{opacity: 1, y: 0}}
+            exit={{opacity: 0, scale: 0.95}}
+          >
+            {items.map(item => (
+              <MenuItem to={item.path} onClick={() => toggleDropdown()}>
+                <item.icon size="1rem" />
+                {item.name}
+              </MenuItem>
+            ))}
+          </MenuContainer>
+        )}
+      </AnimatePresence>
     </Container>
   );
 };
@@ -64,23 +72,37 @@ const MenuButton = styled('button')`
   }
 `;
 
-const MenuContainer = styled('div')`
+const MenuContainer = styled(motion.div)`
   position: absolute;
-  top: 40px;
+  top: 38px;
   right: -10px;
   background: #fff;
-  border-radius: 3px;
   display: grid;
   grid-auto-flow: row;
   grid-auto-rows: max-content;
   grid-gap: 0.125rem;
-  padding: 0.25rem;
+  padding: 0.25rem 0;
   border: 1px solid #eee;
+
+  &:before,
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: -16px;
+    right: 18px;
+    border: 8px solid transparent;
+    border-bottom-color: #fff;
+  }
+
+  &:before {
+    margin-top: -1px;
+    border-bottom-color: #eee;
+  }
 `;
 
 const MenuItem = styled(NavLink)`
-  padding: 0.375rem 0.5rem;
-  border-radius: 3px;
+  padding: 0.375rem 0.75rem;
   display: grid;
   grid-auto-flow: column;
   grid-auto-rows: max-content;
@@ -95,7 +117,7 @@ const MenuItem = styled(NavLink)`
 
   &:hover {
     color: #000;
-    background: #f2f2f2;
+    background: #f5f5f5;
   }
 `;
 
