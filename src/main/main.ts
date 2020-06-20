@@ -3,7 +3,7 @@ import 'src/shared/sentryConfig';
 
 import * as path from 'path';
 import * as url from 'url';
-import {app, BrowserWindow} from 'electron';
+import {app, BrowserWindow, shell} from 'electron';
 import {bringOnline} from 'prolink-connect';
 import isDev from 'electron-is-dev';
 
@@ -43,6 +43,13 @@ const createWindow = () => {
       });
 
   win.loadURL(indexUrl);
+
+  win.webContents.on('will-navigate', (e, url) => {
+    if (win && url !== win.webContents.getURL() && url.startsWith('http')) {
+      e.preventDefault();
+      shell.openExternal(url);
+    }
+  });
 
   return win;
 };

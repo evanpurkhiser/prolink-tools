@@ -39,6 +39,14 @@ const globalCss = css`
   :focus {
     outline: none;
   }
+
+  a {
+    color: #4b97f8;
+  }
+
+  p {
+    line-height: 1.3;
+  }
 `;
 
 export default globalCss;

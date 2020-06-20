@@ -10,10 +10,7 @@ import BpmIndicator from './BpmIndicator';
 import BeatCounter from './BeatCounter';
 import DbStateIndicator from './DbStateIndicator';
 import Metadata from './Metadata';
-
-const ConnectingSplash = () => {
-  return null;
-};
+import ConnectingSplash from './ConnectingSplash';
 
 const Devices = observer(() => (
   <React.Fragment>

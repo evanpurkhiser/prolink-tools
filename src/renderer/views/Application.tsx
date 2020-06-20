@@ -27,6 +27,7 @@ const Application = () => (
 );
 
 const Frame = styled('div')`
+  display: flex;
   background: #fff;
   flex-grow: 1;
 `;
