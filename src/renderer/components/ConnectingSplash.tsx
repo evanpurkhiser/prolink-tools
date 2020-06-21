@@ -43,7 +43,7 @@ const Container = styled('div')`
   flex-direction: column;
 `;
 
-const Text = styled(motion.p)`
+const Text = styled(motion.div)`
   display: grid;
   grid-template-columns: max-content 1fr;
   grid-gap: 1rem;
@@ -51,7 +51,6 @@ const Text = styled(motion.p)`
   font-size: 0.8rem;
   text-transform: uppercase;
   font-weight: 500;
-  margin: 0;
 `;
 
 const Help = styled(motion.p)`
