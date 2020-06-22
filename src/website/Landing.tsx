@@ -131,6 +131,8 @@ const SpotlightShade = styled(motion.div)`
   bottom: 0;
   z-index: -1;
   transform-origin: 0 100%;
+  margin: 60px;
+  margin-right: 0;
 `;
 
 const AppPreview = styled(motion.div)`
