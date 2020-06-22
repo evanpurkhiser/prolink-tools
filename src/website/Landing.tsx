@@ -3,17 +3,16 @@ import {Global} from '@emotion/core';
 import styled from '@emotion/styled';
 import {motion, Variants} from 'framer-motion';
 
-import {AppleLogo} from 'src/shared/components/Icons';
-
 import globalCss from 'src/shared/globalCss';
 import Title from './components/Title';
+import DownloadCta from './components/DownloadCta';
 import appImage from './assets/app.png';
 import appVideo from './assets/clip.webm';
 
 const animateInfo: Variants = {
   initial: {
     opacity: 0,
-    y: 30,
+    y: 10,
   },
   animate: {
     opacity: 1,
@@ -23,7 +22,7 @@ const animateInfo: Variants = {
 
 const animateApp: Variants = {
   initial: {
-    x: -40,
+    x: -80,
     opacity: 0,
     boxShadow: '0 0 80px rgba(0,0,0,0.05)',
   },
@@ -32,12 +31,27 @@ const animateApp: Variants = {
     opacity: 1,
     boxShadow: '0 0 40px rgba(0,0,0,0.15)',
     transition: {
-      scale: {
-        type: 'spring',
-        stiffness: 400,
-        damping: 15,
-        restDelta: 0,
-      },
+      type: 'spring',
+      stiffness: 300,
+      damping: 18,
+    },
+  },
+};
+
+const animateShade: Variants = {
+  initial: {
+    x: 120,
+    opacity: 0,
+    skewX: '0deg',
+  },
+  animate: {
+    x: 0,
+    opacity: 1,
+    skewX: '-5deg',
+    transition: {
+      type: 'spring',
+      stiffness: 300,
+      damping: 18,
     },
   },
 };
@@ -49,7 +63,7 @@ const Application = () => (
     <HeroLanding
       initial="initial"
       animate="animate"
-      variants={{animate: {transition: {delayChildren: 0.2, staggerChildren: 0.2}}}}
+      variants={{animate: {transition: {delayChildren: 0.2, staggerChildren: 0.15}}}}
     >
       <Intro>
         <Title variants={animateInfo} />
@@ -59,19 +73,12 @@ const Application = () => (
           enhance your live stream productions.
         </Description>
 
-        <DownloadCta variants={animateInfo}>
-          <DownloadButton>
-            <AppleLogo />
-            download for macos
-          </DownloadButton>
-
-          <VersionTag>
-            latest version 0.1.0
-            <small>06-21-2020</small>
-          </VersionTag>
-        </DownloadCta>
+        <DownloadCta variants={animateInfo} />
       </Intro>
-      <Spotlight>
+      <Spotlight
+        variants={{animate: {transition: {delayChildren: 0.8, staggerChildren: 0}}}}
+      >
+        <SpotlightShade variants={animateShade} />
         <AppPreview variants={animateApp}>
           <video autoPlay muted playsInline loop src={appVideo} />
         </AppPreview>
@@ -107,60 +114,23 @@ const Description = styled(motion.p)`
   margin-bottom: 3rem;
 `;
 
-const DownloadCta = styled(motion.div)``;
-
-const DownloadButton = styled('button')`
-  font-family: 'DM Mono';
-  letter-spacing: -0.75px;
-  font-size: 1rem;
-  background: #f84b4b;
-  color: #fff;
-  padding: 0.5rem 0.75rem;
-  display: grid;
-  grid-auto-flow: column;
-  grid-gap: 0.5rem;
-  border: 0;
-  align-items: center;
-  border-radius: 2px;
-  cursor: pointer;
-  transition: background 200ms ease-in-out;
-
-  &:hover {
-    background: #e54949;
-  }
-`;
-
-const VersionTag = styled('div')`
-  font-size: 0.875rem;
-  margin-top: 0.75rem;
-
-  small {
-    display: block;
-    font-weight: 300;
-    line-height: 2;
-    color: #939393;
-  }
-`;
-
-const Spotlight = styled('div')`
+const Spotlight = styled(motion.div)`
   position: relative;
   display: flex;
   height: 100%;
   align-items: center;
+`;
 
-  &:before {
-    content: '';
-    display: block;
-    position: absolute;
-    background: #f6f6f6;
-    top: 0;
-    left: 40px;
-    right: 0;
-    bottom: 0;
-    z-index: -1;
-    transform: skewX(-5deg);
-    transform-origin: 0 100%;
-  }
+const SpotlightShade = styled(motion.div)`
+  display: block;
+  position: absolute;
+  background: #f6f6f6;
+  top: 0;
+  left: 40px;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  transform-origin: 0 100%;
 `;
 
 const AppPreview = styled(motion.div)`

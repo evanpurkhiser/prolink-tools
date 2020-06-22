@@ -1,7 +1,8 @@
 import * as React from 'react';
 import styled from '@emotion/styled';
-import Logo from 'src/shared/components/Logo';
 import {motion} from 'framer-motion';
+
+import Logo from 'src/shared/components/Logo';
 
 const Title = (props: React.ComponentProps<typeof motion.div>) => (
   <Container {...props}>

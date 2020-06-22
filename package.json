@@ -65,6 +65,8 @@
     "@babel/preset-typescript": "^7.3.3",
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
+    "@octokit/request": "^5.4.5",
+    "@octokit/types": "^5.0.1",
     "@sentry/apm": "^5.16.1",
     "@sentry/node": "^5.16.1",
     "@types/connect": "^3.4.33",
