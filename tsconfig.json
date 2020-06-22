@@ -16,7 +16,8 @@
       "src/*": ["./*"],
       "app/*": ["./renderer/*"],
       "overlay/*": ["./overlay/*"],
-      "main/*": ["./main/*"]
+      "main/*": ["./main/*"],
+      "web/*": ["./website/*"]
     }
   },
   "plugins": [

@@ -9,3 +9,6 @@ declare module '\*.ttf' {
   const src: any;
   export default src;
 }
+
+declare module '*.png';
+declare module '*.webm';

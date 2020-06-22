@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from '@emotion/styled';
 
-import Logo from './Logo';
+import Logo from 'src/shared/components/Logo';
 
 const Version = () => (
   <Wrapper>
