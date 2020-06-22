@@ -8,9 +8,11 @@
   "scripts": {
     "start-main-dev": "webpack --watch --config=webpack.config.main.ts",
     "start-renderer-dev": "webpack-dev-server --config=webpack.config.renderer.ts",
+    "start-website-dev": "webpack-dev-server --config=webpack.config.website.ts",
     "start": "electron dist/main.js",
     "build-main": "cross-env NODE_ENV=production webpack --config=webpack.config.main.ts",
     "build-renderer": "cross-env NODE_ENV=production webpack --config=webpack.config.renderer.ts",
+    "build-website": "cross-env NODE_ENV=production webpack --config=webpack.config.website.ts",
     "pack": "electron-builder --dir",
     "dist": "electron-builder"
   },
