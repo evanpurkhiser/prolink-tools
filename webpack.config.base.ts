@@ -6,9 +6,16 @@ import {prerelease} from 'semver';
 
 export const IS_PROD = process.env.NODE_ENV === 'production';
 
-const releaseId = execSync('git describe').toString().trim();
-const latestTag = execSync('git describe --abbrev=0').toString().trim();
 const commit = execSync('git rev-parse HEAD').toString().trim();
+let releaseId: string;
+let latestTag: string;
+
+try {
+  releaseId = execSync('git describe').toString().trim();
+  latestTag = execSync('git describe --abbrev=0').toString().trim();
+} catch {
+  releaseId = latestTag = commit.slice(0, 6);
+}
 
 // Are we building a specifically tagged commit?
 const isTagged = latestTag === releaseId;
