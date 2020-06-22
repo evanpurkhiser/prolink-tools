@@ -13,6 +13,7 @@
     "build-main": "cross-env NODE_ENV=production webpack --config=webpack.config.main.ts",
     "build-renderer": "cross-env NODE_ENV=production webpack --config=webpack.config.renderer.ts",
     "build-website": "cross-env NODE_ENV=production webpack --config=webpack.config.website.ts",
+    "vercel-build-website": "git fetch --tags && yarn build-website",
     "pack": "electron-builder --dir",
     "dist": "electron-builder"
   },
