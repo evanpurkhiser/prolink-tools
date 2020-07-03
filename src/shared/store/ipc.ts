@@ -2,6 +2,7 @@ import {ipcRenderer, ipcMain} from 'electron';
 import {Server} from 'socket.io';
 import {serialize, deserialize, update} from 'serializr';
 import {deepObserve} from 'mobx-utils';
+import settings from 'electron-settings';
 import {
   set,
   get,
@@ -21,6 +22,7 @@ import store, {
   MixstatusStore,
   HydrationInfo,
   PlayedTrack,
+  AppConfig,
 } from '.';
 
 type ValueChange = Omit<
@@ -43,11 +45,13 @@ type SerializedChange = {
   serializerModel?: string;
 };
 
+type ChangeHandler = (change: SerializedChange) => void;
+
 /**
  * Maintains a list of handlers that will be called in response to a serailized
  * change in the store.
  */
-const changeHandlers: Array<(change: SerializedChange) => void> = [];
+const changeHandlers: ChangeHandler[] = [];
 
 /**
  * Serializr allows us to easily serialize and deserialize our _entire_ store,
@@ -164,11 +168,30 @@ function applyStoreChange({path, change, serializerModel}: SerializedChange) {
   }
 }
 
+type ObserverStoreOpts = {
+  /**
+   * The target observable to observer. If not specified the entire store will be
+   * observed.
+   */
+  target?: any;
+  /**
+   * The function to call with a serializedChange when a observable has changed in
+   * the observed tree.
+   *
+   * If not specified all registered changeHandlers will be called.
+   */
+  handler?: ChangeHandler;
+};
+
+const defaultChangeHandler = (serializedChange: SerializedChange) =>
+  changeHandlers.forEach(handler => handler(serializedChange));
+
 /**
- * Start observing the store for changes
+ * Start observing the store for changes.
+ *
  */
-export const observeStore = () =>
-  deepObserve(store, (change, path) => {
+export const observeStore = ({target, handler}: ObserverStoreOpts = {}) =>
+  deepObserve(target ?? store, (change, path) => {
     const anyChange = {...change} as {[k: string]: any} & Object;
 
     // Avoid including the full object and oldValue in the change we're going
@@ -176,7 +199,7 @@ export const observeStore = () =>
     delete anyChange.object;
     delete anyChange.oldValue;
 
-    const serialzedChange: SerializedChange = {change: anyChange as ValueChange, path};
+    const serializedChange: SerializedChange = {change: anyChange as ValueChange, path};
 
     // New values will require serialization. We'll take advantage of the
     // serialization definitions that have been placed onto our store
@@ -184,7 +207,7 @@ export const observeStore = () =>
     // deserialization.
     if (anyChange.hasOwnProperty('newValue')) {
       // mark the direct serializer class name for the value if we can
-      serialzedChange.serializerModel = anyChange.newValue?.constructor?.name;
+      serializedChange.serializerModel = anyChange.newValue?.constructor?.name;
 
       const parentClass = getAtPath(store, path)?.constructor;
       const serializer = anyChange.newValue?.constructor?.serializeInfo
@@ -198,7 +221,7 @@ export const observeStore = () =>
     // slightly differently
     if (anyChange.hasOwnProperty('added') && anyChange.added.length > 0) {
       // mark the direct serializer class name for the value if we can
-      serialzedChange.serializerModel = anyChange.added[0]?.constructor?.name;
+      serializedChange.serializerModel = anyChange.added[0]?.constructor?.name;
 
       const parentClass = getAtPath(store, path)?.constructor;
       const serializer = anyChange.added[0]?.constructor?.serializeInfo
@@ -208,8 +231,15 @@ export const observeStore = () =>
       anyChange.added = anyChange.added.map((v: any) => serializer(v));
     }
 
-    changeHandlers.forEach(handler => handler(serialzedChange));
+    const handlerFunc = handler ?? defaultChangeHandler;
+    handlerFunc(serializedChange);
   });
+
+/**
+ * Load and deserialize the app config from the settings file
+ */
+export const loadMainConfig = async () =>
+  set(store.config, deserialize(AppConfig, await settings.get()));
 
 /**
  * Listens for IPC from any created windows. Upon registration the current state
@@ -219,7 +249,7 @@ export const observeStore = () =>
  * This should be called when the main app initializes _before_ any windows are
  * created.
  */
-export const registerMainIpc = () =>
+export const registerMainIpc = () => {
   ipcMain.on('store-subscribe', event => {
     // Send the current state of the store
     event.sender.send('store-init', serialize(AppStore, store));
@@ -227,6 +257,13 @@ export const registerMainIpc = () =>
     // Register this window to recieve store changes over ipc
     changeHandlers.push(change => event.sender.send('store-update', change));
   });
+
+  // Register listener for config object changes
+  ipcMain.on('config-update', (_e, change: SerializedChange) => {
+    applyStoreChange(change);
+    settings.set(serialize(AppConfig, store.config));
+  });
+};
 
 /**
  * Register this window to have it's store hydrated and synced from the main
@@ -244,6 +281,19 @@ export const registerRendererIpc = () => {
   // Kick things off
   ipcRenderer.send('store-subscribe');
 };
+
+/**
+ * Register this window to have configuration changes be propagated back to the
+ * main thread.
+ */
+export const registerRendererConfigIpc = () =>
+  observeStore({
+    target: store.config,
+    handler: change => {
+      change.path = change.path === '' ? 'config' : `store/${change.path}`;
+      ipcRenderer.send('config-update', change);
+    },
+  });
 
 /**
  * Register a websocket server as a transport to broadcast store changes

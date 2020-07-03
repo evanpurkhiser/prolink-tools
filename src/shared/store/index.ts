@@ -131,6 +131,12 @@ export class MixstatusStore {
   trackHistory = observable.array<PlayedTrack>();
 }
 
+export class AppConfig {
+  @serializable
+  @observable
+  testConfig: boolean | undefined;
+}
+
 export class AppStore {
   /**
    * The current state of the prolink network
@@ -150,6 +156,15 @@ export class AppStore {
   @serializable(object(MixstatusStore))
   @observable
   mixstatus = new MixstatusStore();
+  /**
+   * Configuration is stored here.
+   *
+   * This config is observed in client app and will propegate changes back to
+   * the main thread via IPC.
+   */
+  @serializable(object(AppConfig))
+  @observable
+  config = new AppConfig();
 }
 
 export default observable(new AppStore());

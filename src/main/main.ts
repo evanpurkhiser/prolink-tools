@@ -8,7 +8,7 @@ import {bringOnline} from 'prolink-connect';
 import isDev from 'electron-is-dev';
 
 import {startOverlayServer} from 'main/overlayServer';
-import {registerMainIpc, observeStore} from 'src/shared/store/ipc';
+import {registerMainIpc, observeStore, loadMainConfig} from 'src/shared/store/ipc';
 import connectNetworkStore from 'src/shared/store/network';
 import store from 'src/shared/store';
 
@@ -55,6 +55,8 @@ const createWindow = () => {
 };
 app.on('ready', async () => {
   createWindow();
+
+  await loadMainConfig();
   registerMainIpc();
   observeStore();
 
