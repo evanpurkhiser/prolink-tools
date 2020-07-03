@@ -3,14 +3,14 @@ import {Global} from '@emotion/core';
 import styled from '@emotion/styled';
 import {MemoryRouter, Switch, Route, Redirect} from 'react-router-dom';
 
-import globalCss from 'src/shared/globalCss';
+import globalCss, {noSelect} from 'src/shared/globalCss';
 import Titlebar from 'app/components/Titlebar';
 import Devices from 'app/components/Devices';
 import Version from 'app/components/Version';
 
 const Application = () => (
   <MemoryRouter>
-    <Global styles={globalCss} />
+    <Global styles={[globalCss, noSelect]} />
     <Titlebar />
     <Frame>
       <Switch>

@@ -26,13 +26,6 @@ const globalCss = css`
     line-height: 1.2;
   }
 
-  :not(input):not(textarea),
-  :not(input):not(textarea)::after,
-  :not(input):not(textarea)::before {
-    -webkit-user-select: none;
-    user-select: none;
-    cursor: default;
-  }
   input,
   button,
   textarea,
@@ -49,4 +42,16 @@ const globalCss = css`
   }
 `;
 
+const noSelect = css`
+  :not(input):not(textarea),
+  :not(input):not(textarea)::after,
+  :not(input):not(textarea)::before {
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: default;
+  }
+`;
+
 export default globalCss;
+
+export {noSelect};
