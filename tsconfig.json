@@ -18,12 +18,12 @@
       "overlay/*": ["./overlay/*"],
       "main/*": ["./main/*"],
       "web/*": ["./website/*"]
-    }
+    },
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin"
+      }
+    ]
   },
-  "plugins": [
-    {
-      "name": "typescript-styled-plugin"
-    }
-  ],
   "include": ["./src"]
 }

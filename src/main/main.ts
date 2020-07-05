@@ -21,7 +21,7 @@ const createWindow = () => {
   win = new BrowserWindow({
     width: 700,
     minWidth: 700,
-    height: 400,
+    height: 600,
     titleBarStyle: 'hiddenInset',
     title: 'Prolink Tools',
     webPreferences: {nodeIntegration: true},
@@ -60,6 +60,9 @@ app.on('ready', async () => {
   registerMainIpc();
   observeStore();
 
+  // Start overlay http / websocket server
+  await startOverlayServer();
+
   // Open connections to the network
   const network = await bringOnline();
   store.networkState = network.state;
@@ -68,9 +71,6 @@ app.on('ready', async () => {
   await network.autoconfigFromPeers();
   network.connect();
   store.networkState = network.state;
-
-  // Start overlay http / websocket server
-  await startOverlayServer();
 
   connectNetworkStore(network);
 });

@@ -9,13 +9,12 @@ import PlayState from 'app/components/PlayState';
 import IconCdj from 'app/icons/cdj';
 import IconDjm from 'app/icons/djm';
 import IconRekordbox from 'app/icons/rekordbox';
-
-import BpmIndicator from './BpmIndicator';
-import BeatCounter from './BeatCounter';
-import DbStateIndicator from './DbStateIndicator';
-import Metadata from './Metadata';
-import ConnectingSplash from './ConnectingSplash';
-import DeviceInfo from './DeviceInfo';
+import BpmIndicator from 'app/components/BpmIndicator';
+import BeatCounter from 'app/components/BeatCounter';
+import DbStateIndicator from 'app/components/DbStateIndicator';
+import Metadata from 'app/components/Metadata';
+import ConnectingSplash from 'app/components/ConnectingSplash';
+import DeviceInfo from 'app/components/DeviceInfo';
 
 const sortById = (a: DeviceStore, b: DeviceStore) => a.device.id - b.device.id;
 

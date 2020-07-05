@@ -266,11 +266,28 @@ export const registerMainIpc = () => {
 };
 
 /**
+ * XXX: This list MAY be brittle as it is what stops us from getting stuck in an
+ * update loop upon config changes.
+ *
+ * Becuase changes will be propagated from the client -> main, and then back
+ * from main -> client, we need to ignore the changes we just made.
+ */
+const recentConfigChanges = new Set<string>();
+
+/**
  * Register this window to have it's store hydrated and synced from the main
  * process' store.
  */
 export const registerRendererIpc = () => {
   ipcRenderer.on('store-update', (_, change: SerializedChange) => {
+    console.log(change.path, recentConfigChanges);
+
+    // When recieving configuration changes, drop changes that were jsut made.
+    if (change.path.startsWith('config') && recentConfigChanges.has(change.path)) {
+      recentConfigChanges.delete(change.path);
+      return;
+    }
+
     applyStoreChange(change);
   });
 
@@ -290,7 +307,8 @@ export const registerRendererConfigIpc = () =>
   observeStore({
     target: store.config,
     handler: change => {
-      change.path = change.path === '' ? 'config' : `store/${change.path}`;
+      change.path = change.path === '' ? 'config' : `config/${change.path}`;
+      recentConfigChanges.add(change.path);
       ipcRenderer.send('config-update', change);
     },
   });

@@ -122,6 +122,7 @@
     "regenerator-runtime": "^0.13.5",
     "semver": "^7.3.2",
     "serializr": "^2.0.3",
+    "short-uuid": "^3.1.1",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
     "source-map-loader": "^1.0.0",

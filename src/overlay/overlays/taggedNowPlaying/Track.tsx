@@ -1,11 +1,11 @@
-import {formatDistance} from 'date-fns';
-import styled from '@emotion/styled';
 import React from 'react';
+import styled from '@emotion/styled';
 import {motion} from 'framer-motion';
+import {formatDistance} from 'date-fns';
 
-import * as icons from 'src/shared/components/Icons';
-import TimeTicker from 'src/overlay/TimeTicker';
 import {PlayedTrack} from 'src/shared/store';
+import TimeTicker from 'src/shared/components/TimeTicker';
+import * as icons from 'src/shared/components/Icons';
 
 const artToSrc = (d: Buffer | undefined) =>
   d && d.length > 0
@@ -13,6 +13,10 @@ const artToSrc = (d: Buffer | undefined) =>
     : undefined;
 
 type MotionDivProps = React.ComponentProps<typeof motion.div>;
+
+type OrientedMotionDivProps = MotionDivProps & {
+  alignRight?: boolean;
+};
 
 const MissingArtwork = styled(
   React.forwardRef<HTMLDivElement, MotionDivProps>((p, ref) => (
@@ -29,37 +33,40 @@ const MissingArtwork = styled(
   opacity: 0.5;
 `;
 
-const artworkAnimation = (animateIn: boolean) => ({
-  init: {
-    clipPath: animateIn
-      ? 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)'
-      : 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
-  },
-  enter: {
-    clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
-    transitionEnd: {zIndex: 10},
-  },
-  exit: {
-    clipPath: 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)',
-    transition: {
-      type: 'spring',
-      stiffness: 700,
-      damping: 100,
-    },
-  },
-});
-
-type ArtworkProps = {animateIn: boolean} & (
+type ArtworkProps = {alignRight?: boolean; animateIn: boolean} & (
   | ({src: string} & React.ComponentProps<typeof motion.img>)
   | ({src: undefined} & React.HTMLAttributes<HTMLImageElement>)
 );
 
-const BaseArtwork = ({animateIn, ...p}: ArtworkProps) =>
-  p.src !== undefined ? (
-    <motion.img variants={artworkAnimation(animateIn)} {...p} />
+const BaseArtwork = ({animateIn, alignRight, ...p}: ArtworkProps) => {
+  const animation = {
+    init: {
+      clipPath: !animateIn
+        ? 'inset(0% 0% 0% 0%)'
+        : alignRight
+        ? 'inset(0% 0% 0% 100%)'
+        : 'inset(0% 100% 0% 0%)',
+    },
+    enter: {
+      clipPath: 'inset(0% 0% 0% 0%)',
+      transitionEnd: {zIndex: 10},
+    },
+    exit: {
+      clipPath: 'inset(0% 0% 100% 0%)',
+      transition: {
+        type: 'spring',
+        stiffness: 700,
+        damping: 100,
+      },
+    },
+  };
+
+  return p.src !== undefined ? (
+    <motion.img variants={animation} {...p} />
   ) : (
-    <MissingArtwork variants={artworkAnimation(animateIn)} className={p.className} />
+    <MissingArtwork variants={animation} className={p.className} />
   );
+};
 
 const Artwork = styled(BaseArtwork)<ArtworkProps & {size: string}>`
   display: flex;
@@ -69,26 +76,22 @@ const Artwork = styled(BaseArtwork)<ArtworkProps & {size: string}>`
   flex-shrink: 0;
 `;
 
-const textAnimations = {
-  init: {
-    opacity: 0,
-    x: -20,
-  },
-  enter: {
-    opacity: 1,
-    x: 0,
-  },
-  exit: {x: 0},
-};
-
-let Text = styled((p: MotionDivProps) => <motion.div variants={textAnimations} {...p} />)`
+let Text = styled(motion.div)`
   background: rgba(0, 0, 0, 0.25);
   padding: 0 0.28em;
   border-radius: 1px;
   display: flex;
   align-items: center;
-  margin-left: 4px;
+  margin-left: 0.25rem;
 `;
+
+Text.defaultProps = {
+  variants: {
+    init: {opacity: 0, x: -20},
+    enter: {opacity: 1, x: 0},
+    exit: {x: 0},
+  },
+};
 
 const Title = styled(Text)`
   font-weight: 600;
@@ -103,20 +106,19 @@ const Artist = styled(Text)`
   margin-bottom: 0.2em;
 `;
 
-const attributeAnimations = {
-  enter: {
-    x: 0,
-    transition: {
-      when: 'beforeChildren',
-      staggerChildren: 0.2,
-      staggerDirection: -1,
+const Attributes = styled(({alignRight, ...p}: OrientedMotionDivProps) => {
+  const animation = {
+    enter: {
+      x: 0,
+      transition: {
+        when: 'beforeChildren',
+        staggerChildren: 0.2,
+        staggerDirection: alignRight ? -1 : 1,
+      },
     },
-  },
-};
-
-const Attributes = styled((p: MotionDivProps) => (
-  <motion.div variants={attributeAnimations} {...p} />
-))`
+  };
+  return <motion.div variants={animation} {...p} />;
+})`
   display: flex;
   font-size: 0.9em;
   line-height: 1.4;
@@ -154,36 +156,36 @@ const NoAttributes = styled(p => (
   color: rgba(255, 255, 255, 0.6);
 `;
 
-const metadataAnimations = {
-  init: {
-    clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
-  },
-  enter: {
-    clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
-    transition: {
-      staggerChildren: 0.2,
+let MetadataWrapper = styled(motion.div)<{alignRight?: boolean}>`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: ${p => (p.alignRight ? 'flex-end' : 'flex-start')};
+`;
+
+MetadataWrapper.defaultProps = {
+  variants: {
+    init: {
+      clipPath: 'inset(0% 100% 0% 0%)',
     },
-  },
-  exit: {
-    clipPath: 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)',
-    transition: {
-      type: 'spring',
-      stiffness: 700,
-      damping: 90,
+    enter: {
+      clipPath: 'inset(0% 0% 0% 0%)',
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+    exit: {
+      clipPath: 'inset(0% 100% 0% 0%)',
+      transition: {
+        type: 'spring',
+        stiffness: 500,
+        damping: 90,
+      },
     },
   },
 };
 
-let MetadataWrapper = styled((p: MotionDivProps) => (
-  <motion.div variants={metadataAnimations} {...p} />
-))`
-  display: flex;
-  flex: 1;
-  align-items: flex-end;
-  flex-direction: column;
-`;
-
-type FullMetadataProps = MotionDivProps & {
+type FullMetadataProps = OrientedMotionDivProps & {
   track: PlayedTrack['track'];
 };
 
@@ -191,7 +193,7 @@ const FullMetadata = ({track, ...p}: FullMetadataProps) => (
   <MetadataWrapper {...p}>
     <Title>{track.title}</Title>
     <Artist>{track.artist?.name}</Artist>
-    <Attributes>
+    <Attributes alignRight={p.alignRight}>
       <Attribute icon={icons.Disc} text={track.album?.name} />
       <Attribute icon={icons.Layers} text={track.label?.name} />
       <Attribute icon={icons.Hash} text={track.comment} />
@@ -204,6 +206,7 @@ const FullMetadata = ({track, ...p}: FullMetadataProps) => (
 
 type BaseTrackProps = MotionDivProps & {
   played: PlayedTrack;
+  alignRight?: boolean;
   /**
    * Disables animation of the artwork
    */
@@ -213,21 +216,39 @@ type BaseTrackProps = MotionDivProps & {
 const FullTrack = React.forwardRef<HTMLDivElement, BaseTrackProps>(
   ({played, firstPlayed, ...props}, ref) => (
     <TrackContainer ref={ref} {...props}>
-      <FullMetadata track={played.track} />
-      <Artwork animateIn={!!firstPlayed} src={artToSrc(played.artwork)} size="80px" />
+      <Artwork
+        alignRight={props.alignRight}
+        animateIn={!!firstPlayed}
+        src={artToSrc(played.artwork)}
+        size="80px"
+      />
+      <FullMetadata alignRight={props.alignRight} track={played.track} />
     </TrackContainer>
   )
 );
 
-const TrackContainer = styled(p => (
-  <motion.div {...p} animate="enter" initial="init" exit="exit" />
-))`
-  display: grid;
-  grid-template-columns: auto max-content;
-  grid-gap: 8px;
+const TrackContainer = styled(motion.div)<{alignRight?: boolean}>`
+  display: inline-grid;
+  grid-gap: 0.5rem;
   color: #fff;
   font-family: Ubuntu;
+  grid-template-columns: ${p => (p.alignRight ? 'auto max-content' : 'max-content auto')};
+
+  > *:nth-child(1) {
+    grid-row: 1;
+    grid-column: ${p => (p.alignRight ? 2 : 1)};
+  }
+  > *:nth-child(2) {
+    grid-row: 1;
+    grid-column: ${p => (p.alignRight ? 1 : 2)};
+  }
 `;
+
+TrackContainer.defaultProps = {
+  animate: 'enter',
+  initial: 'init',
+  exit: 'exit',
+};
 
 const MiniTitle = styled(Text)`
   font-size: 0.85em;
@@ -250,7 +271,13 @@ const PlayedAt = styled(Text)`
 const MiniTrack = React.forwardRef<HTMLDivElement, BaseTrackProps>(
   ({played, ...props}, ref) => (
     <TrackContainer ref={ref} {...props}>
-      <MetadataWrapper>
+      <Artwork
+        animateIn
+        alignRight={props.alignRight}
+        src={artToSrc(played.artwork)}
+        size="50px"
+      />
+      <MetadataWrapper alignRight={props.alignRight}>
         <MiniTitle>{played.track.title}</MiniTitle>
         <MiniArtist>{played.track.artist?.name}</MiniArtist>
         <PlayedAt>
@@ -261,7 +288,6 @@ const MiniTrack = React.forwardRef<HTMLDivElement, BaseTrackProps>(
           </TimeTicker>
         </PlayedAt>
       </MetadataWrapper>
-      <Artwork animateIn src={artToSrc(played.artwork)} size="50px" />
     </TrackContainer>
   )
 );

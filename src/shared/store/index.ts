@@ -11,6 +11,8 @@ import {
   NetworkState,
 } from 'prolink-connect';
 
+import {OverlayInstance} from 'src/overlay';
+
 type PerTableHydrationProgress = Omit<HydrationProgress, 'table'>;
 
 const rawJS = custom(
@@ -132,9 +134,9 @@ export class MixstatusStore {
 }
 
 export class AppConfig {
-  @serializable
+  @serializable(list(rawJS))
   @observable
-  testConfig: boolean | undefined;
+  overlays = observable.array<OverlayInstance>();
 }
 
 export class AppStore {

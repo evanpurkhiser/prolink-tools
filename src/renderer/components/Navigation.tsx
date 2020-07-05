@@ -2,13 +2,13 @@ import * as React from 'react';
 import {NavLink, useLocation} from 'react-router-dom';
 
 import styled from '@emotion/styled';
-import {Menu, Activity, Cast} from 'react-feather';
+import {Menu, Activity, Layers} from 'react-feather';
 import useDropdown from 'src/utils/useDropdown';
 import {AnimatePresence, motion} from 'framer-motion';
 
 const items = [
   {name: 'Device Status', path: '/status', icon: Activity},
-  {name: 'Overlay Config', path: '/overlay-config', icon: Cast},
+  {name: 'Overlay Config', path: '/overlay-config', icon: Layers},
 ] as const;
 
 const Navigation = () => {
@@ -26,14 +26,9 @@ const Navigation = () => {
       </MenuButton>
       <AnimatePresence>
         {isOpen && (
-          <MenuContainer
-            ref={dropdownRef}
-            initial={{opacity: 0, y: 10}}
-            animate={{opacity: 1, y: 0}}
-            exit={{opacity: 0, scale: 0.95}}
-          >
+          <MenuContainer ref={dropdownRef} key={isOpen.toString()}>
             {items.map(item => (
-              <MenuItem to={item.path} onClick={() => toggleDropdown()}>
+              <MenuItem key={item.name} to={item.path} onClick={() => toggleDropdown()}>
                 <item.icon size="1rem" />
                 {item.name}
               </MenuItem>
@@ -100,6 +95,13 @@ const MenuContainer = styled(motion.div)`
     border-bottom-color: #eee;
   }
 `;
+
+MenuContainer.defaultProps = {
+  initial: {opacity: 0, y: 10},
+  animate: {opacity: 1, y: 0},
+  exit: {opacity: 0, y: 10},
+  transition: {duration: 0.2},
+};
 
 const MenuItem = styled(NavLink)`
   padding: 0.375rem 0.75rem;

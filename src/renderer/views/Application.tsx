@@ -5,8 +5,9 @@ import {MemoryRouter, Switch, Route, Redirect} from 'react-router-dom';
 
 import globalCss, {noSelect} from 'src/shared/globalCss';
 import Titlebar from 'app/components/Titlebar';
-import Devices from 'app/components/Devices';
 import Version from 'app/components/Version';
+import Devices from 'app/views/Devices';
+import OverlayConfig from './OverlayConfig';
 
 const Application = () => (
   <MemoryRouter>
@@ -16,10 +17,7 @@ const Application = () => (
       <Switch>
         <Redirect from="/" to="/status" exact />
         <Route path="/status" component={Devices} />
-        <Route
-          path="/overlay-config"
-          component={() => <div>For now go to http://localhost:5152</div>}
-        />
+        <Route path="/overlay-config" component={OverlayConfig} />
       </Switch>
     </Frame>
     <Version />

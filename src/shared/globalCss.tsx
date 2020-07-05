@@ -12,6 +12,7 @@ const globalCss = css`
     min-height: 100%;
     margin: 0;
     padding: 0;
+    color: #28272b;
   }
 
   ${fonts};
@@ -33,8 +34,20 @@ const globalCss = css`
     outline: none;
   }
 
+  button {
+    font-family: 'DM Mono';
+    transition: background 200ms, color 200ms;
+    cursor: pointer;
+  }
+
   a {
+    cursor: pointer;
     color: #4b97f8;
+    transition: color 200ms;
+
+    &:hover {
+      color: #3371bf;
+    }
   }
 
   p {
@@ -43,11 +56,12 @@ const globalCss = css`
 `;
 
 const noSelect = css`
-  :not(input):not(textarea),
-  :not(input):not(textarea)::after,
-  :not(input):not(textarea)::before {
+  *,
+  *::after,
+  *::before {
     -webkit-user-select: none;
-    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-app-region: no-drag;
     cursor: default;
   }
 `;
