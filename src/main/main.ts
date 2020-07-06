@@ -60,9 +60,6 @@ app.on('ready', async () => {
   registerMainIpc();
   observeStore();
 
-  // Start overlay http / websocket server
-  await startOverlayServer();
-
   // Open connections to the network
   const network = await bringOnline();
   store.networkState = network.state;
@@ -71,6 +68,20 @@ app.on('ready', async () => {
   await network.autoconfigFromPeers();
   network.connect();
   store.networkState = network.state;
+
+  // Start overlay http / websocket server.
+  //
+  // XXX: Becuase of a strange bug in MacOS's firewall dialog, if two
+  // connections are opened at the same time before the program is given
+  // permission to open connections, when the software is closed the kernel
+  // will not correctly close one of the ports.
+  //
+  // Because the `network.bringOnline` will block until connected we ensure two
+  // are not opened
+  //
+  // As thus THIS LINE MUST BE PLACED AFTER THE NETWORK IS BROUGHT ONLINE.
+  //
+  await startOverlayServer();
 
   connectNetworkStore(network);
 });
