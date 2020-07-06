@@ -4,6 +4,32 @@ import {Track} from 'prolink-connect';
 import {PlayedTrack} from 'src/shared/store';
 import exampleMetadata from './exampleMetadata';
 
+const generateEntry = async () => {
+  const metadata = exampleMetadata[Math.floor(Math.random() * exampleMetadata.length)];
+
+  const track: Track = {
+    id: Date.now(),
+    title: metadata.title,
+    comment: metadata.comment,
+    artist: {id: 0, name: metadata.artist} as any,
+    album: {id: 0, name: metadata.album} as any,
+    genre: {id: 0, name: metadata.genre} as any,
+    label: {id: 0, name: metadata.label} as any,
+    key: {id: 0, name: metadata.key} as any,
+  } as any;
+
+  const played = new PlayedTrack(new Date(), track);
+
+  // Do not always include artwork, it is random afterall
+  if (Math.random() > 0.3) {
+    const imageResp = await fetch('https://picsum.photos/160/160');
+    const imageBuffer = await imageResp.arrayBuffer();
+    played.artwork = Buffer.from(imageBuffer);
+  }
+
+  return played;
+};
+
 type Options = {
   /**
    * Maximum number of history items to store
@@ -22,37 +48,12 @@ type Options = {
 const useRandomHistory = ({cutoff, updateInterval}: Options) => {
   const [history, setHistory] = React.useState<PlayedTrack[]>([]);
 
-  const generatePlayed = async () => {
-    const imageResp = await fetch('https://source.unsplash.com/random/160x160');
-    const imageBuffer = await imageResp.arrayBuffer();
-
-    const metadata = exampleMetadata[Math.floor(Math.random() * exampleMetadata.length)];
-
-    const track: Track = {
-      id: Date.now(),
-      title: metadata.title,
-      comment: metadata.comment,
-      artist: {id: 0, name: metadata.artist} as any,
-      album: {id: 0, name: metadata.album} as any,
-      genre: {id: 0, name: metadata.genre} as any,
-      label: {id: 0, name: metadata.label} as any,
-      key: {id: 0, name: metadata.key} as any,
-    } as any;
-
-    const played = new PlayedTrack(new Date(), track);
-
-    // Do not always include artwork, it is random afterall
-    if (Math.random() > 0.3) {
-      played.artwork = Buffer.from(imageBuffer);
-    }
-
-    return played;
-  };
-
-  const updateHistory = async () =>
-    setHistory([await generatePlayed(), ...history].slice(0, cutoff));
-
   let isUpdating = true;
+
+  const updateHistory = async () => {
+    const newHistory = [await generateEntry(), ...history].slice(0, cutoff);
+    isUpdating && setHistory(newHistory);
+  };
 
   const startUpdater = async () => {
     while (isUpdating) {
