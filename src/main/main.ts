@@ -1,5 +1,5 @@
 import 'regenerator-runtime/runtime';
-import 'src/shared/sentryConfig';
+import 'src/shared/sentry/main';
 
 import * as path from 'path';
 import * as url from 'url';

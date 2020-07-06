@@ -68,6 +68,7 @@
     "@octokit/request": "^5.4.5",
     "@octokit/types": "^5.0.1",
     "@sentry/apm": "^5.16.1",
+    "@sentry/browser": "^5.19.0",
     "@sentry/node": "^5.16.1",
     "@types/connect": "^3.4.33",
     "@types/deep-diff": "^1.0.0",

@@ -1,4 +1,6 @@
 import 'regenerator-runtime/runtime';
+import 'src/shared/sentry/web';
+
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
