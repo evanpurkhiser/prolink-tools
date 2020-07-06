@@ -12,6 +12,9 @@ import {registerMainIpc, observeStore, loadMainConfig} from 'src/shared/store/ip
 import connectNetworkStore from 'src/shared/store/network';
 import store from 'src/shared/store';
 
+// Intialize the store for the main thread immedaitely.
+store.isInitalized = true;
+
 // see https://www.electronjs.org/docs/api/app#appallowrendererprocessreuse
 app.allowRendererProcessReuse = true;
 

@@ -141,6 +141,13 @@ export class AppConfig {
 
 export class AppStore {
   /**
+   * Indicates that the store has been initalized. Useful for ensuring we have
+   * real data before showing things like empty-states.
+   */
+  @serializable
+  @observable
+  isInitalized = false;
+  /**
    * The current state of the prolink network
    */
   @serializable
