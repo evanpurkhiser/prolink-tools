@@ -231,6 +231,19 @@ export const observeStore = ({target, handler}: ObserverStoreOpts = {}) =>
       anyChange.added = anyChange.added.map((v: any) => serializer(v));
     }
 
+    // XXX: Duplicated remove code from above. Maybe this should be refactored
+    if (anyChange.hasOwnProperty('removed') && anyChange.removed.length > 0) {
+      // mark the direct serializer class name for the value if we can
+      serializedChange.serializerModel = anyChange.removed[0]?.constructor?.name;
+
+      const parentClass = getAtPath(store, path)?.constructor;
+      const serializer = anyChange.removed[0]?.constructor?.serializeInfo
+        ? serialize
+        : parentClass?.serializeInfo?.props?.[anyChange.name]?.serializer ?? toJS;
+
+      anyChange.removed = anyChange.removed.map((v: any) => serializer(v));
+    }
+
     const handlerFunc = handler ?? defaultChangeHandler;
     handlerFunc(serializedChange);
   });
@@ -282,7 +295,7 @@ export const registerRendererIpc = () => {
   ipcRenderer.on('store-update', (_, change: SerializedChange) => {
     // When recieving configuration changes, drop changes that were jsut made.
     if (change.path.startsWith('config') && recentConfigChanges.has(change.path)) {
-      recentConfigChanges.delete(change.path);
+      setTimeout(() => recentConfigChanges.delete(change.path), 500);
       return;
     }
 
