@@ -5,9 +5,8 @@ import {Plus, ArrowLeft} from 'react-feather';
 import {css} from '@emotion/core';
 import {AnimatePresence} from 'framer-motion';
 
-import store from 'src/shared/store';
-import AvailableOverlays from 'app/components/AvailableOverlays';
-import OverlayList from 'app/components/OverlayList';
+import AvailableOverlays from './components/AvailableOverlays';
+import OverlayList from './components/OverlayList';
 
 const OverlayConfig = observer(() => {
   const [addNewOpen, setOpen] = React.useState(false);

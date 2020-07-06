@@ -6,13 +6,21 @@ import store from 'src/shared/store';
 const OverlayList = observer(() => (
   <Container>
     {store.config.overlays.map(overlay => (
-      <input key={overlay.key} value={overlay.key} />
+      <div key={overlay.key}>
+        <input value={overlay.key} />
+        <button onClick={() => store.config.overlays.remove(overlay)}>REMOVE</button>
+      </div>
     ))}
   </Container>
 ));
 
 const Container = styled('div')`
   user-select: text;
+  display: grid;
+  grid-auto-flow: row;
+  grid-auto-rows: max-content;
+  grid-gap: 1.5rem;
+  padding: 1.5rem;
 `;
 
 export default OverlayList;
