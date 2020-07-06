@@ -3,9 +3,11 @@ import 'src/shared/sentry/web';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import {when} from 'mobx';
 
 import Application from 'app/views/Application';
 import {registerRendererIpc, registerRendererConfigIpc} from 'src/shared/store/ipc';
+import store from 'src/shared/store';
 
 // Create main element
 const mainElement = document.createElement('div');
@@ -16,6 +18,7 @@ ReactDOM.render(<Application />, mainElement);
 
 registerRendererIpc();
 
-// Wait to listen on the config object, when we hydrate the local store it will
-// be overwritten.
-setTimeout(() => registerRendererConfigIpc(), 100);
+when(
+  () => store.isInitalized,
+  () => registerRendererConfigIpc()
+);

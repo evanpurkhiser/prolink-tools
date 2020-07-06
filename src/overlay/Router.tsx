@@ -11,6 +11,10 @@ import {registeredOverlays} from '.';
 type Props = RouteComponentProps<{overlayKey: string}>;
 
 const MapOverlay: React.FC<Props> = observer(props => {
+  if (!store.isInitalized) {
+    return null;
+  }
+
   const overlayKey = props.match.params.overlayKey;
   const instance = store.config.overlays.find(i => i.key === overlayKey);
   const descriptor = registeredOverlays?.find(overlay => overlay.type === instance?.type);
