@@ -29,26 +29,6 @@ type Config = {
   tags: string[];
 };
 
-type RecentTrackProps = {
-  history: PlayedTrack[];
-};
-
-const RecentTracks = ({history}: RecentTrackProps) => (
-  <RecentWrapper>
-    <AnimatePresence>
-      {history.map(track => (
-        <Track
-          mini
-          animate
-          played={track}
-          variants={{exit: {display: 'none'}}}
-          key={track.playedAt.toString()}
-        />
-      ))}
-    </AnimatePresence>
-  </RecentWrapper>
-);
-
 const CurrentTrack = ({played, ...p}: React.ComponentProps<typeof Track>) => (
   <CurrentWrapper>
     <AnimatePresence>
@@ -83,7 +63,19 @@ const Overlay: React.FC<{config: Config}> = observer(({config}) => {
         firstPlayed={store.mixstatus.trackHistory.length === 1}
         played={history[0]}
       />
-      <RecentTracks history={history.slice(1, config.historyCount)} />
+      <RecentWrapper>
+        <AnimatePresence>
+          {history.slice(1, config.historyCount).map(track => (
+            <Track
+              mini
+              animate
+              played={track}
+              variants={{exit: {display: 'none'}}}
+              key={track.playedAt.toString()}
+            />
+          ))}
+        </AnimatePresence>
+      </RecentWrapper>
     </TracksOverlay>
   );
 });
@@ -91,9 +83,7 @@ const Overlay: React.FC<{config: Config}> = observer(({config}) => {
 const RecentWrapper = styled('div')`
   display: grid;
   grid-gap: 14px;
-  position: absolute;
-  right: 0;
-  top: 125px;
+  margin-top: 2rem;
 `;
 
 const CurrentWrapper = styled('div')`
@@ -106,19 +96,33 @@ const CurrentWrapper = styled('div')`
 `;
 
 const TracksOverlay = styled('div')`
-  margin: 20px;
-  position: absolute;
-  top: 0;
-  right: 0;
   width: 100vw;
+  height: 100vh;
+`;
+
+const EmptyExample = styled('div')`
+  height: 80px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 3px;
+
+  &:after {
+    color: #aaa;
+    content: 'loading exmaple demo';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+  }
 `;
 
 const Example = () => {
   const history = useRandomHistory({cutoff: 1, updateInterval: 5000});
-
-  console.log(history);
-
-  return history.length === 0 ? null : <CurrentTrack firstPlayed played={history[0]} />;
+  return history.length === 0 ? (
+    <EmptyExample />
+  ) : (
+    <CurrentTrack firstPlayed played={history[0]} />
+  );
 };
 
 const descriptor: OverlayDescriptor<TaggedNowPlaying> = {
@@ -126,7 +130,9 @@ const descriptor: OverlayDescriptor<TaggedNowPlaying> = {
   name: 'Now playing with tags',
   component: Overlay,
   example: Example,
-  defaultConfig: {},
+  defaultConfig: {
+    historyCount: 4,
+  },
 };
 
 export default descriptor;
