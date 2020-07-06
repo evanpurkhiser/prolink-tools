@@ -6,8 +6,8 @@ import {MemoryRouter, Switch, Route, Redirect} from 'react-router-dom';
 import globalCss, {noSelect} from 'src/shared/globalCss';
 import Titlebar from 'app/components/Titlebar';
 import Version from 'app/components/Version';
-import Devices from 'app/views/Devices';
-import OverlayConfig from './OverlayConfig';
+import Devices from 'app/views/devices';
+import OverlayConfig from 'app/views/overlayConfig';
 
 const Application = () => (
   <MemoryRouter>
