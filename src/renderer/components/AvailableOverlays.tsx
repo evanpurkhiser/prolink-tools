@@ -14,12 +14,12 @@ type EntryProps = {
 
 const OverlayEntry: React.FC<EntryProps> = ({overlay, onAdd}) => (
   <EntryContainer>
-    <Actions>
+    <OverlayHeader>
       <Name>{overlay.name}</Name>
       <AddButton onClick={onAdd}>
         <Layers size="0.75rem" /> Add Overlay
       </AddButton>
-    </Actions>
+    </OverlayHeader>
     <Example>
       <overlay.example />
     </Example>
@@ -54,7 +54,7 @@ const EntryContainer = styled('div')`
   margin: 0 1.5rem;
 `;
 
-const Actions = styled('div')`
+const OverlayHeader = styled('div')`
   padding: 0.5rem;
   display: flex;
   justify-content: space-between;

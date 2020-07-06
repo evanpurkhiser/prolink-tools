@@ -5,7 +5,7 @@ import {formatDistance} from 'date-fns';
 
 import {PlayedTrack} from 'src/shared/store';
 import TimeTicker from 'src/shared/components/TimeTicker';
-import * as icons from 'src/shared/components/Icons';
+import {Hash, Disc, X, Layers} from 'react-feather';
 
 const artToSrc = (d: Buffer | undefined) =>
   d && d.length > 0
@@ -21,7 +21,7 @@ type OrientedMotionDivProps = MotionDivProps & {
 const MissingArtwork = styled(
   React.forwardRef<HTMLDivElement, MotionDivProps>((p, ref) => (
     <motion.div ref={ref} {...p}>
-      <icons.Disc size="50%" />
+      <Disc size="50%" />
     </motion.div>
   ))
 )`
@@ -132,7 +132,7 @@ const Attributes = styled(({alignRight, ...p}: OrientedMotionDivProps) => {
 `;
 
 type IconProps = {
-  icon: typeof icons.Hash;
+  icon: React.ComponentType<React.ComponentProps<typeof Disc>>;
   className?: string;
 };
 
@@ -155,7 +155,7 @@ const Attribute = ({icon, text, ...p}: AttributeProps) =>
   );
 
 const NoAttributes = styled(p => (
-  <Attribute text="No Release Metadata" icon={icons.X} {...p} />
+  <Attribute text="No Release Metadata" icon={X} {...p} />
 ))`
   color: rgba(255, 255, 255, 0.6);
 `;
@@ -198,9 +198,9 @@ const FullMetadata = ({track, ...p}: FullMetadataProps) => (
     <Title>{track.title}</Title>
     <Artist>{track.artist?.name}</Artist>
     <Attributes alignRight={p.alignRight}>
-      <Attribute icon={icons.Disc} text={track.album?.name} />
-      <Attribute icon={icons.Layers} text={track.label?.name} />
-      <Attribute icon={icons.Hash} text={track.comment} />
+      <Attribute icon={Disc} text={track.album?.name} />
+      <Attribute icon={Layers} text={track.label?.name} />
+      <Attribute icon={Hash} text={track.comment} />
       {!(track.comment || track.label?.name || track.album?.name) && (
         <NoAttributes key="no-field" />
       )}

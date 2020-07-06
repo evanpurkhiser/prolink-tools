@@ -5,16 +5,16 @@ import styled from '@emotion/styled';
 import {groupBy} from 'lodash';
 
 import store, {DeviceStore} from 'src/shared/store';
-import PlayState from 'app/components/PlayState';
 import IconCdj from 'app/icons/cdj';
 import IconDjm from 'app/icons/djm';
 import IconRekordbox from 'app/icons/rekordbox';
-import BpmIndicator from 'app/components/BpmIndicator';
-import BeatCounter from 'app/components/BeatCounter';
-import DbStateIndicator from 'app/components/DbStateIndicator';
-import Metadata from 'app/components/Metadata';
+import PlayState from 'app/components/device/PlayState';
+import BpmIndicator from 'app/components/device/BpmIndicator';
+import BeatCounter from 'app/components/device/BeatCounter';
+import DbStateIndicator from 'app/components/device/DbStateIndicator';
+import Metadata from 'app/components/device/Metadata';
 import ConnectingSplash from 'app/components/ConnectingSplash';
-import DeviceInfo from 'app/components/DeviceInfo';
+import DeviceInfo from 'app/components/device/DeviceInfo';
 
 const sortById = (a: DeviceStore, b: DeviceStore) => a.device.id - b.device.id;
 

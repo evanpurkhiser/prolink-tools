@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import filesize from 'filesize';
 
 import store from 'src/shared/store';
-import ProgressRing from './ProgressRing';
+import ProgressRing from 'app/components/ProgressRing';
 
 type Props = {
   deviceId: number;

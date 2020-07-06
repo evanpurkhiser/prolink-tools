@@ -97,8 +97,6 @@ function drawScrollingWaveform(deviceId: DeviceID, canvas: HTMLCanvasElement) {
     pitch = state?.sliderPitch ?? 0;
     playState = state?.playState ?? CDJStatus.PlayState.Empty;
 
-    console.log(pitch);
-
     const timeOffset = track.beatGrid?.[state?.beat ?? 0]?.offset ?? 0;
     posX = Math.round(((timeOffset / 1000) * 150) / zoom);
   });

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const AppleLogo = () => (
+export const AppleLogo = () => (
   <svg
     width="19"
     height="22"
@@ -15,7 +15,7 @@ const AppleLogo = () => (
   </svg>
 );
 
-const LinuxLogo = () => (
+export const LinuxLogo = () => (
   <svg
     width="22"
     height="22"
@@ -50,7 +50,7 @@ const LinuxLogo = () => (
   </svg>
 );
 
-const WindowsLogo = () => (
+export const WindowsLogo = () => (
   <svg
     width="25"
     height="22"
@@ -64,6 +64,3 @@ const WindowsLogo = () => (
     />
   </svg>
 );
-
-export {AppleLogo, WindowsLogo, LinuxLogo};
-export {AlertCircle, Activity, Disc, Hash, Layers, X, Music, Star} from 'react-feather';
