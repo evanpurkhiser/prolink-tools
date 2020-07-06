@@ -16,17 +16,17 @@ type TaggedNowPlaying = {
 
 type Config = {
   /**
-   * Should the track metadata be aligned to the right of the window.
-   */
-  alignRight: boolean;
-  /**
    * The number of history items to show
    */
   historyCount: number;
   /**
+   * Should the track metadata be aligned to the right of the window.
+   */
+  alignRight?: boolean;
+  /**
    * The specific set of tags to display
    */
-  tags: string[];
+  tags?: string[];
 };
 
 const CurrentTrack = ({played, ...p}: React.ComponentProps<typeof Track>) => (
@@ -49,36 +49,36 @@ CurrentTrack.defaultProps = {
   },
 };
 
-const Overlay: React.FC<{config: Config}> = observer(({config}) => {
-  const history = store.mixstatus.trackHistory.reverse();
+type Props = {
+  config: Config;
+  history: PlayedTrack[];
+};
 
-  if (history.length === 0) {
-    return null;
-  }
-
-  return (
-    <TracksOverlay>
+const Overlay: React.FC<Props> = ({config, history}) =>
+  history.length === 0 ? null : (
+    <React.Fragment>
       <CurrentTrack
         alignRight={config.alignRight}
         firstPlayed={store.mixstatus.trackHistory.length === 1}
         played={history[0]}
       />
-      <RecentWrapper>
-        <AnimatePresence>
-          {history.slice(1, config.historyCount).map(track => (
-            <Track
-              mini
-              animate
-              played={track}
-              variants={{exit: {display: 'none'}}}
-              key={track.playedAt.toString()}
-            />
-          ))}
-        </AnimatePresence>
-      </RecentWrapper>
-    </TracksOverlay>
+      {history.length > 1 && (
+        <RecentWrapper>
+          <AnimatePresence>
+            {history.slice(1, config.historyCount).map(track => (
+              <Track
+                mini
+                animate
+                played={track}
+                variants={{exit: {display: 'none'}}}
+                key={track.playedAt.toString()}
+              />
+            ))}
+          </AnimatePresence>
+        </RecentWrapper>
+      )}
+    </React.Fragment>
   );
-});
 
 const RecentWrapper = styled('div')`
   display: grid;
@@ -93,11 +93,6 @@ const CurrentWrapper = styled('div')`
     grid-column: 1;
     grid-row: 1;
   }
-`;
-
-const TracksOverlay = styled('div')`
-  width: 100vw;
-  height: 100vh;
 `;
 
 const EmptyExample = styled('div')`
@@ -116,19 +111,23 @@ const EmptyExample = styled('div')`
   }
 `;
 
-const Example = () => {
+const Example: React.FC<{config?: Config}> = () => {
   const history = useRandomHistory({cutoff: 1, updateInterval: 5000});
   return history.length === 0 ? (
     <EmptyExample />
   ) : (
-    <CurrentTrack firstPlayed played={history[0]} />
+    <Overlay config={{historyCount: 0}} history={history} />
   );
 };
+
+const ConnectedOverlay: React.FC<{config: Config}> = observer(({config}) => (
+  <Overlay history={store.mixstatus.trackHistory.reverse()} config={config} />
+));
 
 const descriptor: OverlayDescriptor<TaggedNowPlaying> = {
   type: 'taggedNowPlaying',
   name: 'Now playing with tags',
-  component: Overlay,
+  component: ConnectedOverlay,
   example: Example,
   defaultConfig: {
     historyCount: 4,

@@ -62,7 +62,6 @@ const noSelect = css`
     -webkit-user-select: none;
     -webkit-user-drag: none;
     -webkit-app-region: no-drag;
-    cursor: default;
   }
 `;
 

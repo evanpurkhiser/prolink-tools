@@ -9,8 +9,8 @@ import httpStatic from 'node-static';
 import isDev from 'electron-is-dev';
 
 import {registerMainWebsocket} from 'src/shared/store/ipc';
+import {WEBSERVER_PORT} from 'src/shared/constants';
 
-const WEBSERVER_PORT = 5152;
 const OVERLAY_ROOT = path.resolve(__dirname, 'overlay');
 
 export async function startOverlayServer() {
