@@ -52,10 +52,20 @@ const useRandomHistory = ({cutoff, updateInterval}: Options) => {
   const updateHistory = async () =>
     setHistory([await generatePlayed(), ...history].slice(0, cutoff));
 
+  let isUpdating = true;
+
+  const startUpdater = async () => {
+    while (isUpdating) {
+      await updateHistory();
+      await new Promise(r => setTimeout(r, updateInterval));
+    }
+  };
+
   React.useEffect(() => {
-    updateHistory();
-    const interval = setInterval(updateHistory, updateInterval);
-    return () => clearTimeout(interval);
+    startUpdater();
+    return () => {
+      isUpdating = false;
+    };
   }, [cutoff]);
 
   return history;
