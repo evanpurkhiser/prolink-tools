@@ -80,9 +80,12 @@ let Text = styled(motion.div)`
   background: rgba(0, 0, 0, 0.25);
   padding: 0 0.28em;
   border-radius: 1px;
-  display: flex;
-  align-items: center;
+  display: inline-block;
   margin-left: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 `;
 
 Text.defaultProps = {
@@ -135,6 +138,7 @@ type IconProps = {
 
 const Icon = styled((p: IconProps) => <p.icon className={p.className} size="1em" />)`
   margin-right: 0.25em;
+  vertical-align: text-top;
 `;
 
 type AttributeProps = React.ComponentProps<typeof Text> & {
@@ -232,7 +236,8 @@ const TrackContainer = styled(motion.div)<{alignRight?: boolean}>`
   grid-gap: 0.5rem;
   color: #fff;
   font-family: Ubuntu;
-  grid-template-columns: ${p => (p.alignRight ? 'auto max-content' : 'max-content auto')};
+  grid-template-columns: ${p =>
+    p.alignRight ? 'minmax(0, 1fr) max-content' : 'max-content minmax(0, 1fr)'};
 
   > *:nth-child(1) {
     grid-row: 1;

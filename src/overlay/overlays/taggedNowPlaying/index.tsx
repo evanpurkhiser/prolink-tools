@@ -98,6 +98,7 @@ const RecentWrapper = styled('div')`
 
 const CurrentWrapper = styled('div')`
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   > * {
     grid-column: 1;
     grid-row: 1;
