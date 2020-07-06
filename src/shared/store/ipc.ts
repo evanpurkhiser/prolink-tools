@@ -280,8 +280,6 @@ const recentConfigChanges = new Set<string>();
  */
 export const registerRendererIpc = () => {
   ipcRenderer.on('store-update', (_, change: SerializedChange) => {
-    console.log(change.path, recentConfigChanges);
-
     // When recieving configuration changes, drop changes that were jsut made.
     if (change.path.startsWith('config') && recentConfigChanges.has(change.path)) {
       recentConfigChanges.delete(change.path);
