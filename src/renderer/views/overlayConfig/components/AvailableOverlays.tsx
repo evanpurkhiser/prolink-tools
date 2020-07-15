@@ -99,9 +99,9 @@ const Container = styled(motion.div)`
 `;
 
 Container.defaultProps = {
-  initial: {opacity: 0, scale: 0.95},
-  animate: {opacity: 1, scale: 1},
-  exit: {opacity: 0, scale: 1.05},
+  initial: {opacity: 0, x: -20},
+  animate: {opacity: 1, x: 0},
+  exit: {opacity: 0},
   transition: {duration: 0.2},
 };
 

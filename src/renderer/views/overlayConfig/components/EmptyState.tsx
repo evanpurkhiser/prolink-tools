@@ -14,9 +14,7 @@ const Wrapper = styled('div')`
   grid-template-rows: max-content max-content;
   grid-gap: 0.25rem;
   font-size: 0.875rem;
-  flex: 1;
   justify-content: center;
-  align-self: center;
   justify-items: center;
 `;
 

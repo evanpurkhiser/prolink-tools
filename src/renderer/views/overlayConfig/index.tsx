@@ -95,13 +95,16 @@ const BackButton = styled('button')`
 `;
 
 const Container = styled('div')`
+  position: relative;
   flex-grow: 1;
-  display: grid;
-  grid-template: 1fr / 1fr;
 
   > * {
-    grid-column: 1;
-    grid-row: 1;
+    overflow-y: scroll;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
   }
 `;
 

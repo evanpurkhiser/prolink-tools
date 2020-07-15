@@ -1,5 +1,4 @@
 import taggedNowPlaying from './overlays/taggedNowPlaying';
-import cueCounter from './overlays/cueCounter';
 
 type OverlayType = typeof registeredOverlays[number]['type'];
 
@@ -65,4 +64,4 @@ export type OverlayInstance<T extends OverlayType = any> = {
  *
  * Add new entries here to register new overlays
  */
-export const registeredOverlays = [taggedNowPlaying, cueCounter] as const;
+export const registeredOverlays = [taggedNowPlaying] as const;

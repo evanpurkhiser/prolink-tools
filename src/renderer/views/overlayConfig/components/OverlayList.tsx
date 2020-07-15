@@ -11,14 +11,19 @@ import {WEBSERVER_PORT} from 'src/shared/constants';
 import Example from './Example';
 import EmptyState from './EmptyState';
 
-const OverlayList = observer(() => (
-  <Container>
-    {store.config.overlays.length === 0 && <EmptyState />}
-    {store.config.overlays.map((instance, i) => (
-      <OverlayEntry index={i} key={instance.key} />
-    ))}
-  </Container>
-));
+const OverlayList = observer(() =>
+  store.config.overlays.length === 0 ? (
+    <EmptyContainer>
+      <EmptyState />
+    </EmptyContainer>
+  ) : (
+    <Container>
+      {store.config.overlays.map((instance, i) => (
+        <OverlayEntry index={i} key={instance.key} />
+      ))}
+    </Container>
+  )
+);
 
 const OverlayEntry = observer(({index}: {index: number}) => {
   const instance = store.config.overlays[index];
@@ -123,6 +128,12 @@ const Container = styled('div')`
   grid-auto-rows: max-content;
   grid-gap: 1.5rem;
   padding: 1.5rem;
+`;
+
+const EmptyContainer = styled('div')`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export default OverlayList;
