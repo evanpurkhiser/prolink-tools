@@ -24,12 +24,10 @@ const animateApp: Variants = {
   initial: {
     x: -80,
     opacity: 0,
-    boxShadow: '0 0 80px rgba(0,0,0,0.05)',
   },
   animate: {
     x: 0,
     opacity: 1,
-    boxShadow: '0 0 40px rgba(0,0,0,0.15)',
     transition: {
       type: 'spring',
       stiffness: 300,
@@ -80,7 +78,9 @@ const Application = () => (
       >
         <SpotlightShade variants={animateShade} />
         <AppPreview variants={animateApp}>
-          <video autoPlay muted playsInline loop src={appVideo} />
+          <PreviewContainer>
+            <video autoPlay muted playsInline loop src={appVideo} />
+          </PreviewContainer>
         </AppPreview>
       </Spotlight>
     </HeroLanding>
@@ -94,13 +94,25 @@ const HeroLanding = styled(motion.div)`
   align-items: center;
   grid-template-columns: 0.85fr 1fr;
   grid-gap: 2rem;
+
+  --padding: 4rem;
+
+  @media only screen and (max-width: 1200px) {
+    grid-template: 1fr 1fr /1fr;
+    --padding: 2rem;
+  }
 `;
 
 const Intro = styled('div')`
   letter-spacing: -0.75px;
   max-width: 620px;
-  padding: 0 4rem;
+  padding: 0 var(--padding);
   justify-self: end;
+
+  @media only screen and (max-width: 1200px) {
+    justify-self: center;
+    max-width: calc(700px + var(--padding) * 2);
+  }
 `;
 
 const Tagline = styled(motion.h2)`
@@ -119,6 +131,11 @@ const Spotlight = styled(motion.div)`
   display: flex;
   height: 100%;
   align-items: center;
+
+  @media only screen and (max-width: 1200px) {
+    justify-content: center;
+    padding: 0 var(--padding);
+  }
 `;
 
 const SpotlightShade = styled(motion.div)`
@@ -133,21 +150,40 @@ const SpotlightShade = styled(motion.div)`
   transform-origin: 0 100%;
   margin: 60px;
   margin-right: 0;
+
+  @media only screen and (max-width: 1200px) {
+    right: calc(-1 * var(--padding));
+  }
+`;
+
+const PreviewContainer = styled('div')`
+  position: relative;
+  padding-top: calc(376 / 700 * 100%);
+  border-radius: 5px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
+  background-color: #fff;
+  background-image: url(${appImage});
+  background-size: contain;
+  overflow: hidden;
+
+  video {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    clip-path: inset(12% 0 12% 0);
+  }
 `;
 
 const AppPreview = styled(motion.div)`
   display: block;
+  max-width: 700px;
+  width: 100%;
   margin-left: -20px;
-  width: 700px;
-  height: 376px;
-  border-radius: 5px;
-  background-color: #fff;
-  background-image: url(${appImage});
-  overflow: hidden;
 
-  video {
-    height: 100%;
-    clip-path: inset(31px 0 40px 0);
+  @media only screen and (max-width: 1200px) {
+    margin-left: 0;
+    justify-self: center;
   }
 `;
 
