@@ -50,15 +50,15 @@ const useRandomHistory = ({cutoff, updateInterval}: Options) => {
 
   let isUpdating = true;
 
-  const updateHistory = async () => {
-    const newHistory = [await generateEntry(), ...history].slice(0, cutoff);
-    isUpdating && setHistory(newHistory);
-  };
-
   const startUpdater = async () => {
+    let lastHistory = history;
+
     while (isUpdating) {
-      await updateHistory();
-      await new Promise(r => setTimeout(r, updateInterval));
+      lastHistory = [...lastHistory, await generateEntry()].slice(-1 * cutoff);
+      if (isUpdating) {
+        setHistory(lastHistory);
+        await new Promise(r => setTimeout(r, updateInterval));
+      }
     }
   };
 
@@ -67,7 +67,7 @@ const useRandomHistory = ({cutoff, updateInterval}: Options) => {
     return () => {
       isUpdating = false;
     };
-  }, [cutoff]);
+  }, [cutoff, updateInterval]);
 
   return history;
 };
