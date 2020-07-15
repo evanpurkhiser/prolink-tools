@@ -6,6 +6,7 @@ import {Endpoints} from '@octokit/types';
 
 import {AppleLogo, WindowsLogo, LinuxLogo} from 'src/shared/components/Icons';
 import {format, parseISO} from 'date-fns';
+import {GITHUB_REPO} from '../constants';
 
 type Platform = NonNullable<ReturnType<typeof getPlatform>>;
 type Release = Endpoints['GET /repos/:owner/:repo/releases/latest']['response'];
@@ -14,11 +15,7 @@ const useRelease = () => {
   const [release, setRelease] = React.useState<Release | null>(null);
 
   const getReleases = async () => {
-    const release = await request('GET /repos/:owner/:repo/releases/latest', {
-      owner: 'evanpurkhiser',
-      repo: 'prolink-tools',
-    });
-
+    const release = await request('GET /repos/:owner/:repo/releases/latest', GITHUB_REPO);
     setRelease(release);
   };
 
