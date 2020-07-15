@@ -38,6 +38,10 @@ export type OverlayDescriptor<T extends OverlayMeta = any> = {
    * Provides a default configuration for the overlay
    */
   defaultConfig: Partial<T['config']>;
+  /**
+   * Renders the settings UI for the overlay component
+   */
+  configInterface: React.ComponentType<{config: T['config']}>;
 };
 
 /**

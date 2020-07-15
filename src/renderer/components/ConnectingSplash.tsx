@@ -17,7 +17,7 @@ const ConnectingSplash = () => {
 
   return (
     <Container>
-      <Text animate transition={{duration: 0.2}}>
+      <Text positionTransition transition={{duration: 0.2}}>
         <Indicator />
         Waiting for PROLINK devices
       </Text>

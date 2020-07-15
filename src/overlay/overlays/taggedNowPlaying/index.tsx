@@ -2,12 +2,17 @@ import * as React from 'react';
 import styled from '@emotion/styled';
 import {AnimatePresence} from 'framer-motion';
 import {observer} from 'mobx-react';
+import {set} from 'mobx';
 
 import store, {PlayedTrack} from 'src/shared/store';
 import {OverlayDescriptor} from 'src/overlay';
 
-import Track from './Track';
+import Track, {Tags, availableTags} from './Track';
 import useRandomHistory from 'src/utils/useRandomHistory';
+import Checkbox from 'app/components/form/Checkbox';
+import Text from 'app/components/form/Text';
+import Field from 'app/components/form/Field';
+import Select from 'src/renderer/components/form/Select';
 
 type TaggedNowPlaying = {
   type: 'taggedNowPlaying';
@@ -26,7 +31,7 @@ type Config = {
   /**
    * The specific set of tags to display
    */
-  tags?: string[];
+  tags?: Tags;
 };
 
 const CurrentTrack = ({played, ...p}: React.ComponentProps<typeof Track>) => (
@@ -54,24 +59,27 @@ type Props = {
   history: PlayedTrack[];
 };
 
-const Overlay: React.FC<Props> = ({config, history}) =>
-  history.length === 0 ? null : (
+const Overlay: React.FC<Props> = observer(({config, history}) => {
+  console.log(history);
+  return history.length === 0 ? null : (
     <React.Fragment>
       <CurrentTrack
         alignRight={config.alignRight}
+        tags={config.tags}
         firstPlayed={store.mixstatus.trackHistory.length === 1}
         played={history[0]}
       />
-      {history.length > 1 && (
+      {config.historyCount > 0 && history.length > 1 && (
         <RecentWrapper>
           <AnimatePresence>
-            {history.slice(1, config.historyCount).map(track => (
+            {history.slice(1, config.historyCount + 1).map(track => (
               <Track
                 mini
-                animate
+                positionTransition
+                alignRight={config.alignRight}
                 played={track}
                 variants={{exit: {display: 'none'}}}
-                key={track.playedAt.toString()}
+                key={`${track.playedAt}-${track.track.id}`}
               />
             ))}
           </AnimatePresence>
@@ -79,6 +87,7 @@ const Overlay: React.FC<Props> = ({config, history}) =>
       )}
     </React.Fragment>
   );
+});
 
 const RecentWrapper = styled('div')`
   display: grid;
@@ -111,26 +120,72 @@ const EmptyExample = styled('div')`
   }
 `;
 
-const Example: React.FC<{config?: Config}> = () => {
-  const history = useRandomHistory({cutoff: 1, updateInterval: 5000});
+const Example: React.FC<{config?: Config}> = ({config}) => {
+  const history = useRandomHistory({cutoff: 5, updateInterval: 5000});
+
+  console.log(history);
+
   return history.length === 0 ? (
     <EmptyExample />
   ) : (
-    <Overlay config={{historyCount: 0}} history={history} />
+    <Overlay config={config ?? {historyCount: 0}} history={history.slice().reverse()} />
   );
 };
 
-const ConnectedOverlay: React.FC<{config: Config}> = observer(({config}) => (
-  <Overlay history={store.mixstatus.trackHistory.reverse()} config={config} />
+const HistoryOverlay: React.FC<{config: Config}> = observer(({config}) => (
+  <Overlay history={store.mixstatus.trackHistory.slice().reverse()} config={config} />
+));
+
+const valueTransform = <T extends string[]>(t: T) => t.map(v => ({label: v, value: v}));
+
+const ConfigInterface: React.FC<{config: Config}> = observer(({config}) => (
+  <div>
+    <Field
+      size="sm"
+      name="Align to right side"
+      description="Display the history and now playing details aligned towards the right of the screen."
+    >
+      <Checkbox
+        checked={config.alignRight}
+        onChange={() => set(config, {alignRight: !config.alignRight})}
+      />
+    </Field>
+    <Field
+      size="sm"
+      name="History items shown"
+      description="Number of history items to show below the now playing metadata. You can set this to 0 to completely disable displaying history."
+    >
+      <Text
+        type="number"
+        style={{textAlign: 'center', appearance: 'textfield'}}
+        value={config.historyCount}
+        onChange={e => set(config, {historyCount: Math.max(0, Number(e.target.value))})}
+      />
+    </Field>
+    <Field
+      size="full"
+      description="Select the tags you want to show on the bottom row of the now playing detail"
+    >
+      <Select
+        isMulti
+        placeholder="Add metadata items to display..."
+        options={valueTransform(availableTags)}
+        value={valueTransform(config.tags ?? [])}
+        onChange={values => set(config, {tags: values?.map((v: any) => v.value) ?? []})}
+      />
+    </Field>
+  </div>
 ));
 
 const descriptor: OverlayDescriptor<TaggedNowPlaying> = {
   type: 'taggedNowPlaying',
   name: 'Now playing with tags',
-  component: ConnectedOverlay,
+  component: HistoryOverlay,
   example: Example,
+  configInterface: ConfigInterface,
   defaultConfig: {
     historyCount: 4,
+    tags: ['album', 'label', 'comment'],
   },
 };
 

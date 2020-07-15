@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
 import styled from '@emotion/styled';
-import {Delete, Copy, Link} from 'react-feather';
+import {Delete, Copy} from 'react-feather';
 import {css} from '@emotion/core';
 
 import store from 'src/shared/store';
@@ -14,51 +14,45 @@ import EmptyState from './EmptyState';
 const OverlayList = observer(() => (
   <Container>
     {store.config.overlays.length === 0 && <EmptyState />}
-    {store.config.overlays.map(instance => {
-      const descriptor = registeredOverlays.find(
-        overlay => overlay.type === instance?.type
-      );
-
-      if (descriptor === undefined) {
-        return null;
-      }
-
-      return (
-        <div key={instance.key}>
-          <Actions>
-            <OverlayUrl instance={instance} />
-            <Remove onClick={() => store.config.overlays.remove(instance)}>
-              <Delete size="1rem" />
-            </Remove>
-          </Actions>
-          <Example>
-            <descriptor.example config={instance.config} />
-          </Example>
-        </div>
-      );
-    })}
+    {store.config.overlays.map((instance, i) => (
+      <OverlayEntry index={i} key={instance.key} />
+    ))}
   </Container>
 ));
+
+const OverlayEntry = observer(({index}: {index: number}) => {
+  const instance = store.config.overlays[index];
+
+  const descriptor = registeredOverlays.find(overlay => overlay.type === instance?.type);
+
+  if (descriptor === undefined) {
+    return null;
+  }
+
+  return (
+    <div key={instance.key}>
+      <Actions>
+        <OverlayUrl instance={instance} />
+        <Remove onClick={() => store.config.overlays.remove(instance)}>
+          <Delete size="1rem" />
+        </Remove>
+      </Actions>
+      <Settings>
+        <descriptor.configInterface config={instance.config} />
+      </Settings>
+      <Example>
+        <descriptor.example config={instance.config} />
+      </Example>
+    </div>
+  );
+});
 
 const OverlayUrl = ({instance}: {instance: OverlayInstance}) => {
   const url = `http://127.0.0.1:${WEBSERVER_PORT}/${instance.key}`;
 
   return (
     <UrlWrapper>
-      <Url
-        onClick={e => {
-          const range = document.createRange();
-          range.selectNodeContents(e.currentTarget);
-          const sel = window.getSelection()!;
-          sel.removeAllRanges();
-          sel.addRange(range);
-        }}
-      >
-        {url}
-      </Url>
-      <OpenLink href={url}>
-        <Link size="0.875rem" />
-      </OpenLink>
+      <Url href={url}>{url}</Url>
       <CopyButton onClick={() => navigator.clipboard.writeText(url)}>
         <Copy size="0.875rem" />
       </CopyButton>
@@ -88,8 +82,8 @@ const UrlWrapper = styled('div')`
   border-radius: 3px;
 `;
 
-const Url = styled('div')`
-  user-select: unset;
+const Url = styled('a')`
+  user-select: all;
   font-size: 0.75rem;
 `;
 
@@ -114,11 +108,12 @@ const Remove = styled('button')`
 `;
 
 const CopyButton = styled('button')`
-  ${buttonStyle('#28272B')};
+  ${buttonStyle('#4b98f8')};
 `;
 
-const OpenLink = styled('a')`
-  ${buttonStyle('#28272B')};
+const Settings = styled('div')`
+  border: 1px solid #eee;
+  border-bottom: none;
 `;
 
 const Container = styled('div')`

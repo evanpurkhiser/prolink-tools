@@ -5,7 +5,7 @@ import {formatDistance} from 'date-fns';
 
 import {PlayedTrack} from 'src/shared/store';
 import TimeTicker from 'src/shared/components/TimeTicker';
-import {Hash, Disc, X, Layers} from 'react-feather';
+import {Hash, Disc, X, Layers, Activity, Code} from 'react-feather';
 
 const artToSrc = (d: Buffer | undefined) =>
   d && d.length > 0
@@ -17,6 +17,25 @@ type MotionDivProps = React.ComponentProps<typeof motion.div>;
 type OrientedMotionDivProps = MotionDivProps & {
   alignRight?: boolean;
 };
+
+type TagConfig = {
+  icon: React.ComponentType<React.ComponentProps<typeof Disc>>;
+  getter: (track: PlayedTrack['track']) => string | undefined;
+};
+
+const makeTagConfig = <T extends {[name: string]: TagConfig}>(config: T) => config;
+
+const tagsConfig = makeTagConfig({
+  album: {icon: Disc, getter: track => track.album?.name},
+  label: {icon: Layers, getter: track => track.label?.name},
+  comment: {icon: Hash, getter: track => track.comment},
+  tempo: {icon: Activity, getter: track => (track.tempo > 0 ? `${track.tempo} BPM` : '')},
+  key: {icon: Code, getter: track => track.key?.name},
+});
+
+export type Tags = Array<keyof typeof tagsConfig>;
+
+export const availableTags = Object.keys(tagsConfig);
 
 const MissingArtwork = styled(
   React.forwardRef<HTMLDivElement, MotionDivProps>((p, ref) => (
@@ -40,16 +59,16 @@ type ArtworkProps = {alignRight?: boolean; animateIn: boolean} & (
 
 const BaseArtwork = ({animateIn, alignRight, ...p}: ArtworkProps) => {
   const animation = {
-    init: {
+    initial: {
       clipPath: !animateIn
         ? 'inset(0% 0% 0% 0%)'
         : alignRight
         ? 'inset(0% 0% 0% 100%)'
         : 'inset(0% 100% 0% 0%)',
     },
-    enter: {
+    animate: {
       clipPath: 'inset(0% 0% 0% 0%)',
-      transitionEnd: {zIndex: 10},
+      transitionEnd: {zIndex: 1},
     },
     exit: {
       clipPath: 'inset(0% 0% 100% 0%)',
@@ -90,8 +109,8 @@ let Text = styled(motion.div)`
 
 Text.defaultProps = {
   variants: {
-    init: {opacity: 0, x: -20},
-    enter: {opacity: 1, x: 0},
+    initial: {opacity: 0, x: -20},
+    animate: {opacity: 1, x: 0},
     exit: {x: 0},
   },
 };
@@ -111,7 +130,7 @@ const Artist = styled(Text)`
 
 const Attributes = styled(({alignRight, ...p}: OrientedMotionDivProps) => {
   const animation = {
-    enter: {
+    animate: {
       x: 0,
       transition: {
         when: 'beforeChildren',
@@ -169,10 +188,10 @@ let MetadataWrapper = styled(motion.div)<{alignRight?: boolean}>`
 
 MetadataWrapper.defaultProps = {
   variants: {
-    init: {
+    initial: {
       clipPath: 'inset(0% 100% 0% 0%)',
     },
-    enter: {
+    animate: {
       clipPath: 'inset(0% 0% 0% 0%)',
       transition: {
         staggerChildren: 0.2,
@@ -191,17 +210,20 @@ MetadataWrapper.defaultProps = {
 
 type FullMetadataProps = OrientedMotionDivProps & {
   track: PlayedTrack['track'];
+  tags: Tags;
 };
 
-const FullMetadata = ({track, ...p}: FullMetadataProps) => (
+const FullMetadata = ({track, tags, ...p}: FullMetadataProps) => (
   <MetadataWrapper {...p}>
     <Title>{track.title}</Title>
     <Artist>{track.artist?.name}</Artist>
     <Attributes alignRight={p.alignRight}>
-      <Attribute icon={Disc} text={track.album?.name} />
-      <Attribute icon={Layers} text={track.label?.name} />
-      <Attribute icon={Hash} text={track.comment} />
-      {!(track.comment || track.label?.name || track.album?.name) && (
+      {tags.map(tag => {
+        const {icon, getter} = tagsConfig[tag];
+        const text = getter(track);
+        return <Attribute {...{icon, text}} />;
+      })}
+      {tags.map(t => tagsConfig[t].getter(track)).join('') === '' && (
         <NoAttributes key="no-field" />
       )}
     </Attributes>
@@ -215,6 +237,10 @@ type BaseTrackProps = MotionDivProps & {
    * Disables animation of the artwork
    */
   firstPlayed?: boolean;
+  /**
+   * The list of tags to show on the 3rd row
+   */
+  tags?: Tags;
 };
 
 const FullTrack = React.forwardRef<HTMLDivElement, BaseTrackProps>(
@@ -226,7 +252,11 @@ const FullTrack = React.forwardRef<HTMLDivElement, BaseTrackProps>(
         src={artToSrc(played.artwork)}
         size="80px"
       />
-      <FullMetadata alignRight={props.alignRight} track={played.track} />
+      <FullMetadata
+        alignRight={props.alignRight}
+        track={played.track}
+        tags={props.tags ?? []}
+      />
     </TrackContainer>
   )
 );
@@ -250,8 +280,8 @@ const TrackContainer = styled(motion.div)<{alignRight?: boolean}>`
 `;
 
 TrackContainer.defaultProps = {
-  animate: 'enter',
-  initial: 'init',
+  animate: 'animate',
+  initial: 'initial',
   exit: 'exit',
 };
 

@@ -175,6 +175,10 @@ type ObserverStoreOpts = {
    */
   target?: any;
   /**
+   * If targeting a nested store, a prefix path must be specified
+   */
+  prefix?: string;
+  /**
    * The function to call with a serializedChange when a observable has changed in
    * the observed tree.
    *
@@ -190,9 +194,16 @@ const defaultChangeHandler = (serializedChange: SerializedChange) =>
  * Start observing the store for changes.
  *
  */
-export const observeStore = ({target, handler}: ObserverStoreOpts = {}) =>
-  deepObserve(target ?? store, (change, path) => {
+export const observeStore = ({target, prefix, handler}: ObserverStoreOpts = {}) =>
+  deepObserve(target ?? store, (change, changePath) => {
     const anyChange = {...change} as {[k: string]: any} & Object;
+
+    const path =
+      prefix === undefined
+        ? changePath
+        : changePath === ''
+        ? prefix
+        : `${prefix}/${changePath}`;
 
     // Avoid including the full object and oldValue in the change we're going
     // to send over IPC. We're not going to serialize these.
@@ -317,8 +328,8 @@ export const registerRendererIpc = () => {
 export const registerRendererConfigIpc = () =>
   observeStore({
     target: store.config,
+    prefix: 'config',
     handler: change => {
-      change.path = change.path === '' ? 'config' : `config/${change.path}`;
       recentConfigChanges.add(change.path);
       ipcRenderer.send('config-update', change);
     },
