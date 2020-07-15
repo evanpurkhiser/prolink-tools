@@ -59,9 +59,8 @@ type Props = {
   history: PlayedTrack[];
 };
 
-const Overlay: React.FC<Props> = observer(({config, history}) => {
-  console.log(history);
-  return history.length === 0 ? null : (
+const Overlay: React.FC<Props> = observer(({config, history}) =>
+  history.length === 0 ? null : (
     <React.Fragment>
       <CurrentTrack
         alignRight={config.alignRight}
@@ -86,8 +85,8 @@ const Overlay: React.FC<Props> = observer(({config, history}) => {
         </RecentWrapper>
       )}
     </React.Fragment>
-  );
-});
+  )
+);
 
 const RecentWrapper = styled('div')`
   display: grid;
@@ -122,9 +121,6 @@ const EmptyExample = styled('div')`
 
 const Example: React.FC<{config?: Config}> = ({config}) => {
   const history = useRandomHistory({cutoff: 5, updateInterval: 5000});
-
-  console.log(history);
-
   return history.length === 0 ? (
     <EmptyExample />
   ) : (
