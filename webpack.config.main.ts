@@ -64,7 +64,9 @@ const config: webpack.Configuration = webpackMerge.smart(baseConfig, {
   },
   plugins: [
     ignoreMikroORMModules,
-    new ForkTsCheckerWebpackPlugin({reportFiles: ['src/main/**/*', 'src/shared/**/*']}),
+    new ForkTsCheckerWebpackPlugin({
+      issue: {include: [{file: 'src/main/**/*'}, {file: 'src/shared/**/*'}]},
+    }),
   ],
 });
 

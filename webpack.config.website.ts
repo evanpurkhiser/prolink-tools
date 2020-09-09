@@ -38,7 +38,7 @@ const websiteConfig: webpack.Configuration = webpackMerge.smart(baseConfig, {
     new HtmlWebpackPlugin({title: 'prolink tools', favicon: 'build/icon.png'}),
     new ReactRefreshWebpackPlugin(),
     new ForkTsCheckerWebpackPlugin({
-      reportFiles: ['src/website/**/*', 'src/shared/**/*'],
+      issue: {include: [{file: 'src/website/**/*'}, {file: 'src/shared/**/*'}]},
     }),
   ],
   devServer: {

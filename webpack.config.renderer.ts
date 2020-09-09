@@ -5,7 +5,7 @@ import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import webpackMerge from 'webpack-merge';
 
-import {baseConfig, IS_PROD} from './webpack.config.base';
+import {baseConfig} from './webpack.config.base';
 
 /**
  * Becuase prolink-connect bundles mikro-orm, which does not work well in
@@ -51,7 +51,7 @@ const rendererConfig: webpack.Configuration = webpackMerge.smart(baseConfig, {
     new HtmlWebpackPlugin({filename: 'app.html'}),
     new ReactRefreshWebpackPlugin(),
     new ForkTsCheckerWebpackPlugin({
-      reportFiles: ['src/renderer/**/*', 'src/shared/**/*'],
+      issue: {include: [{file: 'src/renderer/**/*'}, {file: 'src/shared/**/*'}]},
     }),
   ],
   devServer: {
@@ -101,7 +101,7 @@ const overlayConfig: webpack.Configuration = webpackMerge.smart(baseConfig, {
     new HtmlWebpackPlugin(),
     new ReactRefreshWebpackPlugin(),
     new ForkTsCheckerWebpackPlugin({
-      reportFiles: ['src/overlay/**/*', 'src/shared/**/*'],
+      issue: {include: [{file: 'src/overlay/**/*'}, {file: 'src/shared/**/*'}]},
     }),
   ],
 });
