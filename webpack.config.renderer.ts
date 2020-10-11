@@ -20,6 +20,12 @@ const removeMikroORM = new webpack.NormalModuleReplacementPlugin(
   }
 );
 
+/**
+ * Because prolink-connect will try and require @sentry/node, we must noop it,
+ * otherwise it will break the renderer.
+ */
+const removeSentryNode = new webpack.IgnorePlugin(/@sentry\/node/);
+
 const rendererConfig: webpack.Configuration = webpackMerge.smart(baseConfig, {
   target: 'electron-renderer',
   entry: {
@@ -48,6 +54,7 @@ const rendererConfig: webpack.Configuration = webpackMerge.smart(baseConfig, {
   },
   plugins: [
     removeMikroORM,
+    removeSentryNode,
     new HtmlWebpackPlugin({filename: 'app.html'}),
     new ReactRefreshWebpackPlugin(),
     new ForkTsCheckerWebpackPlugin({
@@ -98,6 +105,7 @@ const overlayConfig: webpack.Configuration = webpackMerge.smart(baseConfig, {
   },
   plugins: [
     removeMikroORM,
+    removeSentryNode,
     new HtmlWebpackPlugin(),
     new ReactRefreshWebpackPlugin(),
     new ForkTsCheckerWebpackPlugin({
