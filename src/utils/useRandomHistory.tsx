@@ -1,13 +1,23 @@
 import * as React from 'react';
-import {Track} from 'prolink-connect';
+import {Track} from 'prolink-connect/lib/types';
 
 import {PlayedTrack} from 'src/shared/store';
 import exampleMetadata from './exampleMetadata';
 
+async function fetchRandomArtwork() {
+  try {
+    const imageResp = await fetch('https://picsum.photos/160/160');
+    const imageBuffer = await imageResp.arrayBuffer();
+    return Buffer.from(imageBuffer);
+  } catch {
+    return undefined;
+  }
+}
+
 const generateEntry = async () => {
   const metadata = exampleMetadata[Math.floor(Math.random() * exampleMetadata.length)];
 
-  const track: Track = {
+  const track = {
     id: Date.now(),
     title: metadata.title,
     comment: metadata.comment,
@@ -16,15 +26,13 @@ const generateEntry = async () => {
     genre: {id: 0, name: metadata.genre} as any,
     label: {id: 0, name: metadata.label} as any,
     key: {id: 0, name: metadata.key} as any,
-  } as any;
+  } as Track;
 
   const played = new PlayedTrack(new Date(), track);
 
   // Do not always include artwork, it is random afterall
   if (Math.random() > 0.3) {
-    const imageResp = await fetch('https://picsum.photos/160/160');
-    const imageBuffer = await imageResp.arrayBuffer();
-    played.artwork = Buffer.from(imageBuffer);
+    played.artwork = await fetchRandomArtwork();
   }
 
   return played;
