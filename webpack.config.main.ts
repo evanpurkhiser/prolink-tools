@@ -4,19 +4,11 @@ import webpackMerge from 'webpack-merge';
 
 import {baseConfig} from './webpack.config.base';
 
-// And anything MikroORM's packaging can be ignored if it's not on disk. Check
-// these dynamically and ignore the ones we don't have
-const optionalModules = new Set([
-  ...Object.keys(require('knex/package.json').browser),
-  ...Object.keys(require('mikro-orm/package.json').peerDependencies),
-  ...Object.keys(require('mikro-orm/package.json').devDependencies),
-]);
-
 const ignoreMikroORMModules = new webpack.IgnorePlugin({
   checkResource: (resource: any) => {
     const [baseResource] = resource.split('/');
 
-    if (optionalModules.has(baseResource)) {
+    if (baseResource === '@mikro-orm') {
       try {
         require.resolve(resource);
         return false;
@@ -28,6 +20,11 @@ const ignoreMikroORMModules = new webpack.IgnorePlugin({
     return false;
   },
 });
+
+const ignoreKnexModules = new webpack.NormalModuleReplacementPlugin(
+  /m[sy]sql2?|oracle(db)?|pg(-(native|query))?/,
+  'noop2'
+);
 
 const config: webpack.Configuration = webpackMerge.smart(baseConfig, {
   target: 'electron-main',
@@ -64,6 +61,7 @@ const config: webpack.Configuration = webpackMerge.smart(baseConfig, {
   },
   plugins: [
     ignoreMikroORMModules,
+    ignoreKnexModules,
     new ForkTsCheckerWebpackPlugin({
       issue: {include: [{file: 'src/main/**/*'}, {file: 'src/shared/**/*'}]},
     }),

@@ -1,5 +1,5 @@
 import {reaction, IReactionDisposer, IReactionPublic} from 'mobx';
-import {DeviceID} from 'prolink-connect';
+import {DeviceID} from 'prolink-connect/lib/types';
 import store, {DeviceStore} from '.';
 
 /**

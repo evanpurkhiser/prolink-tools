@@ -9,7 +9,7 @@ import {
   HydrationProgress,
   MediaSlot,
   NetworkState,
-} from 'prolink-connect';
+} from 'prolink-connect/lib/types';
 
 import {OverlayInstance} from 'src/overlay';
 

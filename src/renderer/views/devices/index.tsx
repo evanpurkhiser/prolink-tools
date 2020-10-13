@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
-import {DeviceType, NetworkState} from 'prolink-connect';
 import styled from '@emotion/styled';
 import {groupBy} from 'lodash';
+import {DeviceType, NetworkState} from 'prolink-connect/lib/types';
 
 import store, {DeviceStore} from 'src/shared/store';
 import IconCdj from 'app/icons/cdj';

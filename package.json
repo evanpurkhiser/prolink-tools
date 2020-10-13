@@ -25,11 +25,7 @@
       "output": "release"
     },
     "publish": null,
-    "files": [
-      "dist/",
-      "node_modules/sqlite3/**/*",
-      "package.json"
-    ],
+    "files": ["dist/", "node_modules/sqlite3/**/*", "package.json"],
     "linux": {
       "target": "tar.gz"
     },
@@ -113,7 +109,8 @@
     "mobx-utils": "^5.5.7",
     "module-alias": "^2.2.2",
     "node-static": "^0.7.11",
-    "prolink-connect": "0.2.0-prerelease.1",
+    "noop2": "^2.0.0",
+    "prolink-connect": "0.2.0-prerelease.6",
     "public-ip": "^4.0.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",

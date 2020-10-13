@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {DeviceID, CDJStatus} from 'prolink-connect';
+import {DeviceID, CDJStatus} from 'prolink-connect/lib/types';
 import {autorun, toJS} from 'mobx';
 import store from 'src/shared/store';
 

@@ -7,7 +7,7 @@ import {releaseId, releaseChannel, commit} from './scripts/release';
 export const IS_PROD = process.env.NODE_ENV === 'production';
 
 const envConfig = {
-  // Tells MikroORM we're in a webpack build
+  // Tells mikro-orm we're in a webpack build
   WEBPACK: true,
   NODE_ENV: process.env.NODE_ENV ?? 'development',
   RELEASE: releaseId,
@@ -43,7 +43,7 @@ export const baseConfig: webpack.Configuration = {
 
   optimization: {
     minimizer: [
-      // MikroORM rqeuires that class names do NOT be changed
+      // mikro-orm rqeuires that class names do NOT be changed
       new TerserPlugin({terserOptions: {mangle: false}}),
     ],
     namedModules: true,

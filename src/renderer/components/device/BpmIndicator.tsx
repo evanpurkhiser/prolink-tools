@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import {CDJStatus} from 'prolink-connect';
 import styled from '@emotion/styled';
 
 type Props = React.HTMLAttributes<HTMLDivElement> & {
