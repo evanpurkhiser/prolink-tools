@@ -115,7 +115,7 @@
     "module-alias": "^2.2.2",
     "node-static": "^0.7.11",
     "noop2": "^2.0.0",
-    "prolink-connect": "0.2.0-prerelease.7",
+    "prolink-connect": "0.2.0-prerelease.8",
     "public-ip": "^4.0.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
