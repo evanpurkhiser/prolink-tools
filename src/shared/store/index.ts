@@ -1,5 +1,6 @@
 import {observable, toJS, computed} from 'mobx';
 import {map, mapAsArray, object, list, custom, serializable, date} from 'serializr';
+import * as ip from 'ip-address';
 import {
   Track,
   CDJStatus,
@@ -9,15 +10,19 @@ import {
   HydrationProgress,
   MediaSlot,
   NetworkState,
+  MixstatusConfig,
 } from 'prolink-connect/lib/types';
 
 import {OverlayInstance} from 'src/overlay';
+import {identity} from 'lodash';
 
 type PerTableHydrationProgress = Omit<HydrationProgress, 'table'>;
 
-const rawJS = custom(
-  value => toJS(value),
-  data => data
+const rawJS = custom(value => toJS(value), identity);
+
+const deviceToJs = custom(
+  value => ({...toJS(value), ip: value.ip.address}),
+  data => ({...data, ip: new ip.Address4(data.ip)})
 );
 
 const bufferSerialize = custom(
@@ -34,7 +39,7 @@ export class DeviceStore {
   /**
    * The device this store represents
    */
-  @serializable(rawJS)
+  @serializable(deviceToJs)
   @observable
   device: Device;
   /**

@@ -4,35 +4,13 @@ import webpackMerge from 'webpack-merge';
 
 import {baseConfig} from './webpack.config.base';
 
-const ignoreMikroORMModules = new webpack.IgnorePlugin({
-  checkResource: (resource: any) => {
-    const [baseResource] = resource.split('/');
-
-    if (baseResource === '@mikro-orm') {
-      try {
-        require.resolve(resource);
-        return false;
-      } catch {
-        return true;
-      }
-    }
-
-    return false;
-  },
-});
-
-const ignoreKnexModules = new webpack.NormalModuleReplacementPlugin(
-  /m[sy]sql2?|oracle(db)?|pg(-(native|query))?/,
-  'noop2'
-);
-
 const config: webpack.Configuration = webpackMerge.smart(baseConfig, {
   target: 'electron-main',
   entry: {
     main: './src/main/main.ts',
   },
   externals: {
-    sqlite3: 'commonjs sqlite3',
+    'better-sqlite3': 'commonjs better-sqlite3',
   },
   module: {
     rules: [
@@ -60,8 +38,6 @@ const config: webpack.Configuration = webpackMerge.smart(baseConfig, {
     ],
   },
   plugins: [
-    ignoreMikroORMModules,
-    ignoreKnexModules,
     new ForkTsCheckerWebpackPlugin({
       issue: {include: [{file: 'src/main/**/*'}, {file: 'src/shared/**/*'}]},
     }),

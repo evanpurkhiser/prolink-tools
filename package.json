@@ -27,7 +27,7 @@
     "publish": null,
     "files": [
       "dist/",
-      "node_modules/sqlite3/**/*",
+      "node_modules/better-sqlite3/**/*",
       "package.json"
     ],
     "linux": {
@@ -107,6 +107,7 @@
     "html-webpack-plugin": "^4.3.0",
     "http-proxy": "^1.18.1",
     "image-webpack-loader": "^6.0.0",
+    "ip-address": "^7.0.1",
     "lodash": "^4.17.15",
     "mobx": "^5.15.4",
     "mobx-react": "^6.2.2",
@@ -114,7 +115,7 @@
     "module-alias": "^2.2.2",
     "node-static": "^0.7.11",
     "noop2": "^2.0.0",
-    "prolink-connect": "0.2.0-prerelease.6",
+    "prolink-connect": "0.2.0-prerelease.7",
     "public-ip": "^4.0.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",

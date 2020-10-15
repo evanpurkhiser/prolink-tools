@@ -7,8 +7,6 @@ import {releaseId, releaseChannel, commit} from './scripts/release';
 export const IS_PROD = process.env.NODE_ENV === 'production';
 
 const envConfig = {
-  // Tells mikro-orm we're in a webpack build
-  WEBPACK: true,
   NODE_ENV: process.env.NODE_ENV ?? 'development',
   RELEASE: releaseId,
   RELEASE_CHANNEL: releaseChannel,
@@ -40,14 +38,6 @@ export const baseConfig: webpack.Configuration = {
   devtool: IS_PROD ? 'source-map' : 'eval-source-map',
 
   plugins: [new webpack.EnvironmentPlugin(envConfig)],
-
-  optimization: {
-    minimizer: [
-      // mikro-orm rqeuires that class names do NOT be changed
-      new TerserPlugin({terserOptions: {mangle: false}}),
-    ],
-    namedModules: true,
-  },
 
   module: {
     rules: [
