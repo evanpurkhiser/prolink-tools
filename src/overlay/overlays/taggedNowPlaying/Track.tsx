@@ -221,7 +221,7 @@ const FullMetadata = ({track, tags, ...p}: FullMetadataProps) => (
       {tags.map(tag => {
         const {icon, getter} = tagsConfig[tag];
         const text = getter(track);
-        return <Attribute {...{icon, text}} />;
+        return <Attribute key={tag} {...{icon, text}} />;
       })}
       {tags.map(t => tagsConfig[t].getter(track)).join('') === '' && (
         <NoAttributes key="no-field" />
@@ -269,11 +269,11 @@ const TrackContainer = styled(motion.div)<{alignRight?: boolean}>`
   grid-template-columns: ${p =>
     p.alignRight ? 'minmax(0, 1fr) max-content' : 'max-content minmax(0, 1fr)'};
 
-  > *:nth-child(1) {
+  > *:nth-of-type(1) {
     grid-row: 1;
     grid-column: ${p => (p.alignRight ? 2 : 1)};
   }
-  > *:nth-child(2) {
+  > *:nth-of-type(2) {
     grid-row: 1;
     grid-column: ${p => (p.alignRight ? 1 : 2)};
   }

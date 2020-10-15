@@ -38,7 +38,7 @@ const Field = styled(({size, name, description, children, ...p}: Props) => (
   ${p =>
     p.size !== 'full' &&
     css`
-      > *:first-child {
+      > *:first-of-type {
         justify-self: center;
       }
     `}

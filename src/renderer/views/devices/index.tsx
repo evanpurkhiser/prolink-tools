@@ -126,7 +126,7 @@ const SmallDevice = styled('div')`
   grid-template: 1fr max-content / repeat(2, max-content);
   align-items: center;
 
-  > :first-child {
+  > :first-of-type {
     grid-row: 1 / span 2;
   }
 `;
