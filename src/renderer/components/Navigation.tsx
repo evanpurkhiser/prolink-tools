@@ -8,7 +8,7 @@ import {AnimatePresence, motion} from 'framer-motion';
 
 const items = [
   {name: 'Device Status', path: '/status', icon: Activity},
-  {name: 'Overlay Config', path: '/overlay-config', icon: Layers},
+  {name: 'Overlays', path: '/overlay-config', icon: Layers},
 ] as const;
 
 const Navigation = () => {
@@ -97,18 +97,17 @@ const MenuContainer = styled(motion.div)`
 `;
 
 MenuContainer.defaultProps = {
-  initial: {opacity: 0, y: 10},
+  initial: {opacity: 0, y: 5},
   animate: {opacity: 1, y: 0},
-  exit: {opacity: 0, y: 10},
+  exit: {opacity: 0, scale: 0.95},
   transition: {duration: 0.2},
 };
 
 const MenuItem = styled(NavLink)`
   padding: 0.375rem 0.75rem;
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-rows: max-content;
-  grid-gap: 0.25rem;
+  grid-template-columns: max-content 1fr;
+  grid-gap: 0.5rem;
   align-items: center;
   text-transform: uppercase;
   font-weight: 600;
