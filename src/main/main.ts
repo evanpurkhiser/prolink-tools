@@ -4,7 +4,7 @@ import 'src/shared/sentry/main';
 import * as path from 'path';
 import * as url from 'url';
 import {app, BrowserWindow, shell} from 'electron';
-import {bringOnline} from 'prolink-connect';
+import {bringOnline, NetworkState, ProlinkNetwork} from 'prolink-connect';
 import isDev from 'electron-is-dev';
 
 import {startOverlayServer} from 'main/overlayServer';
@@ -63,9 +63,21 @@ app.on('ready', async () => {
   registerMainIpc();
   observeStore();
 
+  let network: ProlinkNetwork;
+
   // Open connections to the network
-  const network = await bringOnline();
-  store.networkState = network.state;
+  try {
+    network = await bringOnline();
+    store.networkState = network.state;
+  } catch (e) {
+    if (e.errno !== 'EADDRINUSE') {
+      throw e;
+    }
+
+    // Something is using the status port... Most likely rekordbox
+    store.networkState = NetworkState.Failed;
+    return;
+  }
 
   // Attempt to autoconfigure from other devices on the network
   await network.autoconfigFromPeers();
