@@ -4,8 +4,9 @@ import {css} from '@emotion/core';
 
 type Props = React.HTMLAttributes<HTMLLabelElement> & {
   size?: 'sm' | 'md' | 'lg' | 'fit' | 'full';
+  top?: boolean;
   name?: string;
-  description?: string;
+  description?: React.ReactNode;
 };
 
 const SIZES = {
@@ -26,7 +27,7 @@ const Field = styled(({size, name, description, children, ...p}: Props) => (
   </label>
 ))<Props>`
   display: grid;
-  align-items: center;
+  align-items: ${p => (p.top ? 'start' : 'center')};
   grid-template-columns: ${p => SIZES[p.size ?? 'md']} ${p =>
       p.size !== 'full' && 'minmax(0, 1fr)'};
   grid-gap: 0.5rem 1rem;
