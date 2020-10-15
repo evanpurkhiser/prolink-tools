@@ -269,11 +269,11 @@ const TrackContainer = styled(motion.div)<{alignRight?: boolean}>`
   grid-template-columns: ${p =>
     p.alignRight ? 'minmax(0, 1fr) max-content' : 'max-content minmax(0, 1fr)'};
 
-  > *:nth-of-type(1) {
+  > *:nth-child(1) {
     grid-row: 1;
     grid-column: ${p => (p.alignRight ? 2 : 1)};
   }
-  > *:nth-of-type(2) {
+  > *:nth-child(2) {
     grid-row: 1;
     grid-column: ${p => (p.alignRight ? 1 : 2)};
   }
