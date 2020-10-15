@@ -54,11 +54,12 @@ const Text = styled(motion.div)`
 `;
 
 const Help = styled(motion.p)`
-  font-size: 0.75rem;
+  font-family: Ubuntu;
+  font-size: 0.8rem;
   color: #888;
-  max-width: 400px;
+  max-width: 420px;
   font-weight: 400;
-  line-height: 1.2;
+  line-height: 1.4;
 `;
 
 const pulse = keyframes`

@@ -26,19 +26,20 @@ const Field = styled(({size, name, description, children, ...p}: Props) => (
     </div>
   </label>
 ))<Props>`
+  font-family: Ubuntu;
   display: grid;
   align-items: ${p => (p.top ? 'start' : 'center')};
   grid-template-columns: ${p => SIZES[p.size ?? 'md']} ${p =>
       p.size !== 'full' && 'minmax(0, 1fr)'};
   grid-gap: 0.5rem 1rem;
 
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   padding: 1rem 1.5rem;
 
   ${p =>
     p.size !== 'full' &&
     css`
-      > *:first-of-type {
+      > *:first-child {
         justify-self: center;
       }
     `}
