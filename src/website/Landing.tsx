@@ -8,7 +8,6 @@ import Title from './components/Title';
 import DownloadCta from './components/DownloadCta';
 import appImage from './assets/app.png';
 import appVideo from './assets/clip.webm';
-import {GITHUB_REPO_URL} from './constants';
 
 const animateInfo: Variants = {
   initial: {
