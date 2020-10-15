@@ -14,6 +14,7 @@ import BeatCounter from 'app/components/device/BeatCounter';
 import DbStateIndicator from 'app/components/device/DbStateIndicator';
 import Metadata from 'app/components/device/Metadata';
 import ConnectingSplash from 'app/components/ConnectingSplash';
+import ConnectionError from 'src/renderer/components/ConnectionError';
 import DeviceInfo from 'app/components/device/DeviceInfo';
 
 const sortById = (a: DeviceStore, b: DeviceStore) => a.device.id - b.device.id;
@@ -28,6 +29,7 @@ const Devices = observer(() => {
   return (
     <React.Fragment>
       {store.networkState === NetworkState.Online && <ConnectingSplash />}
+      {store.networkState === NetworkState.Failed && <ConnectionError />}
       {deviceMap[DeviceType.CDJ]?.sort(sortById).map(deviceStore => {
         const {device, state} = deviceStore;
         return (

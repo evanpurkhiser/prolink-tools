@@ -53,6 +53,15 @@ const globalCss = css`
   p {
     line-height: 1.3;
   }
+
+  ul,
+  ol {
+    padding-left: 1.5rem;
+  }
+
+  li {
+    margin-bottom: 0.75rem;
+  }
 `;
 
 const noSelect = css`
