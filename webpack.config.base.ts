@@ -65,7 +65,13 @@ export const baseConfig: webpack.Configuration = {
       {
         test: /\.js$/,
         enforce: 'pre',
-        use: ['source-map-loader'],
+        use: {
+          loader: 'source-map-loader',
+          options: {
+            filterSourceMappingUrl: (_: string, resourcePath: string) =>
+              !/.*\/node_modules\/.*/.test(resourcePath),
+          },
+        },
       },
     ],
   },
