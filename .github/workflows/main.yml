@@ -56,7 +56,9 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: sourcemaps
-          path: ${{ github.workspace }}/dist/**/*.map
+          path: |
+            ${{ github.workspace }}/dist/**/*.map
+            ${{ github.workspace }}/dist/**/*.js
 
   publish:
     needs: [build, init_release]
