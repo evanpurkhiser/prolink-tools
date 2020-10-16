@@ -1,3 +1,4 @@
+import {captureMessage, Severity} from '@sentry/node';
 import {when, runInAction, action} from 'mobx';
 import {applyDiff} from 'deep-diff';
 import {debounce} from 'lodash';
@@ -244,10 +245,9 @@ const connectMixstatus = (network: ConnectedProlinkNetwork) => {
       const device = store.devices.get(state.deviceId);
       const track = device?.track;
 
-      // There was a problem loading the track, nothing we can do here. This
-      // shouldn't happen since the when won't have ran
+      // There was a problem loading the track, nothing we can do here.
       if (track === undefined) {
-        console.warn('Failed to mark now playing for track');
+        captureMessage('Failed to mark now playing for track', Severity.Warning);
         return;
       }
 
