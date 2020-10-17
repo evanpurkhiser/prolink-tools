@@ -240,6 +240,17 @@ const connectMixstatus = (network: ConnectedProlinkNetwork) => {
     action(async state => {
       const playedAt = new Date();
 
+      const latestHistory =
+        store.mixstatus.trackHistory[store.mixstatus.trackHistory.length - 1];
+
+      // TODO: The comparisons of track id are not sufficient here, since it's
+      // possible for two USBs to have a track collision.
+
+      // No need to report duplicate plays on tracks
+      if (state.trackId === latestHistory?.track.id) {
+        return;
+      }
+
       await when(() => store.devices.get(state.deviceId)?.track?.id === state.trackId);
 
       const device = store.devices.get(state.deviceId);
