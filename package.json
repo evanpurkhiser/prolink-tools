@@ -133,9 +133,6 @@
     "webpack": "^4.44.1",
     "webpack-merge": "^4.2.2"
   },
-  "engines": {
-    "node": "14.x"
-  },
   "volta": {
     "node": "14.3.0",
     "yarn": "1.22.4"
