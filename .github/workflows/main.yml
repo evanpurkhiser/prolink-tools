@@ -44,7 +44,7 @@ jobs:
       - run: yarn dist
 
       # Upload built executables
-      - name: Uploade executable
+      - name: Upload executable
         uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.os }}
