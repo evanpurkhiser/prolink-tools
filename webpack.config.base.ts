@@ -37,6 +37,14 @@ export const baseConfig: webpack.Configuration = {
   },
   devtool: IS_PROD ? 'source-map' : 'eval-source-map',
 
+  optimization: {
+    minimizer: [
+      // Avoid mangling class names as there are places we reflectively use the
+      // constructor name
+      new TerserPlugin({terserOptions: {mangle: false}}),
+    ],
+  },
+
   plugins: [new webpack.EnvironmentPlugin(envConfig)],
 
   module: {
