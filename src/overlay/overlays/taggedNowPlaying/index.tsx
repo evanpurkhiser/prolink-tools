@@ -13,6 +13,7 @@ import Checkbox from 'app/components/form/Checkbox';
 import Text from 'app/components/form/Text';
 import Field from 'app/components/form/Field';
 import Select from 'src/renderer/components/form/Select';
+import LiveHistoryIndicator from 'src/overlay/components/liveHistoryIndicator';
 
 type TaggedNowPlaying = {
   type: 'taggedNowPlaying';
@@ -119,14 +120,26 @@ const EmptyExample = styled('div')`
   }
 `;
 
-const Example: React.FC<{config?: Config}> = ({config}) => {
-  const history = useRandomHistory({cutoff: 5, updateInterval: 5000});
-  return history.length === 0 ? (
-    <EmptyExample />
-  ) : (
-    <Overlay config={config ?? {historyCount: 0}} history={history.slice().reverse()} />
+const Example: React.FC<{config?: Config}> = observer(({config}) => {
+  const demoHistory = useRandomHistory({cutoff: 5, updateInterval: 5000});
+  const liveHistory = store.mixstatus.trackHistory;
+
+  const history = liveHistory.length === 0 ? demoHistory : liveHistory;
+
+  const example =
+    history.length === 0 ? (
+      <EmptyExample />
+    ) : (
+      <Overlay config={config ?? {historyCount: 0}} history={history.slice().reverse()} />
+    );
+
+  return (
+    <React.Fragment>
+      <LiveHistoryIndicator active={liveHistory.length > 0} />
+      {example}
+    </React.Fragment>
   );
-};
+});
 
 const HistoryOverlay: React.FC<{config: Config}> = observer(({config}) => (
   <Overlay history={store.mixstatus.trackHistory.slice().reverse()} config={config} />
