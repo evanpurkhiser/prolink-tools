@@ -25,7 +25,11 @@
       "output": "release"
     },
     "publish": null,
-    "files": ["dist/", "node_modules/better-sqlite3/**/*", "package.json"],
+    "files": [
+      "dist/",
+      "node_modules/better-sqlite3/**/*",
+      "package.json"
+    ],
     "linux": {
       "target": "tar.gz"
     },
