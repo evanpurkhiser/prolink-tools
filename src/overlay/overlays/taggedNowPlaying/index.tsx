@@ -174,7 +174,7 @@ const ConfigInterface: React.FC<{config: Config}> = observer(({config}) => (
     </Field>
     <Field
       size="full"
-      description="Select the tags you want to show on the bottom row of the now playing detail"
+      description="Select the tags you want to show on the bottom row of the now playing detail. Emptying the list will stop any attributes from showing"
     >
       <Select
         isMulti

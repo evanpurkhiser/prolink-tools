@@ -240,7 +240,7 @@ const FullMetadata = ({track, tags, ...p}: FullMetadataProps) => (
         const text = getter(track);
         return <Attribute key={tag} className={`attribute-${tag}`} {...{icon, text}} />;
       })}
-      {tags.map(t => tagsConfig[t].getter(track)).join('') === '' && (
+      {tags.map(t => tagsConfig[t].getter(track)).join('') === '' && tags.length > 0 && (
         <NoAttributes key="no-field" />
       )}
     </Attributes>
