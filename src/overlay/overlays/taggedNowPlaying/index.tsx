@@ -26,9 +26,13 @@ type Config = {
    */
   historyCount: number;
   /**
-   * Should the track metadata be aligned to the right of the window.
+   * Should the track metadata be aligned to the right of the window
    */
   alignRight?: boolean;
+  /**
+   * Don't display artwork
+   */
+  hideArtwork?: boolean;
   /**
    * The specific set of tags to display
    */
@@ -66,6 +70,7 @@ const Overlay: React.FC<Props> = observer(({config, history}) =>
       <CurrentTrack
         className="track-current"
         alignRight={config.alignRight}
+        hideArtwork={config.hideArtwork}
         tags={config.tags}
         firstPlayed={store.mixstatus.trackHistory.length === 1}
         played={history[0]}
@@ -78,6 +83,7 @@ const Overlay: React.FC<Props> = observer(({config, history}) =>
                 mini
                 positionTransition
                 alignRight={config.alignRight}
+                hideArtwork={config.hideArtwork}
                 played={track}
                 variants={{exit: {display: 'none'}}}
                 key={`${track.playedAt}-${track.track.id}`}
@@ -158,6 +164,16 @@ const ConfigInterface: React.FC<{config: Config}> = observer(({config}) => (
       <Checkbox
         checked={config.alignRight}
         onChange={() => set(config, {alignRight: !config.alignRight})}
+      />
+    </Field>
+    <Field
+      size="sm"
+      name="Don't show artwork"
+      description="Hides the artwork. Useful if you don't maintain artwork in your library."
+    >
+      <Checkbox
+        checked={config.hideArtwork}
+        onChange={() => set(config, {hideArtwork: !config.hideArtwork})}
       />
     </Field>
     <Field

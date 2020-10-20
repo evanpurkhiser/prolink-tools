@@ -250,6 +250,7 @@ const FullMetadata = ({track, tags, ...p}: FullMetadataProps) => (
 type BaseTrackProps = MotionDivProps & {
   played: PlayedTrack;
   alignRight?: boolean;
+  hideArtwork?: boolean;
   /**
    * Disables animation of the artwork
    */
@@ -261,14 +262,16 @@ type BaseTrackProps = MotionDivProps & {
 };
 
 const FullTrack = React.forwardRef<HTMLDivElement, BaseTrackProps>(
-  ({played, firstPlayed, ...props}, ref) => (
+  ({played, firstPlayed, hideArtwork, ...props}, ref) => (
     <TrackContainer ref={ref} {...props}>
-      <Artwork
-        alignRight={props.alignRight}
-        animateIn={!!firstPlayed}
-        src={artToSrc(played.artwork)}
-        size="80px"
-      />
+      {!hideArtwork && (
+        <Artwork
+          alignRight={props.alignRight}
+          animateIn={!!firstPlayed}
+          src={artToSrc(played.artwork)}
+          size="80px"
+        />
+      )}
       <FullMetadata
         alignRight={props.alignRight}
         track={played.track}
@@ -321,14 +324,16 @@ const PlayedAt = styled(Text)`
 `;
 
 const MiniTrack = React.forwardRef<HTMLDivElement, BaseTrackProps>(
-  ({played, ...props}, ref) => (
+  ({played, hideArtwork, ...props}, ref) => (
     <TrackContainer ref={ref} {...props}>
-      <Artwork
-        animateIn
-        alignRight={props.alignRight}
-        src={artToSrc(played.artwork)}
-        size="50px"
-      />
+      {!hideArtwork && (
+        <Artwork
+          animateIn
+          alignRight={props.alignRight}
+          src={artToSrc(played.artwork)}
+          size="50px"
+        />
+      )}
       <MetadataWrapper alignRight={props.alignRight}>
         <MiniTitle>{played.track.title}</MiniTitle>
         <MiniArtist>{played.track.artist?.name}</MiniArtist>
