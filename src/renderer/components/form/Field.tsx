@@ -27,13 +27,14 @@ const Field = styled(({size, name, description, children, ...p}: Props) => (
   </label>
 ))<Props>`
   font-family: Ubuntu;
+  line-height: 1.4;
   display: grid;
   align-items: ${p => (p.top ? 'start' : 'center')};
   grid-template-columns: ${p => SIZES[p.size ?? 'md']} ${p =>
       p.size !== 'full' && 'minmax(0, 1fr)'};
   grid-gap: 0.5rem 1rem;
 
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   padding: 1rem 1.5rem;
 
   ${p =>

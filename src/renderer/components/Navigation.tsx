@@ -2,13 +2,14 @@ import * as React from 'react';
 import {NavLink, useLocation} from 'react-router-dom';
 
 import styled from '@emotion/styled';
-import {Menu, Activity, Layers} from 'react-feather';
+import {Menu, Activity, Layers, Settings} from 'react-feather';
 import useDropdown from 'src/utils/useDropdown';
 import {AnimatePresence, motion} from 'framer-motion';
 
 const items = [
   {name: 'Device Status', path: '/status', icon: Activity},
   {name: 'Overlays', path: '/overlay-config', icon: Layers},
+  {name: 'Settings', path: '/settings', icon: Settings},
 ] as const;
 
 const Navigation = () => {

@@ -8,6 +8,7 @@ import Titlebar from 'app/components/Titlebar';
 import Version from 'app/components/Version';
 import Devices from 'app/views/devices';
 import OverlayConfig from 'app/views/overlayConfig';
+import Settings from 'app/views/settings';
 
 const Application = () => (
   <MemoryRouter>
@@ -18,6 +19,7 @@ const Application = () => (
         <Redirect from="/" to="/status" exact />
         <Route path="/status" component={Devices} />
         <Route path="/overlay-config" component={OverlayConfig} />
+        <Route path="/settings" component={Settings} />
       </Switch>
     </Frame>
     <Version />
