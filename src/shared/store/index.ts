@@ -142,6 +142,12 @@ export class AppConfig {
   @serializable(list(rawJS))
   @observable
   overlays = observable.array<OverlayInstance>();
+  /**
+   * Should debug events be enabled to be stored and uploaded?
+   */
+  @serializable
+  @observable
+  reportDebugEvents = false;
 }
 
 export class AppStore {

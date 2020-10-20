@@ -1,4 +1,5 @@
 import taggedNowPlaying from './overlays/taggedNowPlaying';
+import classicMetadata from './overlays/classicMetadata';
 
 type OverlayType = typeof registeredOverlays[number]['type'];
 

@@ -231,11 +231,11 @@ const connectLocaldbHydrateDone = (network: ConnectedProlinkNetwork) =>
     })
   );
 
-const connectMixstatus = (network: ConnectedProlinkNetwork) => {
-  const mixstatus = new MixstatusProcessor();
-  network.statusEmitter.on('status', s => mixstatus.handleState(s));
-
-  mixstatus.on(
+/**
+ * Configure listeners for the mixstatus processor
+ */
+const connectMixstatus = (network: ConnectedProlinkNetwork) =>
+  network.mixstatus.on(
     'nowPlaying',
     action(async state => {
       const playedAt = new Date();
@@ -268,4 +268,3 @@ const connectMixstatus = (network: ConnectedProlinkNetwork) => {
       store.mixstatus.trackHistory.push(played);
     })
   );
-};
