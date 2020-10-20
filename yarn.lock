@@ -9564,10 +9564,10 @@ progress@^2.0.1, progress@^2.0.3:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-prolink-connect@0.2.0-prerelease.10:
-  version "0.2.0-prerelease.10"
-  resolved "https://registry.yarnpkg.com/prolink-connect/-/prolink-connect-0.2.0-prerelease.10.tgz#30f952b742bd3f0e905650cb98adca9c914fe882"
-  integrity sha512-MGCZIWBNjfUcgCSo3tHU6HYLxemBnQNwnJgZLIAMnC3HqrR8RldqmJ0c3iF5pKBrmHdaNdr8+vhVv40vogY1kQ==
+prolink-connect@0.2.0-prerelease.11:
+  version "0.2.0-prerelease.11"
+  resolved "https://registry.yarnpkg.com/prolink-connect/-/prolink-connect-0.2.0-prerelease.11.tgz#049574eb7a085fd19de2ad095a09926c0a7eac6e"
+  integrity sha512-6+eYAJ0ht6ahDOBkyM7lJ4UAUcbjiqxNVKLNAUK36Pic6CM7072/3DF14WrRRZb9FCRke+rkEnmVZvMOCyn7/w==
   dependencies:
     "@sentry/node" "^5.16.1"
     "@sentry/tracing" "^5.25.0"
