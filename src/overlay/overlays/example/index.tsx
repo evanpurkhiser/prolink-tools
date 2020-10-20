@@ -5,13 +5,13 @@ import {OverlayDescriptor} from 'src/overlay';
 
 type Config = {
   /**
-   * Should the
+   * Should the overlay do something
    */
-  alginRight: boolean;
+  someOption: boolean;
 };
 
 const Overlay: React.FC<{config: Config}> = observer(() => {
-  return <div>This is a cue counter</div>;
+  return <div>This is an example overaly for reference</div>;
 });
 
 const ConfigInterface: React.FC<{config: Config}> = observer(() => {
@@ -19,7 +19,7 @@ const ConfigInterface: React.FC<{config: Config}> = observer(() => {
 });
 
 const Example: React.FC<{config?: Config}> = () => {
-  return <div>This is an example of the </div>;
+  return <div>This is an example of the overlay</div>;
 };
 
 export type ExampleOverlay = {
