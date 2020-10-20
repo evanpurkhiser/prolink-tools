@@ -64,13 +64,14 @@ const Overlay: React.FC<Props> = observer(({config, history}) =>
   history.length === 0 ? null : (
     <React.Fragment>
       <CurrentTrack
+        className="track-current"
         alignRight={config.alignRight}
         tags={config.tags}
         firstPlayed={store.mixstatus.trackHistory.length === 1}
         played={history[0]}
       />
       {config.historyCount > 0 && history.length > 1 && (
-        <RecentWrapper>
+        <RecentWrapper className="track-recents">
           <AnimatePresence>
             {history.slice(1, config.historyCount + 1).map(track => (
               <Track

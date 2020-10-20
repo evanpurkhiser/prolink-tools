@@ -95,6 +95,10 @@ const Artwork = styled(BaseArtwork)<ArtworkProps & {size: string}>`
   flex-shrink: 0;
 `;
 
+Artwork.defaultProps = {
+  className: 'track-artwork',
+};
+
 let Text = styled(motion.div)`
   background: rgba(0, 0, 0, 0.25);
   padding: 0 0.28em;
@@ -122,11 +126,19 @@ const Title = styled(Text)`
   margin-bottom: 0.2em;
 `;
 
+Title.defaultProps = {
+  className: 'metadata-tile',
+};
+
 const Artist = styled(Text)`
   font-size: 1.1em;
   line-height: 1.3;
   margin-bottom: 0.2em;
 `;
+
+Artist.defaultProps = {
+  className: 'metadata-artist',
+};
 
 const Attributes = styled(({alignRight, ...p}: OrientedMotionDivProps) => {
   const animation = {
@@ -149,6 +161,10 @@ const Attributes = styled(({alignRight, ...p}: OrientedMotionDivProps) => {
   // pose during the animation.
   white-space: nowrap;
 `;
+
+Attributes.defaultProps = {
+  className: 'metadata-attributes',
+};
 
 type IconProps = {
   icon: React.ComponentType<React.ComponentProps<typeof Disc>>;
@@ -187,6 +203,7 @@ let MetadataWrapper = styled(motion.div)<{alignRight?: boolean}>`
 `;
 
 MetadataWrapper.defaultProps = {
+  className: 'track-metadata',
   variants: {
     initial: {
       clipPath: 'inset(0% 100% 0% 0%)',
@@ -221,7 +238,7 @@ const FullMetadata = ({track, tags, ...p}: FullMetadataProps) => (
       {tags.map(tag => {
         const {icon, getter} = tagsConfig[tag];
         const text = getter(track);
-        return <Attribute key={tag} {...{icon, text}} />;
+        return <Attribute key={tag} className={`attribute-${tag}`} {...{icon, text}} />;
       })}
       {tags.map(t => tagsConfig[t].getter(track)).join('') === '' && (
         <NoAttributes key="no-field" />
