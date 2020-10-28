@@ -1,0 +1,3 @@
+{
+  "builds": [{"src": "src/website/api/*.js", "use": "@vercel/node"}]
+}
