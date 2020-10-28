@@ -1,5 +1,11 @@
 import {NowRequest, NowResponse} from '@vercel/node';
-import {OAuth, oauth1tokenCallback} from 'oauth';
+import {OAuth} from 'oauth';
+import cookie from 'cookie';
+
+type OauthData = {
+  token: string;
+  secret: string;
+};
 
 export default async (request: NowRequest, response: NowResponse) => {
   var oauth = new OAuth(
@@ -12,9 +18,34 @@ export default async (request: NowRequest, response: NowResponse) => {
     'HMAC-SHA1'
   );
 
-  const test = await new Promise<Parameters<oauth1tokenCallback>>(resolve =>
-    oauth.getOAuthRequestToken((...data) => resolve(data))
+  // Initiate oauth request
+  if (request.query['oauth_verifier'] === undefined) {
+    const oauthRequest = await new Promise<OauthData>(resolve =>
+      oauth.getOAuthRequestToken((_, token, secret) => resolve({token, secret}))
+    );
+
+    response.setHeader('Set-Cookie', [
+      cookie.serialize('twitter_oauth', JSON.stringify(oauthRequest)),
+    ]);
+
+    response.redirect(
+      `https://api.twitter.com/oauth/authorize?oauth_token=${oauthRequest.token}`
+    );
+
+    return;
+  }
+
+  const verifier = request.query['oauth_verifier'] as string;
+  const oauthRequest: OauthData = JSON.parse(request.cookies['twitter_oauth']);
+
+  const accessToken = await new Promise<OauthData>(resolve =>
+    oauth.getOAuthAccessToken(
+      oauthRequest.token,
+      oauthRequest.secret,
+      verifier,
+      (_, token, secret) => resolve({token, secret})
+    )
   );
 
-  response.status(200).json(test);
+  response.status(200).json(accessToken);
 };
