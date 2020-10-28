@@ -83,7 +83,7 @@ const overlayConfig: webpack.Configuration = webpackMerge.smart(baseConfig, {
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin(),
+    new HtmlWebpackPlugin({title: 'Prolink Tools Overlay'}),
     new ReactRefreshWebpackPlugin(),
     new ForkTsCheckerWebpackPlugin({
       issue: {include: [{file: 'src/overlay/**/*'}, {file: 'src/shared/**/*'}]},
