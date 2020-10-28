@@ -7,6 +7,9 @@ type OauthData = {
   secret: string;
 };
 
+/**
+ * Authorizes a twitter app for prolink tools twitter integration
+ */
 export default async (request: NowRequest, response: NowResponse) => {
   var oauth = new OAuth(
     'https://api.twitter.com/oauth/request_token',
@@ -47,5 +50,7 @@ export default async (request: NowRequest, response: NowResponse) => {
     )
   );
 
-  response.status(200).json(accessToken);
+  response.redirect(
+    `prolinkTools://twitter-auth?token=${accessToken.token}&secret=${accessToken.secret}`
+  );
 };
