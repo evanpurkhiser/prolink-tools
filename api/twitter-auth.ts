@@ -5,8 +5,8 @@ export default async (request: NowRequest, response: NowResponse) => {
   var oauth = new OAuth(
     'https://api.twitter.com/oauth/request_token',
     'https://api.twitter.com/oauth/access_token',
-    process.env['TWITTER_API_KEY'],
-    process.env['TWITTER_API_SECRET'],
+    process.env['TWITTER_API_KEY'] ?? '',
+    process.env['TWITTER_API_SECRET'] ?? '',
     '1.0A',
     null,
     'HMAC-SHA1'
