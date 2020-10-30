@@ -234,7 +234,7 @@ const connectLocaldbHydrateDone = (network: ConnectedProlinkNetwork) =>
 /**
  * Configure listeners for the mixstatus processor
  */
-const connectMixstatus = (network: ConnectedProlinkNetwork) =>
+const connectMixstatus = (network: ConnectedProlinkNetwork) => {
   network.mixstatus.on(
     'nowPlaying',
     action(async state => {
@@ -268,3 +268,9 @@ const connectMixstatus = (network: ConnectedProlinkNetwork) =>
       store.mixstatus.trackHistory.push(played);
     })
   );
+
+  /**
+   * Clear active track history at the end of a set
+   */
+  network.mixstatus.on('setEnded', () => store.mixstatus.trackHistory.clear());
+};
