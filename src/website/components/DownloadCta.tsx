@@ -1,28 +1,12 @@
 import * as React from 'react';
 import styled from '@emotion/styled';
 import {motion} from 'framer-motion';
-import {request} from '@octokit/request';
-import {Endpoints} from '@octokit/types';
 
+import useRelease from 'src/utils/useLatestRelease';
 import {AppleLogo, WindowsLogo, LinuxLogo} from 'src/shared/components/Icons';
 import {format, parseISO} from 'date-fns';
-import {GITHUB_REPO} from '../constants';
 
 type Platform = NonNullable<ReturnType<typeof getPlatform>>;
-type Release = Endpoints['GET /repos/:owner/:repo/releases/latest']['response'];
-
-const useRelease = () => {
-  const [release, setRelease] = React.useState<Release | null>(null);
-
-  const getReleases = async () => {
-    const release = await request('GET /repos/:owner/:repo/releases/latest', GITHUB_REPO);
-    setRelease(release);
-  };
-
-  React.useEffect(() => void getReleases(), []);
-
-  return release;
-};
 
 const getPlatform = () => {
   const platform = window.navigator.platform.toLowerCase();
@@ -58,7 +42,7 @@ const DownloadCta = (props: React.ComponentProps<typeof motion.div>) => {
     }
 
     // Find the asset for the paltform they're on
-    const asset = release.data.assets.find(asset => asset.name.includes(platform));
+    const asset = release.assets.find(asset => asset.name.includes(platform));
     if (asset) {
       window.location.replace(asset.browser_download_url);
     }
@@ -74,10 +58,10 @@ const DownloadCta = (props: React.ComponentProps<typeof motion.div>) => {
       </DownloadButton>
 
       <VersionTag>
-        version {release?.data.name.slice(1) ?? 'x.x.x'}
+        version {release?.name.slice(1) ?? 'x.x.x'}
         <small>
           {release
-            ? format(parseISO(release.data.published_at), 'MMMM do yyyy')
+            ? format(parseISO(release.published_at), 'MMMM do yyyy')
             : 'Fetching release...'}
         </small>
       </VersionTag>

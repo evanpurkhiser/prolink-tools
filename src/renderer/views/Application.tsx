@@ -5,7 +5,7 @@ import {MemoryRouter, Switch, Route, Redirect} from 'react-router-dom';
 
 import globalCss, {noSelect} from 'src/shared/globalCss';
 import Titlebar from 'app/components/Titlebar';
-import Version from 'app/components/Version';
+import Footer from 'app/components/Footer';
 import Devices from 'app/views/devices';
 import OverlayConfig from 'app/views/overlayConfig';
 import Settings from 'app/views/settings';
@@ -22,7 +22,7 @@ const Application = () => (
         <Route path="/settings" component={Settings} />
       </Switch>
     </Frame>
-    <Version />
+    <Footer />
   </MemoryRouter>
 );
 
