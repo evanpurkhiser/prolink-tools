@@ -47,9 +47,9 @@ const MissingArtwork = styled(
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #000;
+  background: #28272b;
   color: #aaa;
-  opacity: 0.5;
+  opacity: 1;
 `;
 
 type ArtworkProps = {alignRight?: boolean; animateIn: boolean} & (
@@ -69,12 +69,17 @@ const BaseArtwork = ({animateIn, alignRight, ...p}: ArtworkProps) => {
     animate: {
       clipPath: 'inset(0% 0% 0% 0%)',
       transitionEnd: {zIndex: 1},
+      transition: {
+        type: 'spring',
+        stiffness: 500,
+        damping: 100,
+      },
     },
     exit: {
       clipPath: 'inset(0% 0% 100% 0%)',
       transition: {
         type: 'spring',
-        stiffness: 700,
+        stiffness: 200,
         damping: 100,
       },
     },
@@ -127,6 +132,7 @@ const Title = styled(Text)`
 `;
 
 Title.defaultProps = {
+  ...Text.defaultProps,
   className: 'metadata-tile',
 };
 
@@ -137,6 +143,7 @@ const Artist = styled(Text)`
 `;
 
 Artist.defaultProps = {
+  ...Text.defaultProps,
   className: 'metadata-artist',
 };
 
@@ -195,7 +202,28 @@ const NoAttributes = styled(p => (
   color: rgba(255, 255, 255, 0.6);
 `;
 
-let MetadataWrapper = styled(motion.div)<{alignRight?: boolean}>`
+let MetadataWrapper = styled((p: OrientedMotionDivProps) => {
+  const variants = {
+    initial: {
+      clipPath: 'inset(0% 100% 0% 0%)',
+    },
+    animate: {
+      clipPath: 'inset(0% 0% 0% 0%)',
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.15,
+      },
+    },
+    exit: {
+      clipPath: p.alignRight ? 'inset(0% 0% 0% 100%)' : 'inset(0% 100% 0% 0%)',
+      transition: {
+        duration: 0.2,
+      },
+    },
+  };
+
+  return <motion.div variants={variants} {...p} />;
+})<{alignRight?: boolean}>`
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -204,25 +232,6 @@ let MetadataWrapper = styled(motion.div)<{alignRight?: boolean}>`
 
 MetadataWrapper.defaultProps = {
   className: 'track-metadata',
-  variants: {
-    initial: {
-      clipPath: 'inset(0% 100% 0% 0%)',
-    },
-    animate: {
-      clipPath: 'inset(0% 0% 0% 0%)',
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-    exit: {
-      clipPath: 'inset(0% 100% 0% 0%)',
-      transition: {
-        type: 'spring',
-        stiffness: 500,
-        damping: 90,
-      },
-    },
-  },
 };
 
 type FullMetadataProps = OrientedMotionDivProps & {
@@ -286,8 +295,11 @@ const TrackContainer = styled(motion.div)<{alignRight?: boolean}>`
   grid-gap: 0.5rem;
   color: #fff;
   font-family: Ubuntu;
+  justify-content: ${p => (p.alignRight ? 'right' : 'left')};
   grid-template-columns: ${p =>
-    p.alignRight ? 'minmax(0, 1fr) max-content' : 'max-content minmax(0, 1fr)'};
+    p.alignRight
+      ? 'minmax(0, max-content) max-content'
+      : 'max-content minmax(0, max-content)'};
 
   > *:nth-child(1) {
     grid-row: 1;

@@ -97,9 +97,10 @@ const Overlay: React.FC<Props> = observer(({config, history}) =>
 );
 
 const RecentWrapper = styled('div')`
-  display: grid;
-  grid-gap: 14px;
+  display: flex;
+  flex-direction: column;
   margin-top: 2rem;
+  gap: 14px;
 `;
 
 const CurrentWrapper = styled('div')`
@@ -190,6 +191,7 @@ const ConfigInterface: React.FC<{config: Config}> = observer(({config}) => (
     </Field>
     <Field
       size="full"
+      name="Additional Tags"
       description="Select the tags you want to show on the bottom row of the now playing detail. Emptying the list will stop any attributes from showing"
     >
       <Select
@@ -205,7 +207,7 @@ const ConfigInterface: React.FC<{config: Config}> = observer(({config}) => (
 
 const descriptor: OverlayDescriptor<TaggedNowPlaying> = {
   type: 'taggedNowPlaying',
-  name: 'Now playing with tags',
+  name: 'Now Playing with Tags',
   component: HistoryOverlay,
   example: Example,
   configInterface: ConfigInterface,
