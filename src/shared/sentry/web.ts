@@ -10,6 +10,7 @@ Sentry.init({
   environment: process.env.RELEASE_CHANNEL,
   sampleRate: 1,
   tracesSampleRate: 1,
+  autoSessionTracking: true,
 });
 
 export const setSentryUser = (user: User) => Sentry.setUser(user);

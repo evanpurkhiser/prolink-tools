@@ -25,11 +25,7 @@
       "output": "release"
     },
     "publish": null,
-    "files": [
-      "dist/",
-      "node_modules/better-sqlite3/**/*",
-      "package.json"
-    ],
+    "files": ["dist/", "node_modules/better-sqlite3/**/*", "package.json"],
     "linux": {
       "target": "tar.gz"
     },
@@ -68,7 +64,7 @@
     "@octokit/request": "^5.4.5",
     "@octokit/types": "^5.0.1",
     "@sentry/apm": "^5.16.1",
-    "@sentry/browser": "^5.19.0",
+    "@sentry/browser": "^5.27.4",
     "@sentry/node": "^5.16.1",
     "@types/connect": "^3.4.33",
     "@types/cookie": "^0.4.0",
@@ -134,6 +130,7 @@
     "react-router-dom": "^5.2.0",
     "react-select": "^3.1.0",
     "react-test-renderer": "^16.8.6",
+    "react-textarea-autosize": "^8.2.0",
     "regenerator-runtime": "^0.13.5",
     "semver": "^7.3.2",
     "serializr": "^2.0.3",
