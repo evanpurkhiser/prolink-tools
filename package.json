@@ -1,6 +1,6 @@
 {
   "name": "prolink-tools",
-  "version": "0.1.0-prerelease.12",
+  "version": "0.1.0-prerelease.13",
   "description": "A collection of userfriendly tools for DJs using Pioneers PRO DJ LINK feature",
   "author": "Evan Purkhiser <evanpurkhiser@gmail.com>",
   "license": "MIT",
@@ -25,7 +25,11 @@
       "output": "release"
     },
     "publish": null,
-    "files": ["dist/", "node_modules/better-sqlite3/**/*", "package.json"],
+    "files": [
+      "dist/",
+      "node_modules/better-sqlite3/**/*",
+      "package.json"
+    ],
     "linux": {
       "target": "tar.gz"
     },
