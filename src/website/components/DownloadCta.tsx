@@ -76,14 +76,16 @@ const DownloadButton = styled('button')`
   background: #f84b4b;
   color: #fff;
   padding: 0.5rem 0.75rem;
-  display: grid;
-  grid-auto-flow: column;
-  grid-gap: 0.5rem;
   border: 0;
+  display: flex;
   align-items: center;
   border-radius: 2px;
   cursor: pointer;
   transition: background 200ms ease-in-out;
+
+  svg {
+    margin-right: 0.5rem;
+  }
 
   &:hover {
     background: #e54949;

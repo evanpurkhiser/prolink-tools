@@ -65,10 +65,10 @@ const Application = () => (
     >
       <Intro>
         <Title variants={animateInfo} />
-        <Tagline variants={animateInfo}>bring your live stream sets to life</Tagline>
+        <Tagline variants={animateInfo}>tap into your CDJs in real-time</Tagline>
         <Description variants={animateInfo}>
-          built by DJs, for DJs. prolink tools is a suite of fun and useful scripts to
-          enhance your live stream productions.
+          built by a DJ, for DJs. prolink tools is a hand-built collection of tools to
+          hook into real-time performance data to enhance your sets.
         </Description>
 
         <DownloadCta variants={animateInfo} />
@@ -94,6 +94,7 @@ const HeroLanding = styled(motion.div)`
   align-items: center;
   grid-template-columns: 0.85fr 1fr;
   grid-gap: 2rem;
+  padding: var(--padding) 0;
 
   --padding: 4rem;
 
