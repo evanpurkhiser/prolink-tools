@@ -81,7 +81,7 @@ const Overlay: React.FC<Props> = observer(({config, history}) =>
             {history.slice(1, config.historyCount + 1).map(track => (
               <Track
                 mini
-                positionTransition
+                layout
                 alignRight={config.alignRight}
                 hideArtwork={config.hideArtwork}
                 played={track}
