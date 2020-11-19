@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 const Header = styled('header')`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   padding: 1.5rem;
   border-bottom: 1px solid #eee;
 `;
