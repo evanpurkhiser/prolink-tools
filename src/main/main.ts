@@ -8,11 +8,12 @@ import {bringOnline, NetworkState, ProlinkNetwork} from 'prolink-connect';
 import isDev from 'electron-is-dev';
 import {set} from 'mobx';
 
-import {startOverlayServer} from 'main/overlayServer';
-import {registerMainIpc, observeStore, loadMainConfig} from 'src/shared/store/ipc';
-import connectNetworkStore from 'src/shared/store/network';
 import store from 'src/shared/store';
+import connectNetworkStore from 'src/shared/store/network';
+import {registerMainIpc, observeStore, loadMainConfig} from 'src/shared/store/ipc';
+import {startOverlayServer} from 'main/overlayServer';
 import {registerDebuggingEventsService} from 'src/main/debugEvents';
+import {runConfigMigrations} from 'src/main/configMigrations';
 
 // Update the store with user details ASAP
 (async () => set(store, {user: await userInfo}))();
@@ -67,6 +68,7 @@ app.on('ready', async () => {
 
   await loadMainConfig();
   registerMainIpc();
+  runConfigMigrations();
   observeStore();
 
   let network: ProlinkNetwork;
