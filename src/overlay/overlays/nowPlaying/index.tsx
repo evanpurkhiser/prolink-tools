@@ -17,7 +17,7 @@ import {Tags, availableTags} from './tags';
 import ThemeModern from './ThemeModern';
 
 type TaggedNowPlaying = {
-  type: 'taggedNowPlaying';
+  type: 'nowPlaying';
   config: NowPlayingConfig;
 };
 
@@ -138,8 +138,8 @@ const ConfigInterface: React.FC<{config: NowPlayingConfig}> = observer(({config}
 ));
 
 const descriptor: OverlayDescriptor<TaggedNowPlaying> = {
-  type: 'taggedNowPlaying',
-  name: 'Now Playing with Tags',
+  type: 'nowPlaying',
+  name: 'Live now playing metadata overlay, including themes',
   component: HistoryOverlay,
   example: Example,
   configInterface: ConfigInterface,
