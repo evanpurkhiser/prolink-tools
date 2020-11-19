@@ -4,6 +4,7 @@ import {css} from '@emotion/core';
 
 type Props = React.HTMLAttributes<HTMLLabelElement> & {
   size?: 'sm' | 'md' | 'lg' | 'fit' | 'full';
+  noCenter?: boolean;
   top?: boolean;
   name?: string;
   description?: React.ReactNode;
@@ -39,6 +40,7 @@ const Field = styled(({size, name, description, children, ...p}: Props) => (
 
   ${p =>
     p.size !== 'full' &&
+    !p.noCenter &&
     css`
       > *:first-child {
         justify-self: center;
