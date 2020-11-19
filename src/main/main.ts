@@ -11,7 +11,7 @@ import {startOverlayServer} from 'main/overlayServer';
 import {registerMainIpc, observeStore, loadMainConfig} from 'src/shared/store/ipc';
 import connectNetworkStore from 'src/shared/store/network';
 import store from 'src/shared/store';
-import {registerDebuggingEventsService} from './debugEvents';
+import {registerDebuggingEventsService} from 'src/main/debugEvents';
 
 // Intialize the store for the main thread immedaitely.
 store.isInitalized = true;
