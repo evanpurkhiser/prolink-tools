@@ -283,10 +283,10 @@ export const registerMainIpc = () => {
   });
 
   // Register listener for config object changes
-  ipcMain.on('config-update', (_e, change: SerializedChange) => {
-    applyStoreChange(change);
-    settings.set(serialize(AppConfig, store.config));
-  });
+  ipcMain.on('config-update', (_e, change: SerializedChange) => applyStoreChange(change));
+
+  // Save any updates to the configuration store
+  deepObserve(store.config, () => settings.set(serialize(AppConfig, store.config)));
 };
 
 /**
