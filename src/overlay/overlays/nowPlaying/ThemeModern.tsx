@@ -69,19 +69,9 @@ const BaseArtwork = ({animateIn, alignRight, ...p}: ArtworkProps) => {
     animate: {
       clipPath: 'inset(0% 0% 0% 0%)',
       transitionEnd: {zIndex: 1},
-      transition: {
-        type: 'spring',
-        stiffness: 500,
-        damping: 100,
-      },
     },
     exit: {
       clipPath: 'inset(0% 0% 100% 0%)',
-      transition: {
-        type: 'spring',
-        stiffness: 200,
-        damping: 100,
-      },
     },
   };
 
