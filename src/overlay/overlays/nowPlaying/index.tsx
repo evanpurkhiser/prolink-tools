@@ -15,9 +15,11 @@ import LiveHistoryIndicator from 'src/overlay/components/liveHistoryIndicator';
 
 import {Tags, availableTags} from './tags';
 import ThemeModern from './ThemeModern';
+import ThemeAsot from './ThemeAsot';
 
 const themes = {
   tracklist: {label: 'Track List', component: ThemeModern},
+  asot: {label: 'A State of Overlays', component: ThemeAsot},
 } as const;
 
 type Theme = keyof typeof themes;
