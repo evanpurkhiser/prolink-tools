@@ -16,12 +16,22 @@ import LiveHistoryIndicator from 'src/overlay/components/liveHistoryIndicator';
 import {Tags, availableTags} from './tags';
 import ThemeModern from './ThemeModern';
 
+const themes = {
+  modern: {label: 'Modern', component: ThemeModern},
+} as const;
+
+type Theme = keyof typeof themes;
+
 type TaggedNowPlaying = {
   type: 'nowPlaying';
   config: NowPlayingConfig;
 };
 
 export type NowPlayingConfig = {
+  /**
+   * The selected theme to use
+   */
+  theme: Theme;
   /**
    * The number of history items to show
    */
@@ -46,14 +56,14 @@ const Example: React.FC<{config?: NowPlayingConfig}> = observer(({config}) => {
 
   const history = liveHistory.length === 0 ? demoHistory : liveHistory;
 
+  const theme = config?.theme ?? 'modern';
+  const Overlay = themes[theme].component;
+
   const example =
     history.length === 0 ? (
       <EmptyExample />
     ) : (
-      <ThemeModern
-        config={config ?? {historyCount: 0}}
-        history={history.slice().reverse()}
-      />
+      <Overlay config={config ?? {theme: 'modern'}} history={history.slice().reverse()} />
     );
 
   return (
@@ -80,15 +90,30 @@ const EmptyExample = styled('div')`
   }
 `;
 
-const HistoryOverlay: React.FC<{config: NowPlayingConfig}> = observer(({config}) => (
-  <ThemeModern history={store.mixstatus.trackHistory.slice().reverse()} config={config} />
-));
+const HistoryOverlay: React.FC<{config: NowPlayingConfig}> = observer(({config}) => {
+  const Overlay = themes[config.theme].component;
+  const history = store.mixstatus.trackHistory.slice().reverse();
+
+  return <Overlay {...{history, config}} />;
+});
 
 const valueTransform = <T extends readonly string[]>(t: T) =>
   t.map(v => ({label: v, value: v}));
 
 const ConfigInterface: React.FC<{config: NowPlayingConfig}> = observer(({config}) => (
   <div>
+    <Field
+      noCenter
+      size="lg"
+      name="Overlay Theme"
+      description="Choose from a variety of different look and feels for the metadata."
+    >
+      <Select
+        value={{value: config.theme, ...themes[config.theme]}}
+        options={Object.entries(themes).map(([value, theme]) => ({value, ...theme}))}
+        onChange={v => set(config, {theme: (v as {value: Theme}).value})}
+      />
+    </Field>
     <Field
       size="sm"
       name="Align to right side"
@@ -124,7 +149,7 @@ const ConfigInterface: React.FC<{config: NowPlayingConfig}> = observer(({config}
     <Field
       size="full"
       name="Additional Tags"
-      description="Select the tags you want to show on the bottom row of the now playing detail. Emptying the list will stop any attributes from showing"
+      description="Select the additional tags you want to show in the metadata. Emptying the list will stop any attributes from showing"
     >
       <Select
         isMulti
@@ -144,6 +169,7 @@ const descriptor: OverlayDescriptor<TaggedNowPlaying> = {
   example: Example,
   configInterface: ConfigInterface,
   defaultConfig: {
+    theme: 'modern',
     historyCount: 4,
     tags: ['album', 'label', 'comment'],
   },
