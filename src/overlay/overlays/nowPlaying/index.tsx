@@ -17,7 +17,7 @@ import {Tags, availableTags} from './tags';
 import ThemeModern from './ThemeModern';
 
 const themes = {
-  modern: {label: 'Modern', component: ThemeModern},
+  tracklist: {label: 'Track List', component: ThemeModern},
 } as const;
 
 type Theme = keyof typeof themes;
@@ -56,14 +56,17 @@ const Example: React.FC<{config?: NowPlayingConfig}> = observer(({config}) => {
 
   const history = liveHistory.length === 0 ? demoHistory : liveHistory;
 
-  const theme = config?.theme ?? 'modern';
+  const theme = config?.theme ?? 'tracklist';
   const Overlay = themes[theme].component;
 
   const example =
     history.length === 0 ? (
       <EmptyExample />
     ) : (
-      <Overlay config={config ?? {theme: 'modern'}} history={history.slice().reverse()} />
+      <Overlay
+        config={config ?? {theme: 'tracklist'}}
+        history={history.slice().reverse()}
+      />
     );
 
   return (
@@ -169,7 +172,7 @@ const descriptor: OverlayDescriptor<TaggedNowPlaying> = {
   example: Example,
   configInterface: ConfigInterface,
   defaultConfig: {
-    theme: 'modern',
+    theme: 'tracklist',
     historyCount: 4,
     tags: ['album', 'label', 'comment'],
   },

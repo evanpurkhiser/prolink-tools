@@ -24,6 +24,6 @@ export function runConfigMigrations() {
     }
 
     set(overlay, {type: 'nowPlaying'});
-    set(overlay.config, {theme: 'modern'});
+    set(overlay.config, {theme: 'tracklist'});
   })();
 }
