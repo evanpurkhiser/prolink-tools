@@ -45,6 +45,17 @@ const Field = styled(({size, name, description, children, ...p}: Props) => (
       }
     `}
 
+  ${p =>
+    p.size === 'full' &&
+    css`
+      > *:first-child {
+        grid-area: 2;
+      }
+      > &:last-child {
+        grid-area: 1;
+      }
+    `}
+
   &:not(:last-child) {
     border-bottom: 1px solid #eee;
   }
