@@ -108,7 +108,7 @@ const Title = styled(Text)`
 
 Title.defaultProps = {
   ...Text.defaultProps,
-  className: 'metadata-tile',
+  className: 'metadata-title',
 };
 
 const Artist = styled(Text)`
