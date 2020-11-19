@@ -1,11 +1,15 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import {motion} from 'framer-motion';
+import {AnimatePresence, motion} from 'framer-motion';
 import {formatDistance} from 'date-fns';
+import {observer} from 'mobx-react';
 
 import {PlayedTrack} from 'src/shared/store';
 import TimeTicker from 'src/shared/components/TimeTicker';
 import {Hash, Disc, X, Layers, Activity, Code} from 'react-feather';
+
+import {NowPlayingConfig} from '.';
+import {Tags} from './tags';
 
 const artToSrc = (d: Buffer | undefined) =>
   d && d.length > 0
@@ -32,10 +36,6 @@ const tagsConfig = makeTagConfig({
   tempo: {icon: Activity, getter: track => (track.tempo > 0 ? `${track.tempo} BPM` : '')},
   key: {icon: Code, getter: track => track.key?.name},
 });
-
-export type Tags = Array<keyof typeof tagsConfig>;
-
-export const availableTags = Object.keys(tagsConfig);
 
 const MissingArtwork = styled(
   React.forwardRef<HTMLDivElement, MotionDivProps>((p, ref) => (
@@ -367,4 +367,79 @@ const Track = React.forwardRef<HTMLDivElement, TrackProps>(({mini, ...props}, re
   mini ? <MiniTrack ref={ref} {...props} /> : <FullTrack ref={ref} {...props} />
 );
 
-export default Track;
+const CurrentTrack = ({played, ...p}: React.ComponentProps<typeof Track>) => (
+  <CurrentWrapper>
+    <AnimatePresence>
+      {played && <Track played={played} key={played.playedAt.toString()} {...p} />}
+    </AnimatePresence>
+  </CurrentWrapper>
+);
+
+CurrentTrack.defaultProps = {
+  variants: {
+    enter: {
+      x: 0,
+      transition: {
+        when: 'beforeChildren',
+        delay: 0.3,
+      },
+    },
+  },
+};
+
+type Props = {
+  config: NowPlayingConfig;
+  history: PlayedTrack[];
+};
+
+const ThemeModern: React.FC<Props> = observer(({config, history}) =>
+  history.length === 0 ? null : (
+    <React.Fragment>
+      <CurrentTrack
+        className="track-current"
+        alignRight={config.alignRight}
+        hideArtwork={config.hideArtwork}
+        tags={config.tags}
+        firstPlayed={history.length === 1}
+        played={history[0]}
+      />
+      {(config.historyCount ?? 0) > 0 && history.length > 1 && (
+        <RecentWrapper className="track-recents">
+          <AnimatePresence>
+            {history
+              .slice(1, config.historyCount ? config.historyCount + 1 : 0)
+              .map(track => (
+                <Track
+                  mini
+                  layout
+                  alignRight={config.alignRight}
+                  hideArtwork={config.hideArtwork}
+                  played={track}
+                  variants={{exit: {display: 'none'}}}
+                  key={`${track.playedAt}-${track.track.id}`}
+                />
+              ))}
+          </AnimatePresence>
+        </RecentWrapper>
+      )}
+    </React.Fragment>
+  )
+);
+
+const RecentWrapper = styled('div')`
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+  gap: 14px;
+`;
+
+const CurrentWrapper = styled('div')`
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  > * {
+    grid-column: 1;
+    grid-row: 1;
+  }
+`;
+
+export default ThemeModern;

@@ -1,13 +1,11 @@
 import * as React from 'react';
 import styled from '@emotion/styled';
-import {AnimatePresence} from 'framer-motion';
 import {observer} from 'mobx-react';
 import {set} from 'mobx';
 
-import store, {PlayedTrack} from 'src/shared/store';
+import store from 'src/shared/store';
 import {OverlayDescriptor} from 'src/overlay';
 
-import Track, {Tags, availableTags} from './Track';
 import useRandomHistory from 'src/utils/useRandomHistory';
 import Checkbox from 'app/components/form/Checkbox';
 import Text from 'app/components/form/Text';
@@ -15,16 +13,19 @@ import Field from 'app/components/form/Field';
 import Select from 'src/renderer/components/form/Select';
 import LiveHistoryIndicator from 'src/overlay/components/liveHistoryIndicator';
 
+import {Tags, availableTags} from './tags';
+import ThemeModern from './ThemeModern';
+
 type TaggedNowPlaying = {
   type: 'taggedNowPlaying';
-  config: Config;
+  config: NowPlayingConfig;
 };
 
-type Config = {
+export type NowPlayingConfig = {
   /**
    * The number of history items to show
    */
-  historyCount: number;
+  historyCount?: number;
   /**
    * Should the track metadata be aligned to the right of the window
    */
@@ -39,78 +40,29 @@ type Config = {
   tags?: Tags;
 };
 
-const CurrentTrack = ({played, ...p}: React.ComponentProps<typeof Track>) => (
-  <CurrentWrapper>
-    <AnimatePresence>
-      {played && <Track played={played} key={played.playedAt.toString()} {...p} />}
-    </AnimatePresence>
-  </CurrentWrapper>
-);
+const Example: React.FC<{config?: NowPlayingConfig}> = observer(({config}) => {
+  const demoHistory = useRandomHistory({cutoff: 5, updateInterval: 5000});
+  const liveHistory = store.mixstatus.trackHistory;
 
-CurrentTrack.defaultProps = {
-  variants: {
-    enter: {
-      x: 0,
-      transition: {
-        when: 'beforeChildren',
-        delay: 0.3,
-      },
-    },
-  },
-};
+  const history = liveHistory.length === 0 ? demoHistory : liveHistory;
 
-type Props = {
-  config: Config;
-  history: PlayedTrack[];
-};
-
-const Overlay: React.FC<Props> = observer(({config, history}) =>
-  history.length === 0 ? null : (
-    <React.Fragment>
-      <CurrentTrack
-        className="track-current"
-        alignRight={config.alignRight}
-        hideArtwork={config.hideArtwork}
-        tags={config.tags}
-        firstPlayed={store.mixstatus.trackHistory.length === 1}
-        played={history[0]}
+  const example =
+    history.length === 0 ? (
+      <EmptyExample />
+    ) : (
+      <ThemeModern
+        config={config ?? {historyCount: 0}}
+        history={history.slice().reverse()}
       />
-      {config.historyCount > 0 && history.length > 1 && (
-        <RecentWrapper className="track-recents">
-          <AnimatePresence>
-            {history.slice(1, config.historyCount + 1).map(track => (
-              <Track
-                mini
-                layout
-                alignRight={config.alignRight}
-                hideArtwork={config.hideArtwork}
-                played={track}
-                variants={{exit: {display: 'none'}}}
-                key={`${track.playedAt}-${track.track.id}`}
-              />
-            ))}
-          </AnimatePresence>
-        </RecentWrapper>
-      )}
+    );
+
+  return (
+    <React.Fragment>
+      <LiveHistoryIndicator active={liveHistory.length > 0} />
+      {example}
     </React.Fragment>
-  )
-);
-
-const RecentWrapper = styled('div')`
-  display: flex;
-  flex-direction: column;
-  margin-top: 2rem;
-  gap: 14px;
-`;
-
-const CurrentWrapper = styled('div')`
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  > * {
-    grid-column: 1;
-    grid-row: 1;
-  }
-`;
+  );
+});
 
 const EmptyExample = styled('div')`
   height: 80px;
@@ -128,34 +80,14 @@ const EmptyExample = styled('div')`
   }
 `;
 
-const Example: React.FC<{config?: Config}> = observer(({config}) => {
-  const demoHistory = useRandomHistory({cutoff: 5, updateInterval: 5000});
-  const liveHistory = store.mixstatus.trackHistory;
-
-  const history = liveHistory.length === 0 ? demoHistory : liveHistory;
-
-  const example =
-    history.length === 0 ? (
-      <EmptyExample />
-    ) : (
-      <Overlay config={config ?? {historyCount: 0}} history={history.slice().reverse()} />
-    );
-
-  return (
-    <React.Fragment>
-      <LiveHistoryIndicator active={liveHistory.length > 0} />
-      {example}
-    </React.Fragment>
-  );
-});
-
-const HistoryOverlay: React.FC<{config: Config}> = observer(({config}) => (
-  <Overlay history={store.mixstatus.trackHistory.slice().reverse()} config={config} />
+const HistoryOverlay: React.FC<{config: NowPlayingConfig}> = observer(({config}) => (
+  <ThemeModern history={store.mixstatus.trackHistory.slice().reverse()} config={config} />
 ));
 
-const valueTransform = <T extends string[]>(t: T) => t.map(v => ({label: v, value: v}));
+const valueTransform = <T extends readonly string[]>(t: T) =>
+  t.map(v => ({label: v, value: v}));
 
-const ConfigInterface: React.FC<{config: Config}> = observer(({config}) => (
+const ConfigInterface: React.FC<{config: NowPlayingConfig}> = observer(({config}) => (
   <div>
     <Field
       size="sm"
