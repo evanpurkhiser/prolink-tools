@@ -1,6 +1,7 @@
 import 'regenerator-runtime/runtime';
 import 'src/shared/sentry/web';
 
+import * as Sentry from '@sentry/browser';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {when} from 'mobx';
@@ -17,6 +18,11 @@ document.body.appendChild(mainElement);
 ReactDOM.render(<Application />, mainElement);
 
 registerRendererIpc();
+
+when(
+  () => store.user !== undefined,
+  () => Sentry.setUser(store.user!)
+);
 
 when(
   () => store.isInitalized,

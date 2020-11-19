@@ -1,3 +1,4 @@
+import {User} from '@sentry/types';
 import {observable, toJS, computed} from 'mobx';
 import {map, mapAsArray, object, list, custom, serializable, date} from 'serializr';
 import * as ip from 'ip-address';
@@ -10,7 +11,6 @@ import {
   HydrationProgress,
   MediaSlot,
   NetworkState,
-  MixstatusConfig,
 } from 'prolink-connect/lib/types';
 
 import {OverlayInstance} from 'src/overlay';
@@ -185,6 +185,12 @@ export class AppStore {
   @serializable(object(AppConfig))
   @observable
   config = new AppConfig();
+  /**
+   * Sentry user information
+   */
+  @serializable(rawJS)
+  @observable
+  user?: User;
 }
 
 export default observable(new AppStore());

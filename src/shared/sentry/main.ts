@@ -5,7 +5,7 @@ import publicIp from 'public-ip';
 
 import {dsn} from './dsn';
 
-export let userInfo: undefined | Promise<Sentry.User>;
+let userInfo: undefined | Promise<Sentry.User>;
 
 async function loadUserInfo() {
   const user: Sentry.User = {
@@ -16,17 +16,20 @@ async function loadUserInfo() {
   return user;
 }
 
-async function setupSentry() {
-  Sentry.init({
-    dsn,
-    release: process.env.RELEASE,
-    environment: process.env.RELEASE_CHANNEL,
-    sampleRate: 1,
-    tracesSampleRate: 1,
-  });
+Sentry.init({
+  dsn,
+  release: process.env.RELEASE,
+  environment: process.env.RELEASE_CHANNEL,
+  sampleRate: 1,
+  tracesSampleRate: 1,
+});
 
+(async () => {
   userInfo = loadUserInfo();
   Sentry.setUser(await userInfo);
-}
+})();
 
-setupSentry();
+/**
+ * Export user info to be bubbled up to the renderer
+ */
+export {userInfo};

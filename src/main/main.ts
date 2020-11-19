@@ -1,17 +1,21 @@
 import 'regenerator-runtime/runtime';
-import 'src/shared/sentry/main';
+import {userInfo} from 'src/shared/sentry/main';
 
 import * as path from 'path';
 import * as url from 'url';
 import {app, BrowserWindow, shell} from 'electron';
 import {bringOnline, NetworkState, ProlinkNetwork} from 'prolink-connect';
 import isDev from 'electron-is-dev';
+import {set} from 'mobx';
 
 import {startOverlayServer} from 'main/overlayServer';
 import {registerMainIpc, observeStore, loadMainConfig} from 'src/shared/store/ipc';
 import connectNetworkStore from 'src/shared/store/network';
 import store from 'src/shared/store';
 import {registerDebuggingEventsService} from 'src/main/debugEvents';
+
+// Update the store with user details ASAP
+(async () => set(store, {user: await userInfo}))();
 
 // Intialize the store for the main thread immedaitely.
 store.isInitalized = true;
@@ -57,6 +61,7 @@ const createWindow = () => {
 
   return win;
 };
+
 app.on('ready', async () => {
   createWindow();
 

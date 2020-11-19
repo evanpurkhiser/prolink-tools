@@ -12,5 +12,3 @@ Sentry.init({
   tracesSampleRate: 1,
   autoSessionTracking: true,
 });
-
-export const setSentryUser = (user: User) => Sentry.setUser(user);
