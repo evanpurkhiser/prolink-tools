@@ -9,7 +9,7 @@ import TimeTicker from 'src/shared/components/TimeTicker';
 import {Hash, Disc, X, Layers, Activity, Code} from 'react-feather';
 
 import {NowPlayingConfig} from '.';
-import {Tags} from './tags';
+import {Tags, tagsConfig} from './tags';
 
 const artToSrc = (d: Buffer | undefined) =>
   d && d.length > 0
@@ -21,21 +21,6 @@ type MotionDivProps = React.ComponentProps<typeof motion.div>;
 type OrientedMotionDivProps = MotionDivProps & {
   alignRight?: boolean;
 };
-
-type TagConfig = {
-  icon: React.ComponentType<React.ComponentProps<typeof Disc>>;
-  getter: (track: PlayedTrack['track']) => string | undefined;
-};
-
-const makeTagConfig = <T extends {[name: string]: TagConfig}>(config: T) => config;
-
-const tagsConfig = makeTagConfig({
-  album: {icon: Disc, getter: track => track.album?.name},
-  label: {icon: Layers, getter: track => track.label?.name},
-  comment: {icon: Hash, getter: track => track.comment},
-  tempo: {icon: Activity, getter: track => (track.tempo > 0 ? `${track.tempo} BPM` : '')},
-  key: {icon: Code, getter: track => track.key?.name},
-});
 
 const MissingArtwork = styled(
   React.forwardRef<HTMLDivElement, MotionDivProps>((p, ref) => (
