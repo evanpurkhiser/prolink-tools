@@ -3,11 +3,11 @@ import {Global} from '@emotion/core';
 import styled from '@emotion/styled';
 import {motion, Variants} from 'framer-motion';
 
-import globalCss from 'src/shared/globalCss';
+import globalCss, {noSelect} from 'src/shared/globalCss';
+import Application from 'src/renderer/views/Application';
 import Title from './components/Title';
 import DownloadCta from './components/DownloadCta';
-import appImage from './assets/app.png';
-import appVideo from './assets/clip.webm';
+import playingTracks from './demo/playingTracks';
 
 const animateInfo: Variants = {
   initial: {
@@ -20,41 +20,7 @@ const animateInfo: Variants = {
   },
 };
 
-const animateApp: Variants = {
-  initial: {
-    x: -80,
-    opacity: 0,
-  },
-  animate: {
-    x: 0,
-    opacity: 1,
-    transition: {
-      type: 'spring',
-      stiffness: 300,
-      damping: 18,
-    },
-  },
-};
-
-const animateShade: Variants = {
-  initial: {
-    x: 120,
-    opacity: 0,
-    skewX: '0deg',
-  },
-  animate: {
-    x: 0,
-    opacity: 1,
-    skewX: '-5deg',
-    transition: {
-      type: 'spring',
-      stiffness: 300,
-      damping: 18,
-    },
-  },
-};
-
-const Application = () => (
+const Landing = () => (
   <React.Fragment>
     <Global styles={globalCss} />
 
@@ -62,6 +28,9 @@ const Application = () => (
       initial="initial"
       animate="animate"
       variants={{animate: {transition: {delayChildren: 0.2, staggerChildren: 0.15}}}}
+      onAnimationStart={() => {
+        playingTracks();
+      }}
     >
       <Intro>
         <Title variants={animateInfo} />
@@ -76,25 +45,26 @@ const Application = () => (
       <Spotlight
         variants={{animate: {transition: {delayChildren: 0.8, staggerChildren: 0}}}}
       >
-        <SpotlightShade variants={animateShade} />
-        <AppPreview variants={animateApp}>
-          <PreviewContainer>
-            <video autoPlay muted playsInline loop src={appVideo} />
-          </PreviewContainer>
-        </AppPreview>
+        <SpotlightShade />
+        <Demo>
+          <DemoContainer>
+            <Application />
+          </DemoContainer>
+        </Demo>
       </Spotlight>
     </HeroLanding>
   </React.Fragment>
 );
 
-const HeroLanding = styled(motion.div)`
-  height: 100vh;
-  max-height: 800px;
+const HeroLanding = styled(motion.section)`
   display: grid;
-  align-items: center;
   grid-template-columns: 0.85fr 1fr;
   grid-gap: 2rem;
   padding: var(--padding) 0;
+  overflow: hidden;
+  height: 100vh;
+  max-height: 800px;
+  align-items: center;
 
   --padding: 4rem;
 
@@ -157,29 +127,52 @@ const SpotlightShade = styled(motion.div)`
   }
 `;
 
-const PreviewContainer = styled('div')`
+SpotlightShade.defaultProps = {
+  variants: {
+    initial: {
+      x: 120,
+      opacity: 0,
+      skewX: '0deg',
+    },
+    animate: {
+      x: 0,
+      opacity: 1,
+      skewX: '-5deg',
+      transition: {
+        type: 'spring',
+        stiffness: 300,
+        damping: 18,
+      },
+    },
+  },
+};
+
+const DemoContainer = styled('div')`
   position: relative;
-  padding-top: calc(376 / 700 * 100%);
   border-radius: 5px;
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
   background-color: #fff;
-  background-image: url(${appImage});
-  background-size: contain;
   overflow: hidden;
 
-  video {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    top: 0;
-    clip-path: inset(12% 0 12% 0);
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 100%;
+
+  ${noSelect};
+  pointer-events: none;
+  @media only screen and (max-width: 800px) {
+    transform: scale(0.7);
+    margin: -10% -20%;
   }
 `;
 
-const AppPreview = styled(motion.div)`
+const Demo = styled(motion.div)`
   display: block;
   max-width: 700px;
+  max-height: 380px;
   width: 100%;
+  height: 100%;
   margin-left: -20px;
 
   @media only screen and (max-width: 1200px) {
@@ -188,4 +181,22 @@ const AppPreview = styled(motion.div)`
   }
 `;
 
-export default Application;
+Demo.defaultProps = {
+  variants: {
+    initial: {
+      x: -80,
+      opacity: 0,
+    },
+    animate: {
+      x: 0,
+      opacity: 1,
+      transition: {
+        type: 'spring',
+        stiffness: 300,
+        damping: 18,
+      },
+    },
+  },
+};
+
+export default Landing;
