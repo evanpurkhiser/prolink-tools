@@ -32,6 +32,10 @@ const websiteConfig: webpack.Configuration = webpackMerge.smart(baseConfig, {
         test: /\.ttf$/,
         use: [{loader: 'file-loader'}],
       },
+      {
+        test: /electron/,
+        use: 'null-loader',
+      },
     ],
   },
   plugins: [
