@@ -2,6 +2,7 @@ import * as React from 'react';
 import {observer} from 'mobx-react';
 import styled from '@emotion/styled';
 import {groupBy} from 'lodash';
+import {AnimatePresence, motion} from 'framer-motion';
 import {DeviceType, NetworkState} from 'prolink-connect/lib/types';
 
 import store, {DeviceStore} from 'src/shared/store';
@@ -27,7 +28,7 @@ const Devices = observer(() => {
   ];
 
   return (
-    <React.Fragment>
+    <AnimatePresence>
       {store.networkState === NetworkState.Online && <ConnectingSplash />}
       {store.networkState === NetworkState.Failed && <ConnectionError />}
       {deviceMap[DeviceType.CDJ]?.sort(sortById).map(deviceStore => {
@@ -58,18 +59,37 @@ const Devices = observer(() => {
         );
       })}
       <SmallDeviceList>
-        {otherDevices.map(({device}) => (
-          <SmallDevice key={device.id}>
-            {device.type === DeviceType.Mixer && <IconDjm />}
-            {device.type === DeviceType.Rekordbox && <IconRekordbox />}
-            <ConnectedTag>Connected</ConnectedTag>
-            <DeviceInfo device={device} />
-          </SmallDevice>
-        ))}
+        <AnimatePresence>
+          {otherDevices.map(({device}) => (
+            <SmallDevice key={device.id}>
+              {device.type === DeviceType.Mixer && <IconDjm />}
+              {device.type === DeviceType.Rekordbox && <IconRekordbox />}
+              <ConnectedTag>Connected</ConnectedTag>
+              <DeviceInfo device={device} />
+            </SmallDevice>
+          ))}
+        </AnimatePresence>
       </SmallDeviceList>
-    </React.Fragment>
+    </AnimatePresence>
   );
 });
+
+const Device = styled(motion.div)`
+  color: #3b3b3b;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  grid-gap: 0.5rem;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+`;
+
+Device.defaultProps = {
+  layout: true,
+  transition: {duration: 0.2},
+  initial: {y: 10, opacity: 0},
+  animate: {y: 0, opacity: 1},
+  exit: {opacity: 0},
+};
 
 const Indicator = styled('div')`
   display: grid;
@@ -99,15 +119,6 @@ const StatusBar = styled('div')`
   grid-gap: 0.5rem;
 `;
 
-const Device = styled('div')`
-  color: #3b3b3b;
-  display: grid;
-  grid-template-columns: max-content 1fr;
-  grid-gap: 0.5rem;
-  padding: 1rem;
-  border-bottom: 1px solid #eee;
-`;
-
 const SmallDeviceList = styled('div')`
   color: #3b3b3b;
   display: grid;
@@ -122,7 +133,7 @@ const SmallDeviceList = styled('div')`
   }
 `;
 
-const SmallDevice = styled('div')`
+const SmallDevice = styled(motion.div)`
   display: grid;
   grid-gap: 0.25rem 0.5rem;
   grid-template: 1fr max-content / repeat(2, max-content);
@@ -132,6 +143,13 @@ const SmallDevice = styled('div')`
     grid-row: 1 / span 2;
   }
 `;
+
+SmallDevice.defaultProps = {
+  transition: {duration: 0.2},
+  initial: {x: 10, opacity: 0},
+  animate: {x: 0, opacity: 1},
+  exit: {opacity: 0},
+};
 
 const ConnectedTag = styled('div')`
   text-transform: uppercase;
