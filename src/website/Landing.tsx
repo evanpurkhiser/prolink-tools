@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Global} from '@emotion/core';
+import {css, Global} from '@emotion/core';
 import styled from '@emotion/styled';
 import {motion, Variants} from 'framer-motion';
 
@@ -58,7 +58,12 @@ const Landing = () => (
 
     <ActivityLink transition={{delay: 2}} initial={{opacity: 0}} animate={{opacity: 1}} />
 
-    <OverlaysSection>
+    <OverlaysSection
+      initial="initial"
+      animate="animate"
+      variants={{animate: {transition: {delayChildren: 1, staggerChildren: 6}}}}
+    >
+      <OverlayShade />
       <ExampleContent>
         <NowPlayingContainer>
           <ExampleOverlay />
@@ -67,7 +72,6 @@ const Landing = () => (
           <ExampleConfig />
         </ConfigContainer>
       </ExampleContent>
-      <OverlayInfo></OverlayInfo>
     </OverlaysSection>
   </React.Fragment>
 );
@@ -125,18 +129,23 @@ const Spotlight = styled(motion.div)`
   }
 `;
 
-const SpotlightShade = styled(motion.div)`
+const shadeStyles = css`
   display: block;
   position: absolute;
-  background: #f6f6f6;
   top: 0;
-  left: 40px;
+  left: 0;
   right: 0;
   bottom: 0;
   z-index: -1;
   transform-origin: 0 100%;
+`;
+
+const SpotlightShade = styled(motion.div)`
+  ${shadeStyles};
+  left: 40px;
   margin: 60px;
   margin-right: 0;
+  background: #f6f6f6;
 
   @media only screen and (max-width: 1200px) {
     right: calc(-1 * var(--padding));
@@ -215,14 +224,42 @@ Demo.defaultProps = {
   },
 };
 
-const OverlaysSection = styled('section')`
+const OverlaysSection = styled(motion.section)`
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #38373d;
   margin-bottom: 30rem;
   max-height: 330px;
 `;
+
+const OverlayShade = styled(motion.div)`
+  ${shadeStyles};
+  left: -40px;
+  right: 40px;
+  background: #38373d;
+  transform: skew(-3deg);
+`;
+
+OverlayShade.defaultProps = {
+  variants: {
+    initial: {
+      x: -80,
+      opacity: 0,
+      skewX: '0deg',
+    },
+    animate: {
+      x: 0,
+      opacity: 1,
+      skewX: '-5deg',
+      transition: {
+        type: 'spring',
+        stiffness: 200,
+        damping: 30,
+      },
+    },
+  },
+};
 
 const ExampleContent = styled('div')`
   width: 100%;
@@ -237,7 +274,7 @@ const ExampleContent = styled('div')`
 
 const NowPlayingContainer = styled('div')``;
 
-const ConfigContainer = styled('div')`
+const ConfigContainer = styled(motion.div)`
   position: relative;
   background: #fff;
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
@@ -249,6 +286,18 @@ const ConfigContainer = styled('div')`
   }
 `;
 
-const OverlayInfo = styled('div')``;
+ConfigContainer.defaultProps = {
+  variants: {
+    initial: {
+      y: 30,
+      opacity: 0,
+    },
+    animate: {
+      y: 0,
+      opacity: 1,
+      transition: {duration: 0.4},
+    },
+  },
+};
 
 export default Landing;
