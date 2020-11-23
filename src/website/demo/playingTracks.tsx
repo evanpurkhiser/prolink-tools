@@ -29,7 +29,7 @@ const bootRoutine = new Routine([
     },
   },
   {
-    delay: 3000,
+    delay: 4000,
     fn: () => {
       store.networkState = NetworkState.Connected;
     },

@@ -61,7 +61,7 @@ const Landing = () => (
     <OverlaysSection
       initial="initial"
       animate="animate"
-      variants={{animate: {transition: {delayChildren: 1, staggerChildren: 6}}}}
+      variants={{animate: {transition: {delayChildren: 1, staggerChildren: 7}}}}
     >
       <OverlayShade />
       <ExampleContent>
@@ -276,6 +276,7 @@ const NowPlayingContainer = styled('div')``;
 
 const ConfigContainer = styled(motion.div)`
   position: relative;
+  margin-top: -2rem;
   background: #fff;
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
   border-radius: 5px;
