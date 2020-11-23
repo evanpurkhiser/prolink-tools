@@ -101,7 +101,7 @@ NowPlayingLabel.defaultProps = {
         },
         '--expose-front': {
           type: 'tween',
-          ease: [0, 1.07, 0.38, 0.98],
+          ease: [0, 1.07, 0.5, 0.98],
           duration: 2,
         },
       },
@@ -125,7 +125,7 @@ let MetadataWrapper = styled((p: OrientedMotionDivProps) => {
     exit: {
       opacity: 0,
       transition: {
-        duration: 0.1,
+        duration: 0.25,
       },
     },
   };
