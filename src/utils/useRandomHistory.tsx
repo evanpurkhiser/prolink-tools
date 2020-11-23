@@ -1,42 +1,7 @@
 import * as React from 'react';
-import {Track} from 'prolink-connect/lib/types';
 
 import {PlayedTrack} from 'src/shared/store';
-import exampleMetadata from './exampleMetadata';
-
-async function fetchRandomArtwork() {
-  try {
-    const imageResp = await fetch('https://picsum.photos/160/160');
-    const imageBuffer = await imageResp.arrayBuffer();
-    return Buffer.from(imageBuffer);
-  } catch {
-    return undefined;
-  }
-}
-
-const generateEntry = async () => {
-  const metadata = exampleMetadata[Math.floor(Math.random() * exampleMetadata.length)];
-
-  const track = {
-    id: Date.now(),
-    title: metadata.title,
-    comment: metadata.comment,
-    artist: {id: 0, name: metadata.artist} as any,
-    album: {id: 0, name: metadata.album} as any,
-    genre: {id: 0, name: metadata.genre} as any,
-    label: {id: 0, name: metadata.label} as any,
-    key: {id: 0, name: metadata.key} as any,
-  } as Track;
-
-  const played = new PlayedTrack(new Date(), track);
-
-  // Do not always include artwork, it is random afterall
-  if (Math.random() > 0.3) {
-    played.artwork = await fetchRandomArtwork();
-  }
-
-  return played;
-};
+import {makeRandomTrack} from './randomMetadata';
 
 type Options = {
   /**
@@ -62,7 +27,7 @@ const useRandomHistory = ({cutoff, updateInterval}: Options) => {
     let lastHistory = history;
 
     while (isUpdating) {
-      lastHistory = [...lastHistory, await generateEntry()].slice(-1 * cutoff);
+      lastHistory = [...lastHistory, await makeRandomTrack()].slice(-1 * cutoff);
       if (isUpdating) {
         setHistory(lastHistory);
         await new Promise(r => setTimeout(r, updateInterval));
