@@ -111,7 +111,7 @@ const ConfigInterface: React.FC<{config: NowPlayingConfig}> = observer(({config}
       noCenter
       size="lg"
       name="Overlay Theme"
-      description="Choose from a variety of different look and feels for the metadata."
+      description="Choose from various different looks and feels."
     >
       <Select
         value={{value: config.theme, ...themes[config.theme]}}

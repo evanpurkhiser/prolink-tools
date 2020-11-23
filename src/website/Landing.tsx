@@ -8,6 +8,8 @@ import Application from 'src/renderer/views/Application';
 import Title from './components/Title';
 import DownloadCta from './components/DownloadCta';
 import playingTracks from './demo/playingTracks';
+import ActivityLink from './components/ActivityLink';
+import {ExampleOverlay, ExampleConfig} from './components/OverlayExamples';
 
 const animateInfo: Variants = {
   initial: {
@@ -24,7 +26,7 @@ const Landing = () => (
   <React.Fragment>
     <Global styles={globalCss} />
 
-    <HeroLanding
+    <Masthead
       initial="initial"
       animate="animate"
       variants={{animate: {transition: {delayChildren: 0.2, staggerChildren: 0.15}}}}
@@ -52,19 +54,33 @@ const Landing = () => (
           </DemoContainer>
         </Demo>
       </Spotlight>
-    </HeroLanding>
+    </Masthead>
+
+    <ActivityLink transition={{delay: 2}} initial={{opacity: 0}} animate={{opacity: 1}} />
+
+    <OverlaysSection>
+      <ExampleContent>
+        <NowPlayingContainer>
+          <ExampleOverlay />
+        </NowPlayingContainer>
+        <ConfigContainer>
+          <ExampleConfig />
+        </ConfigContainer>
+      </ExampleContent>
+      <OverlayInfo></OverlayInfo>
+    </OverlaysSection>
   </React.Fragment>
 );
 
-const HeroLanding = styled(motion.section)`
+const Masthead = styled(motion.section)`
   display: grid;
   grid-template-columns: 0.85fr 1fr;
   grid-gap: 2rem;
-  padding: var(--padding) 0;
   overflow: hidden;
   height: 100vh;
   max-height: 800px;
   align-items: center;
+  padding: var(--padding) 0;
 
   --padding: 4rem;
 
@@ -198,5 +214,41 @@ Demo.defaultProps = {
     },
   },
 };
+
+const OverlaysSection = styled('section')`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #38373d;
+  margin-bottom: 30rem;
+  max-height: 330px;
+`;
+
+const ExampleContent = styled('div')`
+  width: 100%;
+  height: 400px;
+  max-width: 1264px;
+  display: grid;
+  grid-template-columns: 1fr 0.85fr;
+  max-height: 330px;
+  grid-gap: 2rem;
+  padding: 5.5rem 2rem 0 2rem;
+`;
+
+const NowPlayingContainer = styled('div')``;
+
+const ConfigContainer = styled('div')`
+  position: relative;
+  background: #fff;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
+  border-radius: 5px;
+  z-index: 2;
+
+  @media only screen and (max-width: 1200px) {
+    display: none;
+  }
+`;
+
+const OverlayInfo = styled('div')``;
 
 export default Landing;
