@@ -1,15 +1,15 @@
 import React from 'react';
+import {Disc, X} from 'react-feather';
 import styled from '@emotion/styled';
-import {AnimatePresence, motion} from 'framer-motion';
 import {formatDistance} from 'date-fns';
+import {AnimatePresence, motion} from 'framer-motion';
 import {observer} from 'mobx-react';
 
-import {PlayedTrack} from 'src/shared/store';
 import TimeTicker from 'src/shared/components/TimeTicker';
-import {Hash, Disc, X, Layers, Activity, Code} from 'react-feather';
+import {PlayedTrack} from 'src/shared/store';
 
-import {NowPlayingConfig} from '.';
 import {Tags, tagsConfig} from './tags';
+import {NowPlayingConfig} from '.';
 
 const artToSrc = (d: Buffer | undefined) =>
   d && d.length > 0

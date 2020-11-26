@@ -1,14 +1,14 @@
 import * as Sentry from '@sentry/node';
-import fetch from 'node-fetch';
 import FormData from 'form-data';
+import {autorun} from 'mobx';
+import fetch from 'node-fetch';
+import {gzip} from 'node-gzip';
 import {
   CDJStatus,
   ConnectedProlinkNetwork,
   Device,
   ProlinkNetwork,
 } from 'prolink-connect';
-import {autorun} from 'mobx';
-import {gzip} from 'node-gzip';
 
 import store from 'src/shared/store';
 

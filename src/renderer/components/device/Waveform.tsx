@@ -1,6 +1,7 @@
 import * as React from 'react';
-import {DeviceID, CDJStatus} from 'prolink-connect/lib/types';
 import {autorun, toJS} from 'mobx';
+import {CDJStatus, DeviceID} from 'prolink-connect/lib/types';
+
 import store from 'src/shared/store';
 
 function drawScrollingWaveform(deviceId: DeviceID, canvas: HTMLCanvasElement) {

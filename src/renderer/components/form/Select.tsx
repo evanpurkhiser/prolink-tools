@@ -1,6 +1,6 @@
 import * as React from 'react';
-import Control, {components} from 'react-select';
 import {ChevronDown, X} from 'react-feather';
+import Control, {components} from 'react-select';
 
 type ControlProps = React.ComponentProps<typeof Control>;
 

@@ -1,21 +1,20 @@
 import * as React from 'react';
 import styled from '@emotion/styled';
-import {observer} from 'mobx-react';
 import {set} from 'mobx';
+import {observer} from 'mobx-react';
 
-import store from 'src/shared/store';
-import {OverlayDescriptor} from 'src/overlay';
-
-import useRandomHistory from 'src/utils/useRandomHistory';
 import Checkbox from 'app/components/form/Checkbox';
-import Text from 'app/components/form/Text';
 import Field from 'app/components/form/Field';
-import Select from 'src/renderer/components/form/Select';
+import Text from 'app/components/form/Text';
+import {OverlayDescriptor} from 'src/overlay';
 import LiveHistoryIndicator from 'src/overlay/components/liveHistoryIndicator';
+import Select from 'src/renderer/components/form/Select';
+import store from 'src/shared/store';
+import useRandomHistory from 'src/utils/useRandomHistory';
 
-import {Tags, availableTags} from './tags';
-import ThemeModern from './ThemeModern';
+import {availableTags, Tags} from './tags';
 import ThemeAsot from './ThemeAsot';
+import ThemeModern from './ThemeModern';
 
 const themes = {
   tracklist: {label: 'Track List', component: ThemeModern},

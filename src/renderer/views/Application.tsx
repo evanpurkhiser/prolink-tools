@@ -1,9 +1,9 @@
 import * as React from 'react';
+import {MemoryRouter, Redirect, Route, Switch} from 'react-router-dom';
 import styled from '@emotion/styled';
-import {MemoryRouter, Switch, Route, Redirect} from 'react-router-dom';
 
-import Titlebar from 'app/components/Titlebar';
 import Footer from 'app/components/Footer';
+import Titlebar from 'app/components/Titlebar';
 import Devices from 'app/views/devices';
 import OverlayConfig from 'app/views/overlayConfig';
 import Settings from 'app/views/settings';

@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import {PlayedTrack} from 'src/shared/store';
+
 import {makeRandomTrack} from './randomMetadata';
 
 type Options = {

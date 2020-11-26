@@ -1,6 +1,6 @@
 import * as React from 'react';
-import styled from '@emotion/styled';
 import {Radio, ZapOff} from 'react-feather';
+import styled from '@emotion/styled';
 
 type Props = {
   active: boolean;

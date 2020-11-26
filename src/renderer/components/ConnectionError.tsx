@@ -1,8 +1,8 @@
 import * as React from 'react';
-import styled from '@emotion/styled';
-import {keyframes} from '@emotion/core';
-import {motion} from 'framer-motion';
 import {AlertCircle} from 'react-feather';
+import {keyframes} from '@emotion/core';
+import styled from '@emotion/styled';
+import {motion} from 'framer-motion';
 
 const ConnectionError = () => (
   <Container>

@@ -3,10 +3,10 @@ import styled from '@emotion/styled';
 import {set} from 'mobx';
 import {observer} from 'mobx-react';
 
+import Checkbox from 'src/renderer/components/form/Checkbox';
 import Field from 'src/renderer/components/form/Field';
 import InfoBox from 'src/renderer/components/form/InfoBox';
 import store from 'src/shared/store';
-import Checkbox from 'src/renderer/components/form/Checkbox';
 
 const Settings = observer(() => {
   const config = store.config;

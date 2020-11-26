@@ -1,6 +1,6 @@
 import * as React from 'react';
-import styled from '@emotion/styled';
 import {css} from '@emotion/core';
+import styled from '@emotion/styled';
 
 type Props = React.HTMLAttributes<HTMLLabelElement> & {
   size?: 'sm' | 'md' | 'lg' | 'fit' | 'full';

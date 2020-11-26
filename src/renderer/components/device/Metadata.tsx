@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {observer} from 'mobx-react';
 import styled from '@emotion/styled';
+import {motion} from 'framer-motion';
+import {observer} from 'mobx-react';
 
 import store from 'src/shared/store';
-import {motion} from 'framer-motion';
 
 type Props = React.ComponentProps<typeof motion.div> & {
   deviceId: number;

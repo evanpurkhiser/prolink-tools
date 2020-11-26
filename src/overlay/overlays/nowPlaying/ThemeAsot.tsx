@@ -5,8 +5,8 @@ import {observer} from 'mobx-react';
 
 import {PlayedTrack} from 'src/shared/store';
 
-import {NowPlayingConfig} from '.';
 import {Tags, tagsConfig} from './tags';
+import {NowPlayingConfig} from '.';
 
 type MotionDivProps = React.ComponentProps<typeof motion.div>;
 

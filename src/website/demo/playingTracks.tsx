@@ -1,8 +1,8 @@
-import {Device, DeviceType, NetworkState, CDJStatus} from 'prolink-connect/lib/types';
 import {Address4} from 'ip-address';
+import {CDJStatus, Device, DeviceType, NetworkState} from 'prolink-connect/lib/types';
 
-import Routine from 'src/website/demo/routine';
 import store, {DeviceStore} from 'src/shared/store';
+import Routine from 'src/website/demo/routine';
 
 import {
   incrementBeat,

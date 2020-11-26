@@ -1,4 +1,4 @@
-import {Disc, Layers, Hash, Activity, Code} from 'react-feather';
+import {Activity, Code, Disc, Hash, Layers} from 'react-feather';
 
 import {PlayedTrack} from 'src/shared/store';
 

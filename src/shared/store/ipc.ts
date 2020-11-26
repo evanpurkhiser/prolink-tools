@@ -1,28 +1,28 @@
-import {ipcRenderer, ipcMain} from 'electron';
-import {Server} from 'socket.io';
-import {serialize, deserialize, update} from 'serializr';
-import {deepObserve} from 'mobx-utils';
+import {ipcMain, ipcRenderer} from 'electron';
 import settings from 'electron-settings';
 import {
-  set,
   get,
-  IObjectDidChange,
   IArrayChange,
   IArraySplice,
   IMapDidChange,
+  IObjectDidChange,
   isObservableArray,
-  remove,
-  toJS,
   isObservableObject,
+  remove,
+  set,
+  toJS,
 } from 'mobx';
+import {deepObserve} from 'mobx-utils';
+import {deserialize, serialize, update} from 'serializr';
+import {Server} from 'socket.io';
 
 import store, {
+  AppConfig,
   AppStore,
   DeviceStore,
-  MixstatusStore,
   HydrationInfo,
+  MixstatusStore,
   PlayedTrack,
-  AppConfig,
 } from '.';
 
 type ValueChange = Omit<

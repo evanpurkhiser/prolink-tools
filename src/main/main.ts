@@ -1,19 +1,20 @@
 import 'regenerator-runtime/runtime';
-import {userInfo} from 'src/shared/sentry/main';
+
+import {app, BrowserWindow, shell} from 'electron';
+import isDev from 'electron-is-dev';
+import {set} from 'mobx';
+import {bringOnline, NetworkState, ProlinkNetwork} from 'prolink-connect';
 
 import * as path from 'path';
 import * as url from 'url';
-import {app, BrowserWindow, shell} from 'electron';
-import {bringOnline, NetworkState, ProlinkNetwork} from 'prolink-connect';
-import isDev from 'electron-is-dev';
-import {set} from 'mobx';
 
-import store from 'src/shared/store';
-import connectNetworkStore from 'src/shared/store/network';
-import {registerMainIpc, observeStore, loadMainConfig} from 'src/shared/store/ipc';
 import {startOverlayServer} from 'main/overlayServer';
-import {registerDebuggingEventsService} from 'src/main/debugEvents';
 import {runConfigMigrations} from 'src/main/configMigrations';
+import {registerDebuggingEventsService} from 'src/main/debugEvents';
+import {userInfo} from 'src/shared/sentry/main';
+import store from 'src/shared/store';
+import {loadMainConfig, observeStore, registerMainIpc} from 'src/shared/store/ipc';
+import connectNetworkStore from 'src/shared/store/network';
 
 // Update the store with user details ASAP
 (async () => set(store, {user: await userInfo}))();

@@ -1,6 +1,5 @@
 import {cloneDeep, random} from 'lodash';
-
-import {MediaSlot, TrackType, CDJStatus} from 'prolink-connect/lib/types';
+import {CDJStatus, MediaSlot, TrackType} from 'prolink-connect/lib/types';
 
 import store from 'src/shared/store';
 import {makeRandomTrack} from 'src/utils/randomMetadata';

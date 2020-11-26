@@ -1,16 +1,11 @@
 import {captureMessage, Severity} from '@sentry/node';
-import {when, runInAction, action} from 'mobx';
 import {applyDiff} from 'deep-diff';
 import {debounce} from 'lodash';
-import {
-  ProlinkNetwork,
-  DeviceID,
-  ConnectedProlinkNetwork,
-  MixstatusProcessor,
-} from 'prolink-connect';
+import {action, runInAction, when} from 'mobx';
+import {ConnectedProlinkNetwork, DeviceID, ProlinkNetwork} from 'prolink-connect';
 
-import store, {DeviceStore, HydrationInfo, PlayedTrack} from '.';
 import {deviceReaction} from './utils';
+import store, {DeviceStore, HydrationInfo, PlayedTrack} from '.';
 
 /**
  * Connect the electron main process's prolink network instance to the

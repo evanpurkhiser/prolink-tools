@@ -1,5 +1,5 @@
-import styled from '@emotion/styled';
 import {css} from '@emotion/core';
+import styled from '@emotion/styled';
 
 const primary = css`
   background: #28272b;

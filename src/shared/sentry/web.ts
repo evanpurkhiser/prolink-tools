@@ -1,8 +1,9 @@
-import * as Sentry from '@sentry/browser';
 import '@sentry/apm';
 
-import {dsn} from './dsn';
+import * as Sentry from '@sentry/browser';
 import {User} from '@sentry/browser';
+
+import {dsn} from './dsn';
 
 Sentry.init({
   dsn,

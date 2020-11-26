@@ -1,15 +1,15 @@
 import * as React from 'react';
-import {observer} from 'mobx-react';
-import styled from '@emotion/styled';
-import {Delete, Copy} from 'react-feather';
+import {Copy, Delete} from 'react-feather';
 import {css} from '@emotion/core';
+import styled from '@emotion/styled';
+import {observer} from 'mobx-react';
 
-import store from 'src/shared/store';
-import {registeredOverlays, OverlayInstance} from 'src/overlay';
+import {OverlayInstance, registeredOverlays} from 'src/overlay';
 import {WEBSERVER_PORT} from 'src/shared/constants';
+import store from 'src/shared/store';
 
-import Example from './Example';
 import EmptyState from './EmptyState';
+import Example from './Example';
 
 const OverlayList = observer(() =>
   store.config.overlays.length === 0 ? (

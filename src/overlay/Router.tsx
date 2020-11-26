@@ -1,10 +1,11 @@
 import * as React from 'react';
+import {BrowserRouter, Route, RouteComponentProps} from 'react-router-dom';
 import {Global} from '@emotion/core';
-import {Route, BrowserRouter, RouteComponentProps} from 'react-router-dom';
 import {observer} from 'mobx-react';
 
-import store from 'src/shared/store';
 import globalCss from 'src/shared/globalCss';
+import store from 'src/shared/store';
+
 import NotFound from './components/NotFound';
 import {registeredOverlays} from '.';
 

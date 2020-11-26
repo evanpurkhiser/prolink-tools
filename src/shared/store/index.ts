@@ -1,9 +1,8 @@
 import {User} from '@sentry/types';
-import {observable, toJS, computed} from 'mobx';
-import {map, mapAsArray, object, list, custom, serializable, date} from 'serializr';
 import * as ip from 'ip-address';
+import {identity} from 'lodash';
+import {computed, observable, toJS} from 'mobx';
 import {
-  Track,
   CDJStatus,
   Device,
   DeviceID,
@@ -11,10 +10,11 @@ import {
   HydrationProgress,
   MediaSlot,
   NetworkState,
+  Track,
 } from 'prolink-connect/lib/types';
+import {custom, date, list, map, mapAsArray, object, serializable} from 'serializr';
 
 import {OverlayInstance} from 'src/overlay';
-import {identity} from 'lodash';
 
 type PerTableHydrationProgress = Omit<HydrationProgress, 'table'>;
 

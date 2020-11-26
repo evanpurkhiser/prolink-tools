@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {request} from '@octokit/request';
 import {Endpoints} from '@octokit/types';
+
 import {GITHUB_REPO} from 'src/shared/constants';
 
 type Release = Endpoints['GET /repos/:owner/:repo/releases/latest']['response'];

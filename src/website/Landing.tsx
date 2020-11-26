@@ -3,13 +3,14 @@ import {css, Global} from '@emotion/core';
 import styled from '@emotion/styled';
 import {motion, Variants} from 'framer-motion';
 
-import globalCss, {noSelect} from 'src/shared/globalCss';
 import Application from 'src/renderer/views/Application';
-import Title from './components/Title';
-import DownloadCta from './components/DownloadCta';
-import playingTracks from './demo/playingTracks';
+import globalCss, {noSelect} from 'src/shared/globalCss';
+
 import ActivityLink from './components/ActivityLink';
-import {ExampleOverlay, ExampleConfig} from './components/OverlayExamples';
+import DownloadCta from './components/DownloadCta';
+import {ExampleConfig, ExampleOverlay} from './components/OverlayExamples';
+import Title from './components/Title';
+import playingTracks from './demo/playingTracks';
 
 const animateInfo: Variants = {
   initial: {

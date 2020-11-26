@@ -1,10 +1,10 @@
 import * as React from 'react';
+import {Layers} from 'react-feather';
 import styled from '@emotion/styled';
 import {motion} from 'framer-motion';
 import short from 'short-uuid';
-import {Layers} from 'react-feather';
 
-import {OverlayDescriptor, registeredOverlays, OverlayInstance} from 'src/overlay';
+import {OverlayDescriptor, OverlayInstance, registeredOverlays} from 'src/overlay';
 import store from 'src/shared/store';
 
 import Example from './Example';

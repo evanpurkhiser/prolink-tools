@@ -1,7 +1,9 @@
-import * as Sentry from '@sentry/node';
 import '@sentry/apm';
-import os from 'os';
+
+import * as Sentry from '@sentry/node';
 import publicIp from 'public-ip';
+
+import os from 'os';
 
 import {dsn} from './dsn';
 

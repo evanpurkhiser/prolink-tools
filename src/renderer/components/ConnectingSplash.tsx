@@ -1,6 +1,6 @@
 import * as React from 'react';
-import styled from '@emotion/styled';
 import {keyframes} from '@emotion/core';
+import styled from '@emotion/styled';
 import {motion} from 'framer-motion';
 
 const useTimeout = (timeout: number) => {

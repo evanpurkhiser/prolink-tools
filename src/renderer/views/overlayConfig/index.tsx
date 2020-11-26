@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {observer} from 'mobx-react';
+import {ArrowLeft, Plus} from 'react-feather';
 import styled from '@emotion/styled';
-import {Plus, ArrowLeft} from 'react-feather';
 import {AnimatePresence} from 'framer-motion';
+import {observer} from 'mobx-react';
 
-import {Header, HeaderInfo} from 'src/renderer/components/PaneHeader';
 import ActionButton from 'src/renderer/components/ActionButton';
+import {Header, HeaderInfo} from 'src/renderer/components/PaneHeader';
 
 import AvailableOverlays from './components/AvailableOverlays';
 import OverlayList from './components/OverlayList';

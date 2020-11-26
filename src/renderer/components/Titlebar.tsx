@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styled from '@emotion/styled';
 
-import NetworkStatus from './NetworkStatus';
 import Navigation from './Navigation';
+import NetworkStatus from './NetworkStatus';
 
 const Toolbar = () => (
   <Container>

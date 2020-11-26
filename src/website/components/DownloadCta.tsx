@@ -1,10 +1,10 @@
 import * as React from 'react';
 import styled from '@emotion/styled';
+import {format, parseISO} from 'date-fns';
 import {motion} from 'framer-motion';
 
+import {AppleLogo, LinuxLogo, WindowsLogo} from 'src/shared/components/Icons';
 import useRelease from 'src/utils/useLatestRelease';
-import {AppleLogo, WindowsLogo, LinuxLogo} from 'src/shared/components/Icons';
-import {format, parseISO} from 'date-fns';
 
 type Platform = NonNullable<ReturnType<typeof getPlatform>>;
 

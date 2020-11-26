@@ -1,4 +1,4 @@
-import {useState, useEffect, useCallback} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 
 /**
  * React hook to handle toggling a dropdown

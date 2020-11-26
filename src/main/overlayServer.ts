@@ -1,15 +1,15 @@
-import fs from 'fs';
-import * as path from 'path';
-import http from 'http';
 import connect from 'connect';
-import socketio from 'socket.io';
+import isDev from 'electron-is-dev';
 import httpProxy from 'http-proxy';
 import httpStatic from 'node-static';
+import socketio from 'socket.io';
 
-import isDev from 'electron-is-dev';
+import fs from 'fs';
+import http from 'http';
+import * as path from 'path';
 
-import {registerMainWebsocket} from 'src/shared/store/ipc';
 import {WEBSERVER_PORT} from 'src/shared/constants';
+import {registerMainWebsocket} from 'src/shared/store/ipc';
 
 const OVERLAY_ROOT = path.resolve(__dirname, 'overlay');
 

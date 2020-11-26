@@ -1,11 +1,13 @@
 import * as React from 'react';
-import styled from '@emotion/styled';
 import {Save} from 'react-feather';
+import styled from '@emotion/styled';
 import {shell} from 'electron';
 
 import Logo from 'src/shared/components/Logo';
-import ActionButton from './ActionButton';
 import useRelease from 'src/utils/useLatestRelease';
+
+import ActionButton from './ActionButton';
+import HelpButton from './HelpButton';
 
 const Footer = () => {
   const latestRelease = useRelease();

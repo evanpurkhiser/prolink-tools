@@ -1,19 +1,17 @@
 import {css} from '@emotion/core';
 
-import dmMonoRegular from 'src/fonts/DMMono-Regular.ttf';
-import dmMonoMedium from 'src/fonts/DMMono-Medium.ttf';
 import dmMonoLight from 'src/fonts/DMMono-Light.ttf';
-
-import ubuntuRegular from 'src/fonts/Ubuntu-Regular.ttf';
-import ubuntuMedium from 'src/fonts/Ubuntu-Medium.ttf';
-import ubuntuBold from 'src/fonts/Ubuntu-Bold.ttf';
-
+import dmMonoMedium from 'src/fonts/DMMono-Medium.ttf';
+import dmMonoRegular from 'src/fonts/DMMono-Regular.ttf';
+import proximaNovaBold from 'src/fonts/ProximaNova-Bold.ttf';
+import proximaNovaBoldIt from 'src/fonts/ProximaNova-BoldIt.ttf';
 import proximaNovaRegular from 'src/fonts/ProximaNova-Regular.ttf';
 import proximaNovaRegularIt from 'src/fonts/ProximaNova-Regular.ttf';
 import proximaNovaSemibold from 'src/fonts/ProximaNova-Semibold.ttf';
 import proximaNovaSemiboldIt from 'src/fonts/ProximaNova-SemiboldIt.ttf';
-import proximaNovaBold from 'src/fonts/ProximaNova-Bold.ttf';
-import proximaNovaBoldIt from 'src/fonts/ProximaNova-BoldIt.ttf';
+import ubuntuBold from 'src/fonts/Ubuntu-Bold.ttf';
+import ubuntuMedium from 'src/fonts/Ubuntu-Medium.ttf';
+import ubuntuRegular from 'src/fonts/Ubuntu-Regular.ttf';
 
 export default css`
   /* DM Mono */
