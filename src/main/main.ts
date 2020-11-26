@@ -31,7 +31,7 @@ const createWindow = () => {
   win = new BrowserWindow({
     width: 850,
     minWidth: 700,
-    height: 700,
+    height: 900,
     titleBarStyle: 'hiddenInset',
     title: 'Prolink Tools',
     webPreferences: {nodeIntegration: true},
