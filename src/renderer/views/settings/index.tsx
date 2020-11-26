@@ -28,8 +28,8 @@ const Settings = observer(() => {
                 Collecting track events is incredibly helpful when looking into issues
                 where tracks were not marked as now-playing, or were marked as now-playing
                 at the wrong time. You may want to turn this on if you run into frequent
-                issues and can include that you've enabled collecting track events when
-                reporting bugs.
+                issues and can include that you&apos;ve enabled collecting track events
+                when reporting bugs.
               </InfoBox>
             </React.Fragment>
           }

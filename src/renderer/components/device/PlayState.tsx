@@ -24,9 +24,9 @@ const text = Object.fromEntries(
   Object.entries(CDJStatus.PlayState).map(([k, v]) => [v, k])
 );
 
-const PlayState = styled(({playState, ...p}: Props) => {
-  return <div {...p}>{text[playState ?? CDJStatus.PlayState.Empty] ?? 'unknown'}</div>;
-})`
+const PlayState = styled(({playState, ...p}: Props) => (
+  <div {...p}>{text[playState ?? CDJStatus.PlayState.Empty] ?? 'unknown'}</div>
+))`
   background: ${p => colors[p.playState ?? CDJStatus.PlayState.Empty]?.bg ?? '#f1f1f1'};
   min-width: 74px;
   display: inline-block;

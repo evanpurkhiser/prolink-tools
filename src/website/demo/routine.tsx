@@ -27,7 +27,7 @@ type Status = {
 };
 
 class Routine {
-  nextAction: number = 0;
+  nextAction = 0;
   /**
    * The sequental actions to execute when ran
    */

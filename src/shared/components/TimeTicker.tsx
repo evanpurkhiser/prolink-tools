@@ -6,7 +6,7 @@ type Props = {
 };
 
 class TimeTicker extends React.Component<Props> {
-  ticker: number = 0;
+  ticker = 0;
 
   componentDidMount() {
     this.tick();

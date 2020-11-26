@@ -16,7 +16,7 @@ export function runConfigMigrations() {
    */
   (() => {
     const overlay = store.config.overlays.find(
-      overlay => overlay.type == 'taggedNowPlaying'
+      overlay => overlay.type === 'taggedNowPlaying'
     );
 
     if (overlay === undefined) {

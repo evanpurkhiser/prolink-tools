@@ -79,7 +79,7 @@ Artwork.defaultProps = {
   className: 'track-artwork',
 };
 
-let Text = styled(motion.div)`
+const Text = styled(motion.div)`
   background: rgba(0, 0, 0, 0.25);
   padding: 0 0.28em;
   border-radius: 1px;
@@ -177,7 +177,7 @@ const NoAttributes = styled(p => (
   color: rgba(255, 255, 255, 0.6);
 `;
 
-let MetadataWrapper = styled((p: OrientedMotionDivProps) => {
+const MetadataWrapper = styled((p: OrientedMotionDivProps) => {
   const variants = {
     initial: {
       clipPath: 'inset(0% 100% 0% 0%)',

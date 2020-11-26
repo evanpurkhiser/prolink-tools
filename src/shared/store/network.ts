@@ -59,7 +59,7 @@ const connectDevices = (network: ConnectedProlinkNetwork) => {
 const connectStatus = (network: ConnectedProlinkNetwork) =>
   network.statusEmitter.on(
     'status',
-    action(async state => {
+    action(state => {
       const deviceStore = store.devices.get(state.deviceId);
 
       if (deviceStore === undefined) {
@@ -111,11 +111,11 @@ const connectTracks = (network: ConnectedProlinkNetwork) =>
       // Ensure that once we've actually recieved our track metadata, this is still
       // the track that's laoded on the player.
       if (trackId !== deviceStore.state?.trackId) {
-        return;
+        return null;
       }
 
       if (track === null) {
-        return;
+        return null;
       }
 
       const artwork = await network.db.getArtwork({
@@ -129,6 +129,8 @@ const connectTracks = (network: ConnectedProlinkNetwork) =>
         deviceStore.track = track;
         deviceStore.artwork = artwork ?? undefined;
       });
+
+      return null;
     }
   );
 

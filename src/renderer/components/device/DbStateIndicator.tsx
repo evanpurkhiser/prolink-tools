@@ -23,11 +23,11 @@ const DbStateIndicator = observer(({deviceId}: Props) => {
     const hydration = hydrationProgress.get(slot);
 
     if (!download) {
-      return;
+      return null;
     }
 
     if (download.read === download.total && hydration && hydration.isDone) {
-      return;
+      return null;
     }
 
     return (

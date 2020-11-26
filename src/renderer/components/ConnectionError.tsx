@@ -1,8 +1,6 @@
 import * as React from 'react';
 import {AlertCircle} from 'react-feather';
-import {keyframes} from '@emotion/core';
 import styled from '@emotion/styled';
-import {motion} from 'framer-motion';
 
 const ConnectionError = () => (
   <Container>
@@ -58,18 +56,6 @@ const Help = styled('div')`
   color: #444;
   line-height: 1.4;
   margin-top: 1rem;
-`;
-
-const pulse = keyframes`
-  0% {
-    transform: scale(0.1);
-    opacity: 1
-  }
-
-  40%, 100% {
-    transform: scale(0.8);
-    opacity: 0;
-  }
 `;
 
 export default ConnectionError;

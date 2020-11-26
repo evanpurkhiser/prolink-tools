@@ -21,7 +21,7 @@ type Options = {
 
 function useStoreActivity({targetTest, valueTest, blipTime}: Options) {
   const [blip, setBlip] = React.useState<boolean>(false);
-  let timeoutId = 0;
+  const timeoutId = 0;
 
   React.useEffect(() =>
     deepObserve(store, (change: any, changePath) => {

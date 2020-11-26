@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {autorun, toJS} from 'mobx';
+import {autorun} from 'mobx';
 import {CDJStatus, DeviceID} from 'prolink-connect/lib/types';
 
 import store from 'src/shared/store';
@@ -7,7 +7,7 @@ import store from 'src/shared/store';
 function drawScrollingWaveform(deviceId: DeviceID, canvas: HTMLCanvasElement) {
   const ctx = canvas.getContext('2d');
 
-  if (ctx == null) {
+  if (ctx === null) {
     return;
   }
 
@@ -98,11 +98,13 @@ function drawScrollingWaveform(deviceId: DeviceID, canvas: HTMLCanvasElement) {
     pitch = state?.sliderPitch ?? 0;
     playState = state?.playState ?? CDJStatus.PlayState.Empty;
 
+    console.log(pitch);
+
     const timeOffset = track.beatGrid?.[state?.beat ?? 0]?.offset ?? 0;
     posX = Math.round(((timeOffset / 1000) * 150) / zoom);
   });
 
-  let lastPosX = -1;
+  // const lastPosX = -1;
   let lastTs = 0;
 
   const doDrawing = (ts: DOMHighResTimeStamp) => {

@@ -18,7 +18,7 @@ const SIZES = {
   full: '100%',
 };
 
-const Field = styled(({size, name, description, children, ...p}: Props) => (
+const Field = styled(({size: _size, name, description, children, ...p}: Props) => (
   <label {...p}>
     {children}
     <div>

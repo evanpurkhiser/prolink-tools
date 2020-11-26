@@ -177,7 +177,7 @@ const DemoContainer = styled('div')`
   position: relative;
   border-radius: 5px;
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
-  background-color: #fff;
+  background: #fff;
   overflow: hidden;
 
   display: flex;

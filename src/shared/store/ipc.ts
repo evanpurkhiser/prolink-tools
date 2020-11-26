@@ -96,7 +96,7 @@ function getAtPath(obj: any, path: string) {
 }
 
 function applyStoreChange({path, change, serializerModel}: SerializedChange) {
-  let target = getAtPath(store, path);
+  const target = getAtPath(store, path);
 
   if (target === undefined) {
     // TODO: Race. Remove this and sometimes things happen
@@ -137,6 +137,7 @@ function applyStoreChange({path, change, serializerModel}: SerializedChange) {
     objChange.newValue !== null &&
     objChange.newValue !== undefined
   ) {
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     update(serializeSchema, target, {[objChange.name]: objChange.newValue}, () => {});
     return;
   }
@@ -147,7 +148,7 @@ function applyStoreChange({path, change, serializerModel}: SerializedChange) {
       set(arrChange.index, getNewValue());
       return;
     }
-    if (arrChange.type == 'splice') {
+    if (arrChange.type === 'splice') {
       // TODO This neds deserialization toooooo
       target.splice(
         arrChange.index,
@@ -164,7 +165,6 @@ function applyStoreChange({path, change, serializerModel}: SerializedChange) {
   }
   if (objChange.type === 'remove' || mapChange.type === 'delete') {
     remove(target, objChange.name as string);
-    return;
   }
 }
 
@@ -196,7 +196,7 @@ const defaultChangeHandler = (serializedChange: SerializedChange) =>
  */
 export const observeStore = ({target, prefix, handler}: ObserverStoreOpts = {}) =>
   deepObserve(target ?? store, (change, changePath) => {
-    const anyChange = {...change} as {[k: string]: any} & Object;
+    const anyChange = {...change} as {[k: string]: any};
 
     const path =
       prefix === undefined
@@ -216,7 +216,7 @@ export const observeStore = ({target, prefix, handler}: ObserverStoreOpts = {}) 
     // serialization definitions that have been placed onto our store
     // objects to do the serialization. The same will be done for
     // deserialization.
-    if (anyChange.hasOwnProperty('newValue')) {
+    if (Object.prototype.hasOwnProperty.call(anyChange, 'newValue')) {
       // mark the direct serializer class name for the value if we can
       serializedChange.serializerModel = anyChange.newValue?.constructor?.name;
 
@@ -230,7 +230,10 @@ export const observeStore = ({target, prefix, handler}: ObserverStoreOpts = {}) 
 
     // We do the same thing for spliced values in an arrays, which are handled
     // slightly differently
-    if (anyChange.hasOwnProperty('added') && anyChange.added.length > 0) {
+    if (
+      Object.prototype.hasOwnProperty.call(anyChange, 'added') &&
+      anyChange.added.length > 0
+    ) {
       // mark the direct serializer class name for the value if we can
       serializedChange.serializerModel = anyChange.added[0]?.constructor?.name;
 
@@ -243,7 +246,10 @@ export const observeStore = ({target, prefix, handler}: ObserverStoreOpts = {}) 
     }
 
     // XXX: Duplicated remove code from above. Maybe this should be refactored
-    if (anyChange.hasOwnProperty('removed') && anyChange.removed.length > 0) {
+    if (
+      Object.prototype.hasOwnProperty.call(anyChange, 'removed') &&
+      anyChange.removed.length > 0
+    ) {
       // mark the direct serializer class name for the value if we can
       serializedChange.serializerModel = anyChange.removed[0]?.constructor?.name;
 
@@ -313,7 +319,7 @@ export const registerRendererIpc = () => {
     applyStoreChange(change);
   });
 
-  ipcRenderer.on('store-init', (_, data: Object) => {
+  ipcRenderer.on('store-init', (_, data: any) => {
     set(store, deserialize(AppStore, data));
   });
 
@@ -353,5 +359,5 @@ export const registerMainWebsocket = (wss: Server) => {
  */
 export const registerClientWebsocket = (ws: SocketIOClient.Socket) => {
   ws.on('store-update', (change: SerializedChange) => applyStoreChange(change));
-  ws.on('store-init', (data: Object) => set(store, deserialize(AppStore, data)));
+  ws.on('store-init', (data: any) => set(store, deserialize(AppStore, data)));
 };

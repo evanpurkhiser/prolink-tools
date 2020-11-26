@@ -1,7 +1,6 @@
 import '@sentry/apm';
 
 import * as Sentry from '@sentry/browser';
-import {User} from '@sentry/browser';
 
 import {dsn} from './dsn';
 

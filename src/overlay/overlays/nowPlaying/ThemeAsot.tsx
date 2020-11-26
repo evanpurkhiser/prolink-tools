@@ -14,7 +14,7 @@ type OrientedMotionDivProps = MotionDivProps & {
   alignRight?: boolean;
 };
 
-let Text = styled(motion.div)`
+const Text = styled(motion.div)`
   display: block;
   line-height: 1.1;
 `;
@@ -110,7 +110,7 @@ NowPlayingLabel.defaultProps = {
   },
 };
 
-let MetadataWrapper = styled((p: OrientedMotionDivProps) => {
+const MetadataWrapper = styled((p: OrientedMotionDivProps) => {
   const variants = {
     initial: {
       opacity: 1,

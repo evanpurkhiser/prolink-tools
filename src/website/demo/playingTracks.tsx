@@ -112,7 +112,7 @@ const playPairs = () => {
     atBeats([79], () => updateState(3, {playState: CDJStatus.PlayState.Cued}));
     atBeats([79], () => markAsPlaying(2));
 
-    beat = beat == 79 ? 16 : beat + 1;
+    beat = beat === 79 ? 16 : beat + 1;
   }, ONE_BEAT);
 };
 

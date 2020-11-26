@@ -10,17 +10,17 @@ type Config = {
   someOption: boolean;
 };
 
-const Overlay: React.FC<{config: Config}> = observer(() => {
-  return <div>This is an example overaly for reference</div>;
-});
+const Overlay: React.FC<{config: Config}> = observer(() => (
+  <div>This is an example overaly for reference</div>
+));
 
-const ConfigInterface: React.FC<{config: Config}> = observer(() => {
-  return <div>This is the config interface</div>;
-});
+const ConfigInterface: React.FC<{config: Config}> = observer(() => (
+  <div>This is the config interface</div>
+));
 
-const Example: React.FC<{config?: Config}> = () => {
-  return <div>This is an example of the overlay</div>;
-};
+const Example: React.FC<{config?: Config}> = () => (
+  <div>This is an example of the overlay</div>
+);
 
 export type ExampleOverlay = {
   type: 'example';

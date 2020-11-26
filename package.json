@@ -15,7 +15,8 @@
     "build-website": "cross-env NODE_ENV=production webpack --config=webpack.config.website.ts",
     "vercel-build-website": "git fetch --tags && yarn build-website",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "lint": "eslint src/"
   },
   "build": {
     "productName": "Prolink Tools",
@@ -25,11 +26,7 @@
       "output": "release"
     },
     "publish": null,
-    "files": [
-      "dist/",
-      "node_modules/better-sqlite3/**/*",
-      "package.json"
-    ],
+    "files": ["dist/", "node_modules/better-sqlite3/**/*", "package.json"],
     "linux": {
       "target": "tar.gz"
     },
@@ -42,9 +39,11 @@
     }
   },
   "devDependencies": {
+    "@evanpurkhiser/eslint-config": "^0.9.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.2",
     "electron": "^10.1.1",
     "electron-builder": "^22.3.2",
+    "eslint": "^7.14.0",
     "jest": "^26.0.1",
     "lint-staged": "^10.0.7",
     "node-loader": "^1.0.1",
@@ -55,14 +54,14 @@
     "webpack-dev-server": "^3.4.1"
   },
   "dependencies": {
-    "@babel/core": "^7.11.6",
+    "@babel/core": "^7.12.9",
     "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/plugin-proposal-decorators": "^7.10.5",
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.10.4",
     "@babel/plugin-syntax-optional-chaining": "^7.8.3",
     "@babel/preset-env": "^7.11.5",
-    "@babel/preset-react": "^7.10.4",
-    "@babel/preset-typescript": "^7.10.4",
+    "@babel/preset-react": "^7.12.7",
+    "@babel/preset-typescript": "^7.12.7",
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
     "@octokit/request": "^5.4.5",
@@ -84,11 +83,11 @@
     "@types/node-static": "^0.7.5",
     "@types/oauth": "^0.9.1",
     "@types/object-path": "^0.11.0",
-    "@types/react": "^16.9.49",
-    "@types/react-dom": "^16.8.4",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
     "@types/react-router-dom": "^5.1.5",
     "@types/react-select": "^3.0.19",
-    "@types/react-test-renderer": "^16.9.3",
+    "@types/react-test-renderer": "^17.0.0",
     "@types/semver": "^7.3.3",
     "@types/socket.io": "^2.1.11",
     "@types/socket.io-client": "^1.4.33",
