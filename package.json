@@ -26,7 +26,11 @@
       "output": "release"
     },
     "publish": null,
-    "files": ["dist/", "node_modules/better-sqlite3/**/*", "package.json"],
+    "files": [
+      "dist/",
+      "node_modules/better-sqlite3/**/*",
+      "package.json"
+    ],
     "linux": {
       "target": "tar.gz"
     },
@@ -39,7 +43,7 @@
     }
   },
   "devDependencies": {
-    "@evanpurkhiser/eslint-config": "^0.9.0",
+    "@evanpurkhiser/eslint-config": "^0.9.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.2",
     "electron": "^10.1.1",
     "electron-builder": "^22.3.2",
