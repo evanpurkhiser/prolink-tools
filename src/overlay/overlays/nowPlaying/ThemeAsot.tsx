@@ -168,15 +168,15 @@ type TrackProps = MotionDivProps & {
   tags?: Tags;
 };
 
-const Track = React.forwardRef<HTMLDivElement, TrackProps>(({played, ...props}, ref) => (
-  <TrackContainer ref={ref} {...props}>
+const Track = ({played, ...props}: TrackProps) => (
+  <TrackContainer {...props}>
     <FullMetadata
       alignRight={props.alignRight}
       track={played.track}
       tags={props.tags ?? []}
     />
   </TrackContainer>
-));
+);
 
 const TrackContainer = styled(motion.div)<{alignRight?: boolean}>`
   display: flex;

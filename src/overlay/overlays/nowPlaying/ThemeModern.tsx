@@ -22,13 +22,11 @@ type OrientedMotionDivProps = MotionDivProps & {
   alignRight?: boolean;
 };
 
-const MissingArtwork = styled(
-  React.forwardRef<HTMLDivElement, MotionDivProps>((p, ref) => (
-    <motion.div ref={ref} {...p}>
-      <Disc size="50%" />
-    </motion.div>
-  ))
-)`
+const MissingArtwork = styled((p: MotionDivProps) => (
+  <motion.div {...p}>
+    <Disc size="50%" />
+  </motion.div>
+))`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -245,24 +243,22 @@ type BaseTrackProps = MotionDivProps & {
   tags?: Tags;
 };
 
-const FullTrack = React.forwardRef<HTMLDivElement, BaseTrackProps>(
-  ({played, firstPlayed, hideArtwork, ...props}, ref) => (
-    <TrackContainer ref={ref} {...props}>
-      {!hideArtwork && (
-        <Artwork
-          alignRight={props.alignRight}
-          animateIn={!!firstPlayed}
-          src={artToSrc(played.artwork)}
-          size="80px"
-        />
-      )}
-      <FullMetadata
+const FullTrack = ({played, firstPlayed, hideArtwork, ...props}: BaseTrackProps) => (
+  <TrackContainer {...props}>
+    {!hideArtwork && (
+      <Artwork
         alignRight={props.alignRight}
-        track={played.track}
-        tags={props.tags ?? []}
+        animateIn={!!firstPlayed}
+        src={artToSrc(played.artwork)}
+        size="80px"
       />
-    </TrackContainer>
-  )
+    )}
+    <FullMetadata
+      alignRight={props.alignRight}
+      track={played.track}
+      tags={props.tags ?? []}
+    />
+  </TrackContainer>
 );
 
 const TrackContainer = styled(motion.div)<{alignRight?: boolean}>`
@@ -310,37 +306,32 @@ const PlayedAt = styled(Text)`
   line-height: 1.3;
 `;
 
-const MiniTrack = React.forwardRef<HTMLDivElement, BaseTrackProps>(
-  ({played, hideArtwork, ...props}, ref) => (
-    <TrackContainer ref={ref} {...props}>
-      {!hideArtwork && (
-        <Artwork
-          animateIn
-          alignRight={props.alignRight}
-          src={artToSrc(played.artwork)}
-          size="50px"
-        />
-      )}
-      <MetadataWrapper alignRight={props.alignRight}>
-        <MiniTitle>{played.track.title}</MiniTitle>
-        <MiniArtist>{played.track.artist?.name}</MiniArtist>
-        <PlayedAt>
-          <TimeTicker randomRange={[15, 30]}>
-            {() =>
-              played.playedAt && `${formatDistance(Date.now(), played.playedAt)} ago`
-            }
-          </TimeTicker>
-        </PlayedAt>
-      </MetadataWrapper>
-    </TrackContainer>
-  )
+const MiniTrack = ({played, hideArtwork, ...props}: BaseTrackProps) => (
+  <TrackContainer {...props}>
+    {!hideArtwork && (
+      <Artwork
+        animateIn
+        alignRight={props.alignRight}
+        src={artToSrc(played.artwork)}
+        size="50px"
+      />
+    )}
+    <MetadataWrapper alignRight={props.alignRight}>
+      <MiniTitle>{played.track.title}</MiniTitle>
+      <MiniArtist>{played.track.artist?.name}</MiniArtist>
+      <PlayedAt>
+        <TimeTicker randomRange={[15, 30]}>
+          {() => played.playedAt && `${formatDistance(Date.now(), played.playedAt)} ago`}
+        </TimeTicker>
+      </PlayedAt>
+    </MetadataWrapper>
+  </TrackContainer>
 );
 
 type TrackProps = BaseTrackProps & {mini?: boolean};
 
-const Track = React.forwardRef<HTMLDivElement, TrackProps>(({mini, ...props}, ref) =>
-  mini ? <MiniTrack ref={ref} {...props} /> : <FullTrack ref={ref} {...props} />
-);
+const Track = ({mini, ...props}: TrackProps) =>
+  mini ? <MiniTrack {...props} /> : <FullTrack {...props} />;
 
 const CurrentTrack = ({played, ...p}: React.ComponentProps<typeof Track>) => (
   <CurrentWrapper>
