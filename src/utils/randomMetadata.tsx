@@ -37,7 +37,7 @@ export async function makeRandomTrack({artwork}: Options = {}) {
   const played = new PlayedTrack(new Date(), track);
 
   // Do not always include artwork, it is random afterall
-  if (!artwork === false && (artwork === true || Math.random() > 0.3)) {
+  if (artwork !== false && (artwork === true || Math.random() > 0.3)) {
     played.artwork = await fetchRandomArtwork();
   }
 
