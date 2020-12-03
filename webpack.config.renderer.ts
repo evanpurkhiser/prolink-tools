@@ -34,7 +34,7 @@ const rendererConfig: webpack.Configuration = webpackMerge.smart(baseConfig, {
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin({filename: 'app.html'}),
+    new HtmlWebpackPlugin({title: 'Prolink Tools', filename: 'app.html'}),
     new ReactRefreshWebpackPlugin(),
     new ForkTsCheckerWebpackPlugin({
       issue: {include: [{file: 'src/renderer/**/*'}, {file: 'src/shared/**/*'}]},
