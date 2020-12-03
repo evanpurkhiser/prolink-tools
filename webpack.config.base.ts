@@ -1,8 +1,9 @@
-import path from 'path';
-import webpack from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
+import webpack from 'webpack';
 
-import {releaseId, releaseChannel, commit} from './scripts/release';
+import path from 'path';
+
+import {commit, releaseChannel, releaseId} from './scripts/release';
 
 export const IS_PROD = process.env.NODE_ENV === 'production';
 

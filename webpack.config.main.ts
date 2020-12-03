@@ -1,5 +1,5 @@
-import webpack from 'webpack';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import webpack from 'webpack';
 import webpackMerge from 'webpack-merge';
 
 import {baseConfig} from './webpack.config.base';
