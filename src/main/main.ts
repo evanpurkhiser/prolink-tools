@@ -1,4 +1,5 @@
 import 'regenerator-runtime/runtime';
+import 'main/menu';
 
 import {app, BrowserWindow, shell} from 'electron';
 import isDev from 'electron-is-dev';
