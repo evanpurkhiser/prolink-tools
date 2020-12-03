@@ -280,9 +280,11 @@ const connectMixstatus = (network: ConnectedProlinkNetwork) => {
    * Mark the onAir capabilities when a DJM is on the network
    */
   const updateOnAirCapabilities = () => {
-    const hasMixer = [...network.deviceManager.devices.values()].some(
-      device => device.type === DeviceType.Mixer
-    );
+    const devices = [...network.deviceManager.devices.values()];
+
+    const hasMixer =
+      devices.some(device => device.type === DeviceType.Mixer) ||
+      devices.some(device => device.name.toLowerCase() === 'xdj-xz');
 
     network.mixstatus.configure({
       hasOnAirCapabilities: hasMixer,
