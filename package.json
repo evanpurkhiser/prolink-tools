@@ -128,7 +128,7 @@
     "node-static": "^0.7.11",
     "noop2": "^2.0.0",
     "oauth": "^0.9.15",
-    "prolink-connect": "^0.2.0",
+    "prolink-connect": "^0.3.0",
     "public-ip": "^4.0.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

@@ -2,7 +2,12 @@ import {captureMessage, Severity} from '@sentry/node';
 import {applyDiff} from 'deep-diff';
 import {debounce} from 'lodash';
 import {action, runInAction, when} from 'mobx';
-import {ConnectedProlinkNetwork, DeviceID, ProlinkNetwork} from 'prolink-connect';
+import {
+  ConnectedProlinkNetwork,
+  DeviceID,
+  DeviceType,
+  ProlinkNetwork,
+} from 'prolink-connect';
 
 import {deviceReaction} from './utils';
 import store, {DeviceStore, HydrationInfo, PlayedTrack} from '.';
@@ -270,4 +275,22 @@ const connectMixstatus = (network: ConnectedProlinkNetwork) => {
    * Clear active track history at the end of a set
    */
   network.mixstatus.on('setEnded', () => store.mixstatus.trackHistory.clear());
+
+  /**
+   * Mark the onAir capabilities when a DJM is on the network
+   */
+  const updateOnAirCapabilities = () => {
+    const hasMixer = [...network.deviceManager.devices.values()].some(
+      device => device.type === DeviceType.Mixer
+    );
+
+    network.mixstatus.configure({
+      hasOnAirCapabilities: hasMixer,
+      reportRequresSilence: !hasMixer,
+    });
+  };
+
+  network.deviceManager.on('connected', updateOnAirCapabilities);
+  network.deviceManager.on('disconnected', updateOnAirCapabilities);
+  updateOnAirCapabilities();
 };
