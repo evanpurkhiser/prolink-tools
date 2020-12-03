@@ -4,12 +4,12 @@ import styled from '@emotion/styled';
 import {motion, Variants} from 'framer-motion';
 
 import Application from 'src/renderer/views/Application';
+import LogoBig from 'src/shared/components/LogoBig';
 import globalCss, {noSelect} from 'src/shared/globalCss';
 
 import ActivityLink from './components/ActivityLink';
 import DownloadCta from './components/DownloadCta';
 import {ExampleConfig, ExampleOverlay} from './components/OverlayExamples';
-import Title from './components/Title';
 import playingTracks from './demo/playingTracks';
 
 const animateInfo: Variants = {
@@ -36,7 +36,7 @@ const Landing = () => (
       }}
     >
       <Intro>
-        <Title variants={animateInfo} />
+        <LogoBig variants={animateInfo} />
         <Tagline variants={animateInfo}>tap into your CDJs in real-time</Tagline>
         <Description variants={animateInfo}>
           built by a DJ, for DJs. prolink tools is a hand-built collection of tools to

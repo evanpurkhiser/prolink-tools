@@ -7,6 +7,7 @@ import Logo from 'src/shared/components/Logo';
 import useRelease from 'src/utils/useLatestRelease';
 
 import ActionButton from './ActionButton';
+import HelpButton from './HelpButton';
 
 const Footer = () => {
   const latestRelease = useRelease();
@@ -29,7 +30,10 @@ const Footer = () => {
         <Title>prolink tools</Title>
         <Release>{process.env.RELEASE}</Release>
       </div>
-      <Info>{newVersion}</Info>
+      <Info>
+        {newVersion}
+        <HelpButton />
+      </Info>
     </Wrapper>
   );
 };

@@ -2,9 +2,9 @@ import * as React from 'react';
 import styled from '@emotion/styled';
 import {motion} from 'framer-motion';
 
-import Logo from 'src/shared/components/Logo';
+import Logo from './Logo';
 
-const Title = (props: React.ComponentProps<typeof motion.div>) => (
+const LogoBig = (props: React.ComponentProps<typeof motion.div>) => (
   <Container {...props}>
     <Logo size={64} />
     <Wordmark>prolink tools</Wordmark>
@@ -18,6 +18,7 @@ const Container = styled(motion.div)`
   grid-template-columns: max-content max-content;
   align-items: center;
   grid-gap: 1.25rem;
+  font-family: 'DM Mono';
 `;
 
 const Wordmark = styled('h1')`
@@ -39,4 +40,4 @@ const AlphaTag = styled('div')`
   right: -22px;
 `;
 
-export default Title;
+export default LogoBig;
