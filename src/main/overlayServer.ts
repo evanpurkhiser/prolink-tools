@@ -46,5 +46,7 @@ export async function startOverlayServer() {
   app.use(handler);
 
   // Start listening for connections
-  await new Promise(resolve => httpServer.listen(WEBSERVER_PORT, '0.0.0.0', resolve));
+  await new Promise<void>(resolve =>
+    httpServer.listen(WEBSERVER_PORT, '0.0.0.0', resolve)
+  );
 }
