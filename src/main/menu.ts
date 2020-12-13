@@ -56,6 +56,10 @@ const template: Electron.MenuItemConstructorOptions[] = [
         label: 'Learn More',
         click: () => shell.openExternal('https://prolink.tools/'),
       },
+      {
+        label: 'User Manual',
+        click: () => shell.openExternal('https://prolink.tools/manual'),
+      },
     ],
   },
 ];
