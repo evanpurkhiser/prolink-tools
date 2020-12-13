@@ -8,7 +8,7 @@ const LogoBig = (props: React.ComponentProps<typeof motion.div>) => (
   <Container {...props}>
     <Logo size={64} />
     <Wordmark>prolink tools</Wordmark>
-    <AlphaTag>Alpha</AlphaTag>
+    <BetaTag>Beta</BetaTag>
   </Container>
 );
 
@@ -30,7 +30,7 @@ const Wordmark = styled('h1')`
   margin: 0;
 `;
 
-const AlphaTag = styled('div')`
+const BetaTag = styled('div')`
   background: #ff8038;
   text-transform: uppercase;
   padding: 0.125rem 0.5rem;
