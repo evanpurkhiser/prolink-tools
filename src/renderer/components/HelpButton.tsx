@@ -35,7 +35,7 @@ const HelpButton = () => {
               </p>
               <hr />
               <p>
-                Need help? <a href="https://prolink.tools/manaul">Read the Manual</a> and{' '}
+                Need help? <a href="https://prolink.tools/manual">Read the Manual</a> and{' '}
                 <a href="http://discord.gg/3eyzdgXJuY">Join the Discord server</a>!
               </p>
             </Info>

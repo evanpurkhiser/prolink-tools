@@ -18,7 +18,7 @@ const Routes = () => (
     <Switch>
       <Route
         exact
-        path="/manual"
+        path={['/manual', '/manaul']}
         component={() => {
           window.location.assign(
             'https://www.notion.so/Prolink-Tools-User-Manual-1c0e5b28732b435a9804b992939ed791'
