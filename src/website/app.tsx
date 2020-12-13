@@ -2,7 +2,7 @@ import 'regenerator-runtime/runtime';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {Redirect, Route, Router, Switch} from 'react-router-dom';
+import {Route, Router, Switch} from 'react-router-dom';
 import {createBrowserHistory} from 'history';
 
 import Landing from 'web/Landing';
