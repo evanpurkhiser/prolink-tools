@@ -22,6 +22,9 @@ const ConnectionError = () => (
           Another piece of software on your computer is using any ports between 50000 and
           50002.
         </li>
+        <li>
+          See the <a href="https://prolink.tools/manual">Manual for Troublshooting</a>.
+        </li>
       </ul>
     </Help>
   </Container>
