@@ -16,11 +16,10 @@ const history = createBrowserHistory();
 const Routes = () => (
   <Router history={history}>
     <Switch>
-      <Route index component={Landing} />
-      <Redirect
-        from="/manual"
-        to="https://www.notion.so/Prolink-Tools-User-Manual-1c0e5b28732b435a9804b992939ed791"
-      />
+      <Route exact path="/manual">
+        <Redirect to="https://www.notion.so/Prolink-Tools-User-Manual-1c0e5b28732b435a9804b992939ed791" />
+      </Route>
+      <Route component={Landing} />
     </Switch>
   </Router>
 );
