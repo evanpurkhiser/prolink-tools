@@ -2,6 +2,8 @@ import 'regenerator-runtime/runtime';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import {Redirect, Route, Router, Switch} from 'react-router-dom';
+import {createBrowserHistory} from 'history';
 
 import Landing from 'web/Landing';
 
@@ -9,5 +11,19 @@ import Landing from 'web/Landing';
 const mainElement = document.createElement('div');
 document.body.appendChild(mainElement);
 
+const history = createBrowserHistory();
+
+const Routes = () => (
+  <Router history={history}>
+    <Switch>
+      <Route index component={Landing} />
+      <Redirect
+        from="/manual"
+        to="https://www.notion.so/Prolink-Tools-User-Manual-1c0e5b28732b435a9804b992939ed791"
+      />
+    </Switch>
+  </Router>
+);
+
 // Render components
-ReactDOM.render(<Landing />, mainElement);
+ReactDOM.render(<Routes />, mainElement);
