@@ -66,6 +66,10 @@ export type ThemeDescriptor = {
    */
   component: React.ComponentType<ThemeComponentProps>;
   /**
+   * Defaults for CSS variables to allow for color customization
+   */
+  colors: Record<string, string>;
+  /**
    * Enabled settings for this theme
    */
   enabledConfigs: Exclude<keyof NowPlayingConfig, 'theme'>[];

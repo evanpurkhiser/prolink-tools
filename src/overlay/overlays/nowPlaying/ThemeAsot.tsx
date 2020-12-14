@@ -14,6 +14,15 @@ type OrientedMotionDivProps = MotionDivProps & {
   alignRight?: boolean;
 };
 
+const defaultColors = {
+  '--pt-np-primary-text': '#fff',
+  '--pt-np-indicator-highlight': '#f00',
+  '--pt-np-indicator-text': '#fff',
+};
+
+const cssVar = (name: keyof typeof defaultColors) =>
+  `var(${name}, ${defaultColors[name]})`;
+
 const Text = styled(motion.div)`
   display: block;
   line-height: 1.1;
@@ -76,8 +85,8 @@ const NowPlayingLabel = styled(motion.div)`
     left: 0;
     bottom: 0;
     right: 0;
-    color: #fff;
-    background: #ff0000;
+    color: ${cssVar('--pt-np-indicator-text')};
+    background: ${cssVar('--pt-np-indicator-highlight')};
     position: absolute;
     clip-path: inset(0% var(--expose-front) 0% 0%);
   }
@@ -182,7 +191,7 @@ const TrackContainer = styled(motion.div)<{alignRight?: boolean}>`
   display: flex;
   flex-direction: column;
   grid-gap: 0.5rem;
-  color: #fff;
+  color: ${cssVar('--pt-np-primary-text')};
   font-family: 'Proxmia Nova';
   font-size: 2rem;
   text-rendering: optimizeLegibility;
@@ -254,5 +263,6 @@ const CurrentWrapper = styled('div')`
 export default {
   label: 'A State of Overlays',
   component: ThemeAsot,
+  colors: defaultColors,
   enabledConfigs: ['alignRight', 'tags'],
 } as ThemeDescriptor;

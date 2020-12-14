@@ -22,6 +22,17 @@ type OrientedMotionDivProps = MotionDivProps & {
   alignRight?: boolean;
 };
 
+const defaultColors = {
+  '--pt-np-primary-text': '#fff',
+  '--pt-np-primary-bg': 'rgba(0, 0, 0, 0.25)',
+  '--pt-np-empty-attrs-text': 'rgba(255, 255, 255, 0.6)',
+  '--pt-np-empty-art-bg': '#28272b',
+  '--pt-np-empty-art-icon': '#aaa',
+};
+
+const cssVar = (name: keyof typeof defaultColors) =>
+  `var(${name}, ${defaultColors[name]})`;
+
 const MissingArtwork = styled((p: MotionDivProps) => (
   <motion.div {...p}>
     <Disc size="50%" />
@@ -30,8 +41,8 @@ const MissingArtwork = styled((p: MotionDivProps) => (
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #28272b;
-  color: #aaa;
+  background: ${cssVar('--pt-np-empty-art-bg')};
+  color: ${cssVar('--pt-np-empty-art-icon')};
   opacity: 1;
 `;
 
@@ -78,7 +89,7 @@ Artwork.defaultProps = {
 };
 
 const Text = styled(motion.div)`
-  background: rgba(0, 0, 0, 0.25);
+  background: ${cssVar('--pt-np-primary-bg')};
   padding: 0 0.28em;
   border-radius: 1px;
   display: inline-block;
@@ -172,7 +183,7 @@ const Attribute = ({icon, text, ...p}: AttributeProps) =>
 const NoAttributes = styled(p => (
   <Attribute text="No Release Metadata" icon={X} {...p} />
 ))`
-  color: rgba(255, 255, 255, 0.6);
+  color: ${cssVar('--pt-np-empty-attrs-text')};
 `;
 
 const MetadataWrapper = styled((p: OrientedMotionDivProps) => {
@@ -264,7 +275,7 @@ const FullTrack = ({played, firstPlayed, hideArtwork, ...props}: BaseTrackProps)
 const TrackContainer = styled(motion.div)<{alignRight?: boolean}>`
   display: inline-grid;
   grid-gap: 0.5rem;
-  color: #fff;
+  color: ${cssVar('--pt-np-primary-text')};
   font-family: Ubuntu;
   justify-content: ${p => (p.alignRight ? 'right' : 'left')};
   grid-template-columns: ${p =>
@@ -411,5 +422,6 @@ const CurrentWrapper = styled('div')`
 export default {
   label: 'Track List',
   component: ThemeModern,
+  colors: defaultColors,
   enabledConfigs: ['alignRight', 'hideArtwork', 'historyCount', 'tags'],
 } as ThemeDescriptor;
