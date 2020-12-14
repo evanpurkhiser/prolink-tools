@@ -6,7 +6,7 @@ import {observer} from 'mobx-react';
 import {PlayedTrack} from 'src/shared/store';
 
 import {Tags, tagsConfig} from './tags';
-import {NowPlayingConfig} from '.';
+import {NowPlayingConfig, ThemeDescriptor} from '.';
 
 type MotionDivProps = React.ComponentProps<typeof motion.div>;
 
@@ -251,4 +251,8 @@ const CurrentWrapper = styled('div')`
   }
 `;
 
-export default ThemeAsot;
+export default {
+  label: 'A State of Overlays',
+  component: ThemeAsot,
+  enabledConfigs: ['alignRight', 'tags'],
+} as ThemeDescriptor;

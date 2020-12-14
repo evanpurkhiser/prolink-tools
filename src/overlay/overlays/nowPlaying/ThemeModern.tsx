@@ -9,7 +9,7 @@ import TimeTicker from 'src/shared/components/TimeTicker';
 import {PlayedTrack} from 'src/shared/store';
 
 import {Tags, tagsConfig} from './tags';
-import {NowPlayingConfig} from '.';
+import {NowPlayingConfig, ThemeDescriptor} from '.';
 
 const artToSrc = (d: Buffer | undefined) =>
   d && d.length > 0
@@ -408,4 +408,8 @@ const CurrentWrapper = styled('div')`
   }
 `;
 
-export default ThemeModern;
+export default {
+  label: 'Track List',
+  component: ThemeModern,
+  enabledConfigs: ['alignRight', 'hideArtwork', 'historyCount', 'tags'],
+} as ThemeDescriptor;
