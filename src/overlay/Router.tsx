@@ -7,6 +7,7 @@ import globalCss from 'src/shared/globalCss';
 import store from 'src/shared/store';
 
 import NotFound from './components/NotFound';
+import {ensureNoOBSDefaultStyles} from './utils/obsFixes';
 import {registeredOverlays} from '.';
 
 type Props = RouteComponentProps<{overlayKey: string}>;
@@ -27,11 +28,15 @@ const MapOverlay: React.FC<Props> = observer(props => {
   return <descriptor.component config={instance.config} />;
 });
 
-const Router = () => (
-  <BrowserRouter>
-    <Global styles={globalCss} />
-    <Route path="/:overlayKey" component={MapOverlay} />
-  </BrowserRouter>
-);
+const Router = () => {
+  React.useEffect(ensureNoOBSDefaultStyles, []);
+
+  return (
+    <BrowserRouter>
+      <Global styles={globalCss} />
+      <Route path="/:overlayKey" component={MapOverlay} />
+    </BrowserRouter>
+  );
+};
 
 export default Router;
