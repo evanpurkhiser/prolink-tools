@@ -266,6 +266,10 @@ const CurrentWrapper = styled('div')`
     grid-column: 1;
     grid-row: 1;
   }
+
+  /* Give a tiny bit of padding to make room for the italics
+   */
+  padding: 5px;
 `;
 
 export default {
