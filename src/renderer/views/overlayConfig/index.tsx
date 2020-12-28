@@ -21,7 +21,7 @@ const OverlayConfig = observer(() => {
           <a href="https://obsproject.com/wiki/Sources-Guide#browsersource">
             OBS Browser Source
           </a>{' '}
-          (or similar). Each instance of an overlay has it&aps;s own configuration.
+          (or similar). Each instance of an overlay has it&apos;s own configuration.
         </HeaderInfo>
         {addNewOpen ? (
           <ActionButton muted onClick={() => setOpen(!addNewOpen)}>

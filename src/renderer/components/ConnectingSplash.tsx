@@ -1,19 +1,11 @@
 import * as React from 'react';
+import {useTimeout} from 'react-use';
 import {keyframes} from '@emotion/core';
 import styled from '@emotion/styled';
 import {motion} from 'framer-motion';
 
-const useTimeout = (timeout: number) => {
-  const [isExpired, setExpired] = React.useState(false);
-  React.useEffect(() => {
-    window.setTimeout(() => setExpired(true), timeout);
-  }, []);
-
-  return isExpired;
-};
-
 const ConnectingSplash = () => {
-  const showHelp = useTimeout(10000);
+  const [showHelp] = useTimeout(10000);
 
   return (
     <Container>
@@ -21,7 +13,7 @@ const ConnectingSplash = () => {
         <Indicator />
         Waiting for PROLINK devices
       </Text>
-      {showHelp && (
+      {showHelp() && (
         <Help initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}}>
           Not seeing your CDJs? Ensure they are <strong>ON</strong> and connected to the{' '}
           <strong>same network</strong> as this computer. If they are simply linked to one

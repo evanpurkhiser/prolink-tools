@@ -2,11 +2,11 @@ import * as React from 'react';
 import {ChromePicker, ColorResult} from 'react-color';
 import {X} from 'react-feather';
 import {usePopper} from 'react-popper';
+import {useClickAway} from 'react-use';
 import styled from '@emotion/styled';
 import {AnimatePresence, motion} from 'framer-motion';
 import {set} from 'mobx';
 import {observer} from 'mobx-react';
-import useOnClickOutside from 'use-onclickoutside';
 
 import {NowPlayingConfig} from '.';
 
@@ -57,7 +57,7 @@ const Color = ({color, defaultColor, name, trimPrefix, onChange}: ColorProps) =>
     modifiers: [{name: 'arrow'}, {name: 'offset', options: {offset: [0, 15]}}],
   });
 
-  useOnClickOutside(containerRef, () => openPicker(false));
+  useClickAway(containerRef, () => openPicker(false));
 
   return (
     <div ref={containerRef}>

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {HelpCircle} from 'react-feather';
+import {useClickAway} from 'react-use';
 import styled from '@emotion/styled';
 import {AnimatePresence, motion} from 'framer-motion';
 
@@ -9,6 +10,9 @@ import ActionButton from './ActionButton';
 
 const HelpButton = () => {
   const [show, toggle] = React.useState(false);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  useClickAway(containerRef, () => toggle(false));
 
   return (
     <React.Fragment>
@@ -17,8 +21,8 @@ const HelpButton = () => {
       </Button>
       <AnimatePresence>
         {show && (
-          <Modal onClick={e => e.currentTarget === e.target && toggle(false)}>
-            <Info>
+          <Modal>
+            <Info ref={containerRef}>
               <LogoBig />
               <p>
                 Built by a DJ, for DJs. prolink tools is a hand-built collection of tools
