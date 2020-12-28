@@ -207,7 +207,7 @@ const ConfigInterface: React.FC<{config: NowPlayingConfig}> = observer(({config}
           />
         </Field>
       )}
-      {Object.keys(colors).length > 0 && (
+      {enabledConfigs.includes('colors') && Object.keys(colors).length > 0 && (
         <Field
           size="full"
           name="Theme Colors"

@@ -266,5 +266,5 @@ export default {
   label: 'A State of Overlays',
   component: ThemeAsot,
   colors: defaultColors,
-  enabledConfigs: ['alignRight', 'tags'],
+  enabledConfigs: ['alignRight', 'tags', 'idMarker', 'colors'],
 } as ThemeDescriptor;

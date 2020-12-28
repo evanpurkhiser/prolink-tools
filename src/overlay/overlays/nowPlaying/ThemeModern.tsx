@@ -425,5 +425,12 @@ export default {
   label: 'Track List',
   component: ThemeModern,
   colors: defaultColors,
-  enabledConfigs: ['alignRight', 'hideArtwork', 'historyCount', 'tags'],
+  enabledConfigs: [
+    'alignRight',
+    'hideArtwork',
+    'historyCount',
+    'tags',
+    'idMarker',
+    'colors',
+  ],
 } as ThemeDescriptor;
