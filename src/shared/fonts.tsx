@@ -6,7 +6,7 @@ import dmMonoRegular from 'src/fonts/DMMono-Regular.ttf';
 import proximaNovaBold from 'src/fonts/ProximaNova-Bold.ttf';
 import proximaNovaBoldIt from 'src/fonts/ProximaNova-BoldIt.ttf';
 import proximaNovaRegular from 'src/fonts/ProximaNova-Regular.ttf';
-import proximaNovaRegularIt from 'src/fonts/ProximaNova-Regular.ttf';
+import proximaNovaRegularIt from 'src/fonts/ProximaNova-RegularIt.ttf';
 import proximaNovaSemibold from 'src/fonts/ProximaNova-Semibold.ttf';
 import proximaNovaSemiboldIt from 'src/fonts/ProximaNova-SemiboldIt.ttf';
 import ubuntuBold from 'src/fonts/Ubuntu-Bold.ttf';
