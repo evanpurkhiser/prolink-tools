@@ -2,7 +2,7 @@ import * as React from 'react';
 import {css} from '@emotion/core';
 import styled from '@emotion/styled';
 
-type Props = React.HTMLAttributes<HTMLLabelElement> & {
+type Props = React.ComponentProps<'label'> & {
   size?: 'sm' | 'md' | 'lg' | 'fit' | 'full';
   noCenter?: boolean;
   top?: boolean;

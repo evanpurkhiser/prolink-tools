@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import {AnimatePresence, motion} from 'framer-motion';
+import {toJS} from 'mobx';
 import {observer} from 'mobx-react';
 
 import {PlayedTrack} from 'src/shared/store';
@@ -243,6 +244,7 @@ type Props = {
 const ThemeAsot: React.FC<Props> = observer(({config, history}) =>
   history.length === 0 ? null : (
     <CurrentTrack
+      style={toJS(config.colors)}
       className="track-current"
       alignRight={config.alignRight}
       tags={config.tags}

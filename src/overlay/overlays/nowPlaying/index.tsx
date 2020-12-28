@@ -12,6 +12,7 @@ import Select from 'src/renderer/components/form/Select';
 import store, {PlayedTrack} from 'src/shared/store';
 import useRandomHistory from 'src/utils/useRandomHistory';
 
+import ColorConfig from './ColorConfig';
 import {availableTags, Tags} from './tags';
 import themeAsot from './ThemeAsot';
 import themeModern from './ThemeModern';
@@ -54,6 +55,10 @@ export type NowPlayingConfig = {
    * The specific set of tags to display
    */
   tags?: Tags;
+  /**
+   * Customized theme colors
+   */
+  colors?: Record<string, string>;
 };
 
 export type ThemeDescriptor = {
@@ -118,7 +123,7 @@ const EmptyExample = styled('div')`
   }
 `;
 
-const HistoryOverlay: React.FC<{config: NowPlayingConfig}> = observer(({config}) => {
+const NowPlayingOverlay: React.FC<{config: NowPlayingConfig}> = observer(({config}) => {
   const Overlay = themes[config.theme].component;
   const history = store.mixstatus.trackHistory.slice().reverse();
 
@@ -129,7 +134,7 @@ const valueTransform = <T extends readonly string[]>(t: T) =>
   t.map(v => ({label: v, value: v}));
 
 const ConfigInterface: React.FC<{config: NowPlayingConfig}> = observer(({config}) => {
-  const {enabledConfigs} = themes[config.theme];
+  const {enabledConfigs, colors} = themes[config.theme];
 
   return (
     <div>
@@ -185,19 +190,33 @@ const ConfigInterface: React.FC<{config: NowPlayingConfig}> = observer(({config}
           />
         </Field>
       )}
-      <Field
-        size="full"
-        name="Additional Tags"
-        description="Select the additional tags you want to show in the metadata. Emptying the list will stop any attributes from showing"
-      >
-        <Select
-          isMulti
-          placeholder="Add metadata items to display..."
-          options={valueTransform(availableTags)}
-          value={valueTransform(config.tags ?? [])}
-          onChange={values => set(config, {tags: values?.map((v: any) => v.value) ?? []})}
-        />
-      </Field>
+      {enabledConfigs.includes('tags') && (
+        <Field
+          size="full"
+          name="Additional Tags"
+          description="Select the additional tags you want to show in the metadata. Emptying the list will stop any attributes from showing"
+        >
+          <Select
+            isMulti
+            placeholder="Add metadata items to display..."
+            options={valueTransform(availableTags)}
+            value={valueTransform(config.tags ?? [])}
+            onChange={values =>
+              set(config, {tags: values?.map((v: any) => v.value) ?? []})
+            }
+          />
+        </Field>
+      )}
+      {Object.keys(colors).length > 0 && (
+        <Field
+          size="full"
+          name="Theme Colors"
+          htmlFor="none"
+          description="Customize the colors of this now playing theme"
+        >
+          <ColorConfig trimPrefix="--pt-np-" config={config} defaultColors={colors} />
+        </Field>
+      )}
     </div>
   );
 });
@@ -205,7 +224,7 @@ const ConfigInterface: React.FC<{config: NowPlayingConfig}> = observer(({config}
 const descriptor: OverlayDescriptor<TaggedNowPlaying> = {
   type: 'nowPlaying',
   name: 'Live now playing metadata overlay, including themes',
-  component: HistoryOverlay,
+  component: NowPlayingOverlay,
   example: Example,
   configInterface: ConfigInterface,
   defaultConfig: {

@@ -3,6 +3,7 @@ import {Disc, X} from 'react-feather';
 import styled from '@emotion/styled';
 import {formatDistance} from 'date-fns';
 import {AnimatePresence, motion} from 'framer-motion';
+import {toJS} from 'mobx';
 import {observer} from 'mobx-react';
 
 import TimeTicker from 'src/shared/components/TimeTicker';
@@ -245,7 +246,7 @@ type BaseTrackProps = MotionDivProps & {
   alignRight?: boolean;
   hideArtwork?: boolean;
   /**
-   * Disables animation of the artwork
+   * Enables animation of the artwork
    */
   firstPlayed?: boolean;
   /**
@@ -373,6 +374,7 @@ const ThemeModern: React.FC<Props> = observer(({config, history}) =>
   history.length === 0 ? null : (
     <React.Fragment>
       <CurrentTrack
+        style={toJS(config.colors)}
         className="track-current"
         alignRight={config.alignRight}
         hideArtwork={config.hideArtwork}
@@ -381,7 +383,7 @@ const ThemeModern: React.FC<Props> = observer(({config, history}) =>
         played={history[0]}
       />
       {(config.historyCount ?? 0) > 0 && history.length > 1 && (
-        <RecentWrapper className="track-recents">
+        <RecentWrapper className="track-recents" style={toJS(config.colors)}>
           <AnimatePresence>
             {history
               .slice(1, config.historyCount ? config.historyCount + 1 : 0)
