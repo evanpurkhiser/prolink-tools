@@ -26,10 +26,7 @@ const ColorConfig = observer(({config, defaultColors, trimPrefix}: Props) => (
         color={config?.colors?.[name] ?? color}
         defaultColor={defaultColors[name]}
         onReset={() => set(config, {colors: {...config?.colors, [name]: undefined}})}
-        onChange={color => {
-          console.log(color);
-          set(config, {colors: {...config?.colors, [name]: color}});
-        }}
+        onChange={color => set(config, {colors: {...config?.colors, [name]: color}})}
       />
     ))}
   </Container>
@@ -67,7 +64,6 @@ const Color = ({color, defaultColor, name, trimPrefix, onChange}: ColorProps) =>
         {color !== defaultColor && (
           <ResetButton
             onClick={e => {
-              console.log('resetting');
               e.stopPropagation();
               onChange(defaultColor);
             }}
