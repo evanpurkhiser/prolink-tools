@@ -15,6 +15,7 @@ import {
 import {custom, date, list, map, mapAsArray, object, serializable} from 'serializr';
 
 import {OverlayInstance} from 'src/overlay';
+import isId from 'src/utils/isId';
 
 type PerTableHydrationProgress = Omit<HydrationProgress, 'table'>;
 
@@ -123,6 +124,12 @@ export class PlayedTrack {
   @serializable(bufferSerialize)
   artwork?: Buffer;
 
+  @computed
+  get isId() {
+    const marker = store.config.idMarker;
+    return marker !== '' ? isId(this.track, marker) : false;
+  }
+
   constructor(playedAt: Date, track: Track) {
     this.playedAt = playedAt;
     this.track = track;
@@ -148,6 +155,12 @@ export class AppConfig {
   @serializable
   @observable
   reportDebugEvents = false;
+  /**
+   * Mark tracks as 'IDs' using this string
+   */
+  @serializable
+  @observable
+  idMarker = '[ID]';
 }
 
 export class AppStore {
@@ -193,4 +206,6 @@ export class AppStore {
   user?: User;
 }
 
-export default observable(new AppStore());
+const store = observable(new AppStore());
+
+export default store;

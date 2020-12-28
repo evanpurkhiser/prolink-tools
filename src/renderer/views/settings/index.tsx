@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import {set} from 'mobx';
 import {observer} from 'mobx-react';
 
+import Text from 'app/components/form/Text';
 import Checkbox from 'src/renderer/components/form/Checkbox';
 import Field from 'src/renderer/components/form/Field';
 import InfoBox from 'src/renderer/components/form/InfoBox';
@@ -13,6 +14,22 @@ const Settings = observer(() => {
 
   return (
     <React.Fragment>
+      <Heading>General</Heading>
+      <Section>
+        <Field
+          size="md"
+          name="ID Marker"
+          description="Tracks containing this text anywhere in the metadata (title, artist, comment, etc) will be marked as 'IDs'. Additional configurations may be needed in tools for tracks marked as IDs. This value is case insensitive."
+        >
+          <Text
+            type="text"
+            style={{appearance: 'textfield'}}
+            value={config.idMarker}
+            onChange={e => set(config, {idMarker: e.target.value})}
+          />
+        </Field>
+      </Section>
+
       <Heading>Debugging / Development</Heading>
       <Section>
         <Field

@@ -5,6 +5,7 @@ import {toJS} from 'mobx';
 import {observer} from 'mobx-react';
 
 import {PlayedTrack} from 'src/shared/store';
+import {idTrack} from 'src/utils/dummyData';
 
 import {Tags, tagsConfig} from './tags';
 import {NowPlayingConfig, ThemeDescriptor} from '.';
@@ -176,13 +177,17 @@ type TrackProps = MotionDivProps & {
    * The list of tags to show on the 3rd row
    */
   tags?: Tags;
+  /**
+   * Use the example ID track to mask IDs
+   */
+  maskId?: boolean;
 };
 
-const Track = ({played, ...props}: TrackProps) => (
+const Track = ({played, maskId, ...props}: TrackProps) => (
   <TrackContainer {...props}>
     <FullMetadata
       alignRight={props.alignRight}
-      track={played.track}
+      track={maskId && played.isId ? idTrack : played.track}
       tags={props.tags ?? []}
     />
   </TrackContainer>
@@ -248,6 +253,7 @@ const ThemeAsot: React.FC<Props> = observer(({config, history}) =>
       className="track-current"
       alignRight={config.alignRight}
       tags={config.tags}
+      maskId={config.maskId}
       played={history[0]}
     />
   )
@@ -266,5 +272,5 @@ export default {
   label: 'A State of Overlays',
   component: ThemeAsot,
   colors: defaultColors,
-  enabledConfigs: ['alignRight', 'tags', 'idMarker', 'colors'],
+  enabledConfigs: ['alignRight', 'tags', 'maskId', 'colors'],
 } as ThemeDescriptor;

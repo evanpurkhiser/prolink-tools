@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {Link} from 'react-router-dom';
 import styled from '@emotion/styled';
 import {set} from 'mobx';
 import {observer} from 'mobx-react';
@@ -59,6 +60,10 @@ export type NowPlayingConfig = {
    * Customized theme colors
    */
   colors?: Record<string, string>;
+  /**
+   * Indicates that ID tracks should be hidden
+   */
+  maskId?: boolean;
 };
 
 export type ThemeDescriptor = {
@@ -174,6 +179,23 @@ const ConfigInterface: React.FC<{config: NowPlayingConfig}> = observer(({config}
           />
         </Field>
       )}
+      {enabledConfigs.includes('maskId') && (
+        <Field
+          size="sm"
+          name="Mask IDs"
+          description={
+            <React.Fragment>
+              Do not display metadata for tracks marked as IDs. Configure track ID
+              detection in <Link to="/settings">the settings panel</Link>.
+            </React.Fragment>
+          }
+        >
+          <Checkbox
+            checked={config.maskId}
+            onChange={() => set(config, {maskId: !config.maskId})}
+          />
+        </Field>
+      )}
       {enabledConfigs.includes('historyCount') && (
         <Field
           size="sm"
@@ -230,6 +252,7 @@ const descriptor: OverlayDescriptor<TaggedNowPlaying> = {
   defaultConfig: {
     theme: 'tracklist',
     historyCount: 4,
+    maskId: true,
     tags: ['album', 'label', 'comment'],
   },
 };

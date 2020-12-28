@@ -8,6 +8,7 @@ import {observer} from 'mobx-react';
 
 import TimeTicker from 'src/shared/components/TimeTicker';
 import {PlayedTrack} from 'src/shared/store';
+import {idTrack} from 'src/utils/dummyData';
 
 import {Tags, tagsConfig} from './tags';
 import {NowPlayingConfig, ThemeDescriptor} from '.';
@@ -253,9 +254,19 @@ type BaseTrackProps = MotionDivProps & {
    * The list of tags to show on the 3rd row
    */
   tags?: Tags;
+  /**
+   * Use the example ID track to mask IDs
+   */
+  maskId?: boolean;
 };
 
-const FullTrack = ({played, firstPlayed, hideArtwork, ...props}: BaseTrackProps) => (
+const FullTrack = ({
+  played,
+  firstPlayed,
+  hideArtwork,
+  maskId,
+  ...props
+}: BaseTrackProps) => (
   <TrackContainer {...props}>
     {!hideArtwork && (
       <Artwork
@@ -267,7 +278,7 @@ const FullTrack = ({played, firstPlayed, hideArtwork, ...props}: BaseTrackProps)
     )}
     <FullMetadata
       alignRight={props.alignRight}
-      track={played.track}
+      track={maskId && played.isId ? idTrack : played.track}
       tags={props.tags ?? []}
     />
   </TrackContainer>
@@ -318,27 +329,33 @@ const PlayedAt = styled(Text)`
   line-height: 1.3;
 `;
 
-const MiniTrack = ({played, hideArtwork, ...props}: BaseTrackProps) => (
-  <TrackContainer {...props}>
-    {!hideArtwork && (
-      <Artwork
-        animateIn
-        alignRight={props.alignRight}
-        src={artToSrc(played.artwork)}
-        size="50px"
-      />
-    )}
-    <MetadataWrapper alignRight={props.alignRight}>
-      <MiniTitle>{played.track.title}</MiniTitle>
-      <MiniArtist>{played.track.artist?.name}</MiniArtist>
-      <PlayedAt>
-        <TimeTicker randomRange={[15, 30]}>
-          {() => played.playedAt && `${formatDistance(Date.now(), played.playedAt)} ago`}
-        </TimeTicker>
-      </PlayedAt>
-    </MetadataWrapper>
-  </TrackContainer>
-);
+const MiniTrack = ({played, hideArtwork, maskId, ...props}: BaseTrackProps) => {
+  const track = maskId && played.isId ? idTrack : played.track;
+
+  return (
+    <TrackContainer {...props}>
+      {!hideArtwork && (
+        <Artwork
+          animateIn
+          alignRight={props.alignRight}
+          src={artToSrc(played.artwork)}
+          size="50px"
+        />
+      )}
+      <MetadataWrapper alignRight={props.alignRight}>
+        <MiniTitle>{track.title}</MiniTitle>
+        <MiniArtist>{track.artist?.name}</MiniArtist>
+        <PlayedAt>
+          <TimeTicker randomRange={[15, 30]}>
+            {() =>
+              played.playedAt && `${formatDistance(Date.now(), played.playedAt)} ago`
+            }
+          </TimeTicker>
+        </PlayedAt>
+      </MetadataWrapper>
+    </TrackContainer>
+  );
+};
 
 type TrackProps = BaseTrackProps & {mini?: boolean};
 
@@ -380,6 +397,7 @@ const ThemeModern: React.FC<Props> = observer(({config, history}) =>
         hideArtwork={config.hideArtwork}
         tags={config.tags}
         firstPlayed={history.length === 1}
+        maskId={config.maskId}
         played={history[0]}
       />
       {(config.historyCount ?? 0) > 0 && history.length > 1 && (
@@ -430,7 +448,7 @@ export default {
     'hideArtwork',
     'historyCount',
     'tags',
-    'idMarker',
+    'maskId',
     'colors',
   ],
 } as ThemeDescriptor;
