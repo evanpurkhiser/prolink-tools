@@ -277,14 +277,20 @@ const connectMixstatus = (network: ConnectedProlinkNetwork) => {
   network.mixstatus.on('setEnded', () => store.mixstatus.trackHistory.clear());
 
   /**
-   * Mark the onAir capabilities when a DJM is on the network
+   * Mark the onAir capabilities when a DJM is on the network.
+   *
+   * Caveats:
+   *  - XDJ-XZ will also be considered as having a mixer on the network.
+   *  - If we're using 2000s there is no onAir indicator in the status packets
+   *    unfortunately.
    */
   const updateOnAirCapabilities = () => {
     const devices = [...network.deviceManager.devices.values()];
 
     const hasMixer =
-      devices.some(device => device.type === DeviceType.Mixer) ||
-      devices.some(device => device.name.toLowerCase() === 'xdj-xz');
+      !devices.some(device => device.name.toLowerCase() === 'cdj-2000') &&
+      (devices.some(device => device.type === DeviceType.Mixer) ||
+        devices.some(device => device.name.toLowerCase() === 'xdj-xz'));
 
     network.mixstatus.configure({
       hasOnAirCapabilities: hasMixer,
