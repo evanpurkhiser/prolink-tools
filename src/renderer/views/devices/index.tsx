@@ -29,8 +29,8 @@ const Devices = observer(() => {
 
   return (
     <AnimatePresence>
-      {store.networkState === NetworkState.Online && <ConnectingSplash />}
-      {store.networkState === NetworkState.Failed && <ConnectionError />}
+      {store.networkState === NetworkState.Online && <ConnectingSplash key="splash" />}
+      {store.networkState === NetworkState.Failed && <ConnectionError key="error" />}
       {deviceMap[DeviceType.CDJ]?.sort(sortById).map(deviceStore => {
         const {device, state} = deviceStore;
         return (
@@ -58,7 +58,7 @@ const Devices = observer(() => {
           </Device>
         );
       })}
-      <SmallDeviceList>
+      <SmallDeviceList key="smallDevices">
         <AnimatePresence>
           {otherDevices.map(({device}) => (
             <SmallDevice key={device.id}>

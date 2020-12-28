@@ -18,15 +18,25 @@ const SIZES = {
   full: '100%',
 };
 
-const Field = styled(({size: _size, name, description, children, ...p}: Props) => (
-  <label {...p}>
-    {children}
-    <div>
-      {name}
-      {description && <small>{description}</small>}
-    </div>
-  </label>
-))<Props>`
+const Field = styled(
+  ({
+    size: _size,
+    top: _top,
+    noCenter: _noCenter,
+    name,
+    description,
+    children,
+    ...p
+  }: Props) => (
+    <label {...p}>
+      {children}
+      <div>
+        {name}
+        {description && <small>{description}</small>}
+      </div>
+    </label>
+  )
+)<Props>`
   font-family: Ubuntu;
   line-height: 1.4;
   display: grid;
