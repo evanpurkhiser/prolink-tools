@@ -182,7 +182,7 @@ const Attribute = ({icon, text, ...p}: AttributeProps) =>
     </Text>
   );
 
-const NoAttributes = styled(p => (
+const NoAttributes = styled((p: Omit<AttributeProps, 'text' | 'icon'>) => (
   <Attribute text="No Release Metadata" icon={X} {...p} />
 ))`
   color: ${cssVar('--pt-np-empty-attrs-text')};

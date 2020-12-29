@@ -1,4 +1,4 @@
-import {css} from '@emotion/core';
+import {css} from '@emotion/react';
 
 import dmMonoLight from 'src/fonts/DMMono-Light.ttf';
 import dmMonoMedium from 'src/fonts/DMMono-Medium.ttf';

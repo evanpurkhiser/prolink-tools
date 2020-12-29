@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {BrowserRouter, Route, RouteComponentProps} from 'react-router-dom';
-import {Global} from '@emotion/core';
+import {Global} from '@emotion/react';
 import {observer} from 'mobx-react';
 
 import globalCss from 'src/shared/globalCss';

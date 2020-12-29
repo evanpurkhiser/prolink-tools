@@ -3,7 +3,7 @@ import 'src/shared/sentry/web';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {Global} from '@emotion/core';
+import {Global} from '@emotion/react';
 import * as Sentry from '@sentry/browser';
 import {when} from 'mobx';
 

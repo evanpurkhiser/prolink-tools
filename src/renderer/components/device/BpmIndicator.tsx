@@ -55,8 +55,12 @@ const BpmIndicator = styled(({bpm, pitch, ...p}: Props) => (
   }
 `;
 
-const Blank = styled(p => <span {...p}>—</span>)`
+const Blank = styled('span')`
   color: #555;
 `;
+
+Blank.defaultProps = {
+  children: '-',
+};
 
 export default BpmIndicator;
