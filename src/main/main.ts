@@ -35,7 +35,7 @@ const createWindow = () => {
     height: 900,
     titleBarStyle: 'hiddenInset',
     title: 'Prolink Tools',
-    webPreferences: {nodeIntegration: true},
+    webPreferences: {nodeIntegration: true, contextIsolation: false},
   });
 
   win.on('closed', () => (win = null));
