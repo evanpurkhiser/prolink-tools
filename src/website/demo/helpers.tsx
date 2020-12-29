@@ -82,5 +82,6 @@ export function markAsPlaying(deviceId: number) {
     track: cloneDeep(s.track!),
     artwork: s.artwork,
     playedAt: new Date(),
+    isId: false,
   });
 }

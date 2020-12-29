@@ -4,7 +4,7 @@ import {Endpoints} from '@octokit/types';
 
 import {GITHUB_REPO} from 'src/shared/constants';
 
-type Release = Endpoints['GET /repos/:owner/:repo/releases/latest']['response'];
+type Release = Endpoints['GET /repos/{owner}/{repo}/releases/latest']['response'];
 
 const useRelease = () => {
   const [release, setRelease] = React.useState<Release['data'] | null>(null);

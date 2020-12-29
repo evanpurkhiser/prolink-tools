@@ -58,11 +58,13 @@ const DownloadCta = (props: React.ComponentProps<typeof motion.div>) => {
       </DownloadButton>
 
       <VersionTag>
-        version {release?.name.slice(1) ?? 'x.x.x'}
+        version {release?.name?.slice(1) ?? 'x.x.x'}
         <small>
-          {release
-            ? format(parseISO(release.published_at), 'MMMM do yyyy')
-            : 'Fetching release...'}
+          {!release
+            ? 'Fetching release...'
+            : !release.published_at
+            ? 'Unknown release date'
+            : format(parseISO(release.published_at), 'MMMM do yyyy')}
         </small>
       </VersionTag>
     </motion.div>
