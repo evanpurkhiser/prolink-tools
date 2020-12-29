@@ -2,13 +2,13 @@ import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpack from 'webpack';
-import webpackMerge from 'webpack-merge';
+import merge from 'webpack-merge';
 
 import path from 'path';
 
 import {baseConfig} from './webpack.config.base';
 
-const rendererConfig: webpack.Configuration = webpackMerge.smart(baseConfig, {
+const rendererConfig: webpack.Configuration = merge(baseConfig, {
   target: 'electron-renderer',
   entry: {
     app: './src/renderer/app.tsx',
@@ -43,10 +43,10 @@ const rendererConfig: webpack.Configuration = webpackMerge.smart(baseConfig, {
   ],
   devServer: {
     port: 2003,
-    compress: true,
-    stats: 'errors-only',
-    inline: true,
-    hot: true,
+    // This can be removed once the types are released for webpack-dev-server 4.0
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    hot: 'only',
     headers: {'Access-Control-Allow-Origin': '*'},
     historyApiFallback: {
       disableDotRule: true,
@@ -56,21 +56,22 @@ const rendererConfig: webpack.Configuration = webpackMerge.smart(baseConfig, {
   },
 });
 
-const overlayConfig: webpack.Configuration = webpackMerge.smart(baseConfig, {
+const overlayConfig: webpack.Configuration = merge(baseConfig, {
   entry: {
     overlay: './src/overlay/app.tsx',
   },
   output: {
     path: path.resolve(__dirname, 'dist/overlay'),
   },
-  optimization: {minimize: false},
-  node: {
-    fs: 'empty',
-    dgram: 'empty',
-    net: 'empty',
-    tls: 'empty',
-    console: true,
+  resolve: {
+    fallback: {
+      fs: 'empty',
+      dgram: 'empty',
+      net: 'empty',
+      tls: 'empty',
+    },
   },
+  optimization: {minimize: false},
   module: {
     rules: [
       {

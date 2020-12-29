@@ -2,13 +2,13 @@ import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpack from 'webpack';
-import webpackMerge from 'webpack-merge';
+import merge from 'webpack-merge';
 
 import path from 'path';
 
 import {baseConfig} from './webpack.config.base';
 
-const websiteConfig: webpack.Configuration = webpackMerge.smart(baseConfig, {
+const websiteConfig: webpack.Configuration = merge(baseConfig, {
   entry: {
     app: './src/website/app.tsx',
   },
@@ -48,9 +48,6 @@ const websiteConfig: webpack.Configuration = webpackMerge.smart(baseConfig, {
   ],
   devServer: {
     port: 2004,
-    compress: true,
-    stats: 'errors-only',
-    inline: true,
     hot: true,
     headers: {'Access-Control-Allow-Origin': '*'},
   },

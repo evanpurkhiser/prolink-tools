@@ -48,10 +48,6 @@ export const baseConfig: webpack.Configuration = {
 
   plugins: [new webpack.EnvironmentPlugin(envConfig)],
 
-  devServer: {
-    hotOnly: true,
-  },
-
   module: {
     rules: [
       {

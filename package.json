@@ -54,8 +54,8 @@
     "null-loader": "^4.0.0",
     "prettier": "^2.0.5",
     "typescript-styled-plugin": "^0.15.0",
-    "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.4.1"
+    "webpack-cli": "^4.3.0",
+    "webpack-dev-server": "4.0.0-beta.0"
   },
   "dependencies": {
     "@babel/core": "^7.12.9",
@@ -96,7 +96,7 @@
     "@types/semver": "^7.3.3",
     "@types/socket.io": "^2.1.11",
     "@types/socket.io-client": "^1.4.33",
-    "@types/terser-webpack-plugin": "^4.1.0",
+    "@types/terser-webpack-plugin": "^5.0.2",
     "@types/webdriverio": "^5.0.0",
     "@types/webpack-dev-server": "^3.10.1",
     "@types/webpack-env": "^1.13.3",
@@ -147,12 +147,12 @@
     "short-uuid": "^4.1.0",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
-    "source-map-loader": "^1.0.0",
-    "terser-webpack-plugin": "^4.1.0",
+    "source-map-loader": "^2.0.0",
+    "terser-webpack-plugin": "^5.0.3",
     "ts-node": "^9.0.0",
     "typescript": "^4.0.2",
-    "webpack": "^4.44.1",
-    "webpack-merge": "^4.2.2"
+    "webpack": "^5.11.1",
+    "webpack-merge": "^5.7.3"
   },
   "volta": {
     "node": "14.3.0",
