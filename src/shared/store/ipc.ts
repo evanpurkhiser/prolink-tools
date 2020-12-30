@@ -48,6 +48,11 @@ type SerializedChange = {
 type ChangeHandler = (change: SerializedChange) => void;
 
 /**
+ * Mark when we're applying a UI config change via IPC to avoid a loop over IPC.
+ */
+let isApplyingConfigChange = false;
+
+/**
  * Maintains a list of handlers that will be called in response to a serailized
  * change in the store.
  */
@@ -285,24 +290,21 @@ export const registerMainIpc = () => {
     event.sender.send('store-init', serialize(AppStore, store));
 
     // Register this window to recieve store changes over ipc
-    changeHandlers.push(change => event.sender.send('store-update', change));
+    changeHandlers.push(
+      change => !isApplyingConfigChange && event.sender.send('store-update', change)
+    );
   });
 
   // Register listener for config object changes
-  ipcMain.on('config-update', (_e, change: SerializedChange) => applyStoreChange(change));
+  ipcMain.on('config-update', (_e, change: SerializedChange) => {
+    isApplyingConfigChange = true;
+    applyStoreChange(change);
+    isApplyingConfigChange = false;
+  });
 
   // Save any updates to the configuration store
   deepObserve(store.config, () => settings.set(serialize(AppConfig, store.config)));
 };
-
-/**
- * XXX: This list MAY be brittle as it is what stops us from getting stuck in an
- * update loop upon config changes.
- *
- * Becuase changes will be propagated from the client -> main, and then back
- * from main -> client, we need to ignore the changes we just made.
- */
-const recentConfigChanges = new Set<string>();
 
 /**
  * Register this window to have it's store hydrated and synced from the main
@@ -310,13 +312,9 @@ const recentConfigChanges = new Set<string>();
  */
 export const registerRendererIpc = () => {
   ipcRenderer.on('store-update', (_, change: SerializedChange) => {
-    // When recieving configuration changes, drop changes that were jsut made.
-    if (change.path.startsWith('config') && recentConfigChanges.has(change.path)) {
-      setTimeout(() => recentConfigChanges.delete(change.path), 500);
-      return;
-    }
-
+    isApplyingConfigChange = change.path.startsWith('config');
     applyStoreChange(change);
+    isApplyingConfigChange = false;
   });
 
   ipcRenderer.on('store-init', (_, data: any) => {
@@ -335,10 +333,8 @@ export const registerRendererConfigIpc = () =>
   observeStore({
     target: store.config,
     prefix: 'config',
-    handler: change => {
-      recentConfigChanges.add(change.path);
-      ipcRenderer.send('config-update', change);
-    },
+    handler: change =>
+      !isApplyingConfigChange && ipcRenderer.send('config-update', change),
   });
 
 /**
