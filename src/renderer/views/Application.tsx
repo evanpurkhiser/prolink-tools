@@ -23,7 +23,7 @@ const Application = () => (
   </MemoryRouter>
 );
 
-const Frame = styled('div')`
+const Frame = styled('main')`
   display: flex;
   flex-direction: column;
   background: #fff;

@@ -63,7 +63,7 @@ const Release = styled('div')`
   color: #777a7b;
 `;
 
-const Wrapper = styled('div')`
+const Wrapper = styled('footer')`
   padding: 0.5rem;
   display: grid;
   align-items: center;
