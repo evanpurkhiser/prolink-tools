@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {Save} from 'react-feather';
 import styled from '@emotion/styled';
 

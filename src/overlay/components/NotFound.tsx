@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {AlertTriangle} from 'react-feather';
 import styled from '@emotion/styled';
 

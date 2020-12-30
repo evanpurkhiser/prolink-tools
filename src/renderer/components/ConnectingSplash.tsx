@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {useTimeout} from 'react-use';
 import {keyframes} from '@emotion/react';
 import styled from '@emotion/styled';

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {MemoryRouter, Redirect, Route, Switch} from 'react-router-dom';
 import styled from '@emotion/styled';
 

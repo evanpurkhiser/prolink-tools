@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 export const AppleLogo = () => (
   <svg
     width="19"

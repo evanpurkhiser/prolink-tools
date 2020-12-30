@@ -1,6 +1,5 @@
 import 'regenerator-runtime/runtime';
 
-import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {Route, Router, Switch} from 'react-router-dom';
 import {createBrowserHistory} from 'history';

@@ -6,7 +6,7 @@
     "esModuleInterop": true,
     "lib": ["dom", "ES2020"],
     "allowJs": true,
-    "jsx": "react",
+    "jsx": "react-jsxdev",
     "sourceMap": true,
     "inlineSources": true,
     "outDir": "./dist",

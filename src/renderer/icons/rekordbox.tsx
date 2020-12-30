@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 const IconRekordbox = () => (
   <svg
     width="30"

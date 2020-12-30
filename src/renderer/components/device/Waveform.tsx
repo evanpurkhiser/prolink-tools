@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {autorun} from 'mobx';
 import {CDJStatus, DeviceID} from 'prolink-connect/lib/types';
 

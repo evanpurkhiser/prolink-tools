@@ -27,5 +27,8 @@ module.exports = {
         ],
       },
     ],
+    // Remove when I switch @evanpurkhiser to include this
+    'react/jsx-uses-react': 'off',
+    'react/react-in-jsx-scope': 'off',
   },
 };

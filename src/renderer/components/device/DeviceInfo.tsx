@@ -1,4 +1,3 @@
-import * as React from 'react';
 import styled from '@emotion/styled';
 import {Device} from 'prolink-connect/lib/types';
 

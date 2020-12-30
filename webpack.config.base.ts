@@ -61,7 +61,7 @@ export const baseConfig: webpack.Configuration = {
           presets: [
             '@babel/preset-env',
             '@babel/preset-typescript',
-            '@babel/preset-react',
+            ['@babel/preset-react', {runtime: 'automatic'}],
           ],
           plugins: [
             ['@babel/plugin-proposal-decorators', {legacy: true}],
