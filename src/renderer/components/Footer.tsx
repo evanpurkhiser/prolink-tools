@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {Save} from 'react-feather';
 import styled from '@emotion/styled';
-import {shell} from 'electron';
 
 import Logo from 'src/shared/components/Logo';
 import useRelease from 'src/utils/useLatestRelease';
@@ -18,7 +17,7 @@ const Footer = () => {
     process.env.RELEASE !== latestRelease.name;
 
   const newVersion = latestRelease && hasNewVersion && (
-    <NewVersionButton onClick={() => shell.openExternal(latestRelease.html_url)}>
+    <NewVersionButton onClick={() => location.assign(latestRelease.html_url)}>
       <Save size="1rem" /> {latestRelease.name} available
     </NewVersionButton>
   );
