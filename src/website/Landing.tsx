@@ -137,7 +137,7 @@ const shadeStyles = css`
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: -1;
+  z-index: 0;
   transform-origin: 0 100%;
 `;
 
@@ -177,7 +177,7 @@ const DemoContainer = styled('div')`
   position: relative;
   border-radius: 5px;
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
-  background: #fff;
+  background: ${p => p.theme.background};
   overflow: hidden;
 
   display: flex;
@@ -278,7 +278,7 @@ const NowPlayingContainer = styled('div')``;
 const ConfigContainer = styled(motion.div)`
   position: relative;
   margin-top: -2rem;
-  background: #fff;
+  background: ${p => p.theme.background};
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
   border-radius: 5px;
   z-index: 2;
