@@ -49,7 +49,7 @@ const Color = ({color, defaultColor, name, trimPrefix, onChange}: ColorProps) =>
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [indicatorEl, setIndicatorEl] = React.useState<HTMLDivElement | null>(null);
   const [pickerEl, setPickerEl] = React.useState<HTMLDivElement | null>(null);
-  const {styles} = usePopper(indicatorEl, pickerEl, {
+  const {styles, state} = usePopper(indicatorEl, pickerEl, {
     placement: 'top',
     modifiers: [{name: 'arrow'}, {name: 'offset', options: {offset: [0, 15]}}],
   });
@@ -83,7 +83,11 @@ const Color = ({color, defaultColor, name, trimPrefix, onChange}: ColorProps) =>
                 color={color}
                 onChange={newColor => onChange(rgba(newColor))}
               />
-              <Arrow data-popper-arrow style={styles.arrow} />
+              <Arrow
+                data-placement={state?.placement}
+                data-popper-arrow
+                style={styles.arrow}
+              />
             </motion.div>
           </Picker>
         )}
@@ -112,7 +116,10 @@ const Arrow = styled('div')`
   height: 0;
   width: 0;
   border: 10px solid transparent;
-  border-top-color: #fff;
+
+  &[data-placement='top'] {
+    border-top-color: #fff;
+  }
 `;
 
 const ColorPill = styled('div')`
