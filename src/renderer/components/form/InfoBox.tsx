@@ -11,10 +11,10 @@ const InfoBox = styled(({children, ...p}: React.HTMLProps<HTMLDivElement>) => (
   display: grid;
   grid-template-columns: max-content 1fr;
   grid-gap: 0.5rem;
-  color: #1a4275;
-  background: #f1f7ff;
+  color: ${p => p.theme.alert.info.text};
+  background: ${p => p.theme.alert.info.background};
 
-  border-top: 2px solid #4b97f8;
+  border-top: 2px solid ${p => p.theme.alert.info.border};
   border-radius: 0 0 4px 4px;
   padding: 0.5rem;
   margin-top: 0.75rem;

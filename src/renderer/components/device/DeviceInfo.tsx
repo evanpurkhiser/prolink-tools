@@ -20,7 +20,7 @@ const DeviceName = styled('div')`
 
 const IPAddr = styled('div')`
   font-size: 0.55rem;
-  color: #888;
+  color: ${p => p.theme.subText};
 `;
 
 export default DeviceInfo;

@@ -5,7 +5,7 @@ const Header = styled('header')`
   justify-content: space-between;
   align-items: flex-start;
   padding: 1.5rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid ${p => p.theme.border};
 `;
 
 const HeaderInfo = styled('p')`

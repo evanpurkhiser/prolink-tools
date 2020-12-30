@@ -1,19 +1,32 @@
 import * as React from 'react';
 import {ChevronDown, X} from 'react-feather';
 import Control, {components} from 'react-select';
+import {Theme, useTheme} from '@emotion/react';
 
 type ControlProps = React.ComponentProps<typeof Control>;
 
-const selectStyles: ControlProps['styles'] = {
+const selectStyles = (theme: Theme): ControlProps['styles'] => ({
   control: () => ({
     display: 'flex',
     borderRadius: '3px',
-    border: '1px solid #ccc',
+    border: `1px solid ${theme.control.border}`,
     width: '100%',
   }),
   valueContainer: base => ({
     ...base,
     padding: '0.25rem',
+  }),
+  multiValue: base => ({
+    ...base,
+    background: theme.backgroundBox,
+  }),
+  multiValueLabel: base => ({
+    ...base,
+    color: theme.primaryText,
+  }),
+  singleValue: base => ({
+    ...base,
+    color: theme.primaryText,
   }),
   input: base => ({
     ...base,
@@ -34,7 +47,7 @@ const selectStyles: ControlProps['styles'] = {
     borderRadius: '3px',
     width: 'auto',
   }),
-};
+});
 
 const selectComponents: ControlProps['components'] = {
   IndicatorSeparator: () => null,
@@ -52,7 +65,7 @@ const selectComponents: ControlProps['components'] = {
 };
 
 const Select = (p: React.ComponentProps<typeof Control>) => (
-  <Control components={selectComponents} styles={selectStyles} {...p} />
+  <Control components={selectComponents} styles={selectStyles(useTheme())} {...p} />
 );
 
 export default Select;

@@ -68,14 +68,14 @@ const Heading = styled(({children, ...p}: React.HTMLProps<HTMLHeadingElement>) =
   text-transform: uppercase;
   margin: 0;
   padding: 1.25rem 1rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid ${p => p.theme.border};
   font-weight: 500;
 `;
 
 const Section = styled('section')`
   padding: 0.5rem 0;
   margin-left: 1.25rem;
-  border-left: 1px solid #eee;
+  border-left: 1px solid ${p => p.theme.border};
 `;
 
 export default Settings;

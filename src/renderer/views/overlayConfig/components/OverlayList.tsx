@@ -70,10 +70,10 @@ const Actions = styled('div')`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid #eee;
+  border: 1px solid ${p => p.theme.border};
   border-bottom: none;
   border-radius: 3px 3px 0 0;
-  background: #fafafa;
+  background: ${p => p.theme.backgroundSecondary};
 `;
 
 const UrlWrapper = styled('div')`
@@ -116,7 +116,7 @@ const CopyButton = styled('button')`
 `;
 
 const Settings = styled('div')`
-  border: 1px solid #eee;
+  border: 1px solid ${p => p.theme.border};
   border-bottom: none;
 `;
 

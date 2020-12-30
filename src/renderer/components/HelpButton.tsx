@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {HelpCircle} from 'react-feather';
-import {useClickAway} from 'react-use';
+import {useClickAway, useKey} from 'react-use';
 import styled from '@emotion/styled';
 import {AnimatePresence, motion} from 'framer-motion';
 
@@ -13,6 +13,10 @@ const HelpButton = () => {
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   useClickAway(containerRef, () => toggle(false));
+  useKey(
+    key => key.key === 'Escape',
+    () => toggle(false)
+  );
 
   return (
     <React.Fragment>
@@ -53,15 +57,15 @@ const HelpButton = () => {
 export default HelpButton;
 
 const Button = styled(ActionButton)`
-  background: #efefef;
-  color: #544f4f;
+  background: ${p => p.theme.backgroundSecondary};
+  color: ${p => p.theme.subText};
   border-radius: 50%;
   padding: 0.25rem;
   transition: background 150ms ease-in-out, color 150ms ease-in-out;
 
   &:hover {
-    background: #eaeaea;
-    color: #000;
+    background: ${p => p.theme.backgroundBox};
+    color: ${p => p.theme.primaryText};
   }
 `;
 
@@ -90,12 +94,12 @@ Modal.defaultProps = {
 };
 
 const Info = styled(motion.div)`
-  background: #fff;
+  background: ${p => p.theme.background};
   border-radius: 5px;
   box-shadow: 0 0 80px rgba(0, 0, 0, 0.05);
   padding: 1rem;
   font-family: Ubuntu;
-  color: #444;
+  color: ${p => p.theme.primaryText};
   width: 600px;
 
   p {
@@ -109,7 +113,7 @@ const Info = styled(motion.div)`
 
   hr {
     border: 0;
-    background: #eee;
+    background: ${p => p.theme.border};
     height: 1px;
   }
 `;

@@ -16,9 +16,8 @@ const Checkbox = styled('input')`
     bottom: 0;
     right: 0;
     border-radius: 1rem;
-    border: 1px solid #ccc;
+    border: 1px solid ${p => p.theme.control.border};
     transition: border-color 200ms ease-in-out;
-    background: #fefefe;
   }
 
   &:after {
@@ -30,7 +29,7 @@ const Checkbox = styled('input')`
     height: 0.75rem;
     width: 0.75rem;
     border-radius: 100%;
-    background: #9e9e9e;
+    background: ${p => p.theme.control.knob};
     transition: transform 200ms ease-in-out, background 200ms ease-in-out;
   }
 

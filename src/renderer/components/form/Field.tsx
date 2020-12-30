@@ -69,13 +69,13 @@ const Field = styled(
     `}
 
   &:not(:last-child) {
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid ${p => p.theme.border};
   }
 
   small {
     display: block;
     margin-top: 0.25rem;
-    color: #888;
+    color: ${p => p.theme.subText};
   }
 `;
 

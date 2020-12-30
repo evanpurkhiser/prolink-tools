@@ -1,8 +1,8 @@
-import {css} from '@emotion/react';
+import {css, Theme} from '@emotion/react';
 
 import fonts from 'src/shared/fonts';
 
-const globalCss = css`
+const globalCss = (theme: Theme) => css`
   html,
   body,
   body > div {
@@ -12,7 +12,9 @@ const globalCss = css`
     min-height: 100%;
     margin: 0;
     padding: 0;
-    color: #28272b;
+    color: ${theme.primaryText};
+    background: ${theme.background};
+    transition: color 200ms ease-in-out, background 300ms ease-in-out;
   }
 
   ${fonts};
@@ -35,6 +37,7 @@ const globalCss = css`
   }
 
   button {
+    color: ${theme.primaryText};
     font-family: 'DM Mono';
     transition: background 200ms, color 200ms;
     cursor: pointer;

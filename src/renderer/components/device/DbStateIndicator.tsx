@@ -82,7 +82,7 @@ const Info = styled('div')`
   small {
     display: block;
     font-size: 10px;
-    color: #666666;
+    color: ${p => p.theme.subText};
     font-weight: normal;
     margin-top: 0.125rem;
   }

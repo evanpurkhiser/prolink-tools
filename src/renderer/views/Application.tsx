@@ -25,7 +25,6 @@ const Application = () => (
 const Frame = styled('main')`
   display: flex;
   flex-direction: column;
-  background: #fff;
   flex-grow: 1;
 `;
 

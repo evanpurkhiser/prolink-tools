@@ -128,7 +128,7 @@ const ColorPill = styled('div')`
   padding: 0.125rem 0.5rem;
   padding-left: 0.25rem;
   border-radius: 3px;
-  background: #f3f3f3;
+  background: ${p => p.theme.backgroundBox};
   display: flex;
   flex-direction: row;
   gap: 0.5rem;

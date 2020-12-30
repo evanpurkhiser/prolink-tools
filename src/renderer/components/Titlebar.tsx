@@ -22,8 +22,9 @@ const Container = styled('header')`
   grid-auto-columns: max-content;
   grid-gap: 0.5rem;
   align-items: center;
-  background: #fafafa;
-  border-bottom: 1px solid #eee;
+  background: ${p => p.theme.backgroundSecondary};
+  transition: background 300ms;
+  border-bottom: 1px solid ${p => p.theme.border};
   -webkit-app-region: drag;
 `;
 

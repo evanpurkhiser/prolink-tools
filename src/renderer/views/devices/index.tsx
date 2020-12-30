@@ -79,7 +79,7 @@ const Device = styled(motion.div)`
   grid-template-columns: max-content 1fr;
   grid-gap: 0.5rem;
   padding: 1rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid ${p => p.theme.border};
 `;
 
 Device.defaultProps = {
@@ -95,7 +95,7 @@ const Indicator = styled('div')`
   grid-template-rows: 22px 48px;
   grid-gap: 0.5rem;
   padding-right: 0.5rem;
-  border-right: 1px solid #eee;
+  border-right: 1px solid ${p => p.theme.border};
   color: #3b434b;
 `;
 
@@ -125,7 +125,7 @@ const SmallDeviceList = styled('div')`
   grid-auto-columns: max-content;
   grid-gap: 2rem;
   padding: 1rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid ${p => p.theme.border};
 
   &:empty {
     display: none;

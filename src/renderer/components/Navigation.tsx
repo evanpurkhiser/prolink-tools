@@ -61,10 +61,10 @@ const MenuButton = styled('button')`
   align-items: center;
   text-transform: uppercase;
   font-weight: 600;
-  color: #5b5b5b;
+  opacity: 0.9;
 
   &:hover {
-    color: #000;
+    opacity: 1;
   }
 `;
 
@@ -72,13 +72,14 @@ const MenuContainer = styled(motion.div)`
   position: absolute;
   top: 38px;
   right: -10px;
-  background: #fff;
+  background: ${p => p.theme.background};
   display: grid;
   grid-auto-flow: row;
   grid-auto-rows: max-content;
   grid-gap: 0.125rem;
   padding: 0.25rem 0;
-  border: 1px solid #eee;
+  border: 1px solid ${p => p.theme.border};
+  border-radius: 3px;
 
   &:before,
   &:after {
@@ -88,12 +89,12 @@ const MenuContainer = styled(motion.div)`
     top: -16px;
     right: 18px;
     border: 8px solid transparent;
-    border-bottom-color: #fff;
+    border-bottom-color: ${p => p.theme.background};
   }
 
   &:before {
     margin-top: -1px;
-    border-bottom-color: #eee;
+    border-bottom-color: ${p => p.theme.border};
   }
 `;
 
@@ -115,11 +116,10 @@ const MenuItem = styled(NavLink)`
   font-size: 0.7rem;
   text-decoration: none;
   white-space: nowrap;
-  color: #3b434b;
+  color: ${p => p.theme.primaryText};
 
   &:hover {
-    color: #000;
-    background: #f5f5f5;
+    background: ${p => p.theme.backgroundSecondary};
   }
 `;
 

@@ -1,20 +1,12 @@
-import {css} from '@emotion/react';
+import {css, Theme} from '@emotion/react';
 import styled from '@emotion/styled';
 
-const primary = css`
-  background: #28272b;
-  color: #fff;
+const colors = (buttonTheme: Theme['button']['primary']) => css`
+  background: ${buttonTheme.background};
+  color: ${buttonTheme.color};
 
   &:hover {
-    background: #000;
-  }
-`;
-
-const muted = css`
-  background: #eee;
-
-  &:hover {
-    background: #e5e5e5;
+    background: ${buttonTheme.backgroundHover};
   }
 `;
 
@@ -28,7 +20,7 @@ const ActionButton = styled('button')<{muted?: boolean}>`
   padding: 0.5rem 1rem;
   font-weight: bold;
   border-radius: 3px;
-  ${p => (p.muted ? muted : primary)}
+  ${p => (p.muted ? colors(p.theme.button.muted) : colors(p.theme.button.primary))}
 `;
 
 export default ActionButton;

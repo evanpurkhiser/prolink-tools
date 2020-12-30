@@ -63,10 +63,10 @@ const OverlayHeader = styled('div')`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid #eee;
+  border: 1px solid ${p => p.theme.border};
   border-bottom: none;
   border-radius: 3px 3px 0 0;
-  background: #fafafa;
+  background: ${p => p.theme.backgroundSecondary};
 `;
 
 const AddButton = styled('button')`
@@ -87,7 +87,7 @@ const AddButton = styled('button')`
 `;
 
 const Container = styled(motion.div)`
-  background: #fff;
+  background: ${p => p.theme.background};
   z-index: 2;
   display: grid;
   grid-auto-flow: row;

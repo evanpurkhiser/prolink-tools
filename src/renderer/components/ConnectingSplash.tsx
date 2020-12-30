@@ -69,7 +69,7 @@ const Indicator = styled('div')`
   height: 10px;
   width: 10px;
   border-radius: 50%;
-  background: #f84b4b;
+  background: #f95757;
   position: relative;
 
   &:before {
@@ -81,7 +81,7 @@ const Indicator = styled('div')`
     border-radius: 50%;
     top: -50px;
     left: -50px;
-    border: 4px solid #f84b4b;
+    border: 4px solid #f95757;
     margin: 1px;
     transform-origin: center;
     animation: ${pulse} 3s ease-out infinite;

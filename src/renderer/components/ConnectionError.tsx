@@ -55,7 +55,7 @@ const Text = styled('div')`
 const Help = styled('div')`
   font-family: Ubuntu;
   font-size: 0.8rem;
-  color: #444;
+  color: ${p => p.theme.subText};
   line-height: 1.4;
   margin-top: 1rem;
 `;
