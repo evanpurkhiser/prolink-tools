@@ -35,7 +35,7 @@ const Metadata = observer(({deviceId, ...props}: Props) => {
   return (
     <Wrapper {...props}>
       {artwork && artwork.length > 0 && (
-        <Artwork src={`data:image/jpg;base64,${artwork.toString('base64')}`} />
+        <Artwork src={`data:image/jpg;base64,${btoa(String.fromCharCode(...artwork))}`} />
       )}
       <Info>
         <Title>{track.title}</Title>

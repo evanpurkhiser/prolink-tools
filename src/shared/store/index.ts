@@ -27,8 +27,8 @@ const deviceToJs = custom(
 );
 
 const bufferSerialize = custom(
-  value => (value instanceof Buffer ? Array.from(value) : undefined),
-  data => (Array.isArray(data) ? Buffer.from(data) : data)
+  value => (value instanceof Uint8Array ? Array.from(value) : undefined),
+  data => (Array.isArray(data) ? Uint8Array.from(data) : data)
 );
 
 /**
@@ -62,7 +62,7 @@ export class DeviceStore {
    */
   @serializable(bufferSerialize)
   @observable
-  artwork?: Buffer;
+  artwork?: Uint8Array;
   /**
    * Database fetch progress for each device slot
    */
@@ -122,7 +122,7 @@ export class PlayedTrack {
   track: Track;
 
   @serializable(bufferSerialize)
-  artwork?: Buffer;
+  artwork?: Uint8Array;
 
   @computed
   get isId() {

@@ -7,7 +7,7 @@ export async function fetchRandomArtwork() {
   try {
     const imageResp = await fetch('https://picsum.photos/160/160');
     const imageBuffer = await imageResp.arrayBuffer();
-    return Buffer.from(imageBuffer);
+    return new Uint8Array(imageBuffer);
   } catch {
     return undefined;
   }

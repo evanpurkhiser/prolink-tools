@@ -13,7 +13,7 @@ import {idTrack} from 'src/utils/dummyData';
 import {Tags, tagsConfig} from './tags';
 import {NowPlayingConfig, ThemeDescriptor} from '.';
 
-const artToSrc = (d: Buffer | undefined) =>
+const artToSrc = (d: Uint8Array | undefined) =>
   d && d.length > 0
     ? `data:image/jpg;base64,${window.btoa(String.fromCharCode(...d))}`
     : undefined;
