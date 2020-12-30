@@ -46,9 +46,9 @@ const createWindow = () => {
   }
 
   const indexUrl = isDev
-    ? 'http://127.0.0.1:2003/app.html'
+    ? 'http://127.0.0.1:2003/index.html'
     : url.format({
-        pathname: path.join(__dirname, 'app.html'),
+        pathname: path.join(__dirname, 'index.html'),
         protocol: 'file:',
         slashes: true,
       });
