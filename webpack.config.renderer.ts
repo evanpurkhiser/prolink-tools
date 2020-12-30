@@ -3,15 +3,26 @@ import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpack from 'webpack';
 import merge from 'webpack-merge';
+import {WebpackPluginServe} from 'webpack-plugin-serve';
 
 import path from 'path';
 
 import {baseConfig} from './webpack.config.base';
 
+const serve = new WebpackPluginServe({
+  port: 2003,
+  static: path.join(__dirname, 'dist'),
+  historyFallback: {
+    verbose: true,
+    rewrites: [{from: /^\/overlay\/[^.]+$/, to: '/overlay/index.html'}],
+  },
+  progress: 'minimal',
+});
+
 const rendererConfig: webpack.Configuration = merge(baseConfig, {
   target: 'electron-renderer',
   entry: {
-    app: './src/renderer/app.tsx',
+    app: ['./src/renderer/app.tsx', 'webpack-plugin-serve/client'],
   },
   optimization: {minimize: false},
   module: {
@@ -35,30 +46,18 @@ const rendererConfig: webpack.Configuration = merge(baseConfig, {
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin({title: 'Prolink Tools', filename: 'app.html'}),
+    new HtmlWebpackPlugin({title: 'Prolink Tools'}),
     new ReactRefreshWebpackPlugin(),
     new ForkTsCheckerWebpackPlugin({
       issue: {include: [{file: 'src/renderer/**/*'}, {file: 'src/shared/**/*'}]},
     }),
+    serve,
   ],
-  devServer: {
-    port: 2003,
-    // This can be removed once the types are released for webpack-dev-server 4.0
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    hot: 'only',
-    headers: {'Access-Control-Allow-Origin': '*'},
-    historyApiFallback: {
-      disableDotRule: true,
-      verbose: true,
-      rewrites: [{from: /^\/overlay\//, to: '/overlay/index.html'}],
-    },
-  },
 });
 
 const overlayConfig: webpack.Configuration = merge(baseConfig, {
   entry: {
-    overlay: './src/overlay/app.tsx',
+    overlay: ['./src/overlay/app.tsx', 'webpack-plugin-serve/client'],
   },
   output: {
     path: path.resolve(__dirname, 'dist/overlay'),
@@ -90,6 +89,7 @@ const overlayConfig: webpack.Configuration = merge(baseConfig, {
     new ForkTsCheckerWebpackPlugin({
       issue: {include: [{file: 'src/overlay/**/*'}, {file: 'src/shared/**/*'}]},
     }),
+    serve.attach(),
   ],
 });
 

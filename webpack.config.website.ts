@@ -3,6 +3,7 @@ import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpack from 'webpack';
 import merge from 'webpack-merge';
+import {WebpackPluginServe} from 'webpack-plugin-serve';
 
 import path from 'path';
 
@@ -10,7 +11,7 @@ import {baseConfig} from './webpack.config.base';
 
 const websiteConfig: webpack.Configuration = merge(baseConfig, {
   entry: {
-    app: './src/website/app.tsx',
+    app: ['./src/website/app.tsx', 'webpack-plugin-serve/client'],
   },
   output: {
     path: path.resolve(__dirname, 'dist/website'),
@@ -45,12 +46,14 @@ const websiteConfig: webpack.Configuration = merge(baseConfig, {
     new ForkTsCheckerWebpackPlugin({
       issue: {include: [{file: 'src/website/**/*'}, {file: 'src/shared/**/*'}]},
     }),
+    new WebpackPluginServe({
+      port: 2004,
+      static: path.join(__dirname, 'dist/website'),
+      historyFallback: {
+        verbose: true,
+      },
+    }),
   ],
-  devServer: {
-    port: 2004,
-    hot: true,
-    headers: {'Access-Control-Allow-Origin': '*'},
-  },
 });
 
 export default websiteConfig;

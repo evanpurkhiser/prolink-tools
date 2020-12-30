@@ -16,6 +16,7 @@ const envConfig = {
 
 export const baseConfig: webpack.Configuration = {
   mode: IS_PROD ? 'production' : 'development',
+  watch: process.env.NODE_ENV !== 'production',
 
   output: {
     path: path.resolve(__dirname, 'dist'),
