@@ -8,6 +8,7 @@ import * as Sentry from '@sentry/browser';
 import {when} from 'mobx';
 
 import Application from 'app/views/Application';
+import ThemeProvider from 'src/shared/components/ThemeProvider';
 import globalCss, {noSelect} from 'src/shared/globalCss';
 import store from 'src/shared/store';
 import {registerRendererConfigIpc, registerRendererIpc} from 'src/shared/store/ipc';
@@ -17,10 +18,10 @@ const mainElement = document.createElement('div');
 document.body.appendChild(mainElement);
 
 const main = (
-  <React.Fragment>
+  <ThemeProvider>
     <Global styles={[globalCss, noSelect]} />
     <Application />
-  </React.Fragment>
+  </ThemeProvider>
 );
 
 ReactDOM.render(main, mainElement);

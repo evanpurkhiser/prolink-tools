@@ -161,6 +161,12 @@ export class AppConfig {
   @serializable
   @observable
   idMarker = '[ID]';
+  /**
+   * The theme to ues in the app
+   */
+  @serializable
+  @observable
+  theme: 'light' | 'dark' | 'system' = 'light';
 }
 
 export class AppStore {

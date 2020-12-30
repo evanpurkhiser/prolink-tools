@@ -1,4 +1,7 @@
 import {app, Menu, shell} from 'electron';
+import {set} from 'mobx';
+
+import store from 'src/shared/store';
 
 const isMac = process.platform === 'darwin';
 
@@ -37,7 +40,18 @@ const template: Electron.MenuItemConstructorOptions[] = [
   },
   {
     label: 'View',
-    submenu: [{role: 'reload'}, {role: 'forceReload'}, {role: 'togglefullscreen'}],
+    submenu: [
+      {role: 'reload'},
+      {role: 'forceReload'},
+      {role: 'togglefullscreen'},
+      {
+        visible: false,
+        accelerator: 'cmd + l',
+        label: 'Toggle UI Theme',
+        click: () =>
+          set(store.config, {theme: store.config.theme === 'light' ? 'dark' : 'light'}),
+      },
+    ],
   },
   {
     label: 'Window',

@@ -1,9 +1,9 @@
 import 'regenerator-runtime/runtime';
 import 'main/menu';
 
-import {app, BrowserWindow, shell} from 'electron';
+import {app, BrowserWindow, nativeTheme, shell} from 'electron';
 import isDev from 'electron-is-dev';
-import {set} from 'mobx';
+import {reaction, set} from 'mobx';
 import {bringOnline, NetworkState, ProlinkNetwork} from 'prolink-connect';
 
 import * as path from 'path';
@@ -121,3 +121,9 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+reaction(
+  () => store.config.theme,
+  theme => (nativeTheme.themeSource = theme),
+  {fireImmediately: true}
+);
