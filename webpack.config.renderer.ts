@@ -16,7 +16,6 @@ const serve = new WebpackPluginServe({
     verbose: true,
     rewrites: [{from: /^\/overlay\/[^.]+$/, to: '/overlay/index.html'}],
   },
-  progress: 'minimal',
 });
 
 const rendererConfig: webpack.Configuration = merge(baseConfig, {
