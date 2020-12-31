@@ -1,4 +1,5 @@
 import * as React from 'react';
+import ReactDOM from 'react-dom';
 import {HelpCircle} from 'react-feather';
 import {useClickAway, useKey} from 'react-use';
 import styled from '@emotion/styled';
@@ -21,35 +22,38 @@ const HelpButton = () => {
   return (
     <React.Fragment>
       <Button onClick={() => toggle(!show)}>
-        <HelpCircle size="1.25rem" />
+        <HelpCircle size="1rem" />
       </Button>
-      <AnimatePresence>
-        {show && (
-          <Modal>
-            <Info ref={containerRef}>
-              <LogoBig />
-              <p>
-                Built by a DJ, for DJs. prolink tools is a hand-built collection of tools
-                to hook into real-time performance data to enhance your sets. This
-                software is 100% free, the source code is{' '}
-                <a href="https://github.com/evanpurkhiser/prolink-tools">
-                  available on GitHub
-                </a>
-                .
-              </p>
-              <p>
-                Prolink Tools was created by{' '}
-                <a href="https://evanpurkhiser.com">Evan Purkhiser</a>.
-              </p>
-              <hr />
-              <p>
-                Need help? <a href="https://prolink.tools/manual">Read the Manual</a> and{' '}
-                <a href="http://discord.gg/3eyzdgXJuY">Join the Discord server</a>!
-              </p>
-            </Info>
-          </Modal>
-        )}
-      </AnimatePresence>
+      {ReactDOM.createPortal(
+        <AnimatePresence>
+          {show && (
+            <Modal>
+              <Info ref={containerRef}>
+                <LogoBig />
+                <p>
+                  Built by a DJ, for DJs. prolink tools is a hand-built collection of
+                  tools to hook into real-time performance data to enhance your sets. This
+                  software is 100% free, the source code is{' '}
+                  <a href="https://github.com/evanpurkhiser/prolink-tools">
+                    available on GitHub
+                  </a>
+                  .
+                </p>
+                <p>
+                  Prolink Tools was created by{' '}
+                  <a href="https://evanpurkhiser.com">Evan Purkhiser</a>.
+                </p>
+                <hr />
+                <p>
+                  Need help? <a href="https://prolink.tools/manual">Read the Manual</a>{' '}
+                  and <a href="http://discord.gg/3eyzdgXJuY">Join the Discord server</a>!
+                </p>
+              </Info>
+            </Modal>
+          )}
+        </AnimatePresence>,
+        document.querySelector('body')!
+      )}
     </React.Fragment>
   );
 };
@@ -70,6 +74,7 @@ const Button = styled(ActionButton)`
 `;
 
 const Modal = styled(motion.div)`
+  z-index: 10;
   position: absolute;
   top: 0;
   left: 0;
