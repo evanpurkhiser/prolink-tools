@@ -12,6 +12,7 @@ const Toolbar = () => (
 
 const Container = styled('header')`
   position: sticky;
+  z-index: 1;
   top: 0;
   height: 36px;
   padding: 0 0.5rem;
