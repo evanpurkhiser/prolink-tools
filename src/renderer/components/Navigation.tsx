@@ -1,10 +1,13 @@
 import * as React from 'react';
-import {Activity, Layers, Menu, Settings} from 'react-feather';
+import {Activity, Layers, Settings} from 'react-feather';
 import {NavLink, useLocation} from 'react-router-dom';
 import styled from '@emotion/styled';
-import {AnimatePresence, motion} from 'framer-motion';
+import {AnimateSharedLayout, motion} from 'framer-motion';
+import {observer} from 'mobx-react';
 
-import useDropdown from 'src/utils/useDropdown';
+import store from 'src/shared/store';
+
+import HelpButton from './HelpButton';
 
 const items = [
   {name: 'Device Status', path: '/status', icon: Activity},
@@ -12,104 +15,64 @@ const items = [
   {name: 'Settings', path: '/settings', icon: Settings},
 ] as const;
 
-const Navigation = () => {
-  const dropdownRef = React.useRef(null);
-  const actionRef = React.useRef(null);
-  const [isOpen, toggleDropdown] = useDropdown(dropdownRef, actionRef);
+const Navigation = observer(() => (
+  <MenuContainer>
+    <SidebarToggle onClick={() => store.config.toggleSidebar()} />
+    <AnimateSharedLayout>
+      {items.map(item => (
+        <MenuItem key={item.name} to={item.path} aria-current="page">
+          {item.path === useLocation().pathname && <ActiveIndicator layoutId="active" />}
+          <item.icon size="1rem" />
+          {!store.config.sidebarCollapsed && item.name}
+        </MenuItem>
+      ))}
+    </AnimateSharedLayout>
+    <Bottom>
+      <HelpButton />
+    </Bottom>
+  </MenuContainer>
+));
 
-  const location = useLocation();
-
-  return (
-    <Container>
-      <MenuButton onClick={() => toggleDropdown()} ref={actionRef}>
-        {items.find(i => location?.pathname.startsWith(i.path))?.name}
-        <Menu size="1rem" />
-      </MenuButton>
-      <AnimatePresence>
-        {isOpen && (
-          <MenuContainer ref={dropdownRef} key={isOpen.toString()}>
-            {items.map(item => (
-              <MenuItem key={item.name} to={item.path} onClick={() => toggleDropdown()}>
-                <item.icon size="1rem" />
-                {item.name}
-              </MenuItem>
-            ))}
-          </MenuContainer>
-        )}
-      </AnimatePresence>
-    </Container>
-  );
-};
-
-const Container = styled('div')`
+const MenuContainer = styled(motion.nav)`
   position: relative;
-  font-size: 0.8rem;
-  font-weight: 500;
+  height: 100%;
+  border-right: 1px solid ${p => p.theme.border};
   display: flex;
-  align-items: center;
-`;
-
-const MenuButton = styled('button')`
-  border: none;
-  background: none;
-  padding: 0.5rem;
-  font-size: 0.7rem;
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-rows: max-content;
-  grid-gap: 0.5rem;
-  align-items: center;
-  text-transform: uppercase;
-  font-weight: 600;
-  opacity: 0.9;
-
-  &:hover {
-    opacity: 1;
-  }
-`;
-
-const MenuContainer = styled(motion.div)`
-  position: absolute;
-  top: 38px;
-  right: -10px;
-  background: ${p => p.theme.background};
-  display: grid;
-  grid-auto-flow: row;
-  grid-auto-rows: max-content;
+  flex-direction: column;
   grid-gap: 0.125rem;
-  padding: 0.25rem 0;
-  border: 1px solid ${p => p.theme.border};
-  border-radius: 3px;
+  padding: 0.5rem 0;
+`;
 
-  &:before,
-  &:after {
-    content: '';
-    display: block;
-    position: absolute;
-    top: -16px;
-    right: 18px;
-    border: 8px solid transparent;
-    border-bottom-color: ${p => p.theme.background};
-  }
+const SidebarToggle = styled('div')`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -1px;
+  width: 2px;
+  z-index: 2;
+  transition: background 150ms ease-in-out;
+  cursor: pointer;
 
   &:before {
-    margin-top: -1px;
-    border-bottom-color: ${p => p.theme.border};
+    content: '';
+    width: 5px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -1px;
+  }
+
+  &:hover {
+    transition-delay: 300ms;
+    background: #f95757;
   }
 `;
 
-MenuContainer.defaultProps = {
-  initial: {opacity: 0, y: 5, originX: '80%', originY: 0},
-  animate: {opacity: 1, y: 0},
-  exit: {opacity: 0, scale: 0.95},
-  transition: {duration: 0.2},
-};
-
 const MenuItem = styled(NavLink)`
+  position: relative;
   padding: 0.375rem 0.75rem;
-  display: grid;
-  grid-template-columns: max-content 1fr;
-  grid-gap: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
   align-items: center;
   text-transform: uppercase;
   font-weight: 600;
@@ -121,6 +84,23 @@ const MenuItem = styled(NavLink)`
   &:hover {
     background: ${p => p.theme.backgroundSecondary};
   }
+`;
+
+const ActiveIndicator = styled(motion.div)`
+  position: absolute;
+  background: ${p => p.theme.subText};
+  height: 10px;
+  margin: 0.125rem 0;
+  width: 2px;
+  border-radius: 2px;
+  left: 6px;
+`;
+
+const Bottom = styled('div')`
+  display: flex;
+  align-items: flex-end;
+  flex-grow: 1;
+  padding: 0 0.5rem;
 `;
 
 export default Navigation;

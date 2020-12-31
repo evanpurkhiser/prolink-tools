@@ -24,7 +24,7 @@ const StatusIndicator = styled('div')<{state: NetworkState}>`
   padding: 0.25rem 0.5rem;
   font-size: 0.625rem;
   text-transform: uppercase;
-  border-radius: 2px;
+  border-radius: 4px;
 `;
 
 export default NetworkStatus;

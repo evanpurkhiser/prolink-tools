@@ -1,7 +1,7 @@
 import {User} from '@sentry/types';
 import * as ip from 'ip-address';
 import {identity} from 'lodash';
-import {computed, observable, toJS} from 'mobx';
+import {action, computed, observable, toJS} from 'mobx';
 import {
   CDJStatus,
   Device,
@@ -167,6 +167,22 @@ export class AppConfig {
   @serializable
   @observable
   theme: 'light' | 'dark' | 'system' = 'light';
+  /**
+   * State of the sidebar
+   */
+  @serializable
+  @observable
+  sidebarCollapsed = false;
+
+  @action
+  toggleSidebar() {
+    this.sidebarCollapsed = !this.sidebarCollapsed;
+  }
+
+  @action
+  toggleTheme() {
+    this.theme = this.theme === 'light' ? 'dark' : 'light';
+  }
 }
 
 export class AppStore {

@@ -1,5 +1,4 @@
 import {app, Menu, shell} from 'electron';
-import {set} from 'mobx';
 
 import store from 'src/shared/store';
 
@@ -45,11 +44,15 @@ const template: Electron.MenuItemConstructorOptions[] = [
       {role: 'forceReload'},
       {role: 'togglefullscreen'},
       {
+        accelerator: 'cmd + option + s',
+        label: 'Toggle Sidebar',
+        click: () => store.config.toggleSidebar(),
+      },
+      {
         visible: false,
         accelerator: 'cmd + l',
         label: 'Toggle UI Theme',
-        click: () =>
-          set(store.config, {theme: store.config.theme === 'light' ? 'dark' : 'light'}),
+        click: () => store.config.toggleTheme(),
       },
     ],
   },

@@ -31,7 +31,7 @@ let win: BrowserWindow | null;
 
 const createWindow = () => {
   win = new BrowserWindow({
-    width: 850,
+    width: 920,
     minWidth: 700,
     height: 900,
     titleBarStyle: 'hiddenInset',
