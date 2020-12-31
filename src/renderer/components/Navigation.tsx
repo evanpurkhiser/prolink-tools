@@ -64,7 +64,7 @@ const SidebarToggle = styled('div')`
 
   &:hover {
     transition-delay: 300ms;
-    background: #f95757;
+    background: #4b97f8;
   }
 `;
 
@@ -88,7 +88,7 @@ const MenuItem = styled(NavLink)`
 
 const ActiveIndicator = styled(motion.div)`
   position: absolute;
-  background: ${p => p.theme.subText};
+  background: #4b97f8;
   height: 10px;
   margin: 0.125rem 0;
   width: 2px;
