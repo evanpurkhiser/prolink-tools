@@ -58,8 +58,8 @@ const NoTrack = styled(motion.div)`
   padding: 0 2rem;
   font-size: 0.75rem;
   text-transform: uppercase;
-  background: #f8f8f8;
-  color: #aaa;
+  background: ${p => p.theme.backgroundBox};
+  color: ${p => p.theme.subText};
   border-radius: 3px;
 
   &:after {

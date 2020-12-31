@@ -23,7 +23,7 @@ const BpmIndicator = styled(({bpm, pitch, ...p}: Props) => (
   grid-gap: 0.25rem;
   font-size: 1.125rem;
   font-weight: 700;
-  border: 1px solid #e2e2e2;
+  border: 1px solid ${p => p.theme.subBorder};
   border-radius: 3px;
 
   > div {
@@ -31,7 +31,7 @@ const BpmIndicator = styled(({bpm, pitch, ...p}: Props) => (
     padding-bottom: 0.25rem;
 
     &:first-of-type {
-      border-right: 1px solid #e2e2e2;
+      border-right: 1px solid ${p => p.theme.subBorder};
       padding-right: 0.575rem;
     }
 
@@ -39,7 +39,7 @@ const BpmIndicator = styled(({bpm, pitch, ...p}: Props) => (
       display: block;
       content: '';
       font-size: 10px;
-      color: #666666;
+      color: ${p => p.theme.subText};
       text-transform: uppercase;
       font-weight: normal;
       margin-top: 0.125rem;

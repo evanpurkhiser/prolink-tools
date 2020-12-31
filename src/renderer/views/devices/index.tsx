@@ -74,7 +74,6 @@ const Devices = observer(() => {
 });
 
 const Device = styled(motion.div)`
-  color: #3b3b3b;
   display: grid;
   grid-template-columns: max-content 1fr;
   grid-gap: 0.5rem;
@@ -96,7 +95,6 @@ const Indicator = styled('div')`
   grid-gap: 0.5rem;
   padding-right: 0.5rem;
   border-right: 1px solid ${p => p.theme.border};
-  color: #3b434b;
 `;
 
 const Status = styled('div')`
@@ -119,7 +117,6 @@ const StatusBar = styled('div')`
 `;
 
 const SmallDeviceList = styled('div')`
-  color: #3b3b3b;
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: max-content;

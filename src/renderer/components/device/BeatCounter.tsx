@@ -42,7 +42,7 @@ const Bar = styled('div')`
   grid-template-columns: repeat(4, 25px);
   grid-gap: 12px;
   padding: 6px 8px;
-  background: #efefef;
+  background: ${p => p.theme.backgroundBox};
 `;
 
 const Wrapper = styled('div')`

@@ -31,6 +31,7 @@ const light = {
   backgroundSecondary: '#fafafa',
   backgroundBox: '#F3F3F3',
   border: '#eee',
+  subBorder: '#e2e2e2',
   playStates,
 
   control: {
@@ -41,7 +42,7 @@ const light = {
   },
 
   primaryText: '#28272b',
-  subText: '#888',
+  subText: '#8F8FA0',
 
   button: {
     primary: {
@@ -72,6 +73,7 @@ const dark = mergeWith(
     backgroundBox: '#303237',
     primaryText: '#EDECF0',
     border: '#25292D',
+    subBorder: '#292B2E',
 
     control: {
       border: '#202223',
