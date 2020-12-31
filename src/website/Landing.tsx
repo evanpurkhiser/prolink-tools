@@ -137,7 +137,6 @@ const shadeStyles = css`
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 0;
   transform-origin: 0 100%;
 `;
 
@@ -263,6 +262,7 @@ OverlayShade.defaultProps = {
 };
 
 const ExampleContent = styled('div')`
+  z-index: 1;
   width: 100%;
   height: 400px;
   max-width: 1264px;
@@ -281,7 +281,6 @@ const ConfigContainer = styled(motion.div)`
   background: ${p => p.theme.background};
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
   border-radius: 5px;
-  z-index: 2;
 
   @media only screen and (max-width: 1200px) {
     display: none;

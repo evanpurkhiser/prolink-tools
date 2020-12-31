@@ -65,6 +65,7 @@ const Container = styled(motion.div)`
   margin-top: -180px;
   margin-bottom: -60px;
   position: relative;
+  z-index: 1;
 
   @media only screen and (max-width: 1200px) {
     display: none;

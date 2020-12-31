@@ -20,6 +20,7 @@ const bootRoutine = new Routine([
     fn: () => {
       store.isInitalized = true;
       store.networkState = NetworkState.Online;
+      store.config.sidebarCollapsed = true;
 
       store.config.overlays.push({
         key: 'exampleNowPlaying',
