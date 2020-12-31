@@ -16,6 +16,7 @@ import {userInfo} from 'src/shared/sentry/main';
 import store from 'src/shared/store';
 import {loadMainConfig, observeStore, registerMainIpc} from 'src/shared/store/ipc';
 import connectNetworkStore from 'src/shared/store/network';
+import theme from 'src/theme';
 
 // Update the store with user details ASAP
 (async () => set(store, {user: await userInfo}))();
@@ -36,6 +37,9 @@ const createWindow = () => {
     titleBarStyle: 'hiddenInset',
     title: 'Prolink Tools',
     webPreferences: {nodeIntegration: true, contextIsolation: false},
+    backgroundColor: nativeTheme.shouldUseDarkColors
+      ? theme.dark.background
+      : theme.light.background,
   });
 
   win.on('closed', () => (win = null));
@@ -66,9 +70,9 @@ const createWindow = () => {
 };
 
 app.on('ready', async () => {
+  await loadMainConfig();
   createWindow();
 
-  await loadMainConfig();
   registerMainIpc();
   runConfigMigrations();
   observeStore();
@@ -124,6 +128,13 @@ app.on('activate', () => {
 
 reaction(
   () => store.config.theme,
-  theme => (nativeTheme.themeSource = theme),
+  schema => {
+    const bg = nativeTheme.shouldUseDarkColors
+      ? theme.dark.background
+      : theme.light.background;
+
+    nativeTheme.themeSource = schema;
+    win?.setBackgroundColor(bg);
+  },
   {fireImmediately: true}
 );
