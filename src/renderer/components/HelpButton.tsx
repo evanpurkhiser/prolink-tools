@@ -48,6 +48,10 @@ const HelpButton = () => {
                   Need help? <a href="https://prolink.tools/manual">Read the Manual</a>{' '}
                   and <a href="http://discord.gg/3eyzdgXJuY">Join the Discord server</a>!
                 </p>
+                <small>
+                  Like this software? Want to help support development?{' '}
+                  <a href="https://ko-fi.com/evanpurkhiser">You can buy me a coffee</a> ❤️
+                </small>
               </Info>
             </Modal>
           )}
