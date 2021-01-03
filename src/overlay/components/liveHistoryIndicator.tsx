@@ -28,8 +28,8 @@ const Container = styled('div')<{showingLiveHistory: boolean}>`
   background: ${p => (p.showingLiveHistory ? '#ff838e' : '#4B97F8')};
   color: #fff;
   font-size: 0.675rem;
-  text-transform: uppercase;
   font-weight: 700;
+  text-transform: uppercase;
 `;
 
 export default LiveHistoryIndicator;

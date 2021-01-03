@@ -77,6 +77,9 @@ app.on('ready', async () => {
   runConfigMigrations();
   observeStore();
 
+  // Setup some additional overlay functionality
+  require('src/overlay/overlays/nowPlaying/main');
+
   let network: ProlinkNetwork;
 
   // Open connections to the network

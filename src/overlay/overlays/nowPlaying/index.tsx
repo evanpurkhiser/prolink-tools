@@ -1,13 +1,14 @@
 import * as React from 'react';
 import {Link} from 'react-router-dom';
 import styled from '@emotion/styled';
-import {set} from 'mobx';
+import {reaction, set} from 'mobx';
 import {observer} from 'mobx-react';
 
 import Checkbox from 'app/components/form/Checkbox';
 import Field from 'app/components/form/Field';
 import Text from 'app/components/form/Text';
 import {OverlayDescriptor} from 'src/overlay';
+import DemoSwitch from 'src/overlay/components/demoSwitch';
 import LiveHistoryIndicator from 'src/overlay/components/liveHistoryIndicator';
 import Select from 'src/renderer/components/form/Select';
 import store, {PlayedTrack} from 'src/shared/store';
@@ -64,6 +65,10 @@ export type NowPlayingConfig = {
    * Indicates that ID tracks should be hidden
    */
   maskId?: boolean;
+  /**
+   * When demo mode is enabled, the live overlay will _always_ show demo data
+   */
+  demoMode?: boolean;
 };
 
 export type ThemeDescriptor = {
@@ -85,32 +90,38 @@ export type ThemeDescriptor = {
   enabledConfigs: Exclude<keyof NowPlayingConfig, 'theme'>[];
 };
 
-const Example: React.FC<{config?: NowPlayingConfig}> = observer(({config}) => {
-  const demoHistory = useRandomHistory({cutoff: 5, updateInterval: 5000});
-  const liveHistory = store.mixstatus.trackHistory;
+const Example: React.FC<{hideControls?: boolean; config?: NowPlayingConfig}> = observer(
+  ({config, hideControls}) => {
+    const demoHistory = useRandomHistory({cutoff: 5, updateInterval: 5000});
+    const liveHistory = store.mixstatus.trackHistory;
 
-  const history = liveHistory.length === 0 ? demoHistory : liveHistory;
+    const history = liveHistory.length === 0 ? demoHistory : liveHistory;
+    const isLive = liveHistory.length > 0;
 
-  const theme = config?.theme ?? 'tracklist';
-  const Overlay = themes[theme].component;
+    const theme = config?.theme ?? 'tracklist';
+    const Overlay = themes[theme].component;
 
-  const example =
-    history.length === 0 ? (
-      <EmptyExample />
+    const example =
+      history.length === 0 ? (
+        <EmptyExample />
+      ) : (
+        <Overlay
+          config={config ?? {theme: 'tracklist'}}
+          history={history.slice().reverse()}
+        />
+      );
+
+    return hideControls ? (
+      example
     ) : (
-      <Overlay
-        config={config ?? {theme: 'tracklist'}}
-        history={history.slice().reverse()}
-      />
+      <React.Fragment>
+        {config && !isLive && <DemoSwitch config={config} />}
+        <LiveHistoryIndicator active={isLive} />
+        {example}
+      </React.Fragment>
     );
-
-  return (
-    <React.Fragment>
-      <LiveHistoryIndicator active={liveHistory.length > 0} />
-      {example}
-    </React.Fragment>
-  );
-});
+  }
+);
 
 const EmptyExample = styled('div')`
   height: 80px;
@@ -132,7 +143,11 @@ const NowPlayingOverlay: React.FC<{config: NowPlayingConfig}> = observer(({confi
   const Overlay = themes[config.theme].component;
   const history = store.mixstatus.trackHistory.slice().reverse();
 
-  return <Overlay {...{history, config}} />;
+  return config.demoMode ? (
+    <Example config={config} hideControls />
+  ) : (
+    <Overlay {...{history, config}} />
+  );
 });
 
 const valueTransform = <T extends readonly string[]>(t: T) =>

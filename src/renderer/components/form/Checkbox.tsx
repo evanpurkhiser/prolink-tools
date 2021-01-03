@@ -1,10 +1,14 @@
 import styled from '@emotion/styled';
 
-const Checkbox = styled('input')`
+type Props = {
+  controlSize?: 'sm' | 'md';
+};
+
+const Checkbox = styled('input')<Props>`
   margin: 0;
   appearance: none;
-  width: 2.25rem;
-  height: 1.25rem;
+  width: ${p => (p.controlSize === 'sm' ? 1.5 : 2.25)}rem;
+  height: ${p => (p.controlSize === 'sm' ? 0.75 : 1.25)}rem;
   position: relative;
 
   &:before {
@@ -24,22 +28,22 @@ const Checkbox = styled('input')`
     content: '';
     position: absolute;
     display: block;
-    top: 0.25rem;
-    left: 0.25rem;
-    height: 0.75rem;
-    width: 0.75rem;
+    top: ${p => (p.controlSize === 'sm' ? 0.125 : 0.25)}rem;
+    left: ${p => (p.controlSize === 'sm' ? 0.125 : 0.25)}rem;
+    height: ${p => (p.controlSize === 'sm' ? 0.5 : 0.75)}rem;
+    width: ${p => (p.controlSize === 'sm' ? 0.5 : 0.75)}rem;
     border-radius: 100%;
     background: ${p => p.theme.control.knob};
     transition: transform 200ms ease-in-out, background 200ms ease-in-out;
   }
 
   &:checked:before {
-    border-color: #72d145;
+    border-color: ${p => p.theme.active};
   }
 
   &:checked:after {
-    transform: translateX(1rem);
-    background: #72d145;
+    transform: translateX(${p => (p.controlSize === 'sm' ? 0.75 : 1)}rem);
+    background: ${p => p.theme.active};
   }
 `;
 

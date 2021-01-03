@@ -33,6 +33,7 @@ const light = {
   border: '#eee',
   subBorder: '#e2e2e2',
   playStates,
+  active: '#72d145',
 
   control: {
     border: '#ccc',
