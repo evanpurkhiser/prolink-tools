@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Link} from 'react-router-dom';
 import styled from '@emotion/styled';
-import {reaction, set} from 'mobx';
+import {set} from 'mobx';
 import {observer} from 'mobx-react';
 
 import Checkbox from 'app/components/form/Checkbox';
