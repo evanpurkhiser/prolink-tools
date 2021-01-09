@@ -15,6 +15,7 @@ import {
 import {deepObserve} from 'mobx-utils';
 import {deserialize, serialize, update} from 'serializr';
 import {Server} from 'socket.io';
+import {Socket} from 'socket.io-client';
 
 import store, {
   AppConfig,
@@ -353,7 +354,7 @@ export const registerMainWebsocket = (wss: Server) => {
 /**
  * Register this client to recieve websocket broadcasts to update the store
  */
-export const registerClientWebsocket = (ws: SocketIOClient.Socket) => {
+export const registerClientWebsocket = (ws: Socket) => {
   ws.on('store-update', (change: SerializedChange) => applyStoreChange(change));
   ws.on('store-init', (data: any) => set(store, deserialize(AppStore, data)));
 };

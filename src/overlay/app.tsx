@@ -3,7 +3,7 @@ import 'src/shared/sentry/web';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import socketIOClient from 'socket.io-client';
+import {io} from 'socket.io-client';
 
 import Router from 'overlay/Router';
 import {registerClientWebsocket} from 'src/shared/store/ipc';
@@ -15,4 +15,4 @@ document.body.appendChild(mainElement);
 // Render components
 ReactDOM.render(<Router />, mainElement);
 
-registerClientWebsocket(socketIOClient());
+registerClientWebsocket(io());

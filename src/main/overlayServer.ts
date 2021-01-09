@@ -2,7 +2,7 @@ import connect from 'connect';
 import isDev from 'electron-is-dev';
 import httpProxy from 'http-proxy';
 import httpStatic from 'node-static';
-import socketio from 'socket.io';
+import {Server} from 'socket.io';
 
 import fs from 'fs';
 import http from 'http';
@@ -18,7 +18,7 @@ export async function startOverlayServer() {
   const httpServer = http.createServer(app);
 
   // Setup socketio server
-  const wss = socketio(httpServer, {serveClient: false});
+  const wss = new Server(httpServer, {serveClient: false});
   registerMainWebsocket(wss);
 
   const proxy = httpProxy.createProxy();
