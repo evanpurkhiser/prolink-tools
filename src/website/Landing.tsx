@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {Box} from 'react-feather';
 import {css, Global} from '@emotion/react';
 import styled from '@emotion/styled';
 import {motion, Variants} from 'framer-motion';
@@ -43,7 +44,12 @@ const Landing = () => (
           hook into real-time performance data to enhance your sets.
         </Description>
 
-        <DownloadCta variants={animateInfo} />
+        <Actions variants={animateInfo}>
+          <DownloadCta />
+          <ManualButton href="/manual">
+            <Box size="1rem" /> user guide
+          </ManualButton>
+        </Actions>
       </Intro>
       <Spotlight
         variants={{animate: {transition: {delayChildren: 0.8, staggerChildren: 0}}}}
@@ -116,6 +122,40 @@ const Tagline = styled(motion.h2)`
 
 const Description = styled(motion.p)`
   margin-bottom: 3rem;
+`;
+
+const Actions = styled(motion.div)`
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  grid-gap: 1rem;
+  align-items: start;
+`;
+
+const ManualButton = styled('a')`
+  text-decoration: none;
+  font-family: 'DM Mono';
+  letter-spacing: -0.75px;
+  font-size: 1rem;
+  background: #f6f6f6;
+  padding: 0.5rem 0.75rem;
+  border: 0;
+  display: flex;
+  align-items: center;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 200ms ease-in-out;
+  color: inherit;
+  min-height: 38px;
+  color: #444;
+
+  svg {
+    margin-right: 0.5rem;
+  }
+
+  &:hover {
+    background: #ddd;
+    color: #222;
+  }
 `;
 
 const Spotlight = styled(motion.div)`
