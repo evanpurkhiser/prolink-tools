@@ -20,7 +20,8 @@ import store, {DeviceStore} from 'src/shared/store';
 const sortById = (a: DeviceStore, b: DeviceStore) => a.device.id - b.device.id;
 
 const Devices = observer(() => {
-  const deviceMap = groupBy([...store.devices.values()], d => d.device.type);
+  const deviceList = [...store.devices.values()];
+  const deviceMap = groupBy(deviceList, d => d.device.type);
   const otherDevices = [
     ...(deviceMap[DeviceType.Mixer] ?? []),
     ...(deviceMap[DeviceType.Rekordbox] ?? []),
@@ -28,7 +29,10 @@ const Devices = observer(() => {
 
   return (
     <AnimatePresence initial={false}>
-      {store.networkState === NetworkState.Online && <ConnectingSplash key="splash" />}
+      {(store.networkState === NetworkState.Online ||
+        (store.networkState === NetworkState.Connected && deviceList.length === 0)) && (
+        <ConnectingSplash key="splash" />
+      )}
       {store.networkState === NetworkState.Failed && <ConnectionError key="error" />}
       {deviceMap[DeviceType.CDJ]?.sort(sortById).map(deviceStore => {
         const {device, state} = deviceStore;
