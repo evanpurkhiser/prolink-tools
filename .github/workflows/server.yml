@@ -8,10 +8,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+
       - name: Build Dockerfile.server
         run: |
           docker build . -t evanpurkhiser/prolink-tools-server -f conf/Dockerfile.server
+
       - name: Publish
         run: |
           docker login --username=evanpurkhiser --password-stdin <<< "${{ secrets.DOCKER_HUB_TOKEN }}"
           docker push evanpurkhiser/prolink-tools-server:latest
+
+      - name: Setup ssh-agent
+        uses: webfactory/ssh-agent@v0.4.1
+        with:
+          ssh-private-key: ${{ secrets.DIGITAL_OCEAN_PRIVATE_KEY }}
+
+      - name: Add known hosts for app.prolink.tools
+        run: ssh-keyscan -H app.prolink.tools > ~/.ssh/known_hosts
+
+      - name: Copy server-compose file
+        run: |
+          scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ./conf/server-compose.yml root@app.prolink.tools:./
+
+      - name: Update images
+        uses: appleboy/ssh-action@master
+        with:
+          host: app.prolink.tools
+          script: |
+            whoami
+            ls -al
