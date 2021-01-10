@@ -39,7 +39,7 @@ This project is in large part thanks to the work done [Deep-Symmetry/dysentery](
 
 ### Project Status
 
-This project is currently still in the **alpha phase** of testing. Testers are
+This project is currently still in the **beta phase** of testing. Testers are
 welcome and it is encouraged to create issues on the GitHub project issue
 tracker.
 
