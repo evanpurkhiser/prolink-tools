@@ -1,0 +1,13 @@
+FROM node:10
+
+RUN mkdir /app
+WORKDIR /app
+
+COPY package.json yarn.lock /app/
+RUN yarn
+
+COPY src /app/src/
+COPY tsconfig.json /app/
+
+EXPOSE 8888
+CMD ["yarn", "start-server"]

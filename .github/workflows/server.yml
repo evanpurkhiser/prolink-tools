@@ -1,0 +1,17 @@
+
+name: deploy server
+on: [push]
+
+jobs:
+  deploy:
+    name: deploy server
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build Dockerfile.server
+        run: |
+          docker build . -t evanpurkhiser/prolink-tools-server -f conf/Dockerfile.server
+      - name: Publish
+        run: |
+          docker login --username=evanpurkhiser --password-stdin <<< "${{ secrets.DOCKER_HUB_TOKEN }}"
+          docker push evanpurkhiser/prolink-tools-server:latest
