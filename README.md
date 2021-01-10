@@ -45,3 +45,13 @@ tracker.
 
 [Development builds](https://github.com/EvanPurkhiser/prolink-tools/releases/tag/master-build) are available.
 
+
+#### Disclaimer
+
+This project is not affiliated, associated, authorized, endorsed by, or in any
+way officially connected with AlphaTheta Corporation (Pioneer DJ), or any of
+its subsidiaries or its affiliates. The official Pioneer DJ website can be
+found at https://www.pioneerdj.com
+
+The names Pioneer DJ, PRO DJ LINK, as well as related names, marks, emblems and
+images are registered trademarks of their respective owners.
