@@ -33,7 +33,7 @@ jobs:
       - name: Update images
         run: |
           ssh root@app.prolink.tools << EOF
-            docker-compose -f ./server-compose.yml pull
+            docker-compose -f ./server-compose.yml pull --quiet
             docker-compose -f ./server-compose.yml rm --force --stop -v prolink-tools
             docker-compose -f ./server-compose.yml up --detach
           EOF
