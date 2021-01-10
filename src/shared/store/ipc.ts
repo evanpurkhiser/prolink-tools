@@ -15,7 +15,7 @@ import {
 import {deepObserve} from 'mobx-utils';
 import {deserialize, serialize, update} from 'serializr';
 import {Server} from 'socket.io';
-import {Socket} from 'socket.io-client';
+import {io, Socket} from 'socket.io-client';
 
 import store, {
   AppConfig,
@@ -349,6 +349,16 @@ export const registerMainWebsocket = (wss: Server) => {
 
   // Send changes
   changeHandlers.push(change => wss.sockets.emit('store-update', change));
+};
+
+/**
+ * Pushes updates to the server running on prolink.tools.
+ */
+export const registerMainPushWebsocker = () => {
+  const conn = io('http://localhost:3000/ingest');
+
+  conn.emit('store-init', serialize(AppStore, store));
+  changeHandlers.push(change => conn.emit('store-update', change));
 };
 
 /**

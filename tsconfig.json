@@ -16,8 +16,9 @@
     "paths": {
       "src/*": ["./*"],
       "app/*": ["./renderer/*"],
-      "overlay/*": ["./overlay/*"],
       "main/*": ["./main/*"],
+      "overlay/*": ["./overlay/*"],
+      "server/*": ["./server/*"],
       "web/*": ["./website/*"]
     },
     "plugins": [
