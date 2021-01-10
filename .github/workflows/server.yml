@@ -35,5 +35,6 @@ jobs:
         with:
           host: app.prolink.tools
           script: |
-            whoami
-            ls -al
+            docker-compose -f ./server-compose.yml pull
+            docker-compose -f ./server-compose.yml rm -s -v prolink-tools
+            docker-compose -f ./server-compose.yml up
