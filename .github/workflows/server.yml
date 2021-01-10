@@ -28,11 +28,11 @@ jobs:
 
       - name: Copy server-compose file
         run: |
-          scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ./conf/server-compose.yml root@app.prolink.tools:./
+          scp ./conf/server-compose.yml root@app.prolink.tools:./
 
       - name: Update images
         run: |
-          sudo ssh -t root@app.prolink.tools << EOF
+          ssh root@app.prolink.tools << EOF
             docker-compose -f ./server-compose.yml pull
             docker-compose -f ./server-compose.yml rm -s -v prolink-tools
             docker-compose -f ./server-compose.yml up
