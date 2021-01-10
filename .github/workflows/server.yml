@@ -31,10 +31,9 @@ jobs:
           scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ./conf/server-compose.yml root@app.prolink.tools:./
 
       - name: Update images
-        uses: appleboy/ssh-action@master
-        with:
-          host: app.prolink.tools
-          script: |
+        run: |
+          sudo ssh -t root@app.prolink.tools << EOF
             docker-compose -f ./server-compose.yml pull
             docker-compose -f ./server-compose.yml rm -s -v prolink-tools
             docker-compose -f ./server-compose.yml up
+          EOF
