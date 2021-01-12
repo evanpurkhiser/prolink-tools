@@ -5,12 +5,17 @@ import {observer} from 'mobx-react';
 
 import {OverlayInstance, registeredOverlays} from 'src/overlay';
 import {WEBSERVER_PORT} from 'src/shared/constants';
-import store from 'src/shared/store';
+import {AppStore} from 'src/shared/store';
+import withStore from 'src/utils/withStore';
 
 import EmptyState from './EmptyState';
 import Example from './Example';
 
-const OverlayList = observer(() =>
+type Props = {
+  store: AppStore;
+};
+
+const OverlayList = observer(({store}: Props) =>
   store.config.overlays.length === 0 ? (
     <EmptyContainer>
       <EmptyState />
@@ -18,13 +23,18 @@ const OverlayList = observer(() =>
   ) : (
     <Container>
       {store.config.overlays.map((instance, i) => (
-        <OverlayEntry index={i} key={instance.key} />
+        <OverlayEntry store={store} index={i} key={instance.key} />
       ))}
     </Container>
   )
 );
 
-const OverlayEntry = observer(({index}: {index: number}) => {
+type EntryProps = {
+  store: AppStore;
+  index: number;
+};
+
+const OverlayEntry = observer(({store, index}: EntryProps) => {
   const instance = store.config.overlays[index];
 
   const descriptor = registeredOverlays.find(overlay => overlay.type === instance?.type);
@@ -135,4 +145,4 @@ const EmptyContainer = styled('div')`
   justify-content: center;
 `;
 
-export default OverlayList;
+export default withStore(OverlayList);

@@ -1,3 +1,5 @@
+import {AppStore} from 'src/shared/store';
+
 type Control = {
   /**
    * The number of times the action has ran up until this execution
@@ -19,7 +21,7 @@ type Action = {
   /**
    * The action to execute
    */
-  fn?: (ctl: Control) => void | Promise<any>;
+  fn?: (store: AppStore, ctl: Control) => void | Promise<any>;
 };
 
 type Status = {
@@ -44,7 +46,7 @@ class Routine {
   /**
    * Start execution of the routine sequence
    */
-  async run() {
+  async run(store: AppStore) {
     while (this.nextAction < this.actionList.length) {
       const {delay, repeat, fn} = this.actionList[this.nextAction];
 
@@ -53,7 +55,7 @@ class Routine {
 
         while (timesRan < (repeat ?? 1)) {
           await new Promise(r => setTimeout(r, delay ?? 0));
-          await fn?.({run: timesRan});
+          await fn?.(store, {run: timesRan});
           timesRan++;
         }
       };

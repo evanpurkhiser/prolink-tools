@@ -11,8 +11,9 @@ import {OverlayDescriptor} from 'src/overlay';
 import DemoSwitch from 'src/overlay/components/demoSwitch';
 import LiveHistoryIndicator from 'src/overlay/components/liveHistoryIndicator';
 import Select from 'src/renderer/components/form/Select';
-import store, {PlayedTrack} from 'src/shared/store';
+import {AppStore, PlayedTrack} from 'src/shared/store';
 import useRandomHistory from 'src/utils/useRandomHistory';
+import withStore from 'src/utils/withStore';
 
 import ColorConfig from './ColorConfig';
 import {availableTags, Tags} from './tags';
@@ -90,38 +91,42 @@ export type ThemeDescriptor = {
   enabledConfigs: Exclude<keyof NowPlayingConfig, 'theme'>[];
 };
 
-const Example: React.FC<{hideControls?: boolean; config?: NowPlayingConfig}> = observer(
-  ({config, hideControls}) => {
-    const demoHistory = useRandomHistory({cutoff: 5, updateInterval: 5000});
-    const liveHistory = store.mixstatus.trackHistory;
+type ExampleProps = {
+  store: AppStore;
+  config?: NowPlayingConfig;
+  hideControls?: boolean;
+};
 
-    const history = liveHistory.length === 0 ? demoHistory : liveHistory;
-    const isLive = liveHistory.length > 0;
+const Example: React.FC<ExampleProps> = observer(({store, config, hideControls}) => {
+  const demoHistory = useRandomHistory({cutoff: 5, updateInterval: 5000});
+  const liveHistory = store.mixstatus.trackHistory;
 
-    const theme = config?.theme ?? 'tracklist';
-    const Overlay = themes[theme].component;
+  const history = liveHistory.length === 0 ? demoHistory : liveHistory;
+  const isLive = liveHistory.length > 0;
 
-    const example =
-      history.length === 0 ? (
-        <EmptyExample />
-      ) : (
-        <Overlay
-          config={config ?? {theme: 'tracklist'}}
-          history={history.slice().reverse()}
-        />
-      );
+  const theme = config?.theme ?? 'tracklist';
+  const Overlay = themes[theme].component;
 
-    return hideControls ? (
-      example
+  const example =
+    history.length === 0 ? (
+      <EmptyExample />
     ) : (
-      <React.Fragment>
-        {config && !isLive && <DemoSwitch config={config} />}
-        <LiveHistoryIndicator active={isLive} />
-        {example}
-      </React.Fragment>
+      <Overlay
+        config={config ?? {theme: 'tracklist'}}
+        history={history.slice().reverse()}
+      />
     );
-  }
-);
+
+  return hideControls ? (
+    example
+  ) : (
+    <React.Fragment>
+      {config && !isLive && <DemoSwitch config={config} />}
+      <LiveHistoryIndicator active={isLive} />
+      {example}
+    </React.Fragment>
+  );
+});
 
 const EmptyExample = styled('div')`
   height: 80px;
@@ -139,12 +144,17 @@ const EmptyExample = styled('div')`
   }
 `;
 
-const NowPlayingOverlay: React.FC<{config: NowPlayingConfig}> = observer(({config}) => {
+type OverlayProps = {
+  config: NowPlayingConfig;
+  store: AppStore;
+};
+
+const NowPlayingOverlay: React.FC<OverlayProps> = observer(({store, config}) => {
   const Overlay = themes[config.theme].component;
   const history = store.mixstatus.trackHistory.slice().reverse();
 
   return config.demoMode ? (
-    <Example config={config} hideControls />
+    <Example store={store} config={config} hideControls />
   ) : (
     <Overlay {...{history, config}} />
   );
@@ -261,8 +271,8 @@ const ConfigInterface: React.FC<{config: NowPlayingConfig}> = observer(({config}
 const descriptor: OverlayDescriptor<TaggedNowPlaying> = {
   type: 'nowPlaying',
   name: 'Live now playing metadata overlay, including themes',
-  component: NowPlayingOverlay,
-  example: Example,
+  component: withStore(NowPlayingOverlay),
+  example: withStore(Example),
   configInterface: ConfigInterface,
   defaultConfig: {
     theme: 'tracklist',

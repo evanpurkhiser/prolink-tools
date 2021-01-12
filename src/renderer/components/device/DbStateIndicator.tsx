@@ -4,13 +4,15 @@ import filesize from 'filesize';
 import {observer} from 'mobx-react';
 
 import ProgressRing from 'app/components/ProgressRing';
-import store from 'src/shared/store';
+import {AppStore} from 'src/shared/store';
+import withStore from 'src/utils/withStore';
 
 type Props = {
+  store: AppStore;
   deviceId: number;
 };
 
-const DbStateIndicator = observer(({deviceId}: Props) => {
+const DbStateIndicator = observer(({store, deviceId}: Props) => {
   const deviceStore = store.devices.get(deviceId);
 
   if (!deviceStore) {
@@ -88,4 +90,4 @@ const Info = styled('div')`
   }
 `;
 
-export default DbStateIndicator;
+export default withStore(DbStateIndicator);

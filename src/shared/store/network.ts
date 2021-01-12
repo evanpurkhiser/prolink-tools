@@ -5,13 +5,13 @@ import {action, reaction, runInAction, when} from 'mobx';
 import {ConnectedProlinkNetwork, DeviceID, ProlinkNetwork} from 'prolink-connect';
 
 import {deviceReaction} from './utils';
-import store, {DeviceStore, HydrationInfo, PlayedTrack} from '.';
+import {AppStore, DeviceStore, HydrationInfo, PlayedTrack} from '.';
 
 /**
  * Connect the electron main process's prolink network instance to the
  * observable store data.
  */
-export default function connectNetworkStore(network: ProlinkNetwork) {
+export default function connectNetworkStore(store: AppStore, network: ProlinkNetwork) {
   if (!network.isConnected()) {
     return;
   }
@@ -28,13 +28,13 @@ export default function connectNetworkStore(network: ProlinkNetwork) {
     connectLocaldbHydrateDone,
     connectMixstatus,
     connectDevices,
-  ].forEach(connector => connector(network));
+  ].forEach(connector => connector(store, network));
 }
 
 /**
  * Connects the network device manager to the device store
  */
-const connectDevices = (network: ConnectedProlinkNetwork) => {
+const connectDevices = (store: AppStore, network: ConnectedProlinkNetwork) => {
   const deviceList = [...network.deviceManager.devices.values()];
   const deviceEntries = deviceList.map(d => [d.id, new DeviceStore(d)]);
 
@@ -56,7 +56,7 @@ const connectDevices = (network: ConnectedProlinkNetwork) => {
 /**
  * Connects the network status emitter to the associated device store
  */
-const connectStatus = (network: ConnectedProlinkNetwork) =>
+const connectStatus = (store: AppStore, network: ConnectedProlinkNetwork) =>
   network.statusEmitter.on(
     'status',
     action(state => {
@@ -84,8 +84,9 @@ const connectStatus = (network: ConnectedProlinkNetwork) =>
  * Connects the current track ID to the network metadata loader service,
  * updating track metadata and artwork on change
  */
-const connectTracks = (network: ConnectedProlinkNetwork) =>
+const connectTracks = (store: AppStore, network: ConnectedProlinkNetwork) =>
   deviceReaction(
+    store,
     store => store.state?.trackId,
     async (deviceStore: DeviceStore) => {
       const state = deviceStore.state;
@@ -137,7 +138,7 @@ const connectTracks = (network: ConnectedProlinkNetwork) =>
 /**
  * Connect the local database fetch progress states
  */
-const connectLocaldbFetch = (network: ConnectedProlinkNetwork) =>
+const connectLocaldbFetch = (store: AppStore, network: ConnectedProlinkNetwork) =>
   network.localdb.on(
     'fetchProgress',
     action(status => {
@@ -167,7 +168,7 @@ const deboucnedApplyDiff = debounce(applyDiff, 10, {
 /**
  * Connect the local database hydration progress states
  */
-const connectLocaldbHydrate = (network: ConnectedProlinkNetwork) =>
+const connectLocaldbHydrate = (store: AppStore, network: ConnectedProlinkNetwork) =>
   network.localdb.on(
     'hydrationProgress',
     // Debounce because hydration generally happens very fast
@@ -208,7 +209,7 @@ const connectLocaldbHydrate = (network: ConnectedProlinkNetwork) =>
 /**
  * Connect the local database hydration progress states
  */
-const connectLocaldbHydrateDone = (network: ConnectedProlinkNetwork) =>
+const connectLocaldbHydrateDone = (store: AppStore, network: ConnectedProlinkNetwork) =>
   network.localdb.on(
     'hydrationDone',
     action(({device, slot}) => {
@@ -231,7 +232,7 @@ const connectLocaldbHydrateDone = (network: ConnectedProlinkNetwork) =>
 /**
  * Configure listeners for the mixstatus processor
  */
-const connectMixstatus = (network: ConnectedProlinkNetwork) => {
+const connectMixstatus = (store: AppStore, network: ConnectedProlinkNetwork) => {
   network.mixstatus.on(
     'nowPlaying',
     action(async state => {
@@ -259,7 +260,7 @@ const connectMixstatus = (network: ConnectedProlinkNetwork) => {
         return;
       }
 
-      const played = new PlayedTrack(playedAt, track);
+      const played = new PlayedTrack({config: store.config, playedAt, track});
       played.artwork = device?.artwork;
 
       store.mixstatus.trackHistory.push(played);

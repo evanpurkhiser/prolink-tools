@@ -4,15 +4,18 @@ import {Global} from '@emotion/react';
 import {observer} from 'mobx-react';
 
 import globalCss from 'src/shared/globalCss';
-import store from 'src/shared/store';
+import {AppStore} from 'src/shared/store';
+import withStore from 'src/utils/withStore';
 
 import NotFound from './components/NotFound';
 import {ensureNoOBSDefaultStyles} from './utils/obsFixes';
 import {registeredOverlays} from '.';
 
-type Props = RouteComponentProps<{overlayKey: string}>;
+type Props = RouteComponentProps<{overlayKey: string}> & {
+  store: AppStore;
+};
 
-const MapOverlay: React.FC<Props> = observer(props => {
+const MapOverlay: React.FC<Props> = observer(({store, ...props}) => {
   if (!store.isInitalized) {
     return null;
   }
@@ -34,7 +37,7 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Global styles={globalCss} />
-      <Route path="/:overlayKey" component={MapOverlay} />
+      <Route path="/:overlayKey" component={withStore(MapOverlay)} />
     </BrowserRouter>
   );
 };

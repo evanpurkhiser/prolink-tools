@@ -9,17 +9,18 @@ import http from 'http';
 import * as path from 'path';
 
 import {WEBSERVER_PORT} from 'src/shared/constants';
+import {AppStore} from 'src/shared/store';
 import {registerMainWebsocket} from 'src/shared/store/ipc';
 
 const OVERLAY_ROOT = path.resolve(__dirname, 'overlay');
 
-export async function startOverlayServer() {
+export async function startOverlayServer(store: AppStore) {
   const app = connect();
   const httpServer = http.createServer(app);
 
   // Setup socketio server
   const wss = new Server(httpServer, {serveClient: false});
-  registerMainWebsocket(wss);
+  registerMainWebsocket(store, wss);
 
   const proxy = httpProxy.createProxy();
   const fileServer = new httpStatic.Server(OVERLAY_ROOT);

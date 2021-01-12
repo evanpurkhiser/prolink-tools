@@ -1,10 +1,14 @@
 import {cloneDeep, random} from 'lodash';
 import {CDJStatus, MediaSlot, TrackType} from 'prolink-connect/lib/types';
 
-import store from 'src/shared/store';
+import {AppConfig, AppStore} from 'src/shared/store';
 import {makeRandomTrack} from 'src/utils/randomMetadata';
 
-export async function loadTrack(deviceId: number, state: Partial<CDJStatus.State>) {
+export async function loadTrack(
+  store: AppStore,
+  deviceId: number,
+  state: Partial<CDJStatus.State>
+) {
   const d = store.devices.get(deviceId)!;
   const track = await makeRandomTrack({artwork: true});
 
@@ -36,13 +40,17 @@ export async function loadTrack(deviceId: number, state: Partial<CDJStatus.State
   d.state.playState = CDJStatus.PlayState.Cued;
 }
 
-export function updateState(deviceId: number, state: Partial<CDJStatus.State>) {
+export function updateState(
+  store: AppStore,
+  deviceId: number,
+  state: Partial<CDJStatus.State>
+) {
   const d = store.devices.get(deviceId)!;
 
   d.state = {...d.state!, ...state};
 }
 
-export async function tapCue(deviceId: number) {
+export async function tapCue(store: AppStore, deviceId: number) {
   const s = store.devices.get(deviceId)!.state!;
 
   for (let i = 0; i < 4; ++i) {
@@ -55,7 +63,7 @@ export async function tapCue(deviceId: number) {
   }
 }
 
-export async function setPitch(deviceId: number, pitch: number) {
+export async function setPitch(store: AppStore, deviceId: number, pitch: number) {
   const s = store.devices.get(deviceId)!.state!;
 
   while (s.sliderPitch < pitch) {
@@ -64,7 +72,7 @@ export async function setPitch(deviceId: number, pitch: number) {
   }
 }
 
-export function incrementBeat(deviceId: number) {
+export function incrementBeat(store: AppStore, deviceId: number) {
   const s = store.devices.get(deviceId)!.state!;
 
   s.playState = CDJStatus.PlayState.Playing;
@@ -74,7 +82,7 @@ export function incrementBeat(deviceId: number) {
     s.beatsUntilCue === null || s.beatsUntilCue < 1 ? null : (s.beatsUntilCue ?? 0) - 1;
 }
 
-export function markAsPlaying(deviceId: number) {
+export function markAsPlaying(store: AppStore, deviceId: number) {
   const s = store.devices.get(deviceId)!;
 
   // Deep clone since we cannot observe two of the same object in our store

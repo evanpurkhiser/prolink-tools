@@ -115,7 +115,15 @@ export class HydrationInfo {
   isDone = false;
 }
 
+type PlayedTrackParams = {
+  config?: AppConfig;
+  playedAt: Date;
+  track: Track;
+};
+
 export class PlayedTrack {
+  #config?: AppConfig;
+
   @serializable(date())
   playedAt: Date;
 
@@ -127,11 +135,12 @@ export class PlayedTrack {
 
   @computed
   get isId() {
-    const marker = store.config.idMarker;
+    const marker = this.#config?.idMarker ?? '[ID]';
     return marker !== '' ? isId(this.track, marker) : false;
   }
 
-  constructor(playedAt: Date, track: Track) {
+  constructor({config, playedAt, track}: PlayedTrackParams) {
+    this.#config = config;
     this.playedAt = playedAt;
     this.track = track;
   }
@@ -248,6 +257,4 @@ export class AppStore {
   }
 }
 
-const store = observable(new AppStore());
-
-export default store;
+export const createStore = () => observable(new AppStore());

@@ -5,7 +5,8 @@ import styled from '@emotion/styled';
 import {AnimateSharedLayout, motion} from 'framer-motion';
 import {observer} from 'mobx-react';
 
-import store from 'src/shared/store';
+import {AppStore} from 'src/shared/store';
+import withStore from 'src/utils/withStore';
 
 import HelpButton from './HelpButton';
 
@@ -15,7 +16,11 @@ const items = [
   {name: 'Settings', path: '/settings', icon: Settings},
 ] as const;
 
-const Navigation = observer(() => (
+type Props = {
+  store: AppStore;
+};
+
+const Navigation = observer(({store}: Props) => (
   <MenuContainer>
     <SidebarToggle onClick={() => store.config.toggleSidebar()} />
     <AnimateSharedLayout>
@@ -103,4 +108,4 @@ const Bottom = styled('div')`
   padding: 0 0.5rem;
 `;
 
-export default Navigation;
+export default withStore(Navigation);

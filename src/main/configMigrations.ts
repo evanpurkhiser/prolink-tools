@@ -1,13 +1,13 @@
 import {set} from 'mobx';
 
-import store from 'src/shared/store';
+import {AppStore} from 'src/shared/store';
 
 /**
  * There may be some situations where we have to implement migrations of the
  * users configuration as they upgrade versiosns. These migrations will live
  * here.
  */
-export function runConfigMigrations() {
+export function runConfigMigrations(store: AppStore) {
   /**
    * 11-19-20
    *

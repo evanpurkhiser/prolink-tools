@@ -2,7 +2,8 @@ import styled from '@emotion/styled';
 import {observer} from 'mobx-react';
 import {NetworkState} from 'prolink-connect/lib/types';
 
-import store from 'src/shared/store';
+import {AppStore} from 'src/shared/store';
+import withStore from 'src/utils/withStore';
 
 const status = {
   [NetworkState.Offline]: {label: 'offline', bg: '#45433D', text: '#fff'},
@@ -11,7 +12,11 @@ const status = {
   [NetworkState.Failed]: {label: 'connection error', bg: '#ff5757', text: null},
 };
 
-const NetworkStatus = observer(() => (
+type Props = {
+  store: AppStore;
+};
+
+const NetworkStatus = observer(({store}: Props) => (
   <StatusIndicator state={store.networkState}>
     {status[store.networkState].label}
   </StatusIndicator>
@@ -27,4 +32,4 @@ const StatusIndicator = styled('div')<{state: NetworkState}>`
   border-radius: 4px;
 `;
 
-export default NetworkStatus;
+export default withStore(NetworkStatus);

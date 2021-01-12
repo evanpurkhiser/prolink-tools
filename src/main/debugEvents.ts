@@ -10,7 +10,7 @@ import {
   ProlinkNetwork,
 } from 'prolink-connect';
 
-import store from 'src/shared/store';
+import {AppStore} from 'src/shared/store';
 
 type Events =
   | {
@@ -150,7 +150,7 @@ class DebugEventsService {
  * to Sentry. The service will be activated and deactivated reactively to the
  * reportDebugEvents store configuration.
  */
-export function registerDebuggingEventsService(network: ProlinkNetwork) {
+export function registerDebuggingEventsService(store: AppStore, network: ProlinkNetwork) {
   if (!network.isConnected()) {
     return;
   }

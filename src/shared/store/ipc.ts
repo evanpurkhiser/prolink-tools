@@ -14,10 +14,10 @@ import {
 } from 'mobx';
 import {deepObserve} from 'mobx-utils';
 import {deserialize, serialize, update} from 'serializr';
-import {Server} from 'socket.io';
-import {io, Socket} from 'socket.io-client';
+import {Server, Socket as ServerSocker} from 'socket.io';
+import {io, Socket as ClientSocket} from 'socket.io-client';
 
-import store, {
+import {
   AppConfig,
   AppStore,
   DeviceStore,
@@ -101,8 +101,8 @@ function getAtPath(obj: any, path: string) {
   return target;
 }
 
-function applyStoreChange({path, change, serializerModel}: SerializedChange) {
-  const target = getAtPath(store, path);
+function applyChanges(obj: any, {path, change, serializerModel}: SerializedChange) {
+  const target = getAtPath(obj, path);
 
   if (target === undefined) {
     // TODO: Race. Remove this and sometimes things happen
@@ -179,11 +179,7 @@ type ObserverStoreOpts = {
    * The target observable to observer. If not specified the entire store will be
    * observed.
    */
-  target?: any;
-  /**
-   * If targeting a nested store, a prefix path must be specified
-   */
-  prefix?: string;
+  target: any;
   /**
    * The function to call with a serializedChange when a observable has changed in
    * the observed tree.
@@ -200,16 +196,11 @@ const defaultChangeHandler = (serializedChange: SerializedChange) =>
  * Start observing the store for changes.
  *
  */
-export const observeStore = ({target, prefix, handler}: ObserverStoreOpts = {}) =>
-  deepObserve(target ?? store, (change, changePath) => {
+export const observeStore = ({target, handler}: ObserverStoreOpts) =>
+  deepObserve(target, (change, changePath) => {
     const anyChange = {...change} as {[k: string]: any};
 
-    const path =
-      prefix === undefined
-        ? changePath
-        : changePath === ''
-        ? prefix
-        : `${prefix}/${changePath}`;
+    const path = changePath;
 
     // Avoid including the full object and oldValue in the change we're going
     // to send over IPC. We're not going to serialize these.
@@ -226,7 +217,7 @@ export const observeStore = ({target, prefix, handler}: ObserverStoreOpts = {}) 
       // mark the direct serializer class name for the value if we can
       serializedChange.serializerModel = anyChange.newValue?.constructor?.name;
 
-      const parentClass = getAtPath(store, path)?.constructor;
+      const parentClass = getAtPath(target, path)?.constructor;
       const serializer = anyChange.newValue?.constructor?.serializeInfo
         ? serialize
         : parentClass?.serializeInfo?.props?.[anyChange.name]?.serializer ?? toJS;
@@ -243,7 +234,7 @@ export const observeStore = ({target, prefix, handler}: ObserverStoreOpts = {}) 
       // mark the direct serializer class name for the value if we can
       serializedChange.serializerModel = anyChange.added[0]?.constructor?.name;
 
-      const parentClass = getAtPath(store, path)?.constructor;
+      const parentClass = getAtPath(target, path)?.constructor;
       const serializer = anyChange.added[0]?.constructor?.serializeInfo
         ? serialize
         : parentClass?.serializeInfo?.props?.[anyChange.name]?.serializer ?? toJS;
@@ -259,7 +250,7 @@ export const observeStore = ({target, prefix, handler}: ObserverStoreOpts = {}) 
       // mark the direct serializer class name for the value if we can
       serializedChange.serializerModel = anyChange.removed[0]?.constructor?.name;
 
-      const parentClass = getAtPath(store, path)?.constructor;
+      const parentClass = getAtPath(target, path)?.constructor;
       const serializer = anyChange.removed[0]?.constructor?.serializeInfo
         ? serialize
         : parentClass?.serializeInfo?.props?.[anyChange.name]?.serializer ?? toJS;
@@ -274,7 +265,7 @@ export const observeStore = ({target, prefix, handler}: ObserverStoreOpts = {}) 
 /**
  * Load and deserialize the app config from the settings file
  */
-export const loadMainConfig = async () =>
+export const loadMainConfig = async (store: AppStore) =>
   set(store.config, deserialize(AppConfig, await settings.get()));
 
 /**
@@ -285,7 +276,7 @@ export const loadMainConfig = async () =>
  * This should be called when the main app initializes _before_ any windows are
  * created.
  */
-export const registerMainIpc = () => {
+export const registerMainIpc = (store: AppStore) => {
   ipcMain.on('store-subscribe', event => {
     // Send the current state of the store
     event.sender.send('store-init', serialize(AppStore, store));
@@ -299,7 +290,7 @@ export const registerMainIpc = () => {
   // Register listener for config object changes
   ipcMain.on('config-update', (_e, change: SerializedChange) => {
     isApplyingConfigChange = true;
-    applyStoreChange(change);
+    applyChanges(store.config, change);
     isApplyingConfigChange = false;
   });
 
@@ -311,10 +302,10 @@ export const registerMainIpc = () => {
  * Register this window to have it's store hydrated and synced from the main
  * process' store.
  */
-export const registerRendererIpc = () => {
+export const registerRendererIpc = (store: AppStore) => {
   ipcRenderer.on('store-update', (_, change: SerializedChange) => {
     isApplyingConfigChange = change.path.startsWith('config');
-    applyStoreChange(change);
+    applyChanges(store, change);
     isApplyingConfigChange = false;
   });
 
@@ -330,10 +321,9 @@ export const registerRendererIpc = () => {
  * Register this window to have configuration changes be propagated back to the
  * main thread.
  */
-export const registerRendererConfigIpc = () =>
+export const registerRendererConfigIpc = (store: AppStore) =>
   observeStore({
     target: store.config,
-    prefix: 'config',
     handler: change =>
       !isApplyingConfigChange && ipcRenderer.send('config-update', change),
   });
@@ -341,7 +331,7 @@ export const registerRendererConfigIpc = () =>
 /**
  * Register a websocket server as a transport to broadcast store changes
  */
-export const registerMainWebsocket = (wss: Server) => {
+export const registerMainWebsocket = (store: AppStore, wss: Server) => {
   // Send the current state to all new comections
   wss.on('connection', client => {
     client.emit('store-init', serialize(AppStore, store));
@@ -352,19 +342,12 @@ export const registerMainWebsocket = (wss: Server) => {
 };
 
 /**
- * Pushes updates to the server running on prolink.tools.
- */
-export const registerMainPushWebsocker = () => {
-  const conn = io('http://localhost:3000/ingest');
-
-  conn.emit('store-init', serialize(AppStore, store));
-  changeHandlers.push(change => conn.emit('store-update', change));
-};
-
-/**
  * Register this client to recieve websocket broadcasts to update the store
  */
-export const registerClientWebsocket = (ws: Socket) => {
-  ws.on('store-update', (change: SerializedChange) => applyStoreChange(change));
+export const registerWebsocketListener = (
+  store: AppStore,
+  ws: ClientSocket | ServerSocker
+) => {
+  ws.on('store-update', (change: SerializedChange) => applyChanges(store, change));
   ws.on('store-init', (data: any) => set(store, deserialize(AppStore, data)));
 };

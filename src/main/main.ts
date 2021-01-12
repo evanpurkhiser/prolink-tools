@@ -1,5 +1,4 @@
 import 'regenerator-runtime/runtime';
-import 'main/menu';
 
 import {app, BrowserWindow, nativeTheme, shell} from 'electron';
 import isDev from 'electron-is-dev';
@@ -12,20 +11,28 @@ import * as url from 'url';
 import {startOverlayServer} from 'main/overlayServer';
 import {runConfigMigrations} from 'src/main/configMigrations';
 import {registerDebuggingEventsService} from 'src/main/debugEvents';
+import {setupMenu} from 'src/main/menu';
 import {userInfo} from 'src/shared/sentry/main';
-import store from 'src/shared/store';
+import {AppStore, createStore} from 'src/shared/store';
 import {loadMainConfig, observeStore, registerMainIpc} from 'src/shared/store/ipc';
 import connectNetworkStore from 'src/shared/store/network';
 import theme from 'src/theme';
 
+const mainStore = createStore();
+
+export const withMainStore = (cb: (store: AppStore) => void) => cb(mainStore);
+
 // Update the store with user details ASAP
-(async () => set(store, {user: await userInfo}))();
+(async () => set(mainStore, {user: await userInfo}))();
 
 // Intialize the store for the main thread immedaitely.
-store.isInitalized = true;
+mainStore.isInitalized = true;
 
 // see https://www.electronjs.org/docs/api/app#appallowrendererprocessreuse
 app.allowRendererProcessReuse = true;
+
+// Setup application menu
+setupMenu(mainStore);
 
 let win: BrowserWindow | null;
 
@@ -70,36 +77,33 @@ const createWindow = () => {
 };
 
 app.on('ready', async () => {
-  await loadMainConfig();
+  await loadMainConfig(mainStore);
   createWindow();
 
-  registerMainIpc();
-  runConfigMigrations();
-  observeStore();
-
-  // Setup some additional overlay functionality
-  require('src/overlay/overlays/nowPlaying/main');
+  registerMainIpc(mainStore);
+  runConfigMigrations(mainStore);
+  observeStore({target: mainStore});
 
   let network: ProlinkNetwork;
 
   // Open connections to the network
   try {
     network = await bringOnline();
-    store.networkState = network.state;
+    mainStore.networkState = network.state;
   } catch (e) {
     if (e.errno !== 'EADDRINUSE') {
       throw e;
     }
 
     // Something is using the status port... Most likely rekordbox
-    store.networkState = NetworkState.Failed;
+    mainStore.networkState = NetworkState.Failed;
     return;
   }
 
   // Attempt to autoconfigure from other devices on the network
   await network.autoconfigFromPeers();
   network.connect();
-  store.networkState = network.state;
+  mainStore.networkState = network.state;
 
   // Start overlay http / websocket server.
   //
@@ -113,10 +117,10 @@ app.on('ready', async () => {
   //
   // As thus THIS LINE MUST BE PLACED AFTER THE NETWORK IS BROUGHT ONLINE.
   //
-  await startOverlayServer();
+  await startOverlayServer(mainStore);
 
-  connectNetworkStore(network);
-  registerDebuggingEventsService(network);
+  connectNetworkStore(mainStore, network);
+  registerDebuggingEventsService(mainStore, network);
 });
 
 app.on('window-all-closed', () => {
@@ -130,7 +134,7 @@ app.on('activate', () => {
 });
 
 reaction(
-  () => store.config.theme,
+  () => mainStore.config.theme,
   schema => {
     const bg = nativeTheme.shouldUseDarkColors
       ? theme.dark.background

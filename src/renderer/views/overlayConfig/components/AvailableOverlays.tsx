@@ -5,7 +5,8 @@ import {motion} from 'framer-motion';
 import short from 'short-uuid';
 
 import {OverlayDescriptor, OverlayInstance, registeredOverlays} from 'src/overlay';
-import store from 'src/shared/store';
+import {AppStore} from 'src/shared/store';
+import withStore from 'src/utils/withStore';
 
 import Example from './Example';
 
@@ -30,9 +31,10 @@ const OverlayEntry: React.FC<EntryProps> = ({overlay, onAdd}) => (
 
 type ListProps = {
   onAdded: (instance: OverlayInstance) => void;
+  store: AppStore;
 };
 
-const AvailableOverlays: React.FC<ListProps> = ({onAdded}) => (
+const AvailableOverlays: React.FC<ListProps> = ({onAdded, store}) => (
   <Container>
     {registeredOverlays.map(overlay => (
       <OverlayEntry
@@ -105,4 +107,4 @@ Container.defaultProps = {
   transition: {duration: 0.2},
 };
 
-export default AvailableOverlays;
+export default withStore(AvailableOverlays);

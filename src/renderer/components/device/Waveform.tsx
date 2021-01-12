@@ -1,9 +1,14 @@
 import {autorun} from 'mobx';
 import {CDJStatus, DeviceID} from 'prolink-connect/lib/types';
 
-import store from 'src/shared/store';
+import {AppStore} from 'src/shared/store';
+import withStore from 'src/utils/withStore';
 
-function drawScrollingWaveform(deviceId: DeviceID, canvas: HTMLCanvasElement) {
+function drawScrollingWaveform(
+  store: AppStore,
+  deviceId: DeviceID,
+  canvas: HTMLCanvasElement
+) {
   const ctx = canvas.getContext('2d');
 
   if (ctx === null) {
@@ -127,12 +132,13 @@ function drawScrollingWaveform(deviceId: DeviceID, canvas: HTMLCanvasElement) {
 }
 
 type Props = {
+  store: AppStore;
   deviceId: DeviceID;
 };
 
 const startedFor: {[k: number]: boolean} = {};
 
-const Waveform = ({deviceId}: Props) => {
+const Waveform = ({store, deviceId}: Props) => {
   const handleCanvasRef = (canvas: HTMLCanvasElement | null) => {
     if (canvas === null) {
       return;
@@ -144,10 +150,10 @@ const Waveform = ({deviceId}: Props) => {
 
     startedFor[deviceId] = true;
 
-    drawScrollingWaveform(deviceId, canvas);
+    drawScrollingWaveform(store, deviceId, canvas);
   };
 
   return <canvas ref={handleCanvasRef} />;
 };
 
-export default Waveform;
+export default withStore(Waveform);

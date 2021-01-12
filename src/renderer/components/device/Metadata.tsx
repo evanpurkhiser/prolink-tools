@@ -3,9 +3,11 @@ import styled from '@emotion/styled';
 import {motion} from 'framer-motion';
 import {observer} from 'mobx-react';
 
-import store from 'src/shared/store';
+import {AppStore} from 'src/shared/store';
+import withStore from 'src/utils/withStore';
 
 type Props = React.ComponentProps<typeof motion.div> & {
+  store: AppStore;
   deviceId: number;
 };
 
@@ -14,7 +16,7 @@ const formatDuration = (duration: number) =>
     .toString()
     .padStart(2, '0')}m ${(duration % 60).toString().padStart(2, '0')}s`;
 
-const Metadata = observer(({deviceId, ...props}: Props) => {
+const Metadata = observer(({store, deviceId, ...props}: Props) => {
   const deviceStore = store.devices.get(deviceId);
 
   if (!deviceStore) {
@@ -116,4 +118,4 @@ const Artwork = styled('img')`
   width: 48px;
 `;
 
-export default Metadata;
+export default withStore(Metadata);

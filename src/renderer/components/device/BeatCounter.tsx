@@ -1,13 +1,15 @@
 import styled from '@emotion/styled';
 import {observer} from 'mobx-react';
 
-import store from 'src/shared/store';
+import {AppStore} from 'src/shared/store';
+import withStore from 'src/utils/withStore';
 
 type Props = {
+  store: AppStore;
   deviceId: number;
 };
 
-const BeatCounter = observer(({deviceId}: Props) => {
+const BeatCounter = observer(({store, deviceId}: Props) => {
   const state = store.devices.get(deviceId)?.state;
 
   const beat = state?.beatInMeasure;
@@ -63,4 +65,4 @@ const CueCountdown = styled('div')<{important: boolean}>`
   font-weight: 500;
 `;
 
-export default BeatCounter;
+export default withStore(BeatCounter);

@@ -15,11 +15,16 @@ import IconCdj from 'app/icons/cdj';
 import IconDjm from 'app/icons/djm';
 import IconRekordbox from 'app/icons/rekordbox';
 import ConnectionError from 'src/renderer/components/ConnectionError';
-import store, {DeviceStore} from 'src/shared/store';
+import {AppStore, DeviceStore} from 'src/shared/store';
+import withStore from 'src/utils/withStore';
 
 const sortById = (a: DeviceStore, b: DeviceStore) => a.device.id - b.device.id;
 
-const Devices = observer(() => {
+type Props = {
+  store: AppStore;
+};
+
+const Devices = observer(({store}: Props) => {
   const deviceList = [...store.devices.values()];
   const deviceMap = groupBy(deviceList, d => d.device.type);
   const otherDevices = [
@@ -183,4 +188,4 @@ const PlayerId = styled('div')<{onair: boolean}>`
   overflow: hidden;
 `;
 
-export default Devices;
+export default withStore(Devices);

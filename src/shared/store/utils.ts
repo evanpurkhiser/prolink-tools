@@ -1,7 +1,7 @@
 import {IReactionDisposer, IReactionPublic, reaction} from 'mobx';
 import {DeviceID} from 'prolink-connect/lib/types';
 
-import store, {DeviceStore} from '.';
+import {AppStore, DeviceStore} from '.';
 
 /**
  * A wrapper on the mobx reaction API to add reactors for every device on the
@@ -9,6 +9,7 @@ import store, {DeviceStore} from '.';
  * device added or removed from the network.
  */
 export function deviceReaction<T>(
+  store: AppStore,
   expression: (deviceStore: DeviceStore, r: IReactionPublic) => T,
   effect: (deviceStore: DeviceStore, arg: T, r: IReactionPublic) => void
 ): () => void {

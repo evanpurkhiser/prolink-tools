@@ -9,9 +9,10 @@ import LogoBig from 'src/shared/components/LogoBig';
 import globalCss, {noSelect} from 'src/shared/globalCss';
 
 import ActivityLink from './components/ActivityLink';
+import DemoContext from './components/DemoContext';
 import DownloadCta from './components/DownloadCta';
 import {ExampleConfig, ExampleOverlay} from './components/OverlayExamples';
-import playingTracks from './demo/playingTracks';
+import playingTracksRoutine from './demo/playingTracks';
 
 const animateInfo: Variants = {
   initial: {
@@ -25,16 +26,13 @@ const animateInfo: Variants = {
 };
 
 const Landing = () => (
-  <React.Fragment>
+  <DemoContext demoRoutine={playingTracksRoutine}>
     <Global styles={globalCss} />
 
     <Masthead
       initial="initial"
       animate="animate"
       variants={{animate: {transition: {delayChildren: 0.2, staggerChildren: 0.15}}}}
-      onAnimationStart={() => {
-        playingTracks();
-      }}
     >
       <Intro>
         <LogoBig variants={animateInfo} />
@@ -80,7 +78,7 @@ const Landing = () => (
         </ConfigContainer>
       </ExampleContent>
     </OverlaysSection>
-  </React.Fragment>
+  </DemoContext>
 );
 
 const Masthead = styled(motion.section)`

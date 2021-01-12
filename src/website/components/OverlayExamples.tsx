@@ -1,28 +1,41 @@
 import {observer} from 'mobx-react';
 
 import {registeredOverlays} from 'src/overlay';
-import store from 'src/shared/store';
+import {AppStore} from 'src/shared/store';
+import withStore from 'src/utils/withStore';
 
-export const ExampleOverlay = observer(() => {
-  const instance = store.config.overlays.find(i => i.key === 'exampleNowPlaying');
-  const descriptor = registeredOverlays?.find(overlay => overlay.type === instance?.type);
+type Props = {
+  store: AppStore;
+};
 
-  if (instance === undefined || descriptor === undefined) {
-    // Show something silly if they removed the overlay
-    return null;
-  }
+export const ExampleOverlay = withStore(
+  observer(({store}: Props) => {
+    const instance = store.config.overlays.find(i => i.key === 'exampleNowPlaying');
+    const descriptor = registeredOverlays?.find(
+      overlay => overlay.type === instance?.type
+    );
 
-  return <descriptor.component config={instance.config} />;
-});
+    if (instance === undefined || descriptor === undefined) {
+      // Show something silly if they removed the overlay
+      return null;
+    }
 
-export const ExampleConfig = observer(() => {
-  const instance = store.config.overlays.find(i => i.key === 'exampleNowPlaying');
-  const descriptor = registeredOverlays?.find(overlay => overlay.type === instance?.type);
+    return <descriptor.component config={instance.config} />;
+  })
+);
 
-  if (instance === undefined || descriptor === undefined) {
-    // Show something silly if they removed the overlay
-    return null;
-  }
+export const ExampleConfig = withStore(
+  observer(({store}: Props) => {
+    const instance = store.config.overlays.find(i => i.key === 'exampleNowPlaying');
+    const descriptor = registeredOverlays?.find(
+      overlay => overlay.type === instance?.type
+    );
 
-  return <descriptor.configInterface config={instance.config} />;
-});
+    if (instance === undefined || descriptor === undefined) {
+      // Show something silly if they removed the overlay
+      return null;
+    }
+
+    return <descriptor.configInterface config={instance.config} />;
+  })
+);

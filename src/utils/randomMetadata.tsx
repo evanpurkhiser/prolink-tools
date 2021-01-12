@@ -1,6 +1,6 @@
 import {Track} from 'prolink-connect/lib/types';
 
-import {PlayedTrack} from 'src/shared/store';
+import {AppConfig, PlayedTrack} from 'src/shared/store';
 import exampleMetadata from 'src/utils/exampleMetadata';
 
 export async function fetchRandomArtwork() {
@@ -34,7 +34,7 @@ export async function makeRandomTrack({artwork}: Options = {}) {
     key: {id: 0, name: metadata.key} as any,
   } as Track;
 
-  const played = new PlayedTrack(new Date(), track);
+  const played = new PlayedTrack({playedAt: new Date(), track});
 
   // Do not always include artwork, it is random afterall
   if (artwork !== false && (artwork === true || Math.random() > 0.3)) {

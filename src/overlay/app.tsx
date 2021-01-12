@@ -6,13 +6,21 @@ import * as ReactDOM from 'react-dom';
 import {io} from 'socket.io-client';
 
 import Router from 'overlay/Router';
-import {registerClientWebsocket} from 'src/shared/store/ipc';
+import {createStore} from 'src/shared/store';
+import {StoreContext} from 'src/shared/store/context';
+import {registerWebsocketListener} from 'src/shared/store/ipc';
 
-// Create main element
+const overlaysStore = createStore();
+
 const mainElement = document.createElement('div');
 document.body.appendChild(mainElement);
 
-// Render components
-ReactDOM.render(<Router />, mainElement);
+const main = (
+  <StoreContext.Provider value={overlaysStore}>
+    <Router />
+  </StoreContext.Provider>
+);
 
-registerClientWebsocket(io());
+ReactDOM.render(main, mainElement);
+
+registerWebsocketListener(overlaysStore, io());

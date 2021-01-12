@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {deepObserve} from 'mobx-utils';
 
-import store from 'src/shared/store';
+import {StoreContext} from 'src/shared/store/context';
 
 type Options = {
   /**
@@ -20,6 +20,8 @@ type Options = {
 };
 
 function useStoreActivity({targetTest, valueTest, blipTime}: Options) {
+  const store = React.useContext(StoreContext);
+
   const [blip, setBlip] = React.useState<boolean>(false);
   const timeoutId = 0;
 

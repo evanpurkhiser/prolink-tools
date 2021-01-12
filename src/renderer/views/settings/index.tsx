@@ -7,9 +7,14 @@ import Text from 'app/components/form/Text';
 import Checkbox from 'src/renderer/components/form/Checkbox';
 import Field from 'src/renderer/components/form/Field';
 import InfoBox from 'src/renderer/components/form/InfoBox';
-import store from 'src/shared/store';
+import {AppStore} from 'src/shared/store';
+import withStore from 'src/utils/withStore';
 
-const Settings = observer(() => {
+type Props = {
+  store: AppStore;
+};
+
+const Settings = observer(({store}: Props) => {
   const config = store.config;
 
   return (
@@ -78,4 +83,4 @@ const Section = styled('section')`
   border-left: 1px solid ${p => p.theme.border};
 `;
 
-export default Settings;
+export default withStore(Settings);

@@ -10,30 +10,34 @@ import {when} from 'mobx';
 import Application from 'app/views/Application';
 import ThemeProvider from 'src/shared/components/ThemeProvider';
 import globalCss, {noSelect} from 'src/shared/globalCss';
-import store from 'src/shared/store';
+import {createStore} from 'src/shared/store';
+import {StoreContext} from 'src/shared/store/context';
 import {registerRendererConfigIpc, registerRendererIpc} from 'src/shared/store/ipc';
 
-// Create main element
 const mainElement = document.createElement('div');
 document.body.appendChild(mainElement);
 
+const rendererStore = createStore();
+
 const main = (
-  <ThemeProvider>
-    <Global styles={[globalCss, noSelect]} />
-    <Application />
-  </ThemeProvider>
+  <StoreContext.Provider value={rendererStore}>
+    <ThemeProvider>
+      <Global styles={[globalCss, noSelect]} />
+      <Application />
+    </ThemeProvider>
+  </StoreContext.Provider>
 );
 
 ReactDOM.render(main, mainElement);
 
-registerRendererIpc();
+registerRendererIpc(rendererStore);
 
 when(
-  () => store.user !== undefined,
-  () => Sentry.setUser(store.user!)
+  () => rendererStore.user !== undefined,
+  () => Sentry.setUser(rendererStore.user!)
 );
 
 when(
-  () => store.isInitalized,
-  () => registerRendererConfigIpc()
+  () => rendererStore.isInitalized,
+  () => registerRendererConfigIpc(rendererStore)
 );
