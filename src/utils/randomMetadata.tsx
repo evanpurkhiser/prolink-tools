@@ -1,6 +1,6 @@
 import {Track} from 'prolink-connect/lib/types';
 
-import {AppConfig, PlayedTrack} from 'src/shared/store';
+import {PlayedTrack} from 'src/shared/store';
 import exampleMetadata from 'src/utils/exampleMetadata';
 
 export async function fetchRandomArtwork() {

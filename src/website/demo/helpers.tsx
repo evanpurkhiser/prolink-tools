@@ -1,7 +1,7 @@
 import {cloneDeep, random} from 'lodash';
 import {CDJStatus, MediaSlot, TrackType} from 'prolink-connect/lib/types';
 
-import {AppConfig, AppStore} from 'src/shared/store';
+import {AppStore} from 'src/shared/store';
 import {makeRandomTrack} from 'src/utils/randomMetadata';
 
 export async function loadTrack(
