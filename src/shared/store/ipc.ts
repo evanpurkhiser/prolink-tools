@@ -362,9 +362,7 @@ export const startCloudServicesWebsocket = (store: AppStore) => {
     ? 'http://localhost:8888'
     : 'https://app.prolink.tools';
 
-  const key = 'test';
-
-  const conn = io(`${host}/ingest/${key}`, {transports: ['websocket']});
+  const conn = io(`${host}/ingest/${store.config.apiKey}`, {transports: ['websocket']});
 
   conn.emit('store-init', serialize(AppStore, store));
   changeHandlers.push(change => conn.emit('store-update', change));

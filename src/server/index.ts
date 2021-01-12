@@ -1,11 +1,17 @@
+import 'tsconfig-paths/register';
+
 import Router from '@koa/router';
 import Koa from 'koa';
 import {Server, Socket} from 'socket.io';
 
 import {createServer} from 'http';
 
+import {AppStore, createStore} from 'src/shared/store';
+import {registerWebsocketListener} from 'src/shared/store/ipc';
+
 type Connection = {
   socket: Socket;
+  store: AppStore;
 };
 
 const ingestMatcher = /^\/ingest\/([^/]+)$/;
@@ -19,7 +25,13 @@ const wss = new Server(server);
 const router = new Router();
 
 router.get('/stats', ctx => {
-  ctx.body = `Current number of clients: ${Object.keys(connections).length}`;
+  const data = Object.keys(connections).map(key => ({
+    key,
+    devices: [...connections[key].store.devices.values()].map(d => d.device.name),
+    user: connections[key].store.user?.username,
+  }));
+
+  ctx.body = `Client Info: ${JSON.stringify(data)}`;
 });
 
 app.use(router.routes()).use(router.allowedMethods());
@@ -27,15 +39,13 @@ app.use(router.routes()).use(router.allowedMethods());
 // Connect
 wss.of(ingestMatcher).on('connection', socket => {
   const key = socket.nsp.name.match(ingestMatcher)[1];
+  const store = createStore();
 
-  connections[key] = {
-    socket,
-  };
+  connections[key] = {socket, store};
+
+  registerWebsocketListener(store, socket);
 
   socket.on('disconnect', () => delete connections[key]);
-
-  socket.on('store-init', console.log);
-  socket.on('store-update', console.log);
 });
 
 server.listen(8888);

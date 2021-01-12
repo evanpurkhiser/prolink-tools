@@ -14,6 +14,7 @@ import {
   Track,
 } from 'prolink-connect/lib/types';
 import {custom, date, list, map, mapAsArray, object, serializable} from 'serializr';
+import {uuid} from 'short-uuid';
 
 import {OverlayInstance} from 'src/overlay';
 import isId from 'src/utils/isId';
@@ -171,6 +172,12 @@ export class AppConfig {
   @serializable
   @observable
   enableCloudApi = false;
+  /**
+   * Unique identifier used to identify the application to the server.
+   */
+  @serializable
+  @observable
+  apiKey = uuid();
   /**
    * Mark tracks as 'IDs' using this string
    */
