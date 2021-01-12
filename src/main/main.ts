@@ -2,7 +2,7 @@ import 'regenerator-runtime/runtime';
 
 import {app, BrowserWindow, nativeTheme, shell} from 'electron';
 import isDev from 'electron-is-dev';
-import {reaction, set} from 'mobx';
+import {reaction, set, when} from 'mobx';
 import {bringOnline, NetworkState, ProlinkNetwork} from 'prolink-connect';
 
 import * as path from 'path';
@@ -14,7 +14,12 @@ import {registerDebuggingEventsService} from 'src/main/debugEvents';
 import {setupMenu} from 'src/main/menu';
 import {userInfo} from 'src/shared/sentry/main';
 import {AppStore, createStore} from 'src/shared/store';
-import {loadMainConfig, observeStore, registerMainIpc} from 'src/shared/store/ipc';
+import {
+  loadMainConfig,
+  observeStore,
+  registerMainIpc,
+  startCloudServicesWebsocket,
+} from 'src/shared/store/ipc';
 import connectNetworkStore from 'src/shared/store/network';
 import theme from 'src/theme';
 
@@ -118,6 +123,18 @@ app.on('ready', async () => {
   // As thus THIS LINE MUST BE PLACED AFTER THE NETWORK IS BROUGHT ONLINE.
   //
   await startOverlayServer(mainStore);
+
+  // Connect to app.prolink.tools when enabled
+  reaction(
+    () => mainStore.config.enableCloudApi,
+    enabled => {
+      if (enabled) {
+        const disconnect = startCloudServicesWebsocket(mainStore);
+        when(() => mainStore.config.enableCloudApi === false, disconnect);
+      }
+    },
+    {fireImmediately: true}
+  );
 
   connectNetworkStore(mainStore, network);
   registerDebuggingEventsService(mainStore, network);

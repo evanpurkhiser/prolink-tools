@@ -351,3 +351,23 @@ export const registerWebsocketListener = (
   ws.on('store-update', (change: SerializedChange) => applyChanges(store, change));
   ws.on('store-init', (data: any) => set(store, deserialize(AppStore, data)));
 };
+
+/**
+ * Pushes updates to the API server running on app.prolink.tools.
+ *
+ * Returns a function to disconnect.
+ */
+export const startCloudServicesWebsocket = (store: AppStore) => {
+  const host = process.env.USE_LOCAL_SERVER
+    ? 'http://localhost:8888'
+    : 'https://app.prolink.tools';
+
+  const key = 'test';
+
+  const conn = io(`${host}/ingest/${key}`, {transports: ['websocket']});
+
+  conn.emit('store-init', serialize(AppStore, store));
+  changeHandlers.push(change => conn.emit('store-update', change));
+
+  return () => conn.disconnect();
+};

@@ -166,6 +166,12 @@ export class AppConfig {
   @observable
   reportDebugEvents = false;
   /**
+   * Should we publish state to app.prolink.tools?
+   */
+  @serializable
+  @observable
+  enableCloudApi = false;
+  /**
    * Mark tracks as 'IDs' using this string
    */
   @serializable

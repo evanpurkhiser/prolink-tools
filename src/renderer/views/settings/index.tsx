@@ -61,6 +61,27 @@ const Settings = observer(({store}: Props) => {
             onChange={e => set(store.config, {reportDebugEvents: e.target.checked})}
           />
         </Field>
+        {process.env.RELEASE_CHANNEL !== 'stable' && (
+          <Field
+            top
+            size="sm"
+            name="Enable Cloud Services"
+            description={
+              <React.Fragment>
+                Enables cloud access to Prolink Tools. Overlays will be accessible from
+                any network and additional features will be enabled.
+                <InfoBox>
+                  This feature is <em>highly</em> experimental!
+                </InfoBox>
+              </React.Fragment>
+            }
+          >
+            <Checkbox
+              checked={config.enableCloudApi}
+              onChange={e => set(store.config, {enableCloudApi: e.target.checked})}
+            />
+          </Field>
+        )}
       </Section>
     </React.Fragment>
   );
