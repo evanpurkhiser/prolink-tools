@@ -6,6 +6,7 @@ import {
   CDJStatus,
   Device,
   DeviceID,
+  DeviceType,
   FetchProgress,
   HydrationProgress,
   MediaSlot,
@@ -226,6 +227,25 @@ export class AppStore {
   @serializable(rawJS)
   @observable
   user?: User;
+
+  /**
+   * Does the current network configuration support on-air status?
+   *
+   * Caveats:
+   *  - XDJ-XZ will also be considered as having a mixer on the network.
+   *  - If we're using 2000s there is no onAir indicator in the status packets
+   *    unfortunately.
+   */
+  @computed
+  get hasOnAirSupport() {
+    const devices = [...this.devices.values()].map(s => s.device);
+
+    const hasDJM = devices.some(d => d.type === DeviceType.Mixer);
+    const has2000 = devices.some(d => d.name.toLowerCase() === 'cdj-2000');
+    const hasXZ = devices.some(d => d.name.toLowerCase() === 'xdj-xz');
+
+    return !has2000 && (hasDJM || hasXZ);
+  }
 }
 
 const store = observable(new AppStore());

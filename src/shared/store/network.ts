@@ -1,13 +1,8 @@
 import {captureMessage, Severity} from '@sentry/node';
 import {applyDiff} from 'deep-diff';
 import {debounce} from 'lodash';
-import {action, runInAction, when} from 'mobx';
-import {
-  ConnectedProlinkNetwork,
-  DeviceID,
-  DeviceType,
-  ProlinkNetwork,
-} from 'prolink-connect';
+import {action, reaction, runInAction, when} from 'mobx';
+import {ConnectedProlinkNetwork, DeviceID, ProlinkNetwork} from 'prolink-connect';
 
 import {deviceReaction} from './utils';
 import store, {DeviceStore, HydrationInfo, PlayedTrack} from '.';
@@ -277,28 +272,14 @@ const connectMixstatus = (network: ConnectedProlinkNetwork) => {
   network.mixstatus.on('setEnded', () => store.mixstatus.trackHistory.clear());
 
   /**
-   * Mark the onAir capabilities when a DJM is on the network.
-   *
-   * Caveats:
-   *  - XDJ-XZ will also be considered as having a mixer on the network.
-   *  - If we're using 2000s there is no onAir indicator in the status packets
-   *    unfortunately.
+   * Update mixstatus service if onair support changes
    */
-  const updateOnAirCapabilities = () => {
-    const devices = [...network.deviceManager.devices.values()];
-
-    const hasMixer =
-      !devices.some(device => device.name.toLowerCase() === 'cdj-2000') &&
-      (devices.some(device => device.type === DeviceType.Mixer) ||
-        devices.some(device => device.name.toLowerCase() === 'xdj-xz'));
-
-    network.mixstatus.configure({
-      hasOnAirCapabilities: hasMixer,
-      reportRequresSilence: !hasMixer,
-    });
-  };
-
-  network.deviceManager.on('connected', updateOnAirCapabilities);
-  network.deviceManager.on('disconnected', updateOnAirCapabilities);
-  updateOnAirCapabilities();
+  reaction(
+    () => store.hasOnAirSupport,
+    hasOnAirSupport =>
+      network.mixstatus.configure({
+        hasOnAirCapabilities: hasOnAirSupport,
+        reportRequresSilence: !hasOnAirSupport,
+      })
+  );
 };
