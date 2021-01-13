@@ -6,6 +6,10 @@ import {makeRandomTrack} from './randomMetadata';
 
 type Options = {
   /**
+   * Should we continue to produce random history data
+   */
+  enabled: boolean;
+  /**
    * Maximum number of history items to store
    */
   cutoff: number;
@@ -19,7 +23,7 @@ type Options = {
  * Generates a random track history from a random music metadata API + random
  * image API.
  */
-const useRandomHistory = ({cutoff, updateInterval}: Options) => {
+const useRandomHistory = ({enabled, cutoff, updateInterval}: Options) => {
   const [history, setHistory] = React.useState<PlayedTrack[]>([]);
 
   let isUpdating = true;
@@ -27,9 +31,9 @@ const useRandomHistory = ({cutoff, updateInterval}: Options) => {
   const startUpdater = async () => {
     let lastHistory = history;
 
-    while (isUpdating) {
+    while (enabled && isUpdating) {
       lastHistory = [...lastHistory, await makeRandomTrack()].slice(-1 * cutoff);
-      if (isUpdating) {
+      if (enabled && isUpdating) {
         setHistory(lastHistory);
         await new Promise(r => setTimeout(r, updateInterval));
       }
@@ -41,7 +45,7 @@ const useRandomHistory = ({cutoff, updateInterval}: Options) => {
     return () => {
       isUpdating = false;
     };
-  }, [cutoff, updateInterval]);
+  }, [enabled, cutoff, updateInterval]);
 
   return history;
 };

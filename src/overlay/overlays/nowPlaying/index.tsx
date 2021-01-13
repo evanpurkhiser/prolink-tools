@@ -98,11 +98,16 @@ type ExampleProps = {
 };
 
 const Example: React.FC<ExampleProps> = observer(({store, config, hideControls}) => {
-  const demoHistory = useRandomHistory({cutoff: 5, updateInterval: 5000});
   const liveHistory = store.mixstatus.trackHistory;
-
-  const history = liveHistory.length === 0 ? demoHistory : liveHistory;
   const isLive = liveHistory.length > 0;
+
+  const demoHistory = useRandomHistory({
+    enabled: !isLive,
+    cutoff: 5,
+    updateInterval: 5000,
+  });
+
+  const history = isLive ? liveHistory : demoHistory;
 
   const theme = config?.theme ?? 'tracklist';
   const Overlay = themes[theme].component;
