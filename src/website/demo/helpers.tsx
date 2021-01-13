@@ -1,7 +1,7 @@
 import {cloneDeep, random} from 'lodash';
 import {CDJStatus, MediaSlot, TrackType} from 'prolink-connect/lib/types';
 
-import {AppStore} from 'src/shared/store';
+import {AppStore, PlayedTrack} from 'src/shared/store';
 import {makeRandomTrack} from 'src/utils/randomMetadata';
 
 export async function loadTrack(
@@ -86,10 +86,8 @@ export function markAsPlaying(store: AppStore, deviceId: number) {
   const s = store.devices.get(deviceId)!;
 
   // Deep clone since we cannot observe two of the same object in our store
-  store.mixstatus.trackHistory.push({
-    track: cloneDeep(s.track!),
-    artwork: s.artwork,
-    playedAt: new Date(),
-    isId: false,
-  });
+  const played = new PlayedTrack(new Date(), cloneDeep(s.track!));
+  played.artwork = s.artwork;
+
+  store.mixstatus.trackHistory.push(played);
 }
