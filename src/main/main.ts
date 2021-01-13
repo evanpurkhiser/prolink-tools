@@ -136,6 +136,9 @@ app.on('ready', async () => {
     {fireImmediately: true}
   );
 
+  // Require overlay main functionality
+  require('src/overlay/overlays/nowPlaying/main');
+
   connectNetworkStore(mainStore, network);
   registerDebuggingEventsService(mainStore, network);
 });
