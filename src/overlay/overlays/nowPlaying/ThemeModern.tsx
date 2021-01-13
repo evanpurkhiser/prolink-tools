@@ -11,7 +11,7 @@ import {PlayedTrack} from 'src/shared/store';
 import {idTrack} from 'src/utils/dummyData';
 
 import {Tags, tagsConfig} from './tags';
-import {NowPlayingConfig, ThemeDescriptor} from '.';
+import {ThemeComponentProps, ThemeDescriptor} from '.';
 
 const artToSrc = (d: Uint8Array | undefined) =>
   d && d.length > 0
@@ -255,16 +255,16 @@ type BaseTrackProps = MotionDivProps & {
    */
   tags?: Tags;
   /**
-   * Use the example ID track to mask IDs
+   * The string used to mask ID tracks. Blank if ID masks are disabled
    */
-  maskId?: boolean;
+  idMask?: string;
 };
 
 const FullTrack = ({
   played,
   firstPlayed,
   hideArtwork,
-  maskId,
+  idMask,
   ...props
 }: BaseTrackProps) => (
   <TrackContainer {...props}>
@@ -278,7 +278,7 @@ const FullTrack = ({
     )}
     <FullMetadata
       alignRight={props.alignRight}
-      track={maskId && played.isId ? idTrack : played.track}
+      track={played.metadataIncludes(idMask) ? idTrack : played.track}
       tags={props.tags ?? []}
     />
   </TrackContainer>
@@ -329,8 +329,8 @@ const PlayedAt = styled(Text)`
   line-height: 1.3;
 `;
 
-const MiniTrack = ({played, hideArtwork, maskId, ...props}: BaseTrackProps) => {
-  const track = maskId && played.isId ? idTrack : played.track;
+const MiniTrack = ({played, hideArtwork, idMask, ...props}: BaseTrackProps) => {
+  const track = played.metadataIncludes(idMask) ? idTrack : played.track;
 
   return (
     <TrackContainer {...props}>
@@ -382,12 +382,9 @@ CurrentTrack.defaultProps = {
   },
 };
 
-type Props = {
-  config: NowPlayingConfig;
-  history: PlayedTrack[];
-};
+type Props = ThemeComponentProps;
 
-const ThemeModern: React.FC<Props> = observer(({config, history}) =>
+const ThemeModern: React.FC<Props> = observer(({appConfig, config, history}) =>
   history.length === 0 ? null : (
     <React.Fragment>
       <CurrentTrack
@@ -397,7 +394,7 @@ const ThemeModern: React.FC<Props> = observer(({config, history}) =>
         hideArtwork={config.hideArtwork}
         tags={config.tags}
         firstPlayed={history.length === 1}
-        maskId={config.maskId}
+        idMask={config.maskId ? appConfig.idMarker : ''}
         played={history[0]}
       />
       {(config.historyCount ?? 0) > 0 && history.length > 1 && (

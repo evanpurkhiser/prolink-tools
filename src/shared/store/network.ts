@@ -260,7 +260,7 @@ const connectMixstatus = (store: AppStore, network: ConnectedProlinkNetwork) => 
         return;
       }
 
-      const played = new PlayedTrack({config: store.config, playedAt, track});
+      const played = new PlayedTrack(playedAt, track);
       played.artwork = device?.artwork;
 
       store.mixstatus.trackHistory.push(played);

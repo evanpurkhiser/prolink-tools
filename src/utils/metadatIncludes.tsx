@@ -9,7 +9,7 @@ const propertiesToCheck = [
   'genre',
 ] as const;
 
-const isId = (track: Track, marker: string) =>
+const metadataIncludes = (track: Track, marker: string) =>
   propertiesToCheck.some(property => {
     const prop = track[property];
     const value = typeof prop === 'string' ? prop.toLowerCase() : prop?.name ?? '';
@@ -17,4 +17,4 @@ const isId = (track: Track, marker: string) =>
     return value.toLowerCase().includes(marker.toLowerCase());
   });
 
-export default isId;
+export default metadataIncludes;

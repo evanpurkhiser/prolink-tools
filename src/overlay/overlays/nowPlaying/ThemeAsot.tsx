@@ -8,7 +8,7 @@ import {PlayedTrack} from 'src/shared/store';
 import {idTrack} from 'src/utils/dummyData';
 
 import {Tags, tagsConfig} from './tags';
-import {NowPlayingConfig, ThemeDescriptor} from '.';
+import {ThemeComponentProps, ThemeDescriptor} from '.';
 
 type MotionDivProps = React.ComponentProps<typeof motion.div>;
 
@@ -178,16 +178,16 @@ type TrackProps = MotionDivProps & {
    */
   tags?: Tags;
   /**
-   * Use the example ID track to mask IDs
+   * The string used to mask ID tracks. Blank if ID masks are disabled
    */
-  maskId?: boolean;
+  idMask?: string;
 };
 
-const Track = ({played, maskId, ...props}: TrackProps) => (
+const Track = ({played, idMask, ...props}: TrackProps) => (
   <TrackContainer {...props}>
     <FullMetadata
       alignRight={props.alignRight}
-      track={maskId && played.isId ? idTrack : played.track}
+      track={played.metadataIncludes(idMask) ? idTrack : played.track}
       tags={props.tags ?? []}
     />
   </TrackContainer>
@@ -241,19 +241,16 @@ CurrentTrack.defaultProps = {
   },
 };
 
-type Props = {
-  config: NowPlayingConfig;
-  history: PlayedTrack[];
-};
+type Props = ThemeComponentProps;
 
-const ThemeAsot: React.FC<Props> = observer(({config, history}) =>
+const ThemeAsot: React.FC<Props> = observer(({appConfig, config, history}) =>
   history.length === 0 ? null : (
     <CurrentTrack
       style={toJS(config.colors)}
       className="track-current"
       alignRight={config.alignRight}
       tags={config.tags}
-      maskId={config.maskId}
+      idMask={config.maskId ? appConfig.idMarker : ''}
       played={history[0]}
     />
   )

@@ -29,7 +29,10 @@ router.get('/stats', ctx => {
     key,
     devices: [...connections[key].store.devices.values()].map(d => d.device.name),
     user: connections[key].store.user?.username,
-    playedTracks: connections[key].store.mixstatus.trackHistory.map(h => h.track.title),
+    playedTracks: connections[key].store.mixstatus.trackHistory.map(h => ({
+      title: h.track.title,
+      id: h.metadataIncludes(connections[key].store.config.idMarker),
+    })),
   }));
 
   ctx.body = `Client Info: ${JSON.stringify(data)}`;

@@ -11,7 +11,7 @@ import {OverlayDescriptor} from 'src/overlay';
 import DemoSwitch from 'src/overlay/components/demoSwitch';
 import LiveHistoryIndicator from 'src/overlay/components/liveHistoryIndicator';
 import Select from 'src/renderer/components/form/Select';
-import {AppStore, PlayedTrack} from 'src/shared/store';
+import {AppConfig, AppStore, PlayedTrack} from 'src/shared/store';
 import useRandomHistory from 'src/utils/useRandomHistory';
 import withStore from 'src/utils/withStore';
 
@@ -32,7 +32,8 @@ type TaggedNowPlaying = {
   config: NowPlayingConfig;
 };
 
-type ThemeComponentProps = {
+export type ThemeComponentProps = {
+  appConfig: AppConfig;
   config: NowPlayingConfig;
   history: PlayedTrack[];
 };
@@ -117,6 +118,7 @@ const Example: React.FC<ExampleProps> = observer(({store, config, hideControls})
       <EmptyExample />
     ) : (
       <Overlay
+        appConfig={store.config}
         config={config ?? {theme: 'tracklist'}}
         history={history.slice().reverse()}
       />
@@ -161,7 +163,7 @@ const NowPlayingOverlay: React.FC<OverlayProps> = observer(({store, config}) => 
   return config.demoMode ? (
     <Example store={store} config={config} hideControls />
   ) : (
-    <Overlay {...{history, config}} />
+    <Overlay appConfig={store.config} {...{history, config}} />
   );
 });
 

@@ -17,7 +17,7 @@ import {custom, date, list, map, mapAsArray, object, serializable} from 'seriali
 import {uuid} from 'short-uuid';
 
 import {OverlayInstance} from 'src/overlay';
-import isId from 'src/utils/isId';
+import metadatIncludes from 'src/utils/metadatIncludes';
 
 type PerTableHydrationProgress = Omit<HydrationProgress, 'table'>;
 
@@ -116,15 +116,7 @@ export class HydrationInfo {
   isDone = false;
 }
 
-type PlayedTrackParams = {
-  config?: AppConfig;
-  playedAt: Date;
-  track: Track;
-};
-
 export class PlayedTrack {
-  #config?: AppConfig;
-
   @serializable(date())
   playedAt: Date;
 
@@ -134,14 +126,13 @@ export class PlayedTrack {
   @serializable(bufferSerialize)
   artwork?: Uint8Array;
 
-  @computed
-  get isId() {
-    const marker = this.#config?.idMarker ?? '[ID]';
-    return marker !== '' ? isId(this.track, marker) : false;
+  metadataIncludes(marker?: string) {
+    return marker !== undefined && marker !== ''
+      ? metadatIncludes(this.track, marker)
+      : false;
   }
 
-  constructor({config, playedAt, track}: PlayedTrackParams) {
-    this.#config = config;
+  constructor(playedAt: Date, track: Track) {
     this.playedAt = playedAt;
     this.track = track;
   }
