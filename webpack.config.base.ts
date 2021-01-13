@@ -12,7 +12,6 @@ const envConfig = {
   RELEASE: releaseId,
   RELEASE_CHANNEL: releaseChannel,
   COMMIT: commit,
-  USE_LOCAL_SERVER: !!process.env.USE_LOCAL_SERVER,
 };
 
 export const baseConfig: webpack.Configuration = {
