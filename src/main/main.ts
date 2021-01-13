@@ -8,10 +8,10 @@ import {bringOnline, NetworkState, ProlinkNetwork} from 'prolink-connect';
 import * as path from 'path';
 import * as url from 'url';
 
+import {runConfigMigrations} from 'main/configMigrations';
+import {registerDebuggingEventsService} from 'main/debugEvents';
+import {setupMenu} from 'main/menu';
 import {startOverlayServer} from 'main/overlayServer';
-import {runConfigMigrations} from 'src/main/configMigrations';
-import {registerDebuggingEventsService} from 'src/main/debugEvents';
-import {setupMenu} from 'src/main/menu';
 import {userInfo} from 'src/shared/sentry/main';
 import {AppStore, createStore} from 'src/shared/store';
 import {

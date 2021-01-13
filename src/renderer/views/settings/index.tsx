@@ -3,10 +3,10 @@ import styled from '@emotion/styled';
 import {set} from 'mobx';
 import {observer} from 'mobx-react';
 
+import Checkbox from 'app/components/form/Checkbox';
+import Field from 'app/components/form/Field';
+import InfoBox from 'app/components/form/InfoBox';
 import Text from 'app/components/form/Text';
-import Checkbox from 'src/renderer/components/form/Checkbox';
-import Field from 'src/renderer/components/form/Field';
-import InfoBox from 'src/renderer/components/form/InfoBox';
 import {AppStore} from 'src/shared/store';
 import withStore from 'src/utils/withStore';
 

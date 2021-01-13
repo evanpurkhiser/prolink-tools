@@ -19,7 +19,7 @@ module.exports = {
           // Node.js builtins.
           [`^(${require('module').builtinModules.join('|')})(/|$)`],
           // Internal packages.
-          ['^(src|app|main|overlay|web)(/.*|$)'],
+          ['^(src|app|main|server|overlay|web)(/.*|$)'],
           // Parent imports. Put `..` last.
           ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
           // Other relative imports. Put same-folder imports and `.` last.

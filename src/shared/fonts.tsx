@@ -1,17 +1,17 @@
 import {css} from '@emotion/react';
 
-import dmMonoLight from 'src/fonts/DMMono-Light.ttf';
-import dmMonoMedium from 'src/fonts/DMMono-Medium.ttf';
-import dmMonoRegular from 'src/fonts/DMMono-Regular.ttf';
-import proximaNovaBold from 'src/fonts/ProximaNova-Bold.ttf';
-import proximaNovaBoldIt from 'src/fonts/ProximaNova-BoldIt.ttf';
-import proximaNovaRegular from 'src/fonts/ProximaNova-Regular.ttf';
-import proximaNovaRegularIt from 'src/fonts/ProximaNova-RegularIt.ttf';
-import proximaNovaSemibold from 'src/fonts/ProximaNova-Semibold.ttf';
-import proximaNovaSemiboldIt from 'src/fonts/ProximaNova-SemiboldIt.ttf';
-import ubuntuBold from 'src/fonts/Ubuntu-Bold.ttf';
-import ubuntuMedium from 'src/fonts/Ubuntu-Medium.ttf';
-import ubuntuRegular from 'src/fonts/Ubuntu-Regular.ttf';
+import dmMonoLight from 'src/assets/fonts/DMMono-Light.ttf';
+import dmMonoMedium from 'src/assets/fonts/DMMono-Medium.ttf';
+import dmMonoRegular from 'src/assets/fonts/DMMono-Regular.ttf';
+import proximaNovaBold from 'src/assets/fonts/ProximaNova-Bold.ttf';
+import proximaNovaBoldIt from 'src/assets/fonts/ProximaNova-BoldIt.ttf';
+import proximaNovaRegular from 'src/assets/fonts/ProximaNova-Regular.ttf';
+import proximaNovaRegularIt from 'src/assets/fonts/ProximaNova-RegularIt.ttf';
+import proximaNovaSemibold from 'src/assets/fonts/ProximaNova-Semibold.ttf';
+import proximaNovaSemiboldIt from 'src/assets/fonts/ProximaNova-SemiboldIt.ttf';
+import ubuntuBold from 'src/assets/fonts/Ubuntu-Bold.ttf';
+import ubuntuMedium from 'src/assets/fonts/Ubuntu-Medium.ttf';
+import ubuntuRegular from 'src/assets/fonts/Ubuntu-Regular.ttf';
 
 export default css`
   /* DM Mono */

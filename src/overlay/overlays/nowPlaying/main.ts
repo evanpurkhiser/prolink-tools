@@ -1,6 +1,6 @@
 import {reaction, set} from 'mobx';
 
-import {withMainStore} from 'src/main/main';
+import {withMainStore} from 'main/main';
 
 /**
  * Ensure demo mode is disabled when track history appears

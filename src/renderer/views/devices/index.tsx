@@ -5,6 +5,7 @@ import {observer} from 'mobx-react';
 import {DeviceType, NetworkState} from 'prolink-connect/lib/types';
 
 import ConnectingSplash from 'app/components/ConnectingSplash';
+import ConnectionError from 'app/components/ConnectionError';
 import BeatCounter from 'app/components/device/BeatCounter';
 import BpmIndicator from 'app/components/device/BpmIndicator';
 import DbStateIndicator from 'app/components/device/DbStateIndicator';
@@ -14,7 +15,6 @@ import PlayState from 'app/components/device/PlayState';
 import IconCdj from 'app/icons/cdj';
 import IconDjm from 'app/icons/djm';
 import IconRekordbox from 'app/icons/rekordbox';
-import ConnectionError from 'src/renderer/components/ConnectionError';
 import {AppStore, DeviceStore} from 'src/shared/store';
 import withStore from 'src/utils/withStore';
 
