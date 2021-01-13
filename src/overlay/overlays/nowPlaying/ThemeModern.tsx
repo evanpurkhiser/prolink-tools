@@ -409,6 +409,7 @@ const ThemeModern: React.FC<Props> = observer(({appConfig, config, history}) =>
                   alignRight={config.alignRight}
                   hideArtwork={config.hideArtwork}
                   played={track}
+                  idMask={config.maskId ? appConfig.idMarker : ''}
                   variants={{exit: {display: 'none'}}}
                   key={`${track.playedAt}-${track.track.id}`}
                 />
