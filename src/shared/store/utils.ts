@@ -1,4 +1,4 @@
-import {IReactionDisposer, IReactionPublic, reaction} from 'mobx';
+import {IReactionDisposer, IReactionPublic, observe, reaction} from 'mobx';
 import {DeviceID} from 'prolink-connect/lib/types';
 
 import {AppStore, DeviceStore} from '.';
@@ -18,12 +18,12 @@ export function deviceReaction<T>(
   const createDeviceReaction = (deviceStore: DeviceStore) => {
     const disposer = reaction(
       r => expression(deviceStore, r),
-      (arg, r) => effect(deviceStore, arg, r)
+      (arg, _prev, r) => effect(deviceStore, arg, r)
     );
     disposers.set(deviceStore.device.id, disposer);
   };
 
-  store.devices.observe(change => {
+  observe(store.devices, change => {
     if (change.type === 'add') {
       createDeviceReaction(change.newValue);
     }

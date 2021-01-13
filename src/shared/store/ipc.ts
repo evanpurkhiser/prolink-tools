@@ -2,8 +2,7 @@ import {ipcMain, ipcRenderer} from 'electron';
 import settings from 'electron-settings';
 import {
   get,
-  IArrayChange,
-  IArraySplice,
+  IArrayDidChange,
   IMapDidChange,
   IObjectDidChange,
   isObservableArray,
@@ -27,7 +26,7 @@ import {
 } from '.';
 
 type ValueChange = Omit<
-  IObjectDidChange | IArrayChange | IArraySplice | IMapDidChange,
+  IObjectDidChange | IArrayDidChange | IMapDidChange,
   'object' | 'oldValue'
 >;
 
@@ -130,7 +129,7 @@ function applyChanges(obj: any, {path, change, serializerModel}: SerializedChang
   // A bit of a TS hack, cast each expected change type
   const objChange = change as IObjectDidChange;
   const mapChange = change as IMapDidChange;
-  const arrChange = change as IArrayChange | IArraySplice;
+  const arrChange = change as IArrayDidChange;
 
   // We can update the target object if it has serializeInfo available
   const serializeSchema = target?.constructor?.serializeInfo;

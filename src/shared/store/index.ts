@@ -1,7 +1,7 @@
 import {User} from '@sentry/types';
 import * as ip from 'ip-address';
 import {identity} from 'lodash';
-import {action, computed, observable, toJS} from 'mobx';
+import {action, computed, makeObservable, observable, toJS} from 'mobx';
 import {
   CDJStatus,
   Device,
@@ -79,6 +79,8 @@ export class DeviceStore {
   hydrationProgress = observable.map<MediaSlot, HydrationInfo>();
 
   constructor(device: Device) {
+    makeObservable(this);
+
     this.device = device;
 
     // NOTE: We use the null traversal here for when this object is
@@ -114,6 +116,10 @@ export class HydrationInfo {
   @serializable
   @observable
   isDone = false;
+
+  constructor() {
+    makeObservable(this);
+  }
 }
 
 export class PlayedTrack {
@@ -145,6 +151,10 @@ export class MixstatusStore {
   @serializable(list(object(PlayedTrack)))
   @observable
   trackHistory = observable.array<PlayedTrack>();
+
+  constructor() {
+    makeObservable(this);
+  }
 }
 
 export class AppConfig {
@@ -196,6 +206,10 @@ export class AppConfig {
   @action
   toggleTheme() {
     this.theme = this.theme === 'light' ? 'dark' : 'light';
+  }
+
+  constructor() {
+    makeObservable(this);
   }
 }
 
@@ -258,6 +272,10 @@ export class AppStore {
     const hasXZ = devices.some(d => d.name.toLowerCase() === 'xdj-xz');
 
     return !has2000 && (hasDJM || hasXZ);
+  }
+
+  constructor() {
+    makeObservable(this);
   }
 }
 
