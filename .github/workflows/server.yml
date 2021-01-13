@@ -36,4 +36,5 @@ jobs:
             docker-compose -f ./server-compose.yml pull --quiet
             docker-compose -f ./server-compose.yml rm --force --stop -v prolink-tools
             docker-compose -f ./server-compose.yml up --detach
+            docker system prune --all --force
           EOF
