@@ -36,6 +36,7 @@ services:
       - "VIRTUAL_HOST=app.prolink.tools"
       - "LETSENCRYPT_HOST=app.prolink.tools"
     network_mode: bridge
+    restart: always
 
 volumes:
   conf:
