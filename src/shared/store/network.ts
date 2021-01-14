@@ -281,6 +281,7 @@ const connectMixstatus = (store: AppStore, network: ConnectedProlinkNetwork) => 
       network.mixstatus.configure({
         hasOnAirCapabilities: hasOnAirSupport,
         reportRequresSilence: !hasOnAirSupport,
-      })
+      }),
+    {fireImmediately: true}
   );
 };
