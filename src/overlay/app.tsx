@@ -6,11 +6,11 @@ import * as ReactDOM from 'react-dom';
 import {io} from 'socket.io-client';
 
 import Router from 'overlay/Router';
-import {createStore} from 'src/shared/store';
+import {createAppStore} from 'src/shared/store';
 import {registerWebsocketListener} from 'src/shared/store/client';
 import {StoreContext} from 'src/shared/store/context';
 
-const overlaysStore = createStore();
+const overlaysStore = createAppStore();
 
 const mainElement = document.createElement('div');
 document.body.appendChild(mainElement);

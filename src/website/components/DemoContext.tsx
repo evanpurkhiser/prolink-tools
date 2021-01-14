@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import {createStore} from 'src/shared/store';
+import {createAppStore} from 'src/shared/store';
 import {StoreContext} from 'src/shared/store/context';
 import Routine from 'src/website/demo/routine';
 
@@ -13,7 +13,7 @@ type Props = {
 };
 
 const DemoContext = ({demoRoutine, children}: Props) => {
-  const [demoStore] = React.useState(createStore());
+  const [demoStore] = React.useState(createAppStore());
 
   React.useEffect(() => {
     demoRoutine.run(demoStore);

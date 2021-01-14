@@ -13,7 +13,7 @@ import {registerDebuggingEventsService} from 'main/debugEvents';
 import {setupMenu} from 'main/menu';
 import {startOverlayServer} from 'main/overlayServer';
 import {userInfo} from 'src/shared/sentry/main';
-import {AppStore, createStore} from 'src/shared/store';
+import {AppStore, createAppStore} from 'src/shared/store';
 import {observeStore} from 'src/shared/store/ipc';
 import connectNetworkStore from 'src/shared/store/network';
 import {
@@ -25,7 +25,7 @@ import {
 } from 'src/shared/store/server';
 import theme from 'src/theme';
 
-const mainStore = createStore();
+const mainStore = createAppStore();
 
 export const withMainStore = (cb: (store: AppStore) => void) => cb(mainStore);
 
@@ -108,7 +108,7 @@ app.on('ready', async () => {
 
   createWindow();
 
-  const register = observeStore({target: mainStore});
+  const [register] = observeStore({target: mainStore});
   registerMainIpc(mainStore, register);
 
   let network: ProlinkNetwork;

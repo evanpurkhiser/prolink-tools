@@ -287,4 +287,4 @@ export class AppStore {
   }
 }
 
-export const createStore = () => observable(new AppStore());
+export const createAppStore = () => observable(new AppStore());

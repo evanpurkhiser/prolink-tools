@@ -10,7 +10,7 @@ import {
   set,
   toJS,
 } from 'mobx';
-import {deepObserve} from 'mobx-utils';
+import {deepObserve, IDisposer} from 'mobx-utils';
 import {deserialize, serialize, update} from 'serializr';
 
 import {AppStore, DeviceStore, HydrationInfo, MixstatusStore, PlayedTrack} from '.';
@@ -174,7 +174,10 @@ export type RegisterHandler = (reciever: changeHandler) => void;
 /**
  * Start observing the store (or some part of it) for changes.
  */
-export const observeStore = ({target, handler}: ObserverStoreOpts): RegisterHandler => {
+export const observeStore = ({
+  target,
+  handler,
+}: ObserverStoreOpts): [RegisterHandler, IDisposer] => {
   // Maintains a list of handlers that will be called in response to a serailized
   // change in the store.
   const handlers: changeHandler[] = [];
@@ -183,7 +186,7 @@ export const observeStore = ({target, handler}: ObserverStoreOpts): RegisterHand
     handlers.push(handler);
   }
 
-  deepObserve(target, (change, changePath) => {
+  const dispose = deepObserve(target, (change, changePath) => {
     const anyChange = {...change} as {[k: string]: any};
 
     const path = changePath;
@@ -247,5 +250,5 @@ export const observeStore = ({target, handler}: ObserverStoreOpts): RegisterHand
     handlers.forEach(handler => handler(serializedChange));
   });
 
-  return handler => handlers.push(handler);
+  return [handler => handlers.push(handler), dispose];
 };

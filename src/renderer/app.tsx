@@ -9,7 +9,7 @@ import {when} from 'mobx';
 
 import ThemeProvider from 'src/shared/components/ThemeProvider';
 import globalCss, {noSelect} from 'src/shared/globalCss';
-import {createStore} from 'src/shared/store';
+import {createAppStore} from 'src/shared/store';
 import {registerRendererConfigIpc, registerRendererIpc} from 'src/shared/store/client';
 import {StoreContext} from 'src/shared/store/context';
 import Application from 'ui/views/Application';
@@ -17,7 +17,7 @@ import Application from 'ui/views/Application';
 const mainElement = document.createElement('div');
 document.body.appendChild(mainElement);
 
-const rendererStore = createStore();
+const rendererStore = createAppStore();
 
 const main = (
   <StoreContext.Provider value={rendererStore}>

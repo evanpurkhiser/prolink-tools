@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import {AppStore, createStore} from '.';
+import {AppStore, createAppStore} from '.';
 
-const defaultStore = createStore();
+const defaultStore = createAppStore();
 
 /**
  * The StoreContext type is used when providing an application store to React
