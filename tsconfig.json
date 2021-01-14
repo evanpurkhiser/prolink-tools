@@ -15,7 +15,7 @@
     "baseUrl": "./src",
     "paths": {
       "src/*": ["./*"],
-      "app/*": ["./renderer/*"],
+      "ui/*": ["./renderer/*"],
       "main/*": ["./main/*"],
       "overlay/*": ["./overlay/*"],
       "server/*": ["./server/*"],

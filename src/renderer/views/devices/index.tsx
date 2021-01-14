@@ -4,19 +4,19 @@ import {groupBy} from 'lodash';
 import {observer} from 'mobx-react';
 import {DeviceType, NetworkState} from 'prolink-connect/lib/types';
 
-import ConnectingSplash from 'app/components/ConnectingSplash';
-import ConnectionError from 'app/components/ConnectionError';
-import BeatCounter from 'app/components/device/BeatCounter';
-import BpmIndicator from 'app/components/device/BpmIndicator';
-import DbStateIndicator from 'app/components/device/DbStateIndicator';
-import DeviceInfo from 'app/components/device/DeviceInfo';
-import Metadata from 'app/components/device/Metadata';
-import PlayState from 'app/components/device/PlayState';
-import IconCdj from 'app/icons/cdj';
-import IconDjm from 'app/icons/djm';
-import IconRekordbox from 'app/icons/rekordbox';
 import {AppStore, DeviceStore} from 'src/shared/store';
 import withStore from 'src/utils/withStore';
+import ConnectingSplash from 'ui/components/ConnectingSplash';
+import ConnectionError from 'ui/components/ConnectionError';
+import BeatCounter from 'ui/components/device/BeatCounter';
+import BpmIndicator from 'ui/components/device/BpmIndicator';
+import DbStateIndicator from 'ui/components/device/DbStateIndicator';
+import DeviceInfo from 'ui/components/device/DeviceInfo';
+import Metadata from 'ui/components/device/Metadata';
+import PlayState from 'ui/components/device/PlayState';
+import IconCdj from 'ui/icons/cdj';
+import IconDjm from 'ui/icons/djm';
+import IconRekordbox from 'ui/icons/rekordbox';
 
 const sortById = (a: DeviceStore, b: DeviceStore) => a.device.id - b.device.id;
 

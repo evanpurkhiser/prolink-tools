@@ -3,9 +3,9 @@ import styled from '@emotion/styled';
 import filesize from 'filesize';
 import {observer} from 'mobx-react';
 
-import ProgressRing from 'app/components/ProgressRing';
 import {AppStore} from 'src/shared/store';
 import withStore from 'src/utils/withStore';
+import ProgressRing from 'ui/components/ProgressRing';
 
 type Props = {
   store: AppStore;

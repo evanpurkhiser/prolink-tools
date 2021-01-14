@@ -7,12 +7,12 @@ import {Global} from '@emotion/react';
 import * as Sentry from '@sentry/browser';
 import {when} from 'mobx';
 
-import Application from 'app/views/Application';
 import ThemeProvider from 'src/shared/components/ThemeProvider';
 import globalCss, {noSelect} from 'src/shared/globalCss';
 import {createStore} from 'src/shared/store';
 import {StoreContext} from 'src/shared/store/context';
 import {registerRendererConfigIpc, registerRendererIpc} from 'src/shared/store/ipc';
+import Application from 'ui/views/Application';
 
 const mainElement = document.createElement('div');
 document.body.appendChild(mainElement);

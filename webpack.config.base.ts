@@ -31,7 +31,7 @@ export const baseConfig: webpack.Configuration = {
     extensions: ['.tsx', '.ts', '.js', '.ttf'],
     alias: {
       main: path.resolve(__dirname, 'src/main/'),
-      app: path.resolve(__dirname, 'src/renderer/'),
+      ui: path.resolve(__dirname, 'src/renderer/'),
       overlay: path.resolve(__dirname, 'src/overlay/'),
       web: path.resolve(__dirname, 'src/website/'),
       src: path.resolve(__dirname, 'src/'),

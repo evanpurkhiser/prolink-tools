@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import {set} from 'mobx';
 import {observer} from 'mobx-react';
 
-import Checkbox from 'app/components/form/Checkbox';
+import Checkbox from 'ui/components/form/Checkbox';
 
 type Props = {
   config: {demoMode?: boolean};

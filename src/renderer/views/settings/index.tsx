@@ -3,12 +3,12 @@ import styled from '@emotion/styled';
 import {set} from 'mobx';
 import {observer} from 'mobx-react';
 
-import Checkbox from 'app/components/form/Checkbox';
-import Field from 'app/components/form/Field';
-import InfoBox from 'app/components/form/InfoBox';
-import Text from 'app/components/form/Text';
 import {AppStore} from 'src/shared/store';
 import withStore from 'src/utils/withStore';
+import Checkbox from 'ui/components/form/Checkbox';
+import Field from 'ui/components/form/Field';
+import InfoBox from 'ui/components/form/InfoBox';
+import Text from 'ui/components/form/Text';
 
 type Props = {
   store: AppStore;

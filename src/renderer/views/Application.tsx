@@ -1,11 +1,11 @@
 import {MemoryRouter, Redirect, Route, Switch} from 'react-router-dom';
 import styled from '@emotion/styled';
 
-import Titlebar from 'app/components/Titlebar';
-import Devices from 'app/views/devices';
-import OverlayConfig from 'app/views/overlayConfig';
-import Settings from 'app/views/settings';
 import Navigation from 'src/renderer/components/Navigation';
+import Titlebar from 'ui/components/Titlebar';
+import Devices from 'ui/views/devices';
+import OverlayConfig from 'ui/views/overlayConfig';
+import Settings from 'ui/views/settings';
 
 const Application = () => (
   <MemoryRouter>
