@@ -23,16 +23,16 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.DIGITAL_OCEAN_PRIVATE_KEY }}
 
-      - name: Add known hosts for app.prolink.tools
-        run: ssh-keyscan -H app.prolink.tools > ~/.ssh/known_hosts
+      - name: Add known hosts for api.prolink.tools
+        run: ssh-keyscan -H api.prolink.tools > ~/.ssh/known_hosts
 
       - name: Copy server-compose file
         run: |
-          scp ./conf/server-compose.yml root@app.prolink.tools:./
+          scp ./conf/server-compose.yml root@api.prolink.tools:./
 
       - name: Update images
         run: |
-          ssh root@app.prolink.tools << EOF
+          ssh root@api.prolink.tools << EOF
             docker-compose -f ./server-compose.yml pull --quiet
             docker-compose -f ./server-compose.yml rm --force --stop -v prolink-tools
             docker-compose -f ./server-compose.yml up --detach
