@@ -4,9 +4,9 @@ import {css, Global} from '@emotion/react';
 import styled from '@emotion/styled';
 import {motion, Variants} from 'framer-motion';
 
-import Application from 'src/renderer/views/Application';
 import LogoBig from 'src/shared/components/LogoBig';
 import globalCss, {noSelect} from 'src/shared/globalCss';
+import Application from 'ui/views/Application';
 
 import ActivityLink from './components/ActivityLink';
 import DemoContext from './components/DemoContext';
