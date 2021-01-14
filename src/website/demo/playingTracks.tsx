@@ -1,4 +1,5 @@
 import {Address4} from 'ip-address';
+import {action, runInAction} from 'mobx';
 import {CDJStatus, Device, DeviceType, NetworkState} from 'prolink-connect/lib/types';
 
 import {AppStore, DeviceStore} from 'src/shared/store';
@@ -17,7 +18,7 @@ const ONE_BEAT = (1 / (140 / 60)) * 1000;
 
 const bootRoutine = new Routine([
   {
-    fn: s => {
+    fn: action((s: AppStore) => {
       s.isInitalized = true;
       s.networkState = NetworkState.Online;
       s.config.sidebarCollapsed = true;
@@ -27,13 +28,13 @@ const bootRoutine = new Routine([
         type: 'nowPlaying',
         config: {theme: 'asot', tags: ['label'], historyCount: 1},
       });
-    },
+    }),
   },
   {
     delay: 4000,
-    fn: s => {
+    fn: action((s: AppStore) => {
       s.networkState = NetworkState.Connected;
-    },
+    }),
   },
   {
     delay: 200,
@@ -47,13 +48,15 @@ const bootRoutine = new Routine([
         macAddr: Uint8Array.from([0, 0, 0, 0, 0, 0, 0]),
       };
 
-      s.networkState = NetworkState.Connected;
-      s.devices.set(device.id, new DeviceStore(device));
+      runInAction(() => {
+        s.networkState = NetworkState.Connected;
+        s.devices.set(device.id, new DeviceStore(device));
+      });
     },
   },
   {
     delay: 150,
-    fn: s => {
+    fn: action((s: AppStore) => {
       const device: Device = {
         id: 10,
         name: 'DJM-900nxs2',
@@ -62,7 +65,7 @@ const bootRoutine = new Routine([
         macAddr: Uint8Array.from([0, 0, 0, 0, 0, 0, 0]),
       };
       s.devices.set(device.id, new DeviceStore(device));
-    },
+    }),
   },
 ]);
 
