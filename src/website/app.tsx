@@ -41,11 +41,11 @@ const Routes = () => (
                 <div>
                   <h1>Number of clients: {webApiStore.clientCount}</h1>
 
-                  <h3>Last track played anywhere</h3>
+                  <h3>Last 20 played tracks everywhere</h3>
                   <NowPlaying
-                    history={[webApiStore.lastPlayedTrack!].filter(v => v !== null)}
+                    history={webApiStore.history}
                     appConfig={new AppConfig()}
-                    config={{theme: 'tracklist'}}
+                    config={{theme: 'tracklist', historyCount: 20}}
                   />
                 </div>
               );

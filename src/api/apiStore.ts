@@ -11,11 +11,11 @@ export class ApiStore {
   @observable
   clientCount = 0;
   /**
-   * The most recently played tarck globally across all clients
+   * All the most recently played tracks
    */
   @serializable(object(PlayedTrack))
   @observable
-  lastPlayedTrack: PlayedTrack | null = null;
+  history: PlayedTrack[] = [];
 
   constructor() {
     makeAutoObservable(this);

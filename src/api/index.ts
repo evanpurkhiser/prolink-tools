@@ -91,7 +91,9 @@ wss.of(ingestMatcher).on('connection', socket => {
     }
 
     console.log('updating last played: ', history[0].track.title);
-    runInAction(() => (apiStore.lastPlayedTrack = store.mixstatus.trackHistory[0]));
+    runInAction(() =>
+      apiStore.history.push(store.mixstatus.trackHistory[history.length - 1])
+    );
   });
 
   socket.on('disconnect', () => {
