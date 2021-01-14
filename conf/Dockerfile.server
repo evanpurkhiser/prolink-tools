@@ -10,4 +10,4 @@ COPY src /app/src/
 COPY tsconfig.json /app/
 
 EXPOSE 8888
-CMD ["yarn", "start-server"]
+CMD ["yarn", "start-api"]
