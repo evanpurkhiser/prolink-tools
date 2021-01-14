@@ -7,8 +7,8 @@ import {io} from 'socket.io-client';
 
 import Router from 'overlay/Router';
 import {createStore} from 'src/shared/store';
+import {registerWebsocketListener} from 'src/shared/store/client';
 import {StoreContext} from 'src/shared/store/context';
-import {registerWebsocketListener} from 'src/shared/store/ipc';
 
 const overlaysStore = createStore();
 

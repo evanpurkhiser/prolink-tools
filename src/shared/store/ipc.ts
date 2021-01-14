@@ -1,5 +1,3 @@
-import {ipcMain, ipcRenderer} from 'electron';
-import settings from 'electron-settings';
 import {
   action,
   get,
@@ -14,24 +12,15 @@ import {
 } from 'mobx';
 import {deepObserve} from 'mobx-utils';
 import {deserialize, serialize, update} from 'serializr';
-import {Server, Socket as ServerSocker} from 'socket.io';
-import {io, Socket as ClientSocket} from 'socket.io-client';
 
-import {
-  AppConfig,
-  AppStore,
-  DeviceStore,
-  HydrationInfo,
-  MixstatusStore,
-  PlayedTrack,
-} from '.';
+import {AppStore, DeviceStore, HydrationInfo, MixstatusStore, PlayedTrack} from '.';
 
 type ValueChange = Omit<
   IObjectDidChange | IArrayDidChange | IMapDidChange,
   'object' | 'oldValue'
 >;
 
-type SerializedChange = {
+export type SerializedChange = {
   /**
    * The path to the object within the store that has changed. Separated by `/`.
    * Nueric map keys are string which is a limitation of mobx-utils/deepObserve
@@ -45,19 +34,6 @@ type SerializedChange = {
 
   serializerModel?: string;
 };
-
-type ChangeHandler = (change: SerializedChange) => void;
-
-/**
- * Mark when we're applying a UI config change via IPC to avoid a loop over IPC.
- */
-let isApplyingConfigChange = false;
-
-/**
- * Maintains a list of handlers that will be called in response to a serailized
- * change in the store.
- */
-const changeHandlers: ChangeHandler[] = [];
 
 /**
  * Serializr allows us to easily serialize and deserialize our _entire_ store,
@@ -101,7 +77,7 @@ function getAtPath(obj: any, path: string) {
   return target;
 }
 
-const applyChanges = action(
+export const applyChanges = action(
   (obj: any, {path, change, serializerModel}: SerializedChange) => {
     const target = getAtPath(obj, path);
 
@@ -183,22 +159,30 @@ type ObserverStoreOpts = {
    */
   target: any;
   /**
-   * The function to call with a serializedChange when a observable has changed in
-   * the observed tree.
-   *
-   * If not specified all registered changeHandlers will be called.
+   * A handler to initally register
    */
-  handler?: ChangeHandler;
+  handler?: changeHandler;
 };
 
-const defaultChangeHandler = (serializedChange: SerializedChange) =>
-  changeHandlers.forEach(handler => handler(serializedChange));
+type changeHandler = (change: SerializedChange) => void;
 
 /**
- * Start observing the store for changes.
- *
+ * Function used to register to recieve serialized updated from an observer
  */
-export const observeStore = ({target, handler}: ObserverStoreOpts) =>
+export type RegisterHandler = (reciever: changeHandler) => void;
+
+/**
+ * Start observing the store (or some part of it) for changes.
+ */
+export const observeStore = ({target, handler}: ObserverStoreOpts): RegisterHandler => {
+  // Maintains a list of handlers that will be called in response to a serailized
+  // change in the store.
+  const handlers: changeHandler[] = [];
+
+  if (handler) {
+    handlers.push(handler);
+  }
+
   deepObserve(target, (change, changePath) => {
     const anyChange = {...change} as {[k: string]: any};
 
@@ -260,114 +244,8 @@ export const observeStore = ({target, handler}: ObserverStoreOpts) =>
       anyChange.removed = anyChange.removed.map((v: any) => serializer(v));
     }
 
-    const handlerFunc = handler ?? defaultChangeHandler;
-    handlerFunc(serializedChange);
+    handlers.forEach(handler => handler(serializedChange));
   });
 
-/**
- * Load and deserialize the app config from the settings file
- */
-export const loadMainConfig = async (store: AppStore) =>
-  set(store.config, deserialize(AppConfig, await settings.get()));
-
-/**
- * Listens for IPC from any created windows. Upon registration the current state
- * store will be passed back, and all future state changes will be send to the
- * window via webContents.send.
- *
- * This should be called when the main app initializes _before_ any windows are
- * created.
- */
-export const registerMainIpc = (store: AppStore) => {
-  ipcMain.on('store-subscribe', event => {
-    // Send the current state of the store
-    event.sender.send('store-init', serialize(AppStore, store));
-
-    // Register this window to recieve store changes over ipc
-    changeHandlers.push(
-      change => !isApplyingConfigChange && event.sender.send('store-update', change)
-    );
-  });
-
-  // Register listener for config object changes
-  ipcMain.on('config-update', (_e, change: SerializedChange) => {
-    isApplyingConfigChange = true;
-    applyChanges(store.config, change);
-    isApplyingConfigChange = false;
-  });
-
-  // Save any updates to the configuration store
-  deepObserve(store.config, () => settings.set(serialize(AppConfig, store.config)));
-};
-
-/**
- * Register this window to have it's store hydrated and synced from the main
- * process' store.
- */
-export const registerRendererIpc = (store: AppStore) => {
-  ipcRenderer.on('store-update', (_, change: SerializedChange) => {
-    isApplyingConfigChange = change.path.startsWith('config');
-    applyChanges(store, change);
-    isApplyingConfigChange = false;
-  });
-
-  ipcRenderer.on('store-init', (_, data: any) => {
-    set(store, deserialize(AppStore, data));
-  });
-
-  // Kick things off
-  ipcRenderer.send('store-subscribe');
-};
-
-/**
- * Register this window to have configuration changes be propagated back to the
- * main thread.
- */
-export const registerRendererConfigIpc = (store: AppStore) =>
-  observeStore({
-    target: store.config,
-    handler: change =>
-      !isApplyingConfigChange && ipcRenderer.send('config-update', change),
-  });
-
-/**
- * Register a websocket server as a transport to broadcast store changes
- */
-export const registerMainWebsocket = (store: AppStore, wss: Server) => {
-  // Send the current state to all new comections
-  wss.on('connection', client => {
-    client.emit('store-init', serialize(AppStore, store));
-  });
-
-  // Send changes
-  changeHandlers.push(change => wss.sockets.emit('store-update', change));
-};
-
-/**
- * Register this client to recieve websocket broadcasts to update the store
- */
-export const registerWebsocketListener = (
-  store: AppStore,
-  ws: ClientSocket | ServerSocker
-) => {
-  ws.on('store-update', (change: SerializedChange) => applyChanges(store, change));
-  ws.on('store-init', (data: any) => set(store, deserialize(AppStore, data)));
-};
-
-/**
- * Pushes updates to the API server running on app.prolink.tools.
- *
- * Returns a function to disconnect.
- */
-export const startCloudServicesWebsocket = (store: AppStore) => {
-  const host = process.env.USE_LOCAL_SERVER
-    ? 'http://localhost:8888'
-    : 'https://app.prolink.tools';
-
-  const conn = io(`${host}/ingest/${store.config.apiKey}`, {transports: ['websocket']});
-
-  conn.emit('store-init', serialize(AppStore, store));
-  changeHandlers.push(change => conn.emit('store-update', change));
-
-  return () => conn.disconnect();
+  return handler => handlers.push(handler);
 };

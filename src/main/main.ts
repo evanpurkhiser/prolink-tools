@@ -14,13 +14,14 @@ import {setupMenu} from 'main/menu';
 import {startOverlayServer} from 'main/overlayServer';
 import {userInfo} from 'src/shared/sentry/main';
 import {AppStore, createStore} from 'src/shared/store';
+import {observeStore} from 'src/shared/store/ipc';
+import connectNetworkStore from 'src/shared/store/network';
 import {
   loadMainConfig,
-  observeStore,
   registerMainIpc,
+  registerMainWebsocket,
   startCloudServicesWebsocket,
-} from 'src/shared/store/ipc';
-import connectNetworkStore from 'src/shared/store/network';
+} from 'src/shared/store/server';
 import theme from 'src/theme';
 
 const mainStore = createStore();
@@ -103,9 +104,10 @@ app.on('ready', async () => {
   mainStore.config.ensureDefaults();
   createWindow();
 
-  registerMainIpc(mainStore);
   runConfigMigrations(mainStore);
-  observeStore({target: mainStore});
+
+  const register = observeStore({target: mainStore});
+  registerMainIpc(mainStore, register);
 
   let network: ProlinkNetwork;
 
@@ -140,14 +142,17 @@ app.on('ready', async () => {
   //
   // As thus THIS LINE MUST BE PLACED AFTER THE NETWORK IS BROUGHT ONLINE.
   //
-  await startOverlayServer(mainStore);
+  const httpServer = await startOverlayServer();
+
+  // Start the main websocket on the overlay server
+  registerMainWebsocket(mainStore, httpServer, register);
 
   // Connect to app.prolink.tools when enabled
   reaction(
     () => mainStore.config.enableCloudApi,
     enabled => {
       if (enabled) {
-        const disconnect = startCloudServicesWebsocket(mainStore);
+        const disconnect = startCloudServicesWebsocket(mainStore, register);
         when(() => mainStore.config.enableCloudApi === false, disconnect);
       }
     },

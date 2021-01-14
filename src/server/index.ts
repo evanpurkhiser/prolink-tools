@@ -7,7 +7,7 @@ import {Server, Socket} from 'socket.io';
 import {createServer} from 'http';
 
 import {AppStore, createStore} from 'src/shared/store';
-import {registerWebsocketListener} from 'src/shared/store/ipc';
+import {registerWebsocketListener} from 'src/shared/store/client';
 
 type Connection = {
   socket: Socket;

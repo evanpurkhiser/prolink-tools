@@ -10,8 +10,8 @@ import {when} from 'mobx';
 import ThemeProvider from 'src/shared/components/ThemeProvider';
 import globalCss, {noSelect} from 'src/shared/globalCss';
 import {createStore} from 'src/shared/store';
+import {registerRendererConfigIpc, registerRendererIpc} from 'src/shared/store/client';
 import {StoreContext} from 'src/shared/store/context';
-import {registerRendererConfigIpc, registerRendererIpc} from 'src/shared/store/ipc';
 import Application from 'ui/views/Application';
 
 const mainElement = document.createElement('div');
