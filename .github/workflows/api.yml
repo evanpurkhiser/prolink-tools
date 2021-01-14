@@ -1,22 +1,22 @@
 
-name: deploy server
+name: deploy api
 on: [push]
 
 jobs:
   deploy:
-    name: deploy server
+    name: deploy api
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
 
-      - name: Build Dockerfile.server
+      - name: Build Dockerfile.api
         run: |
-          docker build . -t evanpurkhiser/prolink-tools-server -f conf/Dockerfile.server
+          docker build . -t evanpurkhiser/prolink-tools-api -f conf/Dockerfile.api
 
       - name: Publish
         run: |
           docker login --username=evanpurkhiser --password-stdin <<< "${{ secrets.DOCKER_HUB_TOKEN }}"
-          docker push evanpurkhiser/prolink-tools-server:latest
+          docker push evanpurkhiser/prolink-tools-api:latest
 
       - name: Setup ssh-agent
         uses: webfactory/ssh-agent@v0.4.1
@@ -26,15 +26,15 @@ jobs:
       - name: Add known hosts for api.prolink.tools
         run: ssh-keyscan -H api.prolink.tools > ~/.ssh/known_hosts
 
-      - name: Copy server-compose file
+      - name: Copy api-compose file
         run: |
-          scp ./conf/server-compose.yml root@api.prolink.tools:./
+          scp ./conf/api-compose.yml root@api.prolink.tools:./
 
       - name: Update images
         run: |
           ssh root@api.prolink.tools << EOF
-            docker-compose -f ./server-compose.yml pull --quiet
-            docker-compose -f ./server-compose.yml rm --force --stop -v prolink-tools
-            docker-compose -f ./server-compose.yml up --detach
+            docker-compose -f ./api-compose.yml pull --quiet
+            docker-compose -f ./api-compose.yml rm --force --stop -v prolink-tools
+            docker-compose -f ./api-compose.yml up --detach
             docker system prune --all --force
           EOF

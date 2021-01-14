@@ -30,7 +30,7 @@ services:
     network_mode: bridge
 
   prolink-tools:
-    image: evanpurkhiser/prolink-tools-server
+    image: evanpurkhiser/prolink-tools-api
     container_name: prolink-tools
     environment:
       - "VIRTUAL_HOST=api.prolink.tools"
