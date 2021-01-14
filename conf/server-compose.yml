@@ -33,8 +33,8 @@ services:
     image: evanpurkhiser/prolink-tools-server
     container_name: prolink-tools
     environment:
-      - "VIRTUAL_HOST=app.prolink.tools"
-      - "LETSENCRYPT_HOST=app.prolink.tools"
+      - "VIRTUAL_HOST=api.prolink.tools"
+      - "LETSENCRYPT_HOST=api.prolink.tools"
     network_mode: bridge
     restart: always
 

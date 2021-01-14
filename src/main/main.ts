@@ -149,7 +149,7 @@ app.on('ready', async () => {
   // Start the main websocket on the overlay server
   registerMainWebsocket(mainStore, httpServer, register);
 
-  // Connect to app.prolink.tools when enabled
+  // Connect to api.prolink.tools when enabled
   reaction(
     () => mainStore.config.enableCloudApi,
     enabled => {

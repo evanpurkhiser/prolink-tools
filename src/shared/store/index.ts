@@ -168,7 +168,7 @@ export class AppConfig {
   @observable
   reportDebugEvents = false;
   /**
-   * Should we publish state to app.prolink.tools?
+   * Should we publish state to api.prolink.tools?
    */
   @serializable
   @observable

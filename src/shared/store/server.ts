@@ -85,7 +85,7 @@ export const startCloudServicesWebsocket = (
 ) => {
   const host = process.env.USE_LOCAL_SERVER
     ? 'http://localhost:8888'
-    : 'https://app.prolink.tools';
+    : 'https://api.prolink.tools';
 
   const conn = io(`${host}/ingest/${store.config.apiKey}`, {transports: ['websocket']});
 
