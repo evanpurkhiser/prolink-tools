@@ -42,8 +42,8 @@ export const baseConfig: webpack.Configuration = {
 
   optimization: {
     minimizer: [
-      // Avoid mangling class names as there are places we reflectively use the
-      // constructor name
+      // Avoid mangling class names as we reflectively look at the constructor
+      // name for deserialization.
       //
       // FIXME: Not sure why webpack types are complaining here
       new TerserPlugin({terserOptions: {mangle: false}}) as any,
