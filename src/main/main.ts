@@ -18,6 +18,7 @@ import {observeStore} from 'src/shared/store/ipc';
 import connectNetworkStore from 'src/shared/store/network';
 import {
   loadMainConfig,
+  observerAndPersistConfig,
   registerMainIpc,
   registerMainWebsocket,
   startCloudServicesWebsocket,
@@ -101,10 +102,11 @@ const createWindow = () => {
 
 app.on('ready', async () => {
   await loadMainConfig(mainStore);
+  observerAndPersistConfig(mainStore);
   mainStore.config.ensureDefaults();
-  createWindow();
-
   runConfigMigrations(mainStore);
+
+  createWindow();
 
   const register = observeStore({target: mainStore});
   registerMainIpc(mainStore, register);

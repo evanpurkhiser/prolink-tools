@@ -179,6 +179,7 @@ export class AppConfig {
    *
    * Will be generated on the users first run of the application.
    */
+  @serializable
   @observable
   apiKey = '';
   /**

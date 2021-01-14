@@ -23,6 +23,12 @@ export const loadMainConfig = async (store: AppStore) =>
   set(store.config, deserialize(AppConfig, await settings.get()));
 
 /**
+ * Register for store config changes to be saved saved to the settings file
+ */
+export const observerAndPersistConfig = (store: AppStore) =>
+  deepObserve(store.config, () => settings.set(serialize(AppConfig, store.config)));
+
+/**
  * Listens for IPC from any created windows. Upon registration the current state
  * store will be passed back, and all future state changes will be send to the
  * window via webContents.send.
@@ -47,9 +53,6 @@ export const registerMainIpc = (store: AppStore, register: RegisterHandler) => {
     applyChanges(store.config, change);
     isApplyingConfigChange = false;
   });
-
-  // Save any updates to the configuration store
-  deepObserve(store.config, () => settings.set(serialize(AppConfig, store.config)));
 };
 
 /**
