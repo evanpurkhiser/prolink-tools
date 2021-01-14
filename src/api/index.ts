@@ -3,19 +3,16 @@ import 'tsconfig-paths/register';
 import Router from '@koa/router';
 import Koa from 'koa';
 import {autorun, runInAction} from 'mobx';
+import {serialize} from 'serializr';
 import {Server, Socket} from 'socket.io';
 
 import {createServer} from 'http';
 
 import {AppStore, createAppStore} from 'src/shared/store';
 import {registerWebsocketListener} from 'src/shared/store/client';
+import {observeStore} from 'src/shared/store/ipc';
 
-import {createServerStore} from './serverStore';
-
-/**
- * Global server store maintaining in memory state
- */
-const serverStore = createServerStore();
+import {ApiStore, createApiStore} from './apiStore';
 
 type Connection = {
   /**
@@ -29,13 +26,34 @@ type Connection = {
   store: AppStore;
 };
 
-const ingestMatcher = /^\/ingest\/([^/]+)$/;
+/**
+ * Global api store maintaining in memory state
+ */
+const apiStore = createApiStore();
 
+/**
+ * Global api store observer
+ */
+const [register] = observeStore({target: apiStore});
+
+/**
+ * Global connnection list maintaing in memory state
+ */
 const connections: Record<string, Connection> = {};
 
 const app = new Koa();
 const server = createServer(app.callback());
-const wss = new Server(server);
+const wss = new Server(server, {
+  cors: {origin: '*', methods: ['GET', 'POST']},
+});
+
+wss.on('connection', client => {
+  console.log('got connected');
+  client.emit('api-store-init', serialize(ApiStore, apiStore));
+  register(change => wss.sockets.emit('api-store-update', change));
+});
+
+const ingestMatcher = /^\/ingest\/([^/]+)$/;
 
 const router = new Router();
 
@@ -61,7 +79,7 @@ wss.of(ingestMatcher).on('connection', socket => {
   const store = createAppStore();
 
   connections[key] = {socket, store};
-  runInAction(() => serverStore.clientCount++);
+  runInAction(() => apiStore.clientCount++);
 
   registerWebsocketListener(store, socket);
 
@@ -73,11 +91,11 @@ wss.of(ingestMatcher).on('connection', socket => {
     }
 
     console.log('updating last played: ', history[0].track.title);
-    runInAction(() => (serverStore.lastPlayedTrack = history[0]));
+    runInAction(() => (apiStore.lastPlayedTrack = store.mixstatus.trackHistory[0]));
   });
 
   socket.on('disconnect', () => {
-    runInAction(() => serverStore.clientCount--);
+    runInAction(() => apiStore.clientCount--);
     delete connections[key];
   });
 });

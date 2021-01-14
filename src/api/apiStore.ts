@@ -3,7 +3,7 @@ import {object, serializable} from 'serializr';
 
 import {PlayedTrack} from 'src/shared/store';
 
-export class ServerStore {
+export class ApiStore {
   /**
    * The number of current active clients
    */
@@ -22,4 +22,4 @@ export class ServerStore {
   }
 }
 
-export const createServerStore = () => observable(new ServerStore());
+export const createApiStore = () => observable(new ApiStore());
