@@ -39,6 +39,23 @@ app.allowRendererProcessReuse = true;
 // Setup application menu
 setupMenu(mainStore);
 
+// Setup theme from configuration
+reaction(
+  () => mainStore.config.theme,
+  schema => {
+    nativeTheme.themeSource = schema;
+
+    const bg = nativeTheme.shouldUseDarkColors
+      ? theme.dark.background
+      : theme.light.background;
+    win?.setBackgroundColor(bg);
+  },
+  {fireImmediately: true}
+);
+
+// Require overlay main functionality
+require('src/overlay/overlays/nowPlaying/main');
+
 let win: BrowserWindow | null;
 
 const createWindow = () => {
@@ -83,6 +100,7 @@ const createWindow = () => {
 
 app.on('ready', async () => {
   await loadMainConfig(mainStore);
+  mainStore.config.ensureDefaults();
   createWindow();
 
   registerMainIpc(mainStore);
@@ -136,9 +154,6 @@ app.on('ready', async () => {
     {fireImmediately: true}
   );
 
-  // Require overlay main functionality
-  require('src/overlay/overlays/nowPlaying/main');
-
   connectNetworkStore(mainStore, network);
   registerDebuggingEventsService(mainStore, network);
 });
@@ -152,16 +167,3 @@ app.on('activate', () => {
     createWindow();
   }
 });
-
-reaction(
-  () => mainStore.config.theme,
-  schema => {
-    const bg = nativeTheme.shouldUseDarkColors
-      ? theme.dark.background
-      : theme.light.background;
-
-    nativeTheme.themeSource = schema;
-    win?.setBackgroundColor(bg);
-  },
-  {fireImmediately: true}
-);

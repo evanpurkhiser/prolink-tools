@@ -174,11 +174,13 @@ export class AppConfig {
   @observable
   enableCloudApi = false;
   /**
-   * Unique identifier used to identify the application to the server.
+   * Unique identifier used to identify the application to the server. Changing
+   * this will change all derrived identifiers.
+   *
+   * Will be generated on the users first run of the application.
    */
-  @serializable
   @observable
-  apiKey = uuid();
+  apiKey = '';
   /**
    * Mark tracks as 'IDs' using this string
    */
@@ -206,6 +208,11 @@ export class AppConfig {
   @action
   toggleTheme() {
     this.theme = this.theme === 'light' ? 'dark' : 'light';
+  }
+
+  @action
+  ensureDefaults() {
+    this.apiKey = this.apiKey === '' ? uuid() : this.apiKey;
   }
 
   constructor() {
