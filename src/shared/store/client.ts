@@ -49,6 +49,9 @@ export const registerWebsocketListener = (
   store: AppStore,
   ws: ClientSocket | ServerSocker
 ) => {
-  ws.on('store-update', (change: SerializedChange) => applyChanges(store, change));
+  ws.on(
+    'store-update',
+    (change: SerializedChange) => store.isInitalized && applyChanges(store, change)
+  );
   ws.on('store-init', (data: any) => set(store, deserialize(AppStore, data)));
 };

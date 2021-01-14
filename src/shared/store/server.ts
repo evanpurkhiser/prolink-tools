@@ -26,7 +26,7 @@ export const loadMainConfig = async (store: AppStore) =>
  * Register for store config changes to be saved saved to the settings file
  */
 export const observerAndPersistConfig = (store: AppStore) =>
-  deepObserve(store.config, () => settings.set(serialize(AppConfig, store.config)));
+  deepObserve(store.config, () => settings.set(serialize(store.config)));
 
 /**
  * Listens for IPC from any created windows. Upon registration the current state
@@ -39,7 +39,7 @@ export const observerAndPersistConfig = (store: AppStore) =>
 export const registerMainIpc = (store: AppStore, register: RegisterHandler) => {
   ipcMain.on('store-subscribe', event => {
     // Send the current state of the store
-    event.sender.send('store-init', serialize(AppStore, store));
+    event.sender.send('store-init', serialize(store));
 
     // Register this window to recieve store changes over ipc
     register(
@@ -56,6 +56,24 @@ export const registerMainIpc = (store: AppStore, register: RegisterHandler) => {
 };
 
 /**
+ * Pushes updates to the API server running on api.prolink.tools.
+ *
+ * Returns a function to disconnect.
+ */
+export const startMainApiWebsocket = (store: AppStore, register: RegisterHandler) => {
+  const host = process.env.USE_LOCAL_SERVER
+    ? 'http://localhost:8888'
+    : 'https://api.prolink.tools';
+
+  const conn = io(`${host}/ingest/${store.config.apiKey}`, {transports: ['websocket']});
+
+  conn.emit('store-init', serialize(store));
+  register(change => conn.emit('store-update', change));
+
+  return () => conn.disconnect();
+};
+
+/**
  * Register a websocket server as a transport to broadcast store changes
  */
 export const registerMainWebsocket = (
@@ -67,30 +85,11 @@ export const registerMainWebsocket = (
 
   // Send the current state to all new comections
   wss.on('connection', client => {
-    client.emit('store-init', serialize(AppStore, store));
+    client.emit('store-init', serialize(store));
   });
 
   // Send changes to the websocket
   register(change => wss.sockets.emit('store-update', change));
-};
 
-/**
- * Pushes updates to the API server running on app.prolink.tools.
- *
- * Returns a function to disconnect.
- */
-export const startCloudServicesWebsocket = (
-  store: AppStore,
-  register: RegisterHandler
-) => {
-  const host = process.env.USE_LOCAL_SERVER
-    ? 'http://localhost:8888'
-    : 'https://api.prolink.tools';
-
-  const conn = io(`${host}/ingest/${store.config.apiKey}`, {transports: ['websocket']});
-
-  conn.emit('store-init', serialize(AppStore, store));
-  register(change => conn.emit('store-update', change));
-
-  return () => conn.disconnect();
+  return wss;
 };

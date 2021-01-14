@@ -21,7 +21,7 @@ import {
   observerAndPersistConfig,
   registerMainIpc,
   registerMainWebsocket,
-  startCloudServicesWebsocket,
+  startMainApiWebsocket,
 } from 'src/shared/store/server';
 import theme from 'src/theme';
 
@@ -154,7 +154,7 @@ app.on('ready', async () => {
     () => mainStore.config.enableCloudApi,
     enabled => {
       if (enabled) {
-        const disconnect = startCloudServicesWebsocket(mainStore, register);
+        const disconnect = startMainApiWebsocket(mainStore, register);
         when(() => mainStore.config.enableCloudApi === false, disconnect);
       }
     },
