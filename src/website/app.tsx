@@ -57,7 +57,7 @@ const Routes = () => (
   </ThemeProvider>
 );
 
-const ws = io('http://localhost:8888/');
+const ws = io('https://api.prolink.tools/');
 
 ws.on('api-store-update', (change: SerializedChange) =>
   applyChanges(webApiStore, change)
