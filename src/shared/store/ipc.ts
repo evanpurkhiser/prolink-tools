@@ -77,6 +77,9 @@ function getAtPath(obj: any, path: string) {
   return target;
 }
 
+/**
+ * Apply serialized change objects to a store
+ */
 export const applyChanges = action(
   (obj: any, {path, change, serializerModel}: SerializedChange) => {
     const target = getAtPath(obj, path);
@@ -173,6 +176,9 @@ export type RegisterHandler = (reciever: changeHandler) => void;
 
 /**
  * Start observing the store (or some part of it) for changes.
+ *
+ * Returns a 2 element tuple. The first is used to register handlers to recieve
+ * serialized changes to the store. The second is used to dispose of the observer.
  */
 export const observeStore = ({
   target,
