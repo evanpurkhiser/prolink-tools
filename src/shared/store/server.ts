@@ -70,6 +70,12 @@ export const startMainApiWebsocket = (store: AppStore, register: RegisterHandler
   conn.emit('store-init', serialize(store));
   register(change => conn.emit('store-update', change));
 
+  // If the server drops the connection we'll have to re-initalize the store
+  conn.on('disconnect', () => {
+    console.warn('Dropped connection to prolink api server');
+    conn.once('connect', () => conn.emit('store-init', serialize(store)));
+  });
+
   return () => conn.disconnect();
 };
 
