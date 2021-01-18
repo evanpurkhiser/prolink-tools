@@ -15,6 +15,7 @@ const websiteConfig: webpack.Configuration = merge(baseConfig, {
   },
   output: {
     path: path.resolve(__dirname, 'dist/website'),
+    publicPath: '/',
   },
   module: {
     rules: [
