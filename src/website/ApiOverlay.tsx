@@ -14,7 +14,7 @@ const ApiOverlay = ({match}: Props) => {
   const [store, setStore] = React.useState<AppStore | null>(null);
 
   const connectStore = async () => {
-    const ws = io('http://localhost:8888');
+    const ws = io('https://api.prolink.tools');
 
     const appKey = await new Promise<string>(resolve =>
       ws.emit('appKey:by-overlay-key', overlayKey, resolve)

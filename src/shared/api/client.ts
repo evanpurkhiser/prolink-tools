@@ -8,7 +8,7 @@ import {registerWebsocketListener} from '../store/client';
  */
 export function connectToAppStore(appKey: string) {
   const appStore = createAppStore();
-  const ws = io(`http://localhost:8888/store/${appKey}`);
+  const ws = io(`https://api.prolink.tools/store/${appKey}`);
 
   registerWebsocketListener(appStore, ws);
 
