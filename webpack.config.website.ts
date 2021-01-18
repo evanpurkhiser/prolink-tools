@@ -7,11 +7,11 @@ import {WebpackPluginServe} from 'webpack-plugin-serve';
 
 import path from 'path';
 
-import {baseConfig} from './webpack.config.base';
+import {baseConfig, withWebpackPluginServe} from './webpack.config.base';
 
 const websiteConfig: webpack.Configuration = merge(baseConfig, {
   entry: {
-    app: ['./src/website/app.tsx', 'webpack-plugin-serve/client'],
+    app: withWebpackPluginServe(['./src/website/app.tsx']),
   },
   output: {
     path: path.resolve(__dirname, 'dist/website'),

@@ -14,6 +14,9 @@ const envConfig = {
   COMMIT: commit,
 };
 
+export const withWebpackPluginServe = (appList: string[]) =>
+  [...appList, IS_PROD ? '' : 'webpack-plugin-serve/client'].filter(s => s !== '');
+
 export const baseConfig: webpack.Configuration = {
   mode: IS_PROD ? 'production' : 'development',
   watch: process.env.NODE_ENV !== 'production',

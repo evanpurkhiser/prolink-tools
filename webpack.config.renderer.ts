@@ -7,7 +7,7 @@ import {WebpackPluginServe} from 'webpack-plugin-serve';
 
 import path from 'path';
 
-import {baseConfig} from './webpack.config.base';
+import {baseConfig, withWebpackPluginServe} from './webpack.config.base';
 
 const serve = new WebpackPluginServe({
   port: 2003,
@@ -21,7 +21,7 @@ const serve = new WebpackPluginServe({
 const rendererConfig: webpack.Configuration = merge(baseConfig, {
   target: 'electron-renderer',
   entry: {
-    app: ['./src/renderer/app.tsx', 'webpack-plugin-serve/client'],
+    app: withWebpackPluginServe(['./src/renderer/app.tsx']),
   },
   optimization: {minimize: false},
   module: {
