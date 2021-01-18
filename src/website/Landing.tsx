@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {Box} from 'react-feather';
-import {css, Global} from '@emotion/react';
+import {css} from '@emotion/react';
 import styled from '@emotion/styled';
 import {motion, Variants} from 'framer-motion';
 
 import LogoBig from 'src/shared/components/LogoBig';
-import globalCss, {noSelect} from 'src/shared/globalCss';
+import {noSelect} from 'src/shared/globalCss';
 import Application from 'ui/views/Application';
 
 import ActivityLink from './components/ActivityLink';
@@ -27,8 +27,6 @@ const animateInfo: Variants = {
 
 const Landing = () => (
   <DemoContext demoRoutine={playingTracksRoutine}>
-    <Global styles={globalCss} />
-
     <Masthead
       initial="initial"
       animate="animate"
