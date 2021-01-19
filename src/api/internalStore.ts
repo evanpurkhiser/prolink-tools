@@ -38,7 +38,7 @@ export class Connection {
    * Get the appKey for this connection.
    */
   get appKey(): AppKey {
-    return createHash('sha256').update(this.apiKey).digest('hex');
+    return createHash('sha256').update(this.apiKey).digest('base64').slice(0, 20);
   }
 
   constructor(apiKey: string, socket: Socket, store: AppStore) {
