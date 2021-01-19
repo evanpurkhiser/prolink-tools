@@ -46,7 +46,7 @@ const OverlayEntry = observer(({store, index}: EntryProps) => {
   return (
     <div key={instance.key}>
       <Actions>
-        <OverlayUrl instance={instance} />
+        <OverlayUrl cloudEnabled={store.config.enableCloudApi} instance={instance} />
         <Remove onClick={() => store.config.overlays.remove(instance)}>
           <Delete size="1rem" />
         </Remove>
@@ -61,8 +61,15 @@ const OverlayEntry = observer(({store, index}: EntryProps) => {
   );
 });
 
-const OverlayUrl = ({instance}: {instance: OverlayInstance}) => {
-  const url = `http://127.0.0.1:${WEBSERVER_PORT}/${instance.key}`;
+type UrlProps = {
+  instance: OverlayInstance;
+  cloudEnabled: boolean;
+};
+
+const OverlayUrl = ({instance, cloudEnabled}: UrlProps) => {
+  const url = cloudEnabled
+    ? `https://prolink.tools/overlay/${instance.key}`
+    : `http://127.0.0.1:${WEBSERVER_PORT}/${instance.key}`;
 
   return (
     <UrlWrapper>
