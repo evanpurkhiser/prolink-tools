@@ -2,6 +2,7 @@ import 'tsconfig-paths/register';
 
 import Router from '@koa/router';
 import Koa from 'koa';
+import {when} from 'mobx';
 import {serialize} from 'serializr';
 import {Server, Socket} from 'socket.io';
 
@@ -46,9 +47,16 @@ wss.on('connection', (client: Socket) => {
   /**
    * Respond to overlay key lookups, providng the appKey.
    */
-  client.on('appKey:by-overlay-key', (overlayKey: string, respond: any) =>
-    respond(internalStore.overlayKeyMap[overlayKey]?.appKey ?? null)
-  );
+  client.on('appKey:by-overlay-key', (overlayKey: string, respond: any) => {
+    // If the app providing this overlay key isn't already connected we should
+    // wait for it to show up.
+    const disposeDeferredKeyLookup = when(
+      () => overlayKey in internalStore.overlayKeyMap,
+      () => respond(internalStore.overlayKeyMap[overlayKey]!.appKey)
+    );
+    // Client disconnected, avoid memory leaks and dispose of remaining reactions
+    client.on('disconnect', () => disposeDeferredKeyLookup());
+  });
 });
 
 /**

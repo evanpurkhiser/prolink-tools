@@ -1,4 +1,5 @@
-import {action, computed, makeAutoObservable, observable} from 'mobx';
+import {remove} from 'lodash';
+import {action, computed, IObservableArray, makeAutoObservable, observable} from 'mobx';
 import {Socket} from 'socket.io';
 
 import {createHash} from 'crypto';
@@ -49,19 +50,41 @@ export class Connection {
 
 export class InternalStore {
   /**
-   * Active connections
+   * Active connections from app instances
    */
   @observable
-  connections = observable.map<AppKey, Connection>();
+  appConnections = observable.map<AppKey, Connection>();
 
   @action
-  addConnection(conn: Connection) {
-    this.connections.set(conn.appKey, conn);
+  addAppConnection(conn: Connection) {
+    this.appConnections.set(conn.appKey, conn);
   }
 
   @action
-  removeConnection(appKey: AppKey) {
-    this.connections.delete(appKey);
+  removeAppConnection(appKey: AppKey) {
+    this.appConnections.delete(appKey);
+  }
+
+  /**
+   * Active socket connections to a particular app store. Maintained outside of
+   * app connections to allow open socket connections of a store without the
+   * app being connected.
+   */
+  @observable
+  appStoreClients = observable.map<AppKey, IObservableArray<Socket>>();
+
+  @action
+  addStoreClient(appKey: AppKey, client: Socket) {
+    if (!this.appStoreClients.has(appKey)) {
+      this.appStoreClients.set(appKey, observable.array<Socket>());
+    }
+    this.appStoreClients.get(appKey)!.push(client);
+  }
+
+  @action
+  removeStoreClient(appKey: AppKey, client: Socket) {
+    const clients = this.appStoreClients.get(appKey) ?? [];
+    remove(clients, client);
   }
 
   /**
@@ -69,13 +92,11 @@ export class InternalStore {
    */
   @computed
   get overlayKeyMap() {
-    return [...this.connections.values()].reduce(
+    return [...this.appConnections.values()].reduce(
       (mapping, conn) =>
         Object.assign(
           mapping,
-          ...conn.store.config.overlays.map(config => ({
-            [config.key]: conn,
-          }))
+          ...conn.store.config.overlays.map(config => ({[config.key]: conn}))
         ),
       {} as Record<string, Connection>
     );

@@ -1,4 +1,3 @@
-import {serialize} from 'serializr';
 import {Socket} from 'socket.io';
 
 import {internalStore} from '.';
@@ -14,18 +13,15 @@ export const clientAppStoreNamespace = /^\/store\/([^/]+)$/;
  */
 export function registerClientConnection(client: Socket) {
   const appKey = client.nsp.name.match(clientAppStoreNamespace)![1];
-  const conn = internalStore.connections.get(appKey);
+  const conn = internalStore.appConnections.get(appKey);
 
   if (conn === undefined) {
     return;
   }
 
-  // XXX: We MUST scrube the API key when serializing the store. It is a
-  // private value that must not be publically available.
-  const serializedStore = serialize(conn.store);
-  serializedStore.config.apiKey = '';
+  // XXX: Subscribing the client to the app store is handled by observers in
+  // the registerAppConnection. We only need to update the client in the store.
 
-  // Initalize the store on the client and subscribe it to recieve updates
-  client.emit('store-init', serializedStore);
-  conn.clients.push(client);
+  internalStore.addStoreClient(appKey, client);
+  client.on('disconnect', () => internalStore.removeStoreClient(appKey, client));
 }
