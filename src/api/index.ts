@@ -73,5 +73,30 @@ wss.of(clientAppStoreNamespace).on('connection', registerClientConnection);
 // TODO: Add API routes
 const router = new Router();
 
+/**
+ * Get nowplaying text for a specific appKey
+ */
+router.get('/now-playing/:appKey', (ctx, next) => {
+  const {appKey} = ctx.params;
+  const store = internalStore.appConnections.get(appKey)?.store;
+
+  if (store === undefined) {
+    ctx.body = 'Nothing is playing!';
+    return next();
+  }
+
+  const {trackHistory} = store.mixstatus;
+
+  if (trackHistory.length === 0) {
+    ctx.body = 'Nothing is playing!';
+    return next();
+  }
+
+  const {track} = trackHistory[trackHistory.length - 1];
+
+  ctx.body = `${track.artist?.name ?? 'Unknown Artist'} - ${track.title}`;
+  return next();
+});
+
 app.use(router.routes()).use(router.allowedMethods());
 server.listen(8888);
