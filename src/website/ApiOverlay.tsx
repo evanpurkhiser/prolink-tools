@@ -5,6 +5,7 @@ import {io} from 'socket.io-client';
 
 import MapOverlay from 'src/overlay/components/MapOverlay';
 import {connectToAppStore} from 'src/shared/api/client';
+import {apiHost} from 'src/shared/api/url';
 import {AppStore} from 'src/shared/store';
 
 type Props = RouteComponentProps<{overlayKey: string}>;
@@ -14,7 +15,7 @@ const ApiOverlay = ({match}: Props) => {
   const [store, setStore] = React.useState<AppStore | null>(null);
 
   const connectStore = async () => {
-    const ws = io('https://api.prolink.tools');
+    const ws = io(apiHost);
 
     const appKey = await new Promise<string>(resolve =>
       ws.emit('appKey:by-overlay-key', overlayKey, resolve)

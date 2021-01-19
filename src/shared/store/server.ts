@@ -8,6 +8,8 @@ import {io} from 'socket.io-client';
 
 import http from 'http';
 
+import {apiHost} from 'src/shared/api/url';
+
 import {applyChanges, RegisterHandler, SerializedChange} from './ipc';
 import {AppConfig, AppStore} from '.';
 
@@ -61,11 +63,9 @@ export const registerMainIpc = (store: AppStore, register: RegisterHandler) => {
  * Returns a function to disconnect.
  */
 export const startMainApiWebsocket = (store: AppStore, register: RegisterHandler) => {
-  const host = process.env.USE_LOCAL_SERVER
-    ? 'http://localhost:8888'
-    : 'https://api.prolink.tools';
-
-  const conn = io(`${host}/ingest/${store.config.apiKey}`, {transports: ['websocket']});
+  const conn = io(`${apiHost}/ingest/${store.config.apiKey}`, {
+    transports: ['websocket'],
+  });
 
   conn.emit('store-init', serialize(store));
   register(change => conn.emit('store-update', change));

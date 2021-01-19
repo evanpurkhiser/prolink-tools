@@ -9,6 +9,7 @@ export const IS_PROD = process.env.NODE_ENV === 'production';
 
 const envConfig = {
   NODE_ENV: process.env.NODE_ENV ?? 'development',
+  USE_LOCAL_API: !!process.env.USE_LOCAL_API,
   RELEASE: releaseId,
   RELEASE_CHANNEL: releaseChannel,
   COMMIT: commit,
