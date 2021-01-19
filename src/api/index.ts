@@ -39,10 +39,10 @@ export const internalStore = createInternalStore();
  * Global api store observer
  */
 const [registerListener] = observeStore({target: apiStore});
+registerListener(change => wss.sockets.emit('api-store-update', change));
 
 wss.on('connection', (client: Socket) => {
   client.emit('api-store-init', serialize(ApiStore, apiStore));
-  registerListener(change => wss.sockets.emit('api-store-update', change));
 
   /**
    * Respond to overlay key lookups, providng the appKey.
