@@ -1,4 +1,5 @@
 import 'tsconfig-paths/register';
+import 'src/shared/sentry/api';
 
 import Router from '@koa/router';
 import Koa from 'koa';
