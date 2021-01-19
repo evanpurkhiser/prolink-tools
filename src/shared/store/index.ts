@@ -14,6 +14,7 @@ import {
   Track,
 } from 'prolink-connect/lib/types';
 import {custom, date, list, map, mapAsArray, object, serializable} from 'serializr';
+import shajs from 'sha.js';
 import {uuid} from 'short-uuid';
 
 import {OverlayInstance} from 'src/overlay';
@@ -262,6 +263,14 @@ export class AppStore {
   @serializable(rawJS)
   @observable
   user?: User;
+  /**
+   * Get the appKey for this app instance.
+   */
+  @computed
+  get appKey() {
+    // TODO: Duplicated logic in api/internalStore
+    return shajs('sha256').update(this.config.apiKey).digest('base64').slice(0, 20);
+  }
 
   /**
    * Does the current network configuration support on-air status?

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Activity, Layers, Settings} from 'react-feather';
+import {Activity, Icon, Layers, Server, Settings} from 'react-feather';
 import {NavLink, useLocation} from 'react-router-dom';
 import styled from '@emotion/styled';
 import {AnimateSharedLayout, motion} from 'framer-motion';
@@ -10,33 +10,53 @@ import withStore from 'src/utils/withStore';
 
 import HelpButton from './HelpButton';
 
-const items = [
+type NavItem = {
+  name: string;
+  path: string;
+  icon: Icon;
+  enabled?: (store: AppStore) => boolean;
+};
+
+const items: NavItem[] = [
   {name: 'Device Status', path: '/status', icon: Activity},
   {name: 'Overlays', path: '/overlay-config', icon: Layers},
+  {
+    name: 'API Setup',
+    path: '/api-config',
+    icon: Server,
+    enabled: store => store.config.enableCloudApi,
+  },
   {name: 'Settings', path: '/settings', icon: Settings},
-] as const;
+];
 
 type Props = {
   store: AppStore;
 };
 
-const Navigation = observer(({store}: Props) => (
-  <MenuContainer>
-    <SidebarToggle onClick={() => store.config.toggleSidebar()} />
-    <AnimateSharedLayout>
-      {items.map(item => (
-        <MenuItem key={item.name} to={item.path} aria-current="page">
-          {item.path === useLocation().pathname && <ActiveIndicator layoutId="active" />}
-          <item.icon size="1rem" />
-          {!store.config.sidebarCollapsed && item.name}
-        </MenuItem>
-      ))}
-    </AnimateSharedLayout>
-    <Bottom>
-      <HelpButton />
-    </Bottom>
-  </MenuContainer>
-));
+const Navigation = observer(({store}: Props) => {
+  const location = useLocation();
+
+  return (
+    <MenuContainer>
+      <SidebarToggle onClick={() => store.config.toggleSidebar()} />
+      <AnimateSharedLayout>
+        {items.map(
+          item =>
+            (item.enabled?.(store) ?? true) && (
+              <MenuItem key={item.name} to={item.path} aria-current="page">
+                {item.path === location.pathname && <ActiveIndicator layoutId="active" />}
+                <item.icon size="1rem" />
+                {!store.config.sidebarCollapsed && item.name}
+              </MenuItem>
+            )
+        )}
+      </AnimateSharedLayout>
+      <Bottom>
+        <HelpButton />
+      </Bottom>
+    </MenuContainer>
+  );
+});
 
 const MenuContainer = styled(motion.nav)`
   position: relative;

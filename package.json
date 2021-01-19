@@ -28,7 +28,11 @@
       "output": "release"
     },
     "publish": null,
-    "files": ["dist/", "node_modules/better-sqlite3/**/*", "package.json"],
+    "files": [
+      "dist/",
+      "node_modules/better-sqlite3/**/*",
+      "package.json"
+    ],
     "linux": {
       "target": "tar.gz"
     },
@@ -99,6 +103,7 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/react-select": "^3.0.19",
     "@types/semver": "^7.3.3",
+    "@types/sha.js": "^2.4.0",
     "@types/terser-webpack-plugin": "^5.0.2",
     "@types/webdriverio": "^5.0.0",
     "@types/webpack-env": "^1.13.3",
@@ -146,6 +151,7 @@
     "regenerator-runtime": "^0.13.5",
     "semver": "^7.3.2",
     "serializr": "^2.0.3",
+    "sha.js": "^2.4.11",
     "short-uuid": "^4.1.0",
     "socket.io": "^3.0.5",
     "socket.io-client": "^3.0.5",

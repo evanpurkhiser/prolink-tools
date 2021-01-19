@@ -3,9 +3,11 @@ import styled from '@emotion/styled';
 
 import Navigation from 'src/renderer/components/Navigation';
 import Titlebar from 'ui/components/Titlebar';
-import Devices from 'ui/views/devices';
-import OverlayConfig from 'ui/views/overlayConfig';
-import Settings from 'ui/views/settings';
+
+import ApiConfig from './apiConfig';
+import Devices from './devices';
+import OverlayConfig from './overlayConfig';
+import Settings from './settings';
 
 const Application = () => (
   <MemoryRouter>
@@ -17,6 +19,7 @@ const Application = () => (
           <Redirect from="/" to="/status" exact />
           <Route path="/status" component={Devices} />
           <Route path="/overlay-config" component={OverlayConfig} />
+          <Route path="/api-config" component={ApiConfig} />
           <Route path="/settings" component={Settings} />
         </Switch>
       </Content>
