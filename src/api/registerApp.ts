@@ -20,6 +20,9 @@ function initClientStore(client: Socket, store: AppStore) {
   const serializedStore = serialize(store);
   serializedStore.config.apiKey = '';
 
+  // Scrub user details
+  serializedStore.user = {};
+
   // Initialize the store on the client and subscribe it to receive updates
   client.emit('store-init', serializedStore);
 }
