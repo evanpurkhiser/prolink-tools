@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Activity, Icon, Layers, Server, Settings} from 'react-feather';
 import {NavLink, useLocation} from 'react-router-dom';
 import styled from '@emotion/styled';
-import {AnimateSharedLayout, motion} from 'framer-motion';
+import {AnimatePresence, AnimateSharedLayout, motion} from 'framer-motion';
 import {observer} from 'mobx-react';
 
 import {AppStore} from 'src/shared/store';
@@ -40,16 +40,20 @@ const Navigation = observer(({store}: Props) => {
     <MenuContainer>
       <SidebarToggle onClick={() => store.config.toggleSidebar()} />
       <AnimateSharedLayout>
-        {items.map(
-          item =>
-            (item.enabled?.(store) ?? true) && (
-              <MenuItem key={item.name} to={item.path} aria-current="page">
-                {item.path === location.pathname && <ActiveIndicator layoutId="active" />}
-                <item.icon size="1rem" />
-                {!store.config.sidebarCollapsed && item.name}
-              </MenuItem>
-            )
-        )}
+        <AnimatePresence>
+          {items.map(
+            item =>
+              (item.enabled?.(store) ?? true) && (
+                <MenuItem key={item.name} to={item.path} aria-current="page">
+                  {item.path === location.pathname && (
+                    <ActiveIndicator layoutId="active" />
+                  )}
+                  <item.icon size="1rem" />
+                  {!store.config.sidebarCollapsed && item.name}
+                </MenuItem>
+              )
+          )}
+        </AnimatePresence>
       </AnimateSharedLayout>
       <Bottom>
         <HelpButton />
@@ -93,7 +97,7 @@ const SidebarToggle = styled('div')`
   }
 `;
 
-const MenuItem = styled(NavLink)`
+const MenuItem = styled(motion.custom(NavLink))`
   position: relative;
   padding: 0.375rem 0.75rem;
   display: flex;
@@ -110,6 +114,16 @@ const MenuItem = styled(NavLink)`
     background: ${p => p.theme.backgroundSecondary};
   }
 `;
+
+MenuItem.defaultProps = {
+  layout: 'position',
+  initial: {opacity: 0, scale: 0.9},
+  animate: {opacity: 1, scale: 1},
+  exit: {opacity: 0, scale: 0.9},
+  transition: {
+    opacity: {duration: 0.3},
+  },
+};
 
 const ActiveIndicator = styled(motion.div)`
   position: absolute;
