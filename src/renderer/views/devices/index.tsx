@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from '@emotion/styled';
 import {AnimatePresence, motion} from 'framer-motion';
 import {groupBy} from 'lodash';
@@ -33,52 +34,54 @@ const Devices = observer(({store}: Props) => {
   ];
 
   return (
-    <AnimatePresence initial={false}>
+    <React.Fragment>
+      <AnimatePresence initial={false}>
+        {deviceMap[DeviceType.CDJ]?.sort(sortById).map(deviceStore => {
+          const {device, state} = deviceStore;
+          return (
+            <Device key={device.id}>
+              <Indicator>
+                <PlayerId onair={!!state?.isOnAir}>
+                  {device.id.toString().padStart(2, '0')}
+                </PlayerId>
+                <IconCdj />
+              </Indicator>
+              <Status>
+                <TopBar>
+                  <StatusBar>
+                    <PlayState playState={state?.playState} />
+                    <BeatCounter deviceId={device.id} />
+                  </StatusBar>
+                  <DeviceInfo device={device} />
+                </TopBar>
+                <StatusBar>
+                  <BpmIndicator pitch={state?.sliderPitch} bpm={state?.trackBPM} />
+                  <DbStateIndicator deviceId={device.id} />
+                  <Metadata deviceId={device.id} />
+                </StatusBar>
+              </Status>
+            </Device>
+          );
+        })}
+        <SmallDeviceList key="smallDevices">
+          <AnimatePresence initial={false}>
+            {otherDevices.map(({device}) => (
+              <SmallDevice key={device.id}>
+                {device.type === DeviceType.Mixer && <IconDjm />}
+                {device.type === DeviceType.Rekordbox && <IconRekordbox />}
+                <ConnectedTag>Connected</ConnectedTag>
+                <DeviceInfo device={device} />
+              </SmallDevice>
+            ))}
+          </AnimatePresence>
+        </SmallDeviceList>
+      </AnimatePresence>
       {(store.networkState === NetworkState.Online ||
         (store.networkState === NetworkState.Connected && deviceList.length === 0)) && (
         <ConnectingSplash key="splash" />
       )}
       {store.networkState === NetworkState.Failed && <ConnectionError key="error" />}
-      {deviceMap[DeviceType.CDJ]?.sort(sortById).map(deviceStore => {
-        const {device, state} = deviceStore;
-        return (
-          <Device key={device.id}>
-            <Indicator>
-              <PlayerId onair={!!state?.isOnAir}>
-                {device.id.toString().padStart(2, '0')}
-              </PlayerId>
-              <IconCdj />
-            </Indicator>
-            <Status>
-              <TopBar>
-                <StatusBar>
-                  <PlayState playState={state?.playState} />
-                  <BeatCounter deviceId={device.id} />
-                </StatusBar>
-                <DeviceInfo device={device} />
-              </TopBar>
-              <StatusBar>
-                <BpmIndicator pitch={state?.sliderPitch} bpm={state?.trackBPM} />
-                <DbStateIndicator deviceId={device.id} />
-                <Metadata deviceId={device.id} />
-              </StatusBar>
-            </Status>
-          </Device>
-        );
-      })}
-      <SmallDeviceList key="smallDevices">
-        <AnimatePresence initial={false}>
-          {otherDevices.map(({device}) => (
-            <SmallDevice key={device.id}>
-              {device.type === DeviceType.Mixer && <IconDjm />}
-              {device.type === DeviceType.Rekordbox && <IconRekordbox />}
-              <ConnectedTag>Connected</ConnectedTag>
-              <DeviceInfo device={device} />
-            </SmallDevice>
-          ))}
-        </AnimatePresence>
-      </SmallDeviceList>
-    </AnimatePresence>
+    </React.Fragment>
   );
 });
 
