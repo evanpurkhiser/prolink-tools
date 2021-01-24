@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import {set} from 'mobx';
 import {observer} from 'mobx-react';
 
+import Select from 'src/renderer/components/form/Select';
 import {AppStore} from 'src/shared/store';
 import withStore from 'src/utils/withStore';
 import Checkbox from 'ui/components/form/Checkbox';
@@ -14,6 +15,12 @@ type Props = {
   store: AppStore;
 };
 
+const uiThemes = [
+  {value: 'system', label: 'System'},
+  {value: 'light', label: 'Light'},
+  {value: 'dark', label: 'Dark'},
+];
+
 const Settings = observer(({store}: Props) => {
   const config = store.config;
 
@@ -22,6 +29,20 @@ const Settings = observer(({store}: Props) => {
       <Heading>General</Heading>
       <Section>
         <Field
+          noCenter
+          size="md"
+          name="UI Theme"
+          description="Prolink Tools comes with light and dark UI themes. Select 'System' to match your operating systems theme."
+        >
+          <Select
+            isSearchable={false}
+            options={uiThemes}
+            value={uiThemes.find(t => t.value === config.theme)}
+            onChange={value => set(config, {theme: (value as {value: string}).value})}
+          />
+        </Field>
+        <Field
+          noCenter
           size="md"
           name="ID Marker"
           description="Tracks containing this text anywhere in the metadata (title, artist, comment, etc) will be marked as 'IDs'. Additional configurations may be needed in tools for tracks marked as IDs. This value is case insensitive."
