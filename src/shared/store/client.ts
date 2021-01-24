@@ -1,5 +1,5 @@
 import {ipcRenderer} from 'electron';
-import {set} from 'mobx';
+import {action, set} from 'mobx';
 import {deserialize} from 'serializr';
 import {Socket as ServerSocker} from 'socket.io';
 import {Socket as ClientSocket} from 'socket.io-client';
@@ -23,9 +23,10 @@ export const registerRendererIpc = (store: AppStore) => {
     isApplyingConfigChange = false;
   });
 
-  ipcRenderer.on('store-init', (_, data: any) => {
-    set(store, deserialize(AppStore, data));
-  });
+  ipcRenderer.on(
+    'store-init',
+    action((_, data: any) => set(store, deserialize(AppStore, data)))
+  );
 
   // Kick things off
   ipcRenderer.send('store-subscribe');
@@ -53,5 +54,8 @@ export const registerWebsocketListener = (
     'store-update',
     (change: SerializedChange) => store.isInitalized && applyChanges(store, change)
   );
-  ws.on('store-init', (data: any) => set(store, deserialize(AppStore, data)));
+  ws.on(
+    'store-init',
+    action((data: any) => set(store, deserialize(AppStore, data)))
+  );
 };

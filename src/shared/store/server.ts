@@ -1,6 +1,6 @@
 import {ipcMain} from 'electron';
 import settings from 'electron-settings';
-import {set} from 'mobx';
+import {runInAction, set} from 'mobx';
 import {deepObserve} from 'mobx-utils';
 import {deserialize, serialize} from 'serializr';
 import {Server} from 'socket.io';
@@ -21,8 +21,10 @@ let isApplyingConfigChange = false;
 /**
  * Load and deserialize the app config from the settings file
  */
-export const loadMainConfig = async (store: AppStore) =>
-  set(store.config, deserialize(AppConfig, await settings.get()));
+export const loadMainConfig = async (store: AppStore) => {
+  const obj = await settings.get();
+  runInAction(() => set(store.config, deserialize(AppConfig, obj)));
+};
 
 /**
  * Register for store config changes to be saved saved to the settings file
