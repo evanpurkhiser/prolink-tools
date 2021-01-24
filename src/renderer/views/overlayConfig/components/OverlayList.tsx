@@ -124,7 +124,7 @@ const buttonStyle = (color: string) => css`
 `;
 
 const Remove = styled('button')`
-  ${buttonStyle('#f84b4b')};
+  ${p => buttonStyle(p.theme.critical)};
   padding-right: 0.375rem;
 `;
 

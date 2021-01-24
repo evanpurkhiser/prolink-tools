@@ -8,9 +8,9 @@ const Text = styled('input')`
   font-size: 0.75rem;
   transition: border-color 200ms ease-in-out;
   padding: 0.25rem 0.5rem;
-  width: 100%;
   font-family: 'DM Mono';
   background: none;
+  height: 34px;
 
   &:focus {
     border-color: ${p => p.theme.control.borderFocus};

@@ -107,6 +107,10 @@ const Indicator = styled('div')`
   grid-gap: 0.5rem;
   padding-right: 0.5rem;
   border-right: 1px solid ${p => p.theme.border};
+
+  svg {
+    color: ${p => p.theme.cdjStatus.icon};
+  }
 `;
 
 const Status = styled('div')`
@@ -150,6 +154,10 @@ const SmallDevice = styled(motion.div)`
   > svg:first-of-type {
     grid-row: 1 / span 2;
   }
+
+  svg {
+    color: ${p => p.theme.cdjStatus.icon};
+  }
 `;
 
 SmallDevice.defaultProps = {
@@ -174,7 +182,7 @@ const ConnectedTag = styled('div')`
     height: 0.5rem;
     width: 0.5rem;
     border-radius: 50%;
-    background: #f84b4b;
+    background: ${p => p.theme.critical};
   }
 `;
 
@@ -183,7 +191,7 @@ const PlayerId = styled('div')<{onair: boolean}>`
   line-height: 22px;
   width: 34px;
   font-weight: 700;
-  background: ${p => (p.onair ? '#ff5757' : '#3b434b')};
+  background: ${p => (p.onair ? p.theme.critical : '#3b434b')};
   text-align: center;
   align-items: center;
   color: #fff;

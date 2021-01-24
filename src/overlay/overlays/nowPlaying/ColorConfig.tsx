@@ -147,8 +147,8 @@ const ColorBlock = styled('div')`
 const ResetButton = styled('button')`
   position: relative;
   padding: 0 0.25rem;
-  color: #555;
-  background: #eee;
+  color: ${p => p.theme.subText};
+  background: ${p => p.theme.backgroundBoxAlt};
   border: none;
   display: flex;
   align-items: center;
@@ -161,7 +161,8 @@ const ResetButton = styled('button')`
   }
 
   &:hover {
-    background: #ddd;
+    background: ${p => p.theme.softCritical};
+    color: #fff;
   }
 `;
 

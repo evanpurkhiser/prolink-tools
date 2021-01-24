@@ -6,10 +6,13 @@ import {Theme, useTheme} from '@emotion/react';
 type ControlProps = React.ComponentProps<typeof Control>;
 
 const selectStyles = (theme: Theme): ControlProps['styles'] => ({
-  control: () => ({
+  control: (_base, state) => ({
     display: 'flex',
     borderRadius: '3px',
-    border: `1px solid ${theme.control.border}`,
+    border: `1px solid ${
+      state.isFocused ? theme.control.borderFocus : theme.control.border
+    }`,
+    transition: 'border-color 200ms ease-in-out',
     width: '100%',
   }),
   valueContainer: base => ({
@@ -30,22 +33,32 @@ const selectStyles = (theme: Theme): ControlProps['styles'] => ({
   }),
   input: base => ({
     ...base,
-    color: '#737386',
+    color: theme.primaryText,
   }),
   menu: base => ({
     ...base,
     borderRadius: '3px',
     zIndex: 10,
-    boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+    boxShadow: `0 0 10px ${theme.boxShadow}`,
+    background: theme.background,
   }),
   option: (base, state) => ({
     ...base,
-    backgroundColor: state.isFocused ? '#4b98f8' : 'none',
+    backgroundColor: state.isFocused ? theme.activeAlt : 'none',
     color: state.isFocused ? '#fff' : 'none',
     padding: '0.25rem 0.5rem',
     margin: '0 0.25rem',
     borderRadius: '3px',
     width: 'auto',
+  }),
+  multiValueRemove: base => ({
+    ...base,
+    borderBottomLeftRadius: 0,
+    borderTopLeftRadius: 0,
+    ':hover': {
+      background: theme.softCritical,
+      color: '#fff',
+    },
   }),
 });
 

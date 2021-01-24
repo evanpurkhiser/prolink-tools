@@ -36,7 +36,8 @@ const BeatCounter = observer(({store, deviceId}: Props) => {
 
 const Beat = styled('div')<{active: boolean}>`
   border-radius: 2px;
-  background: ${p => (p.active ? '#FF9417' : '#C4C4C4')};
+  background: ${p =>
+    p.active ? p.theme.cdjStatus.activeBeat : p.theme.cdjStatus.blankBeat};
 `;
 
 const Bar = styled('div')`
@@ -55,7 +56,7 @@ const Wrapper = styled('div')`
 `;
 
 const CueCountdown = styled('div')<{important: boolean}>`
-  background: ${p => (p.important ? '#FF5757' : '#ddd')};
+  background: ${p => (p.important ? p.theme.critical : '#ddd')};
   color: ${p => (p.important ? '#fff' : 'initial')};
   padding: 0 8px;
   display: flex;

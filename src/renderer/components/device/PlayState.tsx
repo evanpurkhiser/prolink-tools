@@ -16,6 +16,7 @@ const PlayState = styled(({playState, ...p}: Props) => (
   background: ${p =>
     p.theme.playStates[p.playState ?? CDJStatus.PlayState.Empty]?.bg ??
     p.theme.backgroundBox};
+  color: ${p => p.theme.darkText};
   min-width: 74px;
   display: inline-block;
   font-size: 0.75rem;

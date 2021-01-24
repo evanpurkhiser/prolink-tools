@@ -45,7 +45,6 @@ const Container = styled('header')`
   gap: 0.5rem;
   align-items: center;
   background: ${p => p.theme.backgroundSecondary};
-  transition: background 300ms;
   border-bottom: 1px solid ${p => p.theme.border};
   -webkit-app-region: drag;
 `;

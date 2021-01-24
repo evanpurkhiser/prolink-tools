@@ -6,10 +6,10 @@ import {AppStore} from 'src/shared/store';
 import withStore from 'src/utils/withStore';
 
 const status = {
-  [NetworkState.Offline]: {label: 'offline', bg: '#45433D', text: '#fff'},
-  [NetworkState.Online]: {label: 'connecting...', bg: '#FF9417', text: null},
-  [NetworkState.Connected]: {label: 'connected', bg: '#5FF65B', text: null},
-  [NetworkState.Failed]: {label: 'connection error', bg: '#ff5757', text: null},
+  [NetworkState.Offline]: {label: 'offline'},
+  [NetworkState.Online]: {label: 'connecting...'},
+  [NetworkState.Connected]: {label: 'connected'},
+  [NetworkState.Failed]: {label: 'connection error'},
 };
 
 type Props = {
@@ -23,8 +23,8 @@ const NetworkStatus = observer(({store}: Props) => (
 ));
 
 const StatusIndicator = styled('div')<{state: NetworkState}>`
-  background: ${p => status[p.state].bg};
-  color: ${p => status[p.state].text ?? 'inherit'};
+  background: ${p => p.theme.networkState[p.state].bg};
+  color: ${p => p.theme.networkState[p.state].text ?? p.theme.darkText};
   font-weight: 500;
   padding: 0.25rem 0.5rem;
   font-size: 0.625rem;

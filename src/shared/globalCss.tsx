@@ -14,7 +14,6 @@ const globalCss = (theme: Theme) => css`
     padding: 0;
     color: ${theme.primaryText};
     background: ${theme.background};
-    transition: color 200ms ease-in-out, background 300ms ease-in-out;
   }
 
   ${fonts};

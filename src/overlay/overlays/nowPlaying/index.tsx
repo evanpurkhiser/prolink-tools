@@ -233,6 +233,7 @@ const ConfigInterface: React.FC<{config: NowPlayingConfig}> = observer(({config}
           size="sm"
           name="History items shown"
           description="Number of history items to show below the now playing metadata. You can set this to 0 to completely disable displaying history."
+          noCenter
         >
           <Text
             type="number"
