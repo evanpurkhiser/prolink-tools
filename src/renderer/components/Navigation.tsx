@@ -40,7 +40,7 @@ const Navigation = observer(({store}: Props) => {
     <MenuContainer>
       <SidebarToggle onClick={() => store.config.toggleSidebar()} />
       <AnimateSharedLayout>
-        <AnimatePresence>
+        <AnimatePresence initial={false}>
           {items.map(
             item =>
               (item.enabled?.(store) ?? true) && (
