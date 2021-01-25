@@ -42,6 +42,7 @@ jobs:
       - run: yarn lint
 
       # Build
+      - run: yarn electron-builder install-app-deps
       - run: yarn build-main
       - run: yarn build-renderer
       - run: yarn dist

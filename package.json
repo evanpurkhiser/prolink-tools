@@ -4,7 +4,6 @@
   "description": "A collection of userfriendly tools for DJs using Pioneers PRO DJ LINK feature",
   "author": "Evan Purkhiser <evanpurkhiser@gmail.com>",
   "license": "MIT",
-  "main": "./dist/main.js",
   "scripts": {
     "start-main-dev": "webpack --config=webpack.config.main.ts",
     "start-renderer-dev": "webpack --config=webpack.config.renderer.ts",
@@ -20,6 +19,7 @@
     "dist": "electron-builder",
     "lint": "eslint src/"
   },
+  "main": "main.js",
   "build": {
     "productName": "Prolink Tools",
     "appId": "com.evanpurkhiser.tools.prolink",
@@ -29,10 +29,19 @@
     },
     "publish": null,
     "files": [
-      "dist/",
+      "!**/*",
+      {
+        "from": "dist/",
+        "to": "./",
+        "filter": ["**/*", "!**/*.map"]
+      },
       "node_modules/better-sqlite3/**/*",
+      "node_modules/bindings/**/*",
+      "node_modules/file-uri-to-path/**/*",
       "package.json"
     ],
+    "extraFiles": ["LICENSE"],
+    "npmRebuild": false,
     "linux": {
       "target": "tar.gz"
     },
@@ -53,7 +62,6 @@
     "eslint": "^7.14.0",
     "jest": "^26.0.1",
     "lint-staged": "^10.0.7",
-    "node-loader": "^1.0.1",
     "nodemon": "^2.0.7",
     "null-loader": "^4.0.0",
     "prettier": "^2.0.5",

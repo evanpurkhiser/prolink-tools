@@ -46,6 +46,7 @@ const rendererConfig: webpack.Configuration = merge(baseConfig, {
   },
   plugins: [
     new HtmlWebpackPlugin({title: 'Prolink Tools'}),
+    new webpack.DefinePlugin({'process.type': '"renderer"'}),
     new ReactRefreshWebpackPlugin(),
     new ForkTsCheckerWebpackPlugin({
       issue: {include: [{file: 'src/renderer/**/*'}, {file: 'src/shared/**/*'}]},

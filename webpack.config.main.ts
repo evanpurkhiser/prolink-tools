@@ -12,16 +12,8 @@ const config: webpack.Configuration = merge(baseConfig, {
   externals: {
     'better-sqlite3': 'commonjs better-sqlite3',
   },
-  module: {
-    rules: [
-      // Native modules
-      {
-        test: /\.node$/,
-        use: 'node-loader',
-      },
-    ],
-  },
   plugins: [
+    new webpack.DefinePlugin({'process.type': '"browser"'}),
     new ForkTsCheckerWebpackPlugin({
       issue: {include: [{file: 'src/main/**/*'}, {file: 'src/shared/**/*'}]},
     }),
