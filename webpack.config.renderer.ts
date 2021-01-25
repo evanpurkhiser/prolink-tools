@@ -61,7 +61,7 @@ const rendererConfig: webpack.Configuration = merge(baseConfig, {
 
 const overlayConfig: webpack.Configuration = merge(baseConfig, {
   entry: {
-    overlay: ['./src/overlay/app.tsx', 'webpack-plugin-serve/client'],
+    overlay: withWebpackPluginServe(['./src/overlay/app.tsx']),
   },
   output: {
     path: path.resolve(__dirname, 'dist/overlay'),
