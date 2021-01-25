@@ -67,7 +67,11 @@ const createWindow = () => {
     height: 900,
     titleBarStyle: 'hiddenInset',
     title: 'Prolink Tools',
-    webPreferences: {nodeIntegration: true, contextIsolation: false},
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+      preload: path.join(__dirname, 'sentry.js'),
+    },
     backgroundColor: nativeTheme.shouldUseDarkColors
       ? theme.dark.background
       : theme.light.background,

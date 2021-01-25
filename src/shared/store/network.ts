@@ -1,4 +1,4 @@
-import {captureMessage, Severity} from '@sentry/node';
+import {captureMessage, Severity} from '@sentry/electron';
 import {applyDiff} from 'deep-diff';
 import {debounce} from 'lodash';
 import {action, reaction, runInAction, when} from 'mobx';

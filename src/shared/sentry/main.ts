@@ -1,6 +1,6 @@
 import '@sentry/apm';
 
-import * as Sentry from '@sentry/node';
+import * as Sentry from '@sentry/electron';
 import publicIp from 'public-ip';
 
 import os from 'os';

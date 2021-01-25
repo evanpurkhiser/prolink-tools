@@ -1,4 +1,4 @@
-import * as Sentry from '@sentry/node';
+import * as Sentry from '@sentry/electron';
 import FormData from 'form-data';
 import {autorun} from 'mobx';
 import fetch from 'node-fetch';

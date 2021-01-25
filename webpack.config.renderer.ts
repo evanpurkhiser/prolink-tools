@@ -22,6 +22,10 @@ const rendererConfig: webpack.Configuration = merge(baseConfig, {
   target: 'electron-renderer',
   entry: {
     app: withWebpackPluginServe(['./src/renderer/app.tsx']),
+    sentry: './src/shared/sentry/renderer.ts',
+  },
+  output: {
+    publicPath: '/',
   },
   optimization: {minimize: false},
   module: {

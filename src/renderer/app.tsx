@@ -1,10 +1,9 @@
 import 'regenerator-runtime/runtime';
-import 'src/shared/sentry/web';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {Global} from '@emotion/react';
-import * as Sentry from '@sentry/browser';
+import * as Sentry from '@sentry/electron';
 import {when} from 'mobx';
 
 import ThemeProvider from 'src/shared/components/ThemeProvider';
