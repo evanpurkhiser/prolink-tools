@@ -25,7 +25,7 @@ const rendererConfig: webpack.Configuration = merge(baseConfig, {
     sentry: './src/shared/sentry/renderer.ts',
   },
   output: {
-    publicPath: '/',
+    publicPath: './',
   },
   optimization: {minimize: false},
   module: {
