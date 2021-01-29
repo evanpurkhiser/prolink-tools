@@ -33,14 +33,19 @@
       {
         "from": "dist/",
         "to": "./",
-        "filter": ["**/*", "!**/*.map"]
+        "filter": [
+          "**/*",
+          "!**/*.map"
+        ]
       },
       "node_modules/better-sqlite3/**/*",
       "node_modules/bindings/**/*",
       "node_modules/file-uri-to-path/**/*",
       "package.json"
     ],
-    "extraFiles": ["LICENSE"],
+    "extraFiles": [
+      "LICENSE"
+    ],
     "npmRebuild": false,
     "linux": {
       "target": "tar.gz"
@@ -145,7 +150,7 @@
     "node-static": "^0.7.11",
     "noop2": "^2.0.0",
     "oauth": "^0.9.15",
-    "prolink-connect": "^0.3.0",
+    "prolink-connect": "^0.4.0-test.0",
     "public-ip": "^4.0.1",
     "react": "^17.0.1",
     "react-color": "^2.19.3",
