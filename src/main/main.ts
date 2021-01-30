@@ -133,7 +133,7 @@ app.on('ready', async () => {
 
   // Attempt to autoconfigure from other devices on the network
   await network.autoconfigFromPeers();
-  await network.connect();
+  network.connect();
   mainStore.networkState = network.state;
 
   // Start overlay http / websocket server.
