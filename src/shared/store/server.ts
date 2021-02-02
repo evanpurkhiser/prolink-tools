@@ -30,7 +30,12 @@ export const loadMainConfig = async (store: AppStore) => {
  * Register for store config changes to be saved saved to the settings file
  */
 export const observerAndPersistConfig = (store: AppStore) =>
-  deepObserve(store.config, () => settings.set(serialize(store.config)));
+  deepObserve(store.config, () => persistConfig(store));
+
+/**
+ * Persist application configuration into the settings file
+ */
+export const persistConfig = (store: AppStore) => settings.set(serialize(store.config));
 
 /**
  * Listens for IPC from any created windows. Upon registration the current state

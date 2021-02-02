@@ -201,6 +201,12 @@ export class AppConfig {
   @serializable
   @observable
   sidebarCollapsed = false;
+  /**
+   * The last version that was run prior to this run
+   */
+  @serializable
+  @observable
+  lastUsedVersion = '';
 
   @action
   toggleSidebar() {
@@ -210,6 +216,16 @@ export class AppConfig {
   @action
   toggleTheme() {
     this.theme = this.theme === 'light' ? 'dark' : 'light';
+  }
+
+  @action
+  markLatestVersion() {
+    if (this.lastUsedVersion === process.env.RELEASE) {
+      return false;
+    }
+
+    this.lastUsedVersion = process.env.RELEASE ?? this.lastUsedVersion;
+    return true;
   }
 
   @action

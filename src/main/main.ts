@@ -19,6 +19,7 @@ import connectNetworkStore from 'src/shared/store/network';
 import {
   loadMainConfig,
   observerAndPersistConfig,
+  persistConfig,
   registerMainIpc,
   registerMainWebsocket,
   startMainApiWebsocket,
@@ -176,5 +177,15 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   if (win === null) {
     createWindow();
+  }
+});
+
+app.on('will-quit', async event => {
+  const didMark = mainStore.config.markLatestVersion();
+
+  if (didMark) {
+    event.preventDefault();
+    await persistConfig(mainStore);
+    app.quit();
   }
 });
