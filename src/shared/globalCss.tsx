@@ -13,7 +13,6 @@ const globalCss = (theme: Theme) => css`
     margin: 0;
     padding: 0;
     color: ${theme.primaryText};
-    background: ${theme.background};
   }
 
   ${fonts};
