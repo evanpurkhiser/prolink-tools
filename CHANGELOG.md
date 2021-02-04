@@ -9,19 +9,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- 🔌 **Multiple Network Interfaces**
+- **Multiple Network Interfaces** 🔌
 
   You may now use multiple network interfaces (such as a USB ethernet
   adapter + WiFi) without Prolink Tools being unable to fully connect to
   devices on the network.
 
-- 🌑 **Dark Mode**
+- **Dark Mode** 🌑
 
   A new **Dark Mode** has been added! You may now select the appropriate
   visual theme in the settings menu, or select 'System' to match your OS's
   theme!
 
-- ⚡️ **Cloud Mode**
+- **Cloud Mode** ⚡️
 
   A new experimental **Cloud Mode** has been added.
 
@@ -36,10 +36,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   Currently the only feature this enables is allowing you to access your
   overlay URLs from any computer without needing to munge the IP address.
 
-  When using this feature your data will never be used in any way without your
-  explicit permission.
+  When using this feature your data will never be used in any way without your explicit permission.
 
-- 📒 **Release Notes**
+- **Release Notes** 📒
 
   Release notes may now be viewed when a new version is avaiable and will be
   shown after you install the new version!
