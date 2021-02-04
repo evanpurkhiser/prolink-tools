@@ -9,15 +9,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- 🔌 You may now use multiple network interfaces (such as a USB ethernet
+- 🔌 **Multiple Network Interfaces**
+
+  You may now use multiple network interfaces (such as a USB ethernet
   adapter + WiFi) without Prolink Tools being unable to fully connect to
   devices on the network.
 
-- 🌑 A new "Dark Mode" has been added! You may now select the appropriate
+- 🌑 **Dark Mode**
+
+  A new **Dark Mode** has been added! You may now select the appropriate
   visual theme in the settings menu, or select 'System' to match your OS's
   theme!
 
-- ⚡️ A new experimental 'Cloud Mode' has been added.
+- ⚡️ **Cloud Mode**
+
+  A new experimental **Cloud Mode** has been added.
 
   Cloud mode allows Prolink Tools to connect to and publish your device events
   to a central server. This feature is the foundation for enabling features
@@ -33,7 +39,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   When using this feature your data will never be used in any way without your
   explicit permission.
 
-- 📒 Release notes may now be viewed when a new version is avaiable and will be
+- 📒 **Release Notes**
+
+  Release notes may now be viewed when a new version is avaiable and will be
   shown after you install the new version!
 
 ### Fixed
