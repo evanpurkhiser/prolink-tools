@@ -23,9 +23,7 @@ const ApiOverlay = ({match}: Props) => {
     setStore(connectToAppStore(appKey));
   };
 
-  React.useEffect(() => {
-    connectStore();
-  }, []);
+  React.useEffect(() => void connectStore(), []);
 
   if (store === null) {
     return null;

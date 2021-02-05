@@ -15,9 +15,7 @@ type Props = {
 const DemoContext = ({demoRoutine, children}: Props) => {
   const [demoStore] = React.useState(createAppStore());
 
-  React.useEffect(() => {
-    demoRoutine.run(demoStore);
-  }, []);
+  React.useEffect(() => void demoRoutine.run(demoStore), []);
 
   return <StoreContext.Provider value={demoStore}>{children}</StoreContext.Provider>;
 };
