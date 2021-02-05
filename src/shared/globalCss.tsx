@@ -75,6 +75,12 @@ const noSelect = css`
   }
 `;
 
+const background = (theme: Theme) => css`
+  body {
+    background: ${theme.background};
+  }
+`;
+
 export default globalCss;
 
-export {noSelect};
+export {background, noSelect};

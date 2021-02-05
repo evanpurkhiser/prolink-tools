@@ -7,7 +7,7 @@ import * as Sentry from '@sentry/electron';
 import {when} from 'mobx';
 
 import ThemeProvider from 'src/shared/components/ThemeProvider';
-import globalCss, {noSelect} from 'src/shared/globalCss';
+import globalCss, {background, noSelect} from 'src/shared/globalCss';
 import {createAppStore} from 'src/shared/store';
 import {registerRendererConfigIpc, registerRendererIpc} from 'src/shared/store/client';
 import {StoreContext} from 'src/shared/store/context';
@@ -21,7 +21,7 @@ const rendererStore = createAppStore();
 const main = (
   <StoreContext.Provider value={rendererStore}>
     <ThemeProvider>
-      <Global styles={[globalCss, noSelect]} />
+      <Global styles={[globalCss, noSelect, background]} />
       <Application />
     </ThemeProvider>
   </StoreContext.Provider>
