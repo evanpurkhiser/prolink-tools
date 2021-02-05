@@ -41,11 +41,19 @@ jobs:
       - run: yarn install
       - run: yarn lint
 
+      # Use 
+      - name: Get filename
+        id: filename
+        run: |
+          [[ "${{ github.ref }}" == "refs/heads/master" ]] && \
+          echo "::set-output name=artifactName::${name}-dev-$(git rev-parse --short HEAD)-${os}.${ext}" || \
+          echo "::set-output name=artifactName::${name}-${version}-${os}.${ext}"
+
       # Build
       - run: yarn electron-builder install-app-deps
       - run: yarn build-main
       - run: yarn build-renderer
-      - run: yarn dist
+      - run: yarn dist -c.artifactName="${{ steps.filename.outputs.name }}"
 
       # Upload built executables
       - name: Upload executable
