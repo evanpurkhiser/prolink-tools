@@ -8,7 +8,6 @@ import useModal from 'src/utils/useModal';
 import ActionButton from './ActionButton';
 
 const HelpButton = () => {
-
   const [modal, toggleModal] = useModal(
     <React.Fragment>
       <LogoBig />
