@@ -44,6 +44,7 @@ jobs:
       # Use 
       - name: Get filename
         id: filename
+        shell: bash
         run: |
           [[ "${{ github.ref }}" == "refs/heads/master" ]] && \
           echo '::set-output name=name::${name}-dev-'$(git rev-parse --short HEAD)'-${os}.${ext}' || \
