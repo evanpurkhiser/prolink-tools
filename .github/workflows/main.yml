@@ -53,7 +53,7 @@ jobs:
       - run: yarn electron-builder install-app-deps
       - run: yarn build-main
       - run: yarn build-renderer
-      - run: yarn dist -c.artifactName="${{ steps.filename.outputs.name }}"
+      - run: yarn dist -c.artifactName='${{ steps.filename.outputs.name }}'
 
       # Upload built executables
       - name: Upload executable
