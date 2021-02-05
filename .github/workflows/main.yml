@@ -46,8 +46,8 @@ jobs:
         id: filename
         run: |
           [[ "${{ github.ref }}" == "refs/heads/master" ]] && \
-          echo '::set-output name=artifactName::${name}-dev-'$(git rev-parse --short HEAD)'-${os}.${ext}' || \
-          echo '::set-output name=artifactName::${name}-${version}-${os}.${ext}'
+          echo '::set-output name=name::${name}-dev-'$(git rev-parse --short HEAD)'-${os}.${ext}' || \
+          echo '::set-output name=name::${name}-${version}-${os}.${ext}'
 
       # Build
       - run: yarn electron-builder install-app-deps
