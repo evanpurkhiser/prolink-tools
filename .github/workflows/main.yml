@@ -41,20 +41,26 @@ jobs:
       - run: yarn install
       - run: yarn lint
 
-      # Use 
+      # Use the short has for the  
       - name: Get filename
         id: filename
         shell: bash
         run: |
-          [[ "${{ github.ref }}" == "refs/heads/master" ]] && \
-          echo '::set-output name=name::${name}-dev-'$(git rev-parse --short HEAD)'-${os}.${ext}' || \
-          echo '::set-output name=name::${name}-${version}-${os}.${ext}'
+          jq; sponge;
+
+#           [[ "${{ github.ref }}" == "refs/heads/master" ]] && \
+#           npx json json -I -f package.json -e "this.name='adar'"
+
+
+
+#           '::set-output name=name::${name}-dev-'$(git rev-parse --short HEAD)'-${os}.${ext}' || \
+#           echo '::set-output name=name::${name}-${version}-${os}.${ext}'
 
       # Build
       - run: yarn electron-builder install-app-deps
       - run: yarn build-main
       - run: yarn build-renderer
-      - run: yarn dist -c.artifactName='${{ steps.filename.outputs.name }}'
+      - run: yarn dist --config=.artifactName='${{ steps.filename.outputs.name }}'
 
       # Upload built executables
       - name: Upload executable
