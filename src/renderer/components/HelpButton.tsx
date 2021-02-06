@@ -31,7 +31,7 @@ const HelpButton = () => {
         <a href="https://ko-fi.com/evanpurkhiser">You can buy me a coffee</a> ❤️
       </small>
     </React.Fragment>
-  );
+  ));
 
   return (
     <React.Fragment>
