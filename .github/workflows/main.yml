@@ -42,19 +42,10 @@ jobs:
       - run: yarn lint
 
       # Use the short has for the  
-      - name: Get filename
-        id: filename
+      - name: Set dev-build artifact name
         shell: bash
-        run: |
-          jq; sponge;
-
-#           [[ "${{ github.ref }}" == "refs/heads/master" ]] && \
-#           npx json json -I -f package.json -e "this.name='adar'"
-
-
-
-#           '::set-output name=name::${name}-dev-'$(git rev-parse --short HEAD)'-${os}.${ext}' || \
-#           echo '::set-output name=name::${name}-${version}-${os}.${ext}'
+        if: ${{ github.ref == 'refs/heads/master' }}
+        run: echo "$(jq -r '.build.artifactName="${name}-dev-'"$(git rev-parse --short HEAD)"'-${os}.${ext}"' package.json)" > pacakge.json
 
       # Build
       - run: yarn electron-builder install-app-deps
