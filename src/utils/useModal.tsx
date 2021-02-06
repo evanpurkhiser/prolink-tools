@@ -23,14 +23,14 @@ type RenderProps = {
   closeModal: () => void;
 };
 
-type Content = React.ReactNode | ((props: RenderProps) => React.ReactNode);
+type Content = React.ComponentType<RenderProps>;
 
 const defaultOptions: Options = {
   canClickOut: true,
   escapeCloses: true,
 };
 
-const useModal = (content: Content, options: Options = defaultOptions) => {
+const useModal = (Content: Content, options: Options = defaultOptions) => {
   const [show, setVisible] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
@@ -44,13 +44,14 @@ const useModal = (content: Content, options: Options = defaultOptions) => {
     closeModal: () => setVisible(false),
   };
 
-  const body = typeof content === 'function' ? content(renderProps) : content;
+  const content = show ? <Content {...renderProps} /> : null;
+  const hasCotnent = React.isValidElement(content);
 
   const modal = ReactDOM.createPortal(
     <AnimatePresence>
-      {body !== null && show && (
+      {hasCotnent && (
         <Modal>
-          <Body ref={containerRef}>{body}</Body>
+          <Body ref={containerRef}>{content}</Body>
         </Modal>
       )}
     </AnimatePresence>,
@@ -96,6 +97,7 @@ const Body = styled(motion.div)`
   color: ${p => p.theme.primaryText};
   width: 600px;
   max-height: 60vh;
+  overflow: scroll;
 
   p {
     font-size: 0.95rem;
