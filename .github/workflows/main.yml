@@ -45,7 +45,7 @@ jobs:
       - name: Set dev-build artifact name
         shell: bash
         if: ${{ github.ref == 'refs/heads/master' }}
-        run: echo "$(jq -r '.build.artifactName="${name}-dev-'"$(git rev-parse --short HEAD)"'-${os}.${ext}"' package.json)" > pacakge.json
+        run: echo "$(jq -r '.build.artifactName="${name}-dev-'"$(git rev-parse --short HEAD)"'-${os}.${ext}"' package.json)" > package.json
 
       # Build
       - run: yarn electron-builder install-app-deps
