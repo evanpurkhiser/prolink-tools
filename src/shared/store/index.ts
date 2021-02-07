@@ -10,6 +10,7 @@ import {
   FetchProgress,
   HydrationProgress,
   MediaSlot,
+  MixstatusConfig,
   NetworkState,
   Track,
 } from 'prolink-connect/lib/types';
@@ -195,6 +196,18 @@ export class AppConfig {
   @serializable
   @observable
   theme: 'light' | 'dark' | 'system' = 'light';
+  /**
+   * The configuration object controlling the network mix-status processor
+   */
+  @serializable(rawJS)
+  @observable
+  mixstatusConfig: MixstatusConfig = observable.object({
+    allowedInterruptBeats: 8,
+    beatsUntilReported: 128,
+    timeBetweenSets: 30,
+    hasOnAirCapabilities: true,
+    reportRequresSilence: false,
+  });
   /**
    * State of the sidebar
    */

@@ -6,7 +6,7 @@ type Props = React.ComponentProps<'label'> & {
   size?: 'sm' | 'md' | 'lg' | 'fit' | 'full';
   noCenter?: boolean;
   top?: boolean;
-  name?: string;
+  name?: React.ReactNode;
   description?: React.ReactNode;
 };
 
@@ -31,7 +31,7 @@ const Field = styled(
     <label {...p}>
       {children}
       <div>
-        {name}
+        <Label>{name}</Label>
         {description && <small>{description}</small>}
       </div>
     </label>
@@ -72,11 +72,25 @@ const Field = styled(
     border-bottom: 1px solid ${p => p.theme.border};
   }
 
+  p {
+    margin-top: 0;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
   small {
     display: block;
     margin-top: 0.25rem;
     color: ${p => p.theme.subText};
   }
+`;
+
+const Label = styled('div')`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 `;
 
 export default Field;

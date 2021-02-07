@@ -273,14 +273,18 @@ const connectMixstatus = (store: AppStore, network: ConnectedProlinkNetwork) => 
   network.mixstatus.on('setEnded', () => store.mixstatus.trackHistory.clear());
 
   /**
-   * Update mixstatus service if onair support changes
+   * Update mixstatus service when reconfigured
    */
   reaction(
-    () => store.hasOnAirSupport,
-    hasOnAirSupport =>
+    () => ({
+      hasOnAirSupport: store.hasOnAirSupport,
+      ...store.config.mixstatusConfig,
+    }),
+    ({hasOnAirSupport, ...config}) =>
       network.mixstatus.configure({
-        hasOnAirCapabilities: hasOnAirSupport,
-        reportRequresSilence: !hasOnAirSupport,
+        ...config,
+        // Will only be configured if a supported mixer is on the network
+        hasOnAirCapabilities: config.hasOnAirCapabilities && hasOnAirSupport,
       }),
     {fireImmediately: true}
   );

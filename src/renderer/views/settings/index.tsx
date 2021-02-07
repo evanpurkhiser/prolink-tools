@@ -4,6 +4,7 @@ import {set} from 'mobx';
 import {observer} from 'mobx-react';
 
 import Select from 'src/renderer/components/form/Select';
+import Tag from 'src/shared/components/Tag';
 import {AppStore} from 'src/shared/store';
 import withStore from 'src/utils/withStore';
 import Checkbox from 'ui/components/form/Checkbox';
@@ -49,7 +50,6 @@ const Settings = observer(({store}: Props) => {
         >
           <Text
             type="text"
-            style={{appearance: 'textfield'}}
             value={config.idMarker}
             onChange={e => set(config, {idMarker: e.target.value})}
           />
@@ -80,10 +80,124 @@ const Settings = observer(({store}: Props) => {
           >
             <Checkbox
               checked={config.enableCloudApi}
-              onChange={e => set(store.config, {enableCloudApi: e.target.checked})}
+              onChange={e => set(config, {enableCloudApi: e.target.checked})}
             />
           </Field>
         )}
+      </Section>
+
+      <Heading>Now Playing Triggering</Heading>
+      <Section>
+        <Field
+          noCenter
+          top
+          size="sm"
+          name="Smart timing beat count"
+          description={
+            <React.Fragment>
+              The number of beats that must pass before the track is reported as now
+              playing. A general rule of thumb is to consider how many phrases of intro
+              the genre of music you play typically has. For example, if you cut over the
+              baseline of a track after 2 phrases of intro and want the new track to show
+              as now playing, that would equate to 128 beats (4 beats per bar, 16 bars in
+              a phrase, 2 phrases).
+            </React.Fragment>
+          }
+        >
+          <Text
+            type="number"
+            style={{appearance: 'textfield'}}
+            value={config.mixstatusConfig.beatsUntilReported}
+            onChange={e =>
+              set(config.mixstatusConfig, {beatsUntilReported: Number(e.target.value)})
+            }
+          />
+        </Field>
+        <Field
+          noCenter
+          top
+          size="sm"
+          name="Allowed beats during interrupts"
+          description={
+            <React.Fragment>
+              <p>
+                An &quot;Interrupt&quot; is when you pause (or cut the fader when{' '}
+                <em>use on-air status</em> is enabled) the current now-playing track, but
+                you don&apos;t want the incoming track to be reported as on-air. You may
+                be doing this as a performance trick, for example to solo a 1 bar fill on
+                the incoming track.
+              </p>
+              <p>
+                This counter stops tracks from being reported until after the configured
+                number of beats has passed when being &quot;interrupted&quot;. Once you
+                start the track again (or bring it back on-air) the counter is reset and
+                the track is not reported. The longer you set the value, the longer you
+                will have to wait before an outgoing track is seen as “complete” when you
+                pause or take the fader down with the real intent of that track being
+                complete (you may want to instead get in the habit of cueing the outgoing
+                track)
+              </p>
+            </React.Fragment>
+          }
+        >
+          <Text
+            type="number"
+            style={{appearance: 'textfield'}}
+            value={config.mixstatusConfig.allowedInterruptBeats}
+            onChange={e =>
+              set(config.mixstatusConfig, {allowedInterruptBeats: Number(e.target.value)})
+            }
+          />
+        </Field>
+        <Field
+          top
+          size="sm"
+          name="Only report after last track ends"
+          description={
+            <React.Fragment>
+              When enable, the upcoming track will not be reported until the previous
+              track has been cued or paused (it must be paused for longer than the{' '}
+              <strong>allowed beats during interrupt</strong> timer). You may want to
+              enable this if your equipment does not support reporting decks as On-Air
+              otherwise your tracks may be reported as now playing much to early. Enabling
+              this <strong>disables smart timing</strong>.
+            </React.Fragment>
+          }
+        >
+          <Checkbox
+            checked={config.mixstatusConfig.reportRequresSilence}
+            onChange={e =>
+              set(config.mixstatusConfig, {reportRequresSilence: e.target.checked})
+            }
+          />
+        </Field>
+        <Field
+          top
+          size="sm"
+          name={
+            <React.Fragment>
+              Use On-Air status
+              {!store.hasOnAirSupport && (
+                <Tag priority="critical">Needs compatible DJM</Tag>
+              )}
+            </React.Fragment>
+          }
+          description={
+            <React.Fragment>
+              When enabled (and your mixer supports indicating on-air status) the incoming
+              track <strong>must be on-air</strong> (red ring on the CDJ platter) in order
+              to be reported as live.
+            </React.Fragment>
+          }
+        >
+          <Checkbox
+            style={{filter: store.hasOnAirSupport ? 'none' : 'grayscale(1)'}}
+            checked={config.mixstatusConfig.hasOnAirCapabilities}
+            onChange={e =>
+              set(config.mixstatusConfig, {hasOnAirCapabilities: e.target.checked})
+            }
+          />
+        </Field>
       </Section>
 
       <Heading>Debugging / Development</Heading>
@@ -94,8 +208,8 @@ const Settings = observer(({store}: Props) => {
           name="Collect track events"
           description={
             <React.Fragment>
-              Enables collecting <em>all</em> events reported by PROLINK devices on the
-              network. Events are anonymized, and do not include track names or other
+              Enables collecting <em>all</em> events reported by PRO DJ LINK devices on
+              the network. Events are anonymized, and do not include track names or other
               private metadata.
               <InfoBox>
                 Collecting track events is incredibly helpful when looking into issues
@@ -109,7 +223,7 @@ const Settings = observer(({store}: Props) => {
         >
           <Checkbox
             checked={config.reportDebugEvents}
-            onChange={e => set(store.config, {reportDebugEvents: e.target.checked})}
+            onChange={e => set(config, {reportDebugEvents: e.target.checked})}
           />
         </Field>
       </Section>

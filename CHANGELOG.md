@@ -9,11 +9,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- **Multiple Network Interfaces** 🔌
+- Configure now playing timings ⏲
 
-  You may now use multiple network interfaces (such as a USB ethernet
-  adapter + WiFi) without Prolink Tools being unable to fully connect to
-  devices on the network.
+  You can now configure the number of beats Prolink Tools will wait before
+  reporting a track. Useful when you're not playing genres with 2 phrases of
+  intro, which is the default timing.
+
+  Various other configurations have been introduced to control timing of
+  now-playing track changes.
+
+  **[IMPORTANT]:** If you are using a setup with devices which do not report
+  On-Air status (such as the CDJ-2000s or an older DJM) older versions of
+  Prolink Tools would automatically enable the _only report after last track
+  ends_ configuration. This is now a manually toggled option.
 
 - **Dark Mode** 🌑
 
@@ -44,6 +52,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   shown after you install the new version!
 
 ### Fixed
+
+- **Multiple Network Interfaces** 🔌
+
+  You may now use multiple network interfaces (such as a USB ethernet
+  adapter + WiFi) without Prolink Tools being unable to fully connect to
+  devices on the network.
 
 - The 'Waiting for devices' screen will re-appear when all devices have been
   disconnected.
