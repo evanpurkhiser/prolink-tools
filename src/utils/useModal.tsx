@@ -24,12 +24,12 @@ type Options = {
   withCloseButton?: boolean;
 };
 
-type RenderProps = {
+export type ModalProps = {
   Modal: React.ComponentType<React.ComponentProps<typeof motion.div>>;
   closeModal: () => void;
 };
 
-type Content = React.ComponentType<RenderProps>;
+type Content<P> = React.ComponentType<ModalProps & P>;
 
 const defaultOptions: Options = {
   canClickOut: true,
@@ -37,38 +37,46 @@ const defaultOptions: Options = {
   withCloseButton: true,
 };
 
-const useModal = (Content: Content, options: Options = defaultOptions) => {
-  const [show, setVisible] = React.useState(false);
+function useModal<P extends any = Record<string, never>>(
+  Content: Content<P>,
+  options: Options = {}
+) {
+  const {canClickOut, escapeCloses, withCloseButton} = {...defaultOptions, ...options};
+
+  const [content, setContent] = React.useState<React.ReactNode>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
-  useClickAway(containerRef, () => options.canClickOut && setVisible(false));
+  useClickAway(containerRef, () => canClickOut && setContent(null));
   useKey(
     key => key.key === 'Escape',
-    () => options.escapeCloses && setVisible(false)
+    () => escapeCloses && setContent(null)
   );
 
-  const renderProps = {
-    closeModal: () => setVisible(false),
-  };
-
-  const ModalComponent: RenderProps['Modal'] = ({children, ...props}) => (
+  const ModalComponent: ModalProps['Modal'] = ({children, ...props}) => (
     <Modal>
-      <CloseButton onClick={() => setVisible(false)} />
+      {withCloseButton && <CloseButton onClick={() => setContent(null)} />}
       <Body {...props} ref={containerRef}>
         {children}
       </Body>
     </Modal>
   );
 
-  const content = show ? <Content Modal={ModalComponent} {...renderProps} /> : null;
+  const renderProps = {
+    closeModal: () => setContent(null),
+  };
+
+  const openModal = (isOpen: boolean, props?: P) =>
+    setContent(
+      isOpen ? <Content Modal={ModalComponent} {...renderProps} {...props} /> : null
+    );
 
   const modal = ReactDOM.createPortal(
     <AnimatePresence>{content}</AnimatePresence>,
     document.querySelector('body')!
   );
 
-  return [modal, setVisible] as const;
-};
+  return [modal, openModal] as const;
+}
 
 export default useModal;
 
