@@ -82,6 +82,10 @@ function getAtPath(obj: any, path: string) {
  */
 export const applyChanges = action(
   (obj: any, {path, change, serializerModel}: SerializedChange) => {
+    if (obj instanceof AppStore && obj.isInitalized !== true) {
+      return;
+    }
+
     const target = getAtPath(obj, path);
 
     if (target === undefined) {
