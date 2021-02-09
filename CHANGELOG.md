@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- Configure now playing timings ⏲
+- **Configure now playing timings** ⏲
 
   You can now configure the number of beats Prolink Tools will wait before
   reporting a track. Useful when you're not playing genres with 2 phrases of
