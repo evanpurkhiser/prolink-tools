@@ -66,7 +66,8 @@ const Settings = observer(({store}: Props) => {
                 used when this is enabled.
                 <InfoBox>
                   <p>
-                    This feature is still under heavy development and may not be stable
+                    This feature is still under <strong>heavy development</strong> and may{' '}
+                    <strong>not be stable</strong>!
                   </p>
                   <p>
                     <strong>Important:</strong> Enabling this functionality publishes
