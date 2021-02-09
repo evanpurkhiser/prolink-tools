@@ -1,38 +1,70 @@
 import React from 'react';
-import {Save} from 'react-feather';
+import {Radio, Save} from 'react-feather';
 import styled from '@emotion/styled';
 
+import useReleaseModal from 'src/renderer/hooks/useRelaseModal';
+import {AppStore} from 'src/shared/store';
 import useRelease from 'src/utils/useLatestRelease';
+import withStore from 'src/utils/withStore';
 
 import ActionButton from './ActionButton';
 import NetworkStatus from './NetworkStatus';
 
-const Toolbar = () => {
+type Props = {
+  store: AppStore;
+};
+
+const Toolbar = ({store}: Props) => {
   const latestRelease = useRelease();
+  const [notesModal, openNotesModal] = useReleaseModal({latestRelease});
 
   const hasNewVersion =
     latestRelease &&
     process.env.RELEASE_CHANNEL === 'stable' &&
     process.env.RELEASE !== latestRelease.name;
 
+  // Is this their first time using this version?
+  const isNewVersion =
+    store.isInitalized && store.config.lastUsedVersion !== process.env.RELEASE;
+
+  // Open the release notes modal
+  React.useEffect(() => {
+    if (isNewVersion) {
+      setTimeout(() => openNotesModal(true, {hideUnreleased: true}), 500);
+    }
+  }, [isNewVersion]);
+
   return (
     <Container>
-      {hasNewVersion && latestRelease && (
-        <NewVersionButton onClick={() => location.assign(latestRelease.html_url)}>
+      {latestRelease && hasNewVersion && (
+        <NewVersionButton onClick={() => openNotesModal(true, {hideUnreleased: true})}>
           <Save size="1rem" /> {latestRelease.name} available
         </NewVersionButton>
       )}
-      <Version>{process.env.RELEASE}</Version>
+      <Version onClick={() => openNotesModal(true)}>
+        {process.env.RELEASE} <Radio size="1rem" />
+      </Version>
+      {notesModal}
       <NetworkStatus />
     </Container>
   );
 };
 
 const Version = styled('div')`
+  display: flex;
+  gap: 0.5rem;
   align-items: center;
   font-size: 0.7rem;
   color: ${p => p.theme.subText};
-  margin-top: 4px;
+  line-height: 20px;
+  padding: 0 0.25rem;
+  border-radius: 2px;
+  transition: background 200ms ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    background: ${p => p.theme.backgroundBox};
+  }
 `;
 
 const Container = styled('header')`
@@ -53,10 +85,10 @@ const NewVersionButton = styled(ActionButton)`
   position: absolute;
   bottom: 1rem;
   right: 1rem;
-  background: #ef5f73;
+  background: ${p => p.theme.softCritical};
   color: #fff;
   padding: 0.375rem 0.5rem;
   font-size: 0.75rem;
 `;
 
-export default Toolbar;
+export default withStore(Toolbar);

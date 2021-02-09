@@ -19,4 +19,6 @@ const useRelease = () => {
   return release;
 };
 
+export type LatestRelease = ReturnType<typeof useRelease>;
+
 export default useRelease;

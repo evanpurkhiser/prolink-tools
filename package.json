@@ -33,14 +33,19 @@
       {
         "from": "dist/",
         "to": "./",
-        "filter": ["**/*", "!**/*.map"]
+        "filter": [
+          "**/*",
+          "!**/*.map"
+        ]
       },
       "node_modules/better-sqlite3/**/*",
       "node_modules/bindings/**/*",
       "node_modules/file-uri-to-path/**/*",
       "package.json"
     ],
-    "extraFiles": ["LICENSE"],
+    "extraFiles": [
+      "LICENSE"
+    ],
     "npmRebuild": false,
     "linux": {
       "target": "tar.gz"
@@ -114,6 +119,7 @@
     "@types/semver": "^7.3.3",
     "@types/sha.js": "^2.4.0",
     "@types/terser-webpack-plugin": "^5.0.2",
+    "@types/unist": "^2.0.3",
     "@types/webdriverio": "^5.0.0",
     "@types/webpack-env": "^1.13.3",
     "@types/webpack-merge": "^4.1.5",
@@ -158,6 +164,9 @@
     "react-textarea-autosize": "^8.2.0",
     "react-use": "^15.3.4",
     "regenerator-runtime": "^0.13.5",
+    "rehype-react": "^6.2.0",
+    "remark-parse": "^9.0.0",
+    "remark-rehype": "^8.0.0",
     "semver": "^7.3.2",
     "serializr": "^2.0.3",
     "sha.js": "^2.4.11",
@@ -169,6 +178,8 @@
     "ts-node": "^9.1.1",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^4.0.2",
+    "unified": "^9.2.0",
+    "unist-util-visit-parents": "^3.1.1",
     "webpack": "^5.13.0",
     "webpack-merge": "^5.7.3"
   },
