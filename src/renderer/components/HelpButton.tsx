@@ -8,8 +8,8 @@ import useModal from 'src/utils/useModal';
 import ActionButton from './ActionButton';
 
 const HelpButton = () => {
-  const [modal, toggleModal] = useModal(() => (
-    <React.Fragment>
+  const [modal, toggleModal] = useModal(({Modal}) => (
+    <Modal>
       <LogoBig />
       <p>
         Built by a DJ, for DJs. prolink tools is a hand-built collection of tools to hook
@@ -30,7 +30,7 @@ const HelpButton = () => {
         Like this software? Want to help support development?{' '}
         <a href="https://ko-fi.com/evanpurkhiser">You can buy me a coffee</a> ❤️
       </small>
-    </React.Fragment>
+    </Modal>
   ));
 
   return (

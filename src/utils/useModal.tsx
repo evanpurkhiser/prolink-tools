@@ -1,5 +1,6 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
+import {X} from 'react-feather';
 import {useClickAway, useKey} from 'react-use';
 import styled from '@emotion/styled';
 import {AnimatePresence, motion} from 'framer-motion';
@@ -17,9 +18,14 @@ type Options = {
    * @default true
    */
   escapeCloses?: boolean;
+  /**
+   * Show a close button on the modal
+   */
+  withCloseButton?: boolean;
 };
 
 type RenderProps = {
+  Modal: React.ComponentType<React.ComponentProps<typeof motion.div>>;
   closeModal: () => void;
 };
 
@@ -28,6 +34,7 @@ type Content = React.ComponentType<RenderProps>;
 const defaultOptions: Options = {
   canClickOut: true,
   escapeCloses: true,
+  withCloseButton: true,
 };
 
 const useModal = (Content: Content, options: Options = defaultOptions) => {
@@ -44,17 +51,19 @@ const useModal = (Content: Content, options: Options = defaultOptions) => {
     closeModal: () => setVisible(false),
   };
 
-  const content = show ? <Content {...renderProps} /> : null;
-  const hasCotnent = React.isValidElement(content);
+  const ModalComponent: RenderProps['Modal'] = ({children, ...props}) => (
+    <Modal>
+      <CloseButton onClick={() => setVisible(false)} />
+      <Body {...props} ref={containerRef}>
+        {children}
+      </Body>
+    </Modal>
+  );
+
+  const content = show ? <Content Modal={ModalComponent} {...renderProps} /> : null;
 
   const modal = ReactDOM.createPortal(
-    <AnimatePresence>
-      {hasCotnent && (
-        <Modal>
-          <Body ref={containerRef}>{content}</Body>
-        </Modal>
-      )}
-    </AnimatePresence>,
+    <AnimatePresence>{content}</AnimatePresence>,
     document.querySelector('body')!
   );
 
@@ -121,4 +130,27 @@ Body.defaultProps = {
     animate: {scale: 1, opacity: 1},
   },
   transition: {type: 'spring', delay: 0.1, duration: 0.15},
+};
+
+const CloseButton = styled('button')`
+  position: absolute;
+  top: 3rem;
+  right: 0.75rem;
+  display: flex;
+  align-items: center;
+  border: 0;
+  padding: 0.25rem;
+  background: ${p => p.theme.background};
+  border-radius: 5px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+  transition: opacity 200ms ease-in-out;
+  opacity: 0.8;
+
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+CloseButton.defaultProps = {
+  children: <X size="1rem" />,
 };
