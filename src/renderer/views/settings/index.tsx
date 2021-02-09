@@ -178,7 +178,7 @@ const Settings = observer(({store}: Props) => {
             <React.Fragment>
               Use On-Air status
               {!store.hasOnAirSupport && (
-                <Tag priority="critical">Needs compatible DJM</Tag>
+                <Tag priority="critical">Needs compatible DJM / CDJ</Tag>
               )}
             </React.Fragment>
           }
