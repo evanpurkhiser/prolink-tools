@@ -25,9 +25,11 @@ const Toolbar = ({store}: Props) => {
 
   // Is this their first time using this version?
   const isNewVersion =
-    store.isInitalized && store.config.lastUsedVersion !== process.env.RELEASE;
+    store.isInitalized &&
+    store.config.lastUsedVersion !== process.env.RELEASE &&
+    process.env.RELEASE_CHANNEL === 'stable';
 
-  // Open the release notes modal
+  // Open the release notes modal on first run
   React.useEffect(() => {
     if (isNewVersion) {
       setTimeout(() => openNotesModal(true, {hideUnreleased: true}), 500);
