@@ -235,7 +235,7 @@ const useReleaseModal = ({latestRelease}: InitOptions) =>
         <Modal>
           <ModalHeader>
             <h1>What&apos;s new in Prolink Tools</h1>
-            {latestRelease && !hasNewVersion ? (
+            {latestRelease && hasNewVersion ? (
               <NewVersionButton onClick={() => location.assign(latestRelease.html_url)}>
                 Download {latestRelease.name}
               </NewVersionButton>
