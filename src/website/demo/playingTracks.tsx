@@ -20,6 +20,7 @@ const bootRoutine = new Routine([
   {
     fn: action((s: AppStore) => {
       s.isInitalized = true;
+      s.config.markLatestVersion();
       s.networkState = NetworkState.Online;
       s.config.sidebarCollapsed = true;
 
