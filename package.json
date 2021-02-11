@@ -33,14 +33,19 @@
       {
         "from": "dist/",
         "to": "./",
-        "filter": ["**/*", "!**/*.map"]
+        "filter": [
+          "**/*",
+          "!**/*.map"
+        ]
       },
       "node_modules/better-sqlite3/**/*",
       "node_modules/bindings/**/*",
       "node_modules/file-uri-to-path/**/*",
       "package.json"
     ],
-    "extraFiles": ["LICENSE"],
+    "extraFiles": [
+      "LICENSE"
+    ],
     "npmRebuild": false,
     "linux": {
       "target": "tar.gz"
@@ -125,6 +130,7 @@
     "connect": "^3.7.0",
     "cookie": "^0.4.1",
     "cross-env": "^7.0.2",
+    "cursor": "https://github.com/EvanPurkhiser/node-cursor.git#fix-buffer",
     "date-fns": "^2.14.0",
     "deep-diff": "^1.0.2",
     "electron-is-dev": "^1.2.0",
