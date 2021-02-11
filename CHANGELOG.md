@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+Nothing yet
+
+## [v0.1.0-beta.4] - 2021-02-11
+
 ### Added
 
 - **Configure now playing timings** ⏲
@@ -75,5 +79,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   releases](https://github.com/EvanPurkhiser/prolink-tools/releases) for the
   project.
 
-[Unreleased]: https://github.com/evanpurkhiser/prolink-tools/compare/v0.1.0-beta.3...HEAD
+[Unreleased]: https://github.com/evanpurkhiser/prolink-tools/compare/v0.1.0-beta.4...HEAD
+[v0.1.0-beta.4]: https://github.com/evanpurkhiser/prolink-tools/compare/v0.1.0-beta.3...v0.1.0-beta.4
 [v0.1.0-beta.3]: https://github.com/evanpurkhiser/prolink-tools/compare/v0.1.0-beta.2...v0.1.0-beta.3
