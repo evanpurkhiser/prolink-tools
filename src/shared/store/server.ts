@@ -52,6 +52,7 @@ export const registerMainIpc = (store: AppStore, register: RegisterHandler) => {
 
     // Register this window to recieve store changes over ipc
     register(
+      'main-ipc',
       change => !isApplyingConfigChange && event.sender.send('store-update', change)
     );
   });
@@ -75,7 +76,7 @@ export const startMainApiWebsocket = (store: AppStore, register: RegisterHandler
   });
 
   conn.emit('store-init', serialize(store));
-  register(change => conn.emit('store-update', change));
+  register('api-ws', change => conn.emit('store-update', change));
 
   // If the server drops the connection we'll have to re-initalize the store
   conn.on('disconnect', () => {
@@ -102,7 +103,7 @@ export const registerMainWebsocket = (
   });
 
   // Send changes to the websocket
-  register(change => wss.sockets.emit('store-update', change));
+  register('main-ws', change => wss.sockets.emit('store-update', change));
 
   return wss;
 };

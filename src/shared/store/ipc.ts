@@ -172,7 +172,7 @@ type changeHandler = (change: SerializedChange) => void;
 /**
  * Function used to register to recieve serialized updated from an observer
  */
-export type RegisterHandler = (reciever: changeHandler) => void;
+export type RegisterHandler = (key: string, reciever: changeHandler) => void;
 
 /**
  * Start observing the store (or some part of it) for changes.
@@ -186,10 +186,10 @@ export const observeStore = ({
 }: ObserverStoreOpts): [RegisterHandler, IDisposer] => {
   // Maintains a list of handlers that will be called in response to a serailized
   // change in the store.
-  const handlers: changeHandler[] = [];
+  const handlers: Map<string, changeHandler> = new Map();
 
   if (handler) {
-    handlers.push(handler);
+    handlers.set('root', handler);
   }
 
   const dispose = deepObserve(target, (change, changePath) => {
@@ -256,5 +256,5 @@ export const observeStore = ({
     handlers.forEach(handler => handler(serializedChange));
   });
 
-  return [handler => handlers.push(handler), dispose];
+  return [(key, handler) => handlers.set(key, handler), dispose];
 };
