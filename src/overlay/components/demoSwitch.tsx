@@ -1,6 +1,6 @@
 import {ThemeProvider} from '@emotion/react';
 import styled from '@emotion/styled';
-import {set} from 'mobx';
+import {action, set} from 'mobx';
 import {observer} from 'mobx-react';
 
 import Checkbox from 'ui/components/form/Checkbox';
@@ -16,7 +16,7 @@ const DemoSwitch = observer(({config}: Props) => (
       <Checkbox
         controlSize="sm"
         checked={!!config.demoMode}
-        onChange={() => set(config, {demoMode: !config.demoMode})}
+        onChange={action(() => set(config, {demoMode: !config.demoMode}))}
       />
     </Container>
   </ThemeProvider>

@@ -5,7 +5,7 @@ import {usePopper} from 'react-popper';
 import {useClickAway} from 'react-use';
 import styled from '@emotion/styled';
 import {AnimatePresence, motion} from 'framer-motion';
-import {set} from 'mobx';
+import {action, set} from 'mobx';
 import {observer} from 'mobx-react';
 
 import {NowPlayingConfig} from '.';
@@ -26,7 +26,9 @@ const ColorConfig = observer(({config, defaultColors, trimPrefix}: Props) => (
         color={config?.colors?.[name] ?? color}
         defaultColor={defaultColors[name]}
         onReset={() => set(config, {colors: {...config?.colors, [name]: undefined}})}
-        onChange={color => set(config, {colors: {...config?.colors, [name]: color}})}
+        onChange={action((color: string) =>
+          set(config, {colors: {...config?.colors, [name]: color}})
+        )}
       />
     ))}
   </Container>

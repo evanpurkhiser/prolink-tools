@@ -1,6 +1,7 @@
 import * as React from 'react';
+import {OptionsType, ValueType} from 'react-select';
 import styled from '@emotion/styled';
-import {set} from 'mobx';
+import {action, set} from 'mobx';
 import {observer} from 'mobx-react';
 
 import Select from 'src/renderer/components/form/Select';
@@ -39,7 +40,7 @@ const Settings = observer(({store}: Props) => {
             isSearchable={false}
             options={uiThemes}
             value={uiThemes.find(t => t.value === config.theme)}
-            onChange={value => set(config, {theme: (value as {value: string}).value})}
+            onChange={action((value: any) => set(config, {theme: value?.value}))}
           />
         </Field>
         <Field
@@ -51,7 +52,9 @@ const Settings = observer(({store}: Props) => {
           <Text
             type="text"
             value={config.idMarker}
-            onChange={e => set(config, {idMarker: e.target.value})}
+            onChange={action((e: React.ChangeEvent<HTMLInputElement>) =>
+              set(config, {idMarker: e.target.value})
+            )}
           />
         </Field>
         {process.env.RELEASE_CHANNEL !== 'stable' && (
@@ -81,7 +84,9 @@ const Settings = observer(({store}: Props) => {
           >
             <Checkbox
               checked={config.enableCloudApi}
-              onChange={e => set(config, {enableCloudApi: e.target.checked})}
+              onChange={action((e: React.ChangeEvent<HTMLInputElement>) =>
+                set(config, {enableCloudApi: e.target.checked})
+              )}
             />
           </Field>
         )}
@@ -109,9 +114,9 @@ const Settings = observer(({store}: Props) => {
             type="number"
             style={{appearance: 'textfield'}}
             value={config.mixstatusConfig.beatsUntilReported}
-            onChange={e =>
+            onChange={action((e: React.ChangeEvent<HTMLInputElement>) =>
               set(config.mixstatusConfig, {beatsUntilReported: Number(e.target.value)})
-            }
+            )}
           />
         </Field>
         <Field
@@ -145,9 +150,9 @@ const Settings = observer(({store}: Props) => {
             type="number"
             style={{appearance: 'textfield'}}
             value={config.mixstatusConfig.allowedInterruptBeats}
-            onChange={e =>
+            onChange={action((e: React.ChangeEvent<HTMLInputElement>) =>
               set(config.mixstatusConfig, {allowedInterruptBeats: Number(e.target.value)})
-            }
+            )}
           />
         </Field>
         <Field
@@ -167,9 +172,9 @@ const Settings = observer(({store}: Props) => {
         >
           <Checkbox
             checked={config.mixstatusConfig.reportRequresSilence}
-            onChange={e =>
+            onChange={action((e: React.ChangeEvent<HTMLInputElement>) =>
               set(config.mixstatusConfig, {reportRequresSilence: e.target.checked})
-            }
+            )}
           />
         </Field>
         <Field
@@ -194,9 +199,9 @@ const Settings = observer(({store}: Props) => {
           <Checkbox
             style={{filter: store.hasOnAirSupport ? 'none' : 'grayscale(1)'}}
             checked={config.mixstatusConfig.hasOnAirCapabilities}
-            onChange={e =>
+            onChange={action((e: React.ChangeEvent<HTMLInputElement>) =>
               set(config.mixstatusConfig, {hasOnAirCapabilities: e.target.checked})
-            }
+            )}
           />
         </Field>
       </Section>
@@ -224,7 +229,9 @@ const Settings = observer(({store}: Props) => {
         >
           <Checkbox
             checked={config.reportDebugEvents}
-            onChange={e => set(config, {reportDebugEvents: e.target.checked})}
+            onChange={action((e: React.ChangeEvent<HTMLInputElement>) =>
+              set(config, {reportDebugEvents: e.target.checked})
+            )}
           />
         </Field>
       </Section>

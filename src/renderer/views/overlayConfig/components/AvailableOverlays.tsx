@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Layers} from 'react-feather';
 import styled from '@emotion/styled';
 import {motion} from 'framer-motion';
+import {action} from 'mobx';
 import short from 'short-uuid';
 
 import {OverlayDescriptor, OverlayInstance, registeredOverlays} from 'src/overlay';
@@ -40,7 +41,7 @@ const AvailableOverlays: React.FC<ListProps> = ({onAdded, store}) => (
       <OverlayEntry
         key={overlay.type}
         overlay={overlay}
-        onAdd={() => {
+        onAdd={action(() => {
           const instance: OverlayInstance = {
             type: overlay.type,
             key: short().new(),
@@ -48,7 +49,7 @@ const AvailableOverlays: React.FC<ListProps> = ({onAdded, store}) => (
           };
           store.config.overlays.push(instance);
           onAdded(instance);
-        }}
+        })}
       />
     ))}
   </Container>

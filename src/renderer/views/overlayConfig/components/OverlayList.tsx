@@ -1,6 +1,7 @@
 import {Copy, Delete} from 'react-feather';
 import {css} from '@emotion/react';
 import styled from '@emotion/styled';
+import {action} from 'mobx';
 import {observer} from 'mobx-react';
 
 import {OverlayInstance, registeredOverlays} from 'src/overlay';
@@ -47,7 +48,7 @@ const OverlayEntry = observer(({store, index}: EntryProps) => {
     <div key={instance.key}>
       <Actions>
         <OverlayUrl cloudEnabled={store.config.enableCloudApi} instance={instance} />
-        <Remove onClick={() => store.config.overlays.remove(instance)}>
+        <Remove onClick={action(() => store.config.overlays.remove(instance))}>
           <Delete size="1rem" />
         </Remove>
       </Actions>

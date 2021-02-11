@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Link} from 'react-router-dom';
 import styled from '@emotion/styled';
-import {set} from 'mobx';
+import {action, set} from 'mobx';
 import {observer} from 'mobx-react';
 
 import {OverlayDescriptor} from 'src/overlay';
@@ -184,7 +184,7 @@ const ConfigInterface: React.FC<{config: NowPlayingConfig}> = observer(({config}
         <Select
           value={{value: config.theme, ...themes[config.theme]}}
           options={Object.entries(themes).map(([value, theme]) => ({value, ...theme}))}
-          onChange={v => set(config, {theme: (v as {value: Theme}).value})}
+          onChange={action((v: any) => set(config, {theme: v.value}))}
         />
       </Field>
       {enabledConfigs.includes('alignRight') && (
@@ -195,7 +195,7 @@ const ConfigInterface: React.FC<{config: NowPlayingConfig}> = observer(({config}
         >
           <Checkbox
             checked={config.alignRight}
-            onChange={() => set(config, {alignRight: !config.alignRight})}
+            onChange={action(() => set(config, {alignRight: !config.alignRight}))}
           />
         </Field>
       )}
@@ -207,7 +207,7 @@ const ConfigInterface: React.FC<{config: NowPlayingConfig}> = observer(({config}
         >
           <Checkbox
             checked={config.hideArtwork}
-            onChange={() => set(config, {hideArtwork: !config.hideArtwork})}
+            onChange={action(() => set(config, {hideArtwork: !config.hideArtwork}))}
           />
         </Field>
       )}
@@ -224,7 +224,7 @@ const ConfigInterface: React.FC<{config: NowPlayingConfig}> = observer(({config}
         >
           <Checkbox
             checked={config.maskId}
-            onChange={() => set(config, {maskId: !config.maskId})}
+            onChange={action(() => set(config, {maskId: !config.maskId}))}
           />
         </Field>
       )}
@@ -239,9 +239,9 @@ const ConfigInterface: React.FC<{config: NowPlayingConfig}> = observer(({config}
             type="number"
             style={{textAlign: 'center', appearance: 'textfield'}}
             value={config.historyCount}
-            onChange={e =>
+            onChange={action((e: React.ChangeEvent<HTMLInputElement>) =>
               set(config, {historyCount: Math.max(0, Number(e.target.value))})
-            }
+            )}
           />
         </Field>
       )}
@@ -256,9 +256,9 @@ const ConfigInterface: React.FC<{config: NowPlayingConfig}> = observer(({config}
             placeholder="Add metadata items to display..."
             options={valueTransform(availableTags)}
             value={valueTransform(config.tags ?? [])}
-            onChange={values =>
+            onChange={action((values: any) =>
               set(config, {tags: values?.map((v: any) => v.value) ?? []})
-            }
+            )}
           />
         </Field>
       )}
