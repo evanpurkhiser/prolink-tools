@@ -33,19 +33,14 @@
       {
         "from": "dist/",
         "to": "./",
-        "filter": [
-          "**/*",
-          "!**/*.map"
-        ]
+        "filter": ["**/*", "!**/*.map"]
       },
       "node_modules/better-sqlite3/**/*",
       "node_modules/bindings/**/*",
       "node_modules/file-uri-to-path/**/*",
       "package.json"
     ],
-    "extraFiles": [
-      "LICENSE"
-    ],
+    "extraFiles": ["LICENSE"],
     "npmRebuild": false,
     "linux": {
       "target": "tar.gz"
@@ -57,6 +52,9 @@
       "target": "dmg",
       "category": "public.app-category.music"
     }
+  },
+  "resolutions": {
+    "cursor": "https://github.com/EvanPurkhiser/node-cursor.git#fix-buffer"
   },
   "devDependencies": {
     "@evanpurkhiser/eslint-config": "^0.9.1",
