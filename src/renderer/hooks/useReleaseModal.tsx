@@ -172,7 +172,7 @@ function renderChangelog(changelogMd: string, {hideUnreleased = false}: Options 
     const isNewVersion =
       !isUnreleaseRelease &&
       mostCurrentVersionIndex !== undefined &&
-      mostCurrentVersionIndex < headingIndex;
+      mostCurrentVersionIndex > headingIndex;
 
     const releaseNotesHtml = unified()
       .use(markdown)
