@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {OptionsType, ValueType} from 'react-select';
 import styled from '@emotion/styled';
 import {action, set} from 'mobx';
 import {observer} from 'mobx-react';
