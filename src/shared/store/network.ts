@@ -38,7 +38,9 @@ const connectDevices = (store: AppStore, network: ConnectedProlinkNetwork) => {
   const deviceList = [...network.deviceManager.devices.values()];
   const deviceEntries = deviceList.map(d => [d.id, new DeviceStore(d)]);
 
-  store.devices.replace(new Map(deviceEntries as [DeviceID, DeviceStore][]));
+  runInAction(() =>
+    store.devices.replace(new Map(deviceEntries as [DeviceID, DeviceStore][]))
+  );
 
   // Create device stores for new devices
   network.deviceManager.on(
@@ -97,7 +99,7 @@ const connectTracks = (store: AppStore, network: ConnectedProlinkNetwork) =>
 
       // Clear the current track as it has changed.
       if (deviceStore.track !== undefined) {
-        deviceStore.track = undefined;
+        runInAction(() => (deviceStore.track = undefined));
       }
 
       const {trackId, trackSlot, trackType, trackDeviceId} = state;
@@ -233,39 +235,36 @@ const connectLocaldbHydrateDone = (store: AppStore, network: ConnectedProlinkNet
  * Configure listeners for the mixstatus processor
  */
 const connectMixstatus = (store: AppStore, network: ConnectedProlinkNetwork) => {
-  network.mixstatus.on(
-    'nowPlaying',
-    action(async state => {
-      const playedAt = new Date();
+  network.mixstatus.on('nowPlaying', async state => {
+    const playedAt = new Date();
 
-      const latestHistory =
-        store.mixstatus.trackHistory[store.mixstatus.trackHistory.length - 1];
+    const latestHistory =
+      store.mixstatus.trackHistory[store.mixstatus.trackHistory.length - 1];
 
-      // TODO: The comparisons of track id are not sufficient here, since it's
-      // possible for two USBs to have a track collision.
+    // TODO: The comparisons of track id are not sufficient here, since it's
+    // possible for two USBs to have a track collision.
 
-      // No need to report duplicate plays on tracks
-      if (state.trackId === latestHistory?.track.id) {
-        return;
-      }
+    // No need to report duplicate plays on tracks
+    if (state.trackId === latestHistory?.track.id) {
+      return;
+    }
 
-      await when(() => store.devices.get(state.deviceId)?.track?.id === state.trackId);
+    await when(() => store.devices.get(state.deviceId)?.track?.id === state.trackId);
 
-      const device = store.devices.get(state.deviceId);
-      const track = device?.track;
+    const device = store.devices.get(state.deviceId);
+    const track = device?.track;
 
-      // There was a problem loading the track, nothing we can do here.
-      if (track === undefined) {
-        captureMessage('Failed to mark now playing for track', Severity.Warning);
-        return;
-      }
+    // There was a problem loading the track, nothing we can do here.
+    if (track === undefined) {
+      captureMessage('Failed to mark now playing for track', Severity.Warning);
+      return;
+    }
 
-      const played = new PlayedTrack(playedAt, track);
-      played.artwork = device?.artwork;
+    const played = new PlayedTrack(playedAt, track);
+    played.artwork = device?.artwork;
 
-      store.mixstatus.trackHistory.push(played);
-    })
-  );
+    store.mixstatus.addPlayedTrack(played);
+  });
 
   /**
    * Clear active track history at the end of a set

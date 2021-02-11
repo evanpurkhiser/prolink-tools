@@ -2,7 +2,7 @@ import 'regenerator-runtime/runtime';
 
 import {app, BrowserWindow, nativeTheme, shell} from 'electron';
 import isDev from 'electron-is-dev';
-import {reaction, set, when} from 'mobx';
+import {reaction, runInAction, set, when} from 'mobx';
 import {bringOnline, NetworkState, ProlinkNetwork} from 'prolink-connect';
 
 import * as path from 'path';
@@ -31,10 +31,13 @@ const mainStore = createAppStore();
 export const withMainStore = (cb: (store: AppStore) => void) => cb(mainStore);
 
 // Update the store with user details ASAP
-(async () => set(mainStore, {user: await userInfo}))();
+(async () => {
+  const user = await userInfo;
+  runInAction(() => set(mainStore, {user}));
+})();
 
 // Intialize the store for the main thread immedaitely.
-mainStore.isInitalized = true;
+runInAction(() => (mainStore.isInitalized = true));
 
 // see https://www.electronjs.org/docs/api/app#appallowrendererprocessreuse
 app.allowRendererProcessReuse = true;
@@ -121,21 +124,22 @@ app.on('ready', async () => {
   // Open connections to the network
   try {
     network = await bringOnline();
-    mainStore.networkState = network.state;
   } catch (e) {
     if (e.errno !== 'EADDRINUSE') {
       throw e;
     }
 
     // Something is using the status port... Most likely rekordbox
-    mainStore.networkState = NetworkState.Failed;
+    mainStore.markNetworkState(NetworkState.Failed);
     return;
   }
+
+  mainStore.markNetworkState(network.state);
 
   // Attempt to autoconfigure from other devices on the network
   await network.autoconfigFromPeers();
   network.connect();
-  mainStore.networkState = network.state;
+  mainStore.markNetworkState(network.state);
 
   // Start overlay http / websocket server.
   //

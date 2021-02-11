@@ -154,6 +154,11 @@ export class MixstatusStore {
   @observable
   trackHistory = observable.array<PlayedTrack>();
 
+  @action
+  addPlayedTrack(played: PlayedTrack) {
+    this.trackHistory.push(played);
+  }
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -299,6 +304,11 @@ export class AppStore {
   get appKey() {
     // TODO: Duplicated logic in api/internalStore
     return shajs('sha256').update(this.config.apiKey).digest('base64').slice(0, 20);
+  }
+
+  @action
+  markNetworkState(state: NetworkState) {
+    this.networkState = state;
   }
 
   /**

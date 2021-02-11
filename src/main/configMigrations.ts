@@ -1,4 +1,4 @@
-import {set} from 'mobx';
+import {runInAction, set} from 'mobx';
 
 import {AppStore} from 'src/shared/store';
 
@@ -14,7 +14,7 @@ export function runConfigMigrations(store: AppStore) {
    * Migrate old 'taggedNowPlaying' overlay configurations to the new themeable
    * nowPlaying overlay type.
    */
-  (() => {
+  runInAction(() => {
     const overlay = store.config.overlays.find(
       overlay => overlay.type === 'taggedNowPlaying'
     );
@@ -25,5 +25,5 @@ export function runConfigMigrations(store: AppStore) {
 
     set(overlay, {type: 'nowPlaying'});
     set(overlay.config, {theme: 'tracklist'});
-  })();
+  });
 }
