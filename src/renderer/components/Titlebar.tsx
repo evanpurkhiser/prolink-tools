@@ -2,7 +2,7 @@ import React from 'react';
 import {Radio, Save} from 'react-feather';
 import styled from '@emotion/styled';
 
-import useReleaseModal from 'src/renderer/hooks/useRelaseModal';
+import useReleaseModal from 'src/renderer/hooks/useReleaseModal';
 import {AppStore} from 'src/shared/store';
 import useRelease from 'src/utils/useLatestRelease';
 import withStore from 'src/utils/withStore';
