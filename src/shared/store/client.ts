@@ -19,7 +19,11 @@ let isApplyingConfigChange = false;
 export const registerRendererIpc = (store: AppStore) => {
   ipcRenderer.on('store-update', (_, change: SerializedChange) => {
     isApplyingConfigChange = change.path.startsWith('config');
-    applyChanges(store, change);
+
+    if (store.isInitalized) {
+      applyChanges(store, change);
+    }
+
     isApplyingConfigChange = false;
   });
 
