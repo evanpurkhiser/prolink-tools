@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 Nothing yet
 
+## [v0.1.0-beta.5] - 2021-02-11
+
+### Fixed
+
+- Correctly enable cloud mode in stable builds
+
+
 ## [v0.1.0-beta.4] - 2021-02-11
 
 ### Added
@@ -79,6 +86,7 @@ Nothing yet
   releases](https://github.com/EvanPurkhiser/prolink-tools/releases) for the
   project.
 
-[Unreleased]: https://github.com/evanpurkhiser/prolink-tools/compare/v0.1.0-beta.4...HEAD
+[Unreleased]: https://github.com/evanpurkhiser/prolink-tools/compare/v0.1.0-beta.5...HEAD
+[v0.1.0-beta.5]: https://github.com/evanpurkhiser/prolink-tools/compare/v0.1.0-beta.4...v0.1.0-beta.5
 [v0.1.0-beta.4]: https://github.com/evanpurkhiser/prolink-tools/compare/v0.1.0-beta.3...v0.1.0-beta.4
 [v0.1.0-beta.3]: https://github.com/evanpurkhiser/prolink-tools/compare/v0.1.0-beta.2...v0.1.0-beta.3
