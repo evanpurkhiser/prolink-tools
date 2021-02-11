@@ -11,13 +11,6 @@ Nothing yet
 
 ## [v0.1.0-beta.5] - 2021-02-11
 
-### Fixed
-
-- Correctly enable cloud mode in stable builds
-
-
-## [v0.1.0-beta.4] - 2021-02-11
-
 ### Added
 
 - **Configure now playing timings** ⏲
@@ -87,6 +80,5 @@ Nothing yet
   project.
 
 [Unreleased]: https://github.com/evanpurkhiser/prolink-tools/compare/v0.1.0-beta.5...HEAD
-[v0.1.0-beta.5]: https://github.com/evanpurkhiser/prolink-tools/compare/v0.1.0-beta.4...v0.1.0-beta.5
-[v0.1.0-beta.4]: https://github.com/evanpurkhiser/prolink-tools/compare/v0.1.0-beta.3...v0.1.0-beta.4
+[v0.1.0-beta.5]: https://github.com/evanpurkhiser/prolink-tools/compare/v0.1.0-beta.3...v0.1.0-beta.5
 [v0.1.0-beta.3]: https://github.com/evanpurkhiser/prolink-tools/compare/v0.1.0-beta.2...v0.1.0-beta.3
