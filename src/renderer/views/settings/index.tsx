@@ -56,39 +56,37 @@ const Settings = observer(({store}: Props) => {
             )}
           />
         </Field>
-        {process.env.RELEASE_CHANNEL !== 'stable' && (
-          <Field
-            top
-            size="sm"
-            name="Enable cloud-based tools"
-            description={
-              <React.Fragment>
-                Enabling this connects your Prolink Tools instance to the prolink.tools
-                web service and will publish real-time event data. Some tools may only be
-                used when this is enabled.
-                <InfoBox>
-                  <p>
-                    This feature is still under <strong>heavy development</strong> and may{' '}
-                    <strong>not be stable</strong>!
-                  </p>
-                  <p>
-                    <strong>Important:</strong> Enabling this functionality publishes
-                    events from your device to an internet service. This service does{' '}
-                    <em>not</em> collect or persist any identifying data other than an
-                    opaque string identifying your prolink tools instance.
-                  </p>
-                </InfoBox>
-              </React.Fragment>
-            }
-          >
-            <Checkbox
-              checked={config.enableCloudApi}
-              onChange={action((e: React.ChangeEvent<HTMLInputElement>) =>
-                set(config, {enableCloudApi: e.target.checked})
-              )}
-            />
-          </Field>
-        )}
+        <Field
+          top
+          size="sm"
+          name="Enable cloud-based tools"
+          description={
+            <React.Fragment>
+              Enabling this connects your Prolink Tools instance to the prolink.tools web
+              service and will publish real-time event data. Some tools may only be used
+              when this is enabled.
+              <InfoBox>
+                <p>
+                  This feature is still under <strong>heavy development</strong> and may{' '}
+                  <strong>not be stable</strong>!
+                </p>
+                <p>
+                  <strong>Important:</strong> Enabling this functionality publishes events
+                  from your device to an internet service. This service does <em>not</em>{' '}
+                  collect or persist any identifying data other than an opaque string
+                  identifying your prolink tools instance.
+                </p>
+              </InfoBox>
+            </React.Fragment>
+          }
+        >
+          <Checkbox
+            checked={config.enableCloudApi}
+            onChange={action((e: React.ChangeEvent<HTMLInputElement>) =>
+              set(config, {enableCloudApi: e.target.checked})
+            )}
+          />
+        </Field>
       </Section>
 
       <Heading>Now Playing Triggering</Heading>
