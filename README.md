@@ -3,9 +3,8 @@
 [![Build Status](https://github.com/evanpurkhiser/prolink-tools/workflows/build/badge.svg)](https://github.com/EvanPurkhiser/prolink-tools/actions?query=workflow%3Abuild) [![Discord Chat](https://img.shields.io/discord/767974316587352074?color=%237289DA&label=discord&logo=discord)](http://discord.gg/3eyzdgXJuY)
 
 Prolink Tools is a collection of tools that can be used to interact with the
-Pioner Pro DJ Link functionality that many of Pioneer's DJ equipment is
+Pioneer Pro DJ Link functionality that many of Pioneer's DJ equipment is
 compatible with.
-
 [Read the User Manual](https://prolink.tools/manual) to get started
 
 
