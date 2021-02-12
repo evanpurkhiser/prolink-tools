@@ -40,7 +40,9 @@ export const internalStore = createInternalStore();
  * Global api store observer
  */
 const [registerListener] = observeStore({target: apiStore});
-registerListener(change => wss.sockets.emit('api-store-update', change));
+registerListener('global-api-store', change =>
+  wss.sockets.emit('api-store-update', change)
+);
 
 wss.on('connection', (client: Socket) => {
   client.emit('api-store-init', serialize(ApiStore, apiStore));
