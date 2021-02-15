@@ -64,6 +64,10 @@ export type NowPlayingConfig = {
    */
   colors?: Record<string, string>;
   /**
+   * Custom CSS
+   */
+  customCss?: string;
+  /**
    * Indicates that ID tracks should be hidden
    */
   maskId?: boolean;
@@ -131,6 +135,9 @@ const Example: React.FC<ExampleProps> = observer(({store, config, hideControls})
       {config && !isLive && <DemoSwitch config={config} />}
       <LiveHistoryIndicator active={isLive} />
       {example}
+      {config?.customCss && (
+        <style dangerouslySetInnerHTML={{__html: config.customCss}} />
+      )}
     </React.Fragment>
   );
 });
@@ -163,7 +170,10 @@ const NowPlayingOverlay: React.FC<OverlayProps> = observer(({store, config}) => 
   return config.demoMode ? (
     <Example store={store} config={config} hideControls />
   ) : (
-    <Overlay appConfig={store.config} {...{history, config}} />
+    <React.Fragment>
+      <Overlay appConfig={store.config} {...{history, config}} />
+      {config.customCss && <style dangerouslySetInnerHTML={{__html: config.customCss}} />}
+    </React.Fragment>
   );
 });
 
