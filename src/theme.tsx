@@ -91,6 +91,11 @@ const light = {
       text: '#1a4275',
     },
   },
+
+  tooltip: {
+    background: '#28272b',
+    text: '#fff',
+  },
 };
 
 const dark = mergeWith(
@@ -131,6 +136,10 @@ const dark = mergeWith(
         border: '#3B6EAE',
         text: '#6A95CA',
       },
+    },
+    tooltip: {
+      background: '#fff',
+      text: '#28272b',
     },
   } as Partial<ProlinkTheme>,
   light,
