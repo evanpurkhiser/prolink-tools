@@ -190,7 +190,7 @@ function renderChangelog(changelogMd: string, {hideUnreleased = false}: Options 
             {isUnreleaseRelease ? 'In Development' : release} <small>{date}</small>
           </h2>
           {isUnreleaseRelease && <Tag priority="ok">Coming Soon</Tag>}
-          {isCurrentRelease && <Tag priority="good">You&apos;re Version</Tag>}
+          {isCurrentRelease && <Tag priority="good">Your Version</Tag>}
           {isNewVersion && <Tag priority="critical">New Version</Tag>}
         </Heading>
         <Notes>{releaseNotes}</Notes>
