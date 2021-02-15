@@ -3,6 +3,7 @@ import {Radio, Save} from 'react-feather';
 import styled from '@emotion/styled';
 
 import useReleaseModal from 'src/renderer/hooks/useReleaseModal';
+import Tooltip from 'src/shared/components/tooltip';
 import {AppStore} from 'src/shared/store';
 import useRelease from 'src/utils/useLatestRelease';
 import withStore from 'src/utils/withStore';
@@ -43,9 +44,11 @@ const Toolbar = ({store}: Props) => {
           <Save size="1rem" /> {latestRelease.name} available
         </NewVersionButton>
       )}
-      <Version onClick={() => openNotesModal(true)}>
-        {process.env.RELEASE} <Radio size="1rem" />
-      </Version>
+      <Tooltip title="View version changelogs">
+        <Version onClick={() => openNotesModal(true)}>
+          {process.env.RELEASE} <Radio size="1rem" />
+        </Version>
+      </Tooltip>
       {notesModal}
       <NetworkStatus />
     </Container>
