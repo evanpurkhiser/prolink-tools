@@ -276,15 +276,11 @@ const connectMixstatus = (store: AppStore, network: ConnectedProlinkNetwork) => 
    */
   reaction(
     () => ({
-      hasOnAirSupport: store.hasOnAirSupport,
       ...store.config.mixstatusConfig,
+      useOnAirStatus:
+        store.config.mixstatusConfig.useOnAirStatus && store.onAirSupport.present,
     }),
-    ({hasOnAirSupport, ...config}) =>
-      network.mixstatus.configure({
-        ...config,
-        // Will only be configured if a supported mixer is on the network
-        hasOnAirCapabilities: config.hasOnAirCapabilities && hasOnAirSupport,
-      }),
+    config => network.mixstatus.configure(config),
     {fireImmediately: true}
   );
 };

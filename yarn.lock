@@ -4296,7 +4296,6 @@ currently-unhandled@^0.4.1:
 
 cursor@^0.1.5, "cursor@https://github.com/EvanPurkhiser/node-cursor.git#fix-buffer":
   version "0.1.5"
-  uid adcf9fa334a6ceaf09c04720d72238fa0f486693
   resolved "https://github.com/EvanPurkhiser/node-cursor.git#adcf9fa334a6ceaf09c04720d72238fa0f486693"
 
 cwebp-bin@^5.0.0:
@@ -9624,10 +9623,10 @@ progress@^2.0.0, progress@^2.0.1, progress@^2.0.3:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-prolink-connect@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/prolink-connect/-/prolink-connect-0.5.0.tgz#b08fc5cad0ffc5bf6fa2b6534a3707fabeeb5ae9"
-  integrity sha512-YzF3yE0O0WsryB8VdP8hCU20V3bEv0AhTIx7mLUYygH5V4duPeCZbAfHwvYDQPKZqzJ8RqtKMamDmmpLYrfvAQ==
+prolink-connect@^0.7.2:
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/prolink-connect/-/prolink-connect-0.7.2.tgz#26a893a69b0b81177599bb55fb64e65b8501c4dc"
+  integrity sha512-et9RXTCUPcYFpw3o0SzXO3pvBDYmWHVePkUbbpwQjBXwX5+GRvE9CrWFNwDVT0JkYbBGyLhRUBz4S8BgaRiWPA==
   dependencies:
     "@sentry/node" "^6.0.4"
     "@sentry/tracing" "^6.0.4"

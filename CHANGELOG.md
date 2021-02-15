@@ -7,7 +7,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-Nothing yet
+### Added
+
+- **Added "Follow master" to timing settings** 🟠
+
+  You may now select 'Follow master' to have now playing updates only happen
+  when the player is promoted to Master. This may be useful if you want more
+  fine grained control over when your track is shown.
+
+### Changed
+
+- Now playing timing options have been restructured to now have 3 "modes".
+  Previously the "smart timing" mode was implicitly enabled, and turning on
+  "only report after last track ends" would disable it.
+
+  Each mode is now explicitly an option that you may only select one of.
 
 ## [v0.1.0-beta.5] - 2021-02-11
 

@@ -2,14 +2,17 @@ import * as React from 'react';
 import styled from '@emotion/styled';
 import {action, set} from 'mobx';
 import {observer} from 'mobx-react';
+import {MixstatusMode} from 'prolink-connect/lib/types';
 
 import Select from 'src/renderer/components/form/Select';
 import Tag from 'src/shared/components/Tag';
+import Tooltip from 'src/shared/components/tooltip';
 import {AppStore} from 'src/shared/store';
 import withStore from 'src/utils/withStore';
 import Checkbox from 'ui/components/form/Checkbox';
 import Field from 'ui/components/form/Field';
 import InfoBox from 'ui/components/form/InfoBox';
+import Radio from 'ui/components/form/Radio';
 import Text from 'ui/components/form/Text';
 
 type Props = {
@@ -92,30 +95,106 @@ const Settings = observer(({store}: Props) => {
       <Heading>Now Playing Triggering</Heading>
       <Section>
         <Field
-          noCenter
           top
           size="sm"
-          name="Smart timing beat count"
+          name={
+            <React.Fragment>
+              Use smart timing{' '}
+              {!store.onAirSupport.present && (
+                <Tooltip title="Without on-air support your tracks may be reported as playing without actually having the fader up!">
+                  <Tag priority="ok">Not Recommended</Tag>
+                </Tooltip>
+              )}
+            </React.Fragment>
+          }
           description={
             <React.Fragment>
-              The number of beats that must pass before the track is reported as now
-              playing. A general rule of thumb is to consider how many phrases of intro
-              the genre of music you play typically has. For example, if you cut over the
-              baseline of a track after 2 phrases of intro and want the new track to show
-              as now playing, that would equate to 128 beats (4 beats per bar, 16 bars in
-              a phrase, 2 phrases).
+              The upcoming track will not be reported until it has been playing for a
+              configured number of beats. The track will only become live when it is
+              on-air (if enabled) and wasn&apos;t restarted.
             </React.Fragment>
           }
         >
-          <Text
-            type="number"
-            style={{appearance: 'textfield'}}
-            value={config.mixstatusConfig.beatsUntilReported}
-            onChange={action((e: React.ChangeEvent<HTMLInputElement>) =>
-              set(config.mixstatusConfig, {beatsUntilReported: Number(e.target.value)})
+          <Radio
+            checked={config.mixstatusConfig.mode === MixstatusMode.SmartTiming}
+            onChange={action(() =>
+              set(config.mixstatusConfig, {mode: MixstatusMode.SmartTiming})
             )}
           />
         </Field>
+        <Field
+          top
+          size="sm"
+          name="Wait for for track to end"
+          description={
+            <React.Fragment>
+              The upcoming track will not be reported until the previous track has been
+              cued or paused (it must be paused for longer than the{' '}
+              <strong>allowed beats during interrupt</strong> timer). You may want to
+              enable this if your equipment does not support reporting decks as On-Air
+              otherwise your tracks may be reported as now playing much to early.
+            </React.Fragment>
+          }
+        >
+          <Radio
+            checked={config.mixstatusConfig.mode === MixstatusMode.WaitsForSilence}
+            onChange={action(() =>
+              set(config.mixstatusConfig, {mode: MixstatusMode.WaitsForSilence})
+            )}
+          />
+        </Field>
+        <Field
+          top
+          size="sm"
+          name="Follow master"
+          description={
+            <React.Fragment>
+              <p>The upcoming track will be reported when the player becomes master.</p>
+              <InfoBox>
+                If you are using a mixer which reports the on-air status to the players,
+                the players may automatically use this to trigger a master change. If you
+                drop the fader on the currently playing track, the next playing track will{' '}
+                <strong>immediately become master</strong> which may be undesirable. You
+                may wish to unplug your mixer from the network when using the follow
+                master strategy, to avoid the CDJs automatically becoming master.
+              </InfoBox>
+            </React.Fragment>
+          }
+        >
+          <Radio
+            checked={config.mixstatusConfig.mode === MixstatusMode.FollowsMaster}
+            onChange={action(() =>
+              set(config.mixstatusConfig, {mode: MixstatusMode.FollowsMaster})
+            )}
+          />
+        </Field>
+        {config.mixstatusConfig.mode === MixstatusMode.SmartTiming && (
+          <Field
+            noCenter
+            top
+            size="sm"
+            name="Smart timing beat count"
+            description={
+              <React.Fragment>
+                The number of beats that must pass before the track is reported as now
+                playing. A general rule of thumb is to consider how many phrases of intro
+                the genre of music you play typically has. For example, if you cut over
+                the baseline of a track after 2 phrases of intro and want the new track to
+                show as now playing, that would equate to 128 beats (4 beats per bar, 16
+                bars in a phrase, 2 phrases).
+              </React.Fragment>
+            }
+          >
+            <Text
+              type="number"
+              style={{appearance: 'textfield'}}
+              value={config.mixstatusConfig.beatsUntilReported}
+              onChange={action((e: React.ChangeEvent<HTMLInputElement>) =>
+                set(config.mixstatusConfig, {beatsUntilReported: Number(e.target.value)})
+              )}
+            />
+          </Field>
+        )}
         <Field
           noCenter
           top
@@ -155,33 +234,13 @@ const Settings = observer(({store}: Props) => {
         <Field
           top
           size="sm"
-          name="Only report after last track ends"
-          description={
-            <React.Fragment>
-              When enable, the upcoming track will not be reported until the previous
-              track has been cued or paused (it must be paused for longer than the{' '}
-              <strong>allowed beats during interrupt</strong> timer). You may want to
-              enable this if your equipment does not support reporting decks as On-Air
-              otherwise your tracks may be reported as now playing much to early. Enabling
-              this <strong>disables smart timing</strong>.
-            </React.Fragment>
-          }
-        >
-          <Checkbox
-            checked={config.mixstatusConfig.reportRequresSilence}
-            onChange={action((e: React.ChangeEvent<HTMLInputElement>) =>
-              set(config.mixstatusConfig, {reportRequresSilence: e.target.checked})
-            )}
-          />
-        </Field>
-        <Field
-          top
-          size="sm"
           name={
             <React.Fragment>
               Use On-Air status
-              {!store.hasOnAirSupport && (
-                <Tag priority="critical">Needs compatible DJM / CDJ</Tag>
+              {!store.onAirSupport.present && (
+                <Tooltip title={store.onAirSupport.disabledReason}>
+                  <Tag priority="critical">Needs compatible DJM / CDJ</Tag>
+                </Tooltip>
               )}
             </React.Fragment>
           }
@@ -194,10 +253,10 @@ const Settings = observer(({store}: Props) => {
           }
         >
           <Checkbox
-            style={{filter: store.hasOnAirSupport ? 'none' : 'grayscale(1)'}}
-            checked={config.mixstatusConfig.hasOnAirCapabilities}
+            style={{filter: store.onAirSupport.present ? 'none' : 'grayscale(1)'}}
+            checked={config.mixstatusConfig.useOnAirStatus}
             onChange={action((e: React.ChangeEvent<HTMLInputElement>) =>
-              set(config.mixstatusConfig, {hasOnAirCapabilities: e.target.checked})
+              set(config.mixstatusConfig, {useOnairStatus: e.target.checked})
             )}
           />
         </Field>

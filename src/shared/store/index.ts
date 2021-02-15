@@ -11,6 +11,7 @@ import {
   HydrationProgress,
   MediaSlot,
   MixstatusConfig,
+  MixstatusMode,
   NetworkState,
   Track,
 } from 'prolink-connect/lib/types';
@@ -207,11 +208,11 @@ export class AppConfig {
   @serializable(rawJS)
   @observable
   mixstatusConfig: MixstatusConfig = observable.object({
+    mode: MixstatusMode.SmartTiming,
     allowedInterruptBeats: 8,
     beatsUntilReported: 128,
     timeBetweenSets: 30,
-    hasOnAirCapabilities: true,
-    reportRequresSilence: false,
+    useOnAirStatus: true,
   });
   /**
    * State of the sidebar
@@ -320,14 +321,21 @@ export class AppStore {
    *    unfortunately.
    */
   @computed
-  get hasOnAirSupport() {
+  get onAirSupport() {
     const devices = [...this.devices.values()].map(s => s.device);
 
     const hasDJM = devices.some(d => d.type === DeviceType.Mixer);
     const has2000 = devices.some(d => d.name.toLowerCase() === 'cdj-2000');
     const hasXZ = devices.some(d => d.name.toLowerCase() === 'xdj-xz');
 
-    return !has2000 && (hasDJM || hasXZ);
+    return {
+      present: !has2000 && (hasDJM || hasXZ),
+      disabledReason: has2000
+        ? "The CDJ-2000 (non-nxs) does not properly support reporting it's on-air status. This may be fixed in a future update"
+        : !hasDJM
+        ? 'No compatible DJM is currently detected on the network. Requires a DJM-900nxs or newer.'
+        : null,
+    };
   }
 
   constructor() {

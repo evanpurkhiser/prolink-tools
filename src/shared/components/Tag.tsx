@@ -5,6 +5,9 @@ type Props = {
 };
 
 const Tag = styled('div')<Props>`
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
   font-size: 0.65rem;
   font-weight: bold;
   text-transform: uppercase;
