@@ -23,6 +23,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
   Each mode is now explicitly an option that you may only select one of.
 
+### Fixed
+
+- The <em>A State of Overlays</em> theme no longer has the italics bracket
+  partially cutoff to the left.
+
 ## [v0.1.0-beta.5] - 2021-02-11
 
 ### Added

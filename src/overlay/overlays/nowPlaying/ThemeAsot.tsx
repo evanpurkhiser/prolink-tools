@@ -63,6 +63,7 @@ const Attribute = styled(({text, ...p}: AttributeProps) =>
   font-size: 0.9em;
   font-style: italic;
   line-height: 1.2;
+  padding-left: 2px;
 `;
 
 const NowPlayingLabel = styled(motion.div)`
@@ -263,10 +264,6 @@ const CurrentWrapper = styled('div')`
     grid-column: 1;
     grid-row: 1;
   }
-
-  /* Give a tiny bit of padding to make room for the italics
-   */
-  padding: 5px;
 `;
 
 export default {
