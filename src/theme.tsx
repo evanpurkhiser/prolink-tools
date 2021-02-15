@@ -63,6 +63,7 @@ const light = {
     borderFocus: '#aaa',
     placeholderText: '#737386',
     knob: '#9E9E9E',
+    knobAlt: '#C9CBCD',
   },
 
   cdjStatus: {
