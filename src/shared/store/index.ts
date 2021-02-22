@@ -1,7 +1,7 @@
 import {User} from '@sentry/types';
 import * as ip from 'ip-address';
 import {identity} from 'lodash';
-import {action, computed, makeAutoObservable, observable, toJS} from 'mobx';
+import {action, computed, makeObservable, observable, toJS} from 'mobx';
 import {
   CDJStatus,
   Device,
@@ -66,7 +66,7 @@ export class DeviceStore {
    * artwork for the loaded track.
    */
   @serializable(bufferSerialize)
-  @observable
+  @observable.ref
   artwork?: Uint8Array;
   /**
    * Database fetch progress for each device slot
@@ -82,7 +82,7 @@ export class DeviceStore {
   hydrationProgress = observable.map<MediaSlot, HydrationInfo>();
 
   constructor(device: Device) {
-    makeAutoObservable(this);
+    makeObservable(this);
 
     this.device = device;
 
@@ -121,7 +121,7 @@ export class HydrationInfo {
   isDone = false;
 
   constructor() {
-    makeAutoObservable(this);
+    makeObservable(this);
   }
 }
 
@@ -161,7 +161,7 @@ export class MixstatusStore {
   }
 
   constructor() {
-    makeAutoObservable(this);
+    makeObservable(this);
   }
 }
 
@@ -253,7 +253,7 @@ export class AppConfig {
   }
 
   constructor() {
-    makeAutoObservable(this);
+    makeObservable(this);
   }
 }
 
@@ -339,7 +339,7 @@ export class AppStore {
   }
 
   constructor() {
-    makeAutoObservable(this);
+    makeObservable(this);
   }
 }
 
