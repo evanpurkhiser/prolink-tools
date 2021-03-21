@@ -1,4 +1,5 @@
 import * as React from 'react';
+import styled from '@emotion/styled';
 import {observer} from 'mobx-react';
 
 import {registeredOverlays} from 'overlay';
@@ -22,7 +23,15 @@ const MapOverlay: React.FC<Props> = observer(({store, overlayKey}) => {
     return <NotFound />;
   }
 
-  return <descriptor.component config={instance.config} />;
+  return (
+    <Container>
+      <descriptor.component config={instance.config} />
+    </Container>
+  );
 });
+
+const Container = styled('div')`
+  overflow: hidden;
+`;
 
 export default MapOverlay;

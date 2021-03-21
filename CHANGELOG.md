@@ -28,6 +28,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - The <em>A State of Overlays</em> theme no longer has the italics bracket
   partially cutoff to the left.
 
+- Overlays will no longer produce scroll bars when the title overflows the
+  window size. (Thank you to Marcus from Da Tweekaz for reporting this issue)
+
 ## [v0.1.0-beta.5] - 2021-02-11
 
 ### Added
