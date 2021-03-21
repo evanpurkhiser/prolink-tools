@@ -39,8 +39,8 @@ function drawScrollingWaveform(
 
   // Whenever a new waveform is loaded, re-draw the offscreen waveform
   const trackChangeDisposer = autorun(() => {
-    const waveformHd = store.devices.get(deviceId)?.waveforms?.waveformHd;
-    const grid = store.devices.get(deviceId)?.track?.beatGrid;
+    const waveformHd: any = []; // store.devices.get(deviceId)?.waveforms?.waveformHd;
+    // const grid = store.devices.get(deviceId)?.track?.beatGrid;
 
     if (waveformHd === undefined) {
       return;
