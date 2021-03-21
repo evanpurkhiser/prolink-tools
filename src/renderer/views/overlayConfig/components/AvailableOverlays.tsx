@@ -96,9 +96,8 @@ const Container = styled(motion.div)`
   grid-auto-flow: row;
   grid-auto-rows: max-content;
   grid-gap: 1.5rem;
-  padding: 1.5rem 1.5rem;
-  margin: 0 -1.5rem;
   z-index: 20;
+  padding: 1.5rem;
 `;
 
 Container.defaultProps = {
