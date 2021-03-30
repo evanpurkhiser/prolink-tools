@@ -14,7 +14,14 @@ import {
 import {deepObserve, IDisposer} from 'mobx-utils';
 import {deserialize, serialize, update} from 'serializr';
 
-import {AppStore, DeviceStore, HydrationInfo, MixstatusStore, PlayedTrack} from '.';
+import {
+  AppStore,
+  CloudApiState,
+  DeviceStore,
+  HydrationInfo,
+  MixstatusStore,
+  PlayedTrack,
+} from '.';
 
 type ValueChange = Omit<
   IObjectDidChange | IArrayDidChange | IMapDidChange,
@@ -50,6 +57,7 @@ const serializableClasses = [
   DeviceStore,
   HydrationInfo,
   MixstatusStore,
+  CloudApiState,
   PlayedTrack,
 ];
 

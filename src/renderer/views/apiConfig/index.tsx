@@ -17,6 +17,10 @@ const ApiConfig = observer(({store}: Props) => {
 
   return (
     <Section>
+      <State>
+        <div>Connection State: {store.cloudApiState.connectionState}</div>
+        <div>API Version: {store.cloudApiState.version}</div>
+      </State>
       <Field
         size="full"
         name="Now-Playing URL"
@@ -30,6 +34,10 @@ const ApiConfig = observer(({store}: Props) => {
 
 const Section = styled('section')`
   margin: 1rem;
+`;
+
+const State = styled('section')`
+  font-family: Ubuntu;
 `;
 
 export default withStore(ApiConfig);

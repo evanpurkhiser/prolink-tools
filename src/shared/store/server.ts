@@ -2,14 +2,17 @@ import {Mutex} from 'async-mutex';
 import {ipcMain} from 'electron';
 import settings from 'electron-settings';
 import {runInAction, set} from 'mobx';
-import {deepObserve} from 'mobx-utils';
+import {deepObserve, IDisposer} from 'mobx-utils';
 import {deserialize, serialize} from 'serializr';
 import {Server} from 'socket.io';
 import {io} from 'socket.io-client';
 
 import http from 'http';
 
+import {AppHandshake, ConnectionState} from 'src/api/types';
 import {apiHost} from 'src/shared/api/url';
+
+import {LATEST_API_VERSION} from '../constants';
 
 import {applyChanges, RegisterHandler, SerializedChange} from './ipc';
 import {AppConfig, AppStore} from '.';
@@ -86,22 +89,44 @@ export const startMainApiWebsocket = (store: AppStore, register: RegisterHandler
     transports: ['websocket'],
   });
 
-  const storeInit = () =>
-    lock.acquire().then(release => {
-      conn.emit('store-init', serialize(store), () => release());
-    });
+  let clearObserver: IDisposer | undefined;
 
-  storeInit();
+  const connect = async () => {
+    runInAction(() => (store.cloudApiState.connectionState = ConnectionState.Connecting));
 
-  register('api-ws', change =>
-    lock.acquire().then(release => conn.emit('store-update', change, () => release()))
-  );
+    // Must handshake with the server before we can setup IPC handlers. We need
+    // to know if it's OK to communicate with the server or not.
+    const handshake = await new Promise<AppHandshake>(resolve =>
+      conn.emit('handshake', {version: LATEST_API_VERSION}, resolve)
+    );
 
-  // If the server drops the connection we'll have to re-initalize the store
+    store.cloudApiState.setFromHandshake(handshake);
+
+    // Nothing we can do if we were rejected
+    if (!store.cloudApiState.isReady) {
+      return;
+    }
+
+    lock
+      .acquire()
+      .then(release => conn.emit('store-init', serialize(store), () => release()));
+
+    clearObserver = register('api-ws', change =>
+      lock.acquire().then(release => conn.emit('store-update', change, () => release()))
+    );
+  };
+
+  // If the server drops the connection it's likely we'll be able to reconnect
   conn.on('disconnect', () => {
     console.warn('Dropped connection to prolink api server');
-    conn.once('connect', storeInit);
+
+    clearObserver?.();
+    lock.cancel();
+    store.cloudApiState.reset();
+    conn.once('connect', connect);
   });
+
+  connect();
 
   return () => conn.disconnect();
 };

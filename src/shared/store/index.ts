@@ -19,6 +19,7 @@ import {custom, date, list, map, mapAsArray, object, serializable} from 'seriali
 import shajs from 'sha.js';
 import {uuid} from 'short-uuid';
 
+import {AppHandshake, ConnectionState} from 'src/api/types';
 import {OverlayInstance} from 'src/overlay';
 import metadatIncludes from 'src/utils/metadatIncludes';
 
@@ -257,6 +258,54 @@ export class AppConfig {
   }
 }
 
+export class CloudApiState {
+  @serializable
+  @observable
+  connectionState = ConnectionState.Offline;
+  /**
+   * The git version sha that is running on the API server.
+   */
+  @serializable
+  @observable
+  version?: string;
+  /**
+   * A message from the API server
+   */
+  @serializable
+  @observable
+  notice?: string;
+
+  @action
+  reset() {
+    this.connectionState = ConnectionState.Offline;
+    this.version = undefined;
+    this.notice = undefined;
+  }
+
+  /**
+   * Set the CloudApiState from a AppHandshake
+   */
+  @action
+  setFromHandshake(data: AppHandshake) {
+    this.connectionState = data.connectionState;
+    this.version = data.version;
+    this.notice = data.notice;
+  }
+
+  /**
+   * Are we able to communicate with the API server in it's current state?
+   */
+  @computed
+  get isReady() {
+    const state = this.connectionState;
+    return state === ConnectionState.Connected || state === ConnectionState.Degraded;
+  }
+
+  constructor() {
+    makeObservable(this);
+  }
+}
+
 export class AppStore {
   /**
    * Indicates that the store has been initalized. Useful for ensuring we have
@@ -283,6 +332,12 @@ export class AppStore {
   @serializable(object(MixstatusStore))
   @observable
   mixstatus = new MixstatusStore();
+  /**
+   * Maintains the current status of the cloud API service.
+   */
+  @serializable(object(CloudApiState))
+  @observable
+  cloudApiState = new CloudApiState();
   /**
    * Configuration is stored here.
    *
