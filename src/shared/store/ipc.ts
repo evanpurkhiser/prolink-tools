@@ -186,7 +186,7 @@ type changeHandler = (change: SerializedChange) => void;
 /**
  * Function used to register to recieve serialized updated from an observer
  */
-export type RegisterHandler = (key: string, reciever: changeHandler) => void;
+export type RegisterHandler = (key: string, reciever: changeHandler) => IDisposer;
 
 /**
  * Start observing the store (or some part of it) for changes.
@@ -270,5 +270,10 @@ export const observeStore = ({
     handlers.forEach(handler => handler(serializedChange));
   });
 
-  return [(key, handler) => handlers.set(key, handler), dispose];
+  const register: RegisterHandler = (key, handler) => {
+    handlers.set(key, handler);
+    return () => handlers.delete(key);
+  };
+
+  return [register, dispose];
 };
