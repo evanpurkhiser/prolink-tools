@@ -1,3 +1,4 @@
+import {Mutex} from 'async-mutex';
 import {ipcMain} from 'electron';
 import settings from 'electron-settings';
 import {runInAction, set} from 'mobx';
@@ -12,11 +13,6 @@ import {apiHost} from 'src/shared/api/url';
 
 import {applyChanges, RegisterHandler, SerializedChange} from './ipc';
 import {AppConfig, AppStore} from '.';
-
-/**
- * Mark when we're applying a UI config change via IPC to avoid a loop over IPC.
- */
-let isApplyingConfigChange = false;
 
 /**
  * Load and deserialize the app config from the settings file
@@ -46,22 +42,35 @@ export const persistConfig = (store: AppStore) => settings.set(serialize(store.c
  * created.
  */
 export const registerMainIpc = (store: AppStore, register: RegisterHandler) => {
-  ipcMain.on('store-subscribe', event => {
-    // Send the current state of the store
-    event.sender.send('store-init', serialize(store));
+  const lock = new Mutex();
 
-    // Register this window to recieve store changes over ipc
+  // Lock for applying configuration changes from the UI, to avoid propegating
+  // the changes back via IPC causing a loop.
+  const configLock = new Mutex();
+
+  ipcMain.on('store-subscribe', event => {
+    // Send the current state of the store. Do not release lock until store
+    // initalization is done.
+    lock.acquire().then(release => {
+      event.sender.send('store-init', serialize(store));
+      ipcMain.once('store-init-done', () => release());
+    });
+
+    // Register this window to recieve store changes over ipc.
     register(
       'main-ipc',
-      change => !isApplyingConfigChange && event.sender.send('store-update', change)
+      change =>
+        !configLock.isLocked &&
+        lock.acquire().then(release => {
+          event.sender.send('store-update', change);
+          ipcMain.once('store-update-done', () => release());
+        })
     );
   });
 
   // Register listener for config object changes
   ipcMain.on('config-update', (_e, change: SerializedChange) => {
-    isApplyingConfigChange = true;
-    applyChanges(store.config, change);
-    isApplyingConfigChange = false;
+    configLock.runExclusive(() => applyChanges(store.config, change));
   });
 };
 
@@ -71,17 +80,27 @@ export const registerMainIpc = (store: AppStore, register: RegisterHandler) => {
  * Returns a function to disconnect.
  */
 export const startMainApiWebsocket = (store: AppStore, register: RegisterHandler) => {
+  const lock = new Mutex();
+
   const conn = io(`${apiHost}/ingest/${store.config.apiKey}`, {
     transports: ['websocket'],
   });
 
-  conn.emit('store-init', serialize(store));
-  register('api-ws', change => conn.emit('store-update', change));
+  const storeInit = () =>
+    lock.acquire().then(release => {
+      conn.emit('store-init', serialize(store), () => release());
+    });
+
+  storeInit();
+
+  register('api-ws', change =>
+    lock.acquire().then(release => conn.emit('store-update', change, () => release()))
+  );
 
   // If the server drops the connection we'll have to re-initalize the store
   conn.on('disconnect', () => {
     console.warn('Dropped connection to prolink api server');
-    conn.once('connect', () => conn.emit('store-init', serialize(store)));
+    conn.once('connect', storeInit);
   });
 
   return () => conn.disconnect();

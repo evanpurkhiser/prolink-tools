@@ -19,17 +19,18 @@ let isApplyingConfigChange = false;
 export const registerRendererIpc = (store: AppStore) => {
   ipcRenderer.on('store-update', (_, change: SerializedChange) => {
     isApplyingConfigChange = change.path.startsWith('config');
-
-    if (store.isInitalized) {
-      applyChanges(store, change);
-    }
-
+    applyChanges(store, change);
     isApplyingConfigChange = false;
+
+    ipcRenderer.send('store-update-done');
   });
 
   ipcRenderer.on(
     'store-init',
-    action((_, data: any) => set(store, deserialize(AppStore, data)))
+    action((event, data: any) => {
+      set(store, deserialize(AppStore, data));
+      event.sender.send('store-init-done');
+    })
   );
 
   // Kick things off
@@ -54,12 +55,15 @@ export const registerWebsocketListener = (
   store: AppStore,
   ws: ClientSocket | ServerSocker
 ) => {
-  ws.on(
-    'store-update',
-    (change: SerializedChange) => store.isInitalized && applyChanges(store, change)
-  );
+  ws.on('store-update', (change: SerializedChange, done: () => void) => {
+    applyChanges(store, change);
+    done?.();
+  });
   ws.on(
     'store-init',
-    action((data: any) => set(store, deserialize(AppStore, data)))
+    action((data: any, done: () => void) => {
+      set(store, deserialize(AppStore, data));
+      done?.();
+    })
   );
 };
