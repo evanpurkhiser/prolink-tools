@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/electron';
 import {
   action,
   get,
@@ -82,75 +83,88 @@ function getAtPath(obj: any, path: string) {
  */
 export const applyChanges = action(
   (obj: any, {path, change, serializerModel}: SerializedChange) => {
-    const target = getAtPath(obj, path);
+    try {
+      const target = getAtPath(obj, path);
 
-    if (target === undefined) {
-      // TODO: Race. Remove this and sometimes things happen
-      return;
-    }
-
-    const model = serializerModelMap.get(serializerModel ?? '');
-
-    // deserialization of our chnage object is a bit of a dance, we keep that
-    // dance here
-    const getNewValue = (override?: any) => {
-      const update = change as any;
-      const newValue = override ?? update.newValue;
-
-      // First attempt to use the specified serializer model if it maps to a
-      // serializableClass
-      if (model !== undefined) {
-        return deserialize(model as any, newValue);
-      }
-
-      // No deserializer found, assume it is a plain object
-      return newValue;
-    };
-
-    // A bit of a TS hack, cast each expected change type
-    const objChange = change as IObjectDidChange;
-    const mapChange = change as IMapDidChange;
-    const arrChange = change as IArrayDidChange;
-
-    // We can update the target object if it has serializeInfo available
-    const serializeSchema = target?.constructor?.serializeInfo;
-
-    if (
-      serializeSchema &&
-      !model &&
-      isObservableObject(target) &&
-      (objChange.type === 'add' || objChange.type === 'update') &&
-      objChange.newValue !== null &&
-      objChange.newValue !== undefined
-    ) {
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      update(serializeSchema, target, {[objChange.name]: objChange.newValue}, () => {});
-      return;
-    }
-
-    // Update arrays
-    if (isObservableArray(target)) {
-      if (arrChange.type === 'update') {
-        set(arrChange.index, getNewValue());
+      if (target === undefined) {
+        // TODO: Race. Remove this and sometimes things happen
         return;
       }
-      if (arrChange.type === 'splice') {
-        // TODO This neds deserialization toooooo
-        target.splice(
-          arrChange.index,
-          arrChange.removedCount,
-          ...arrChange.added.map(getNewValue)
-        );
+
+      const model = serializerModelMap.get(serializerModel ?? '');
+
+      // deserialization of our chnage object is a bit of a dance, we keep that
+      // dance here
+      const getNewValue = (override?: any) => {
+        const update = change as any;
+        const newValue = override ?? update.newValue;
+
+        // First attempt to use the specified serializer model if it maps to a
+        // serializableClass
+        if (model !== undefined) {
+          return deserialize(model as any, newValue);
+        }
+
+        // No deserializer found, assume it is a plain object
+        return newValue;
+      };
+
+      // A bit of a TS hack, cast each expected change type
+      const objChange = change as IObjectDidChange;
+      const mapChange = change as IMapDidChange;
+      const arrChange = change as IArrayDidChange;
+
+      // We can update the target object if it has serializeInfo available
+      const serializeSchema = target?.constructor?.serializeInfo;
+
+      if (
+        serializeSchema &&
+        !model &&
+        isObservableObject(target) &&
+        (objChange.type === 'add' || objChange.type === 'update') &&
+        objChange.newValue !== null &&
+        objChange.newValue !== undefined
+      ) {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        update(serializeSchema, target, {[objChange.name]: objChange.newValue}, () => {});
         return;
       }
-    }
 
-    if (objChange.type === 'add' || objChange.type === 'update') {
-      set(target, objChange.name, getNewValue());
-      return;
-    }
-    if (objChange.type === 'remove' || mapChange.type === 'delete') {
-      remove(target, objChange.name as string);
+      // Update arrays
+      if (isObservableArray(target)) {
+        if (arrChange.type === 'update') {
+          set(arrChange.index, getNewValue());
+          return;
+        }
+        if (arrChange.type === 'splice') {
+          // TODO This neds deserialization toooooo
+          target.splice(
+            arrChange.index,
+            arrChange.removedCount,
+            ...arrChange.added.map(getNewValue)
+          );
+          return;
+        }
+      }
+
+      if (objChange.type === 'add' || objChange.type === 'update') {
+        set(target, objChange.name, getNewValue());
+        return;
+      }
+      if (objChange.type === 'remove' || mapChange.type === 'delete') {
+        remove(target, objChange.name as string);
+      }
+    } catch (error) {
+      if (!error.message.startsWith('[MobX]')) {
+        throw error;
+      }
+
+      Sentry.captureException(error, scope => {
+        scope.setContext('serializeData', {path, change, obj});
+        return scope;
+      });
+
+      throw error;
     }
   }
 );
