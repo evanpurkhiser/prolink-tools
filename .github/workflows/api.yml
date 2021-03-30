@@ -11,7 +11,7 @@ jobs:
 
       - name: Build Dockerfile.api
         run: |
-          docker build . -t evanpurkhiser/prolink-tools-api -f conf/Dockerfile.api
+          docker build . --build-arg GIT_SHA=$(git rev-parse HEAD) -t evanpurkhiser/prolink-tools-api -f conf/Dockerfile.api
 
       - name: Publish
         run: |

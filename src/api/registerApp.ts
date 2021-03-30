@@ -73,7 +73,7 @@ async function appHandshake(appSocket: Socket) {
 
   result.reply({
     connectionState: ConnectionState.Connected,
-    version: 'TODO: Put the version here somehow...',
+    version: process.env.GIT_SHA as string,
   });
 
   return true;
