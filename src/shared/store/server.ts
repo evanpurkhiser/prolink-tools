@@ -63,7 +63,7 @@ export const registerMainIpc = (store: AppStore, register: RegisterHandler) => {
     register(
       'main-ipc',
       change =>
-        !configLock.isLocked &&
+        !configLock.isLocked() &&
         lock.acquire().then(release => {
           event.sender.send('store-update', change);
           ipcMain.once('store-update-done', () => release());
