@@ -31,7 +31,7 @@ type ValueChange = Omit<
 export type SerializedChange = {
   /**
    * The path to the object within the store that has changed. Separated by `/`.
-   * Nueric map keys are string which is a limitation of mobx-utils/deepObserve
+   * Numeric map keys are string which is a limitation of mobx-utils/deepObserve
    * (see getPathAt for the workaround).
    */
   path: string;
@@ -45,12 +45,12 @@ export type SerializedChange = {
 
 /**
  * Serializr allows us to easily serialize and deserialize our _entire_ store,
- * however serializing chnage subsets is more difficult since serialization
- * definitions don't neccisarily communicate additions to things like maps.
+ * however serializing change subsets is more difficult since serialization
+ * definitions don't necessarily communicate additions to things like maps.
  *
  * We work around this by tracking specific serializable classes to give our
- * diffing serializer the information it needs to undersatnd what it's appyling
- * the serialized chnage to.
+ * diffing serializer the information it needs to understand what it's applying
+ * the serialized change to.
  */
 const serializableClasses = [
   AppStore,
@@ -79,7 +79,7 @@ function getAtPath(obj: any, path: string) {
 
     // We lose some type information when computing the deep observation path
     // of the store. If we get a number lets just assume it needs to be
-    // coerced. This may need to be revisted.
+    // coerced. This may need to be revisited.
     target = get(target, isNaN(segment as any) === false ? Number(segment) : segment);
   }
 
@@ -91,110 +91,75 @@ function getAtPath(obj: any, path: string) {
  */
 export const applyChanges = action(
   (obj: any, {path, change, serializerModel}: SerializedChange) => {
-    let target: any;
-
-    try {
-      target = getAtPath(obj, path);
-    } catch (error) {
-      if (!error.message.startsWith('[MobX]')) {
-        throw error;
-      }
-
-      Sentry.captureException(error, scope => {
-        scope.setExtra('serializeData', {type: 'In set', path, change, obj});
-        return scope;
-      });
-
-      throw error;
-    }
+    const target = getAtPath(obj, path);
 
     if (target === undefined) {
       // TODO: Race. Remove this and sometimes things happen
       return;
     }
 
-    try {
-      const model = serializerModelMap.get(serializerModel ?? '');
+    const model = serializerModelMap.get(serializerModel ?? '');
 
-      // deserialization of our chnage object is a bit of a dance, we keep that
-      // dance here
-      const getNewValue = (override?: any) => {
-        const update = change as any;
-        const newValue = override ?? update.newValue;
+    // deserialization of our change object is a bit of a dance, we keep that
+    // dance here
+    const getNewValue = (override?: any) => {
+      const update = change as any;
+      const newValue = override ?? update.newValue;
 
-        // First attempt to use the specified serializer model if it maps to a
-        // serializableClass
-        if (model !== undefined) {
-          return deserialize(model as any, newValue);
-        }
+      // First attempt to use the specified serializer model if it maps to a
+      // serializableClass
+      if (model !== undefined) {
+        return deserialize(model as any, newValue);
+      }
 
-        // No deserializer found, assume it is a plain object
-        return newValue;
-      };
+      // No deserializer found, assume it is a plain object
+      return newValue;
+    };
 
-      // A bit of a TS hack, cast each expected change type
-      const objChange = change as IObjectDidChange;
-      const mapChange = change as IMapDidChange;
-      const arrChange = change as IArrayDidChange;
+    // A bit of a TS hack, cast each expected change type
+    const objChange = change as IObjectDidChange;
+    const mapChange = change as IMapDidChange;
+    const arrChange = change as IArrayDidChange;
 
-      // We can update the target object if it has serializeInfo available
-      const serializeSchema = target?.constructor?.serializeInfo;
+    // We can update the target object if it has serializeInfo available
+    const serializeSchema = target?.constructor?.serializeInfo;
 
-      if (
-        serializeSchema &&
-        !model &&
-        isObservableObject(target) &&
-        (objChange.type === 'add' || objChange.type === 'update') &&
-        objChange.newValue !== null &&
-        objChange.newValue !== undefined
-      ) {
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        update(serializeSchema, target, {[objChange.name]: objChange.newValue}, () => {});
+    if (
+      serializeSchema &&
+      !model &&
+      isObservableObject(target) &&
+      (objChange.type === 'add' || objChange.type === 'update') &&
+      objChange.newValue !== null &&
+      objChange.newValue !== undefined
+    ) {
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      update(serializeSchema, target, {[objChange.name]: getNewValue()}, () => {});
+      return;
+    }
+
+    // Update arrays
+    if (isObservableArray(target)) {
+      if (arrChange.type === 'update') {
+        set(arrChange.index, getNewValue());
         return;
       }
-
-      // Update arrays
-      if (isObservableArray(target)) {
-        if (arrChange.type === 'update') {
-          set(arrChange.index, getNewValue());
-          return;
-        }
-        if (arrChange.type === 'splice') {
-          // TODO This neds deserialization toooooo
-          target.splice(
-            arrChange.index,
-            arrChange.removedCount,
-            ...arrChange.added.map(getNewValue)
-          );
-          return;
-        }
-      }
-
-      if (objChange.type === 'add' || objChange.type === 'update') {
-        set(target, objChange.name, getNewValue());
+      if (arrChange.type === 'splice') {
+        // TODO This needs deserialization toooooo
+        target.splice(
+          arrChange.index,
+          arrChange.removedCount,
+          ...arrChange.added.map(getNewValue)
+        );
         return;
       }
-      if (objChange.type === 'remove' || mapChange.type === 'delete') {
-        remove(target, objChange.name as string);
-      }
-    } catch (error) {
-      if (!error.message.startsWith('[MobX]')) {
-        throw error;
-      }
+    }
 
-      Sentry.captureException(error, scope => {
-        scope.setExtra('serializeData', {
-          type: 'In set',
-          path,
-          change,
-          obj,
-          target,
-          targetType: typeof target,
-        });
-        return scope;
-      });
-
-      throw error;
+    if (objChange.type === 'add' || objChange.type === 'update') {
+      set(target, objChange.name, getNewValue());
+      return;
+    }
+    if (objChange.type === 'remove' || mapChange.type === 'delete') {
+      remove(target, objChange.name as string);
     }
   }
 );
@@ -206,7 +171,7 @@ type ObserverStoreOpts = {
    */
   target: any;
   /**
-   * A handler to initally register
+   * A handler to initially register
    */
   handler?: changeHandler;
 };
@@ -214,21 +179,21 @@ type ObserverStoreOpts = {
 type changeHandler = (change: SerializedChange) => void;
 
 /**
- * Function used to register to recieve serialized updated from an observer
+ * Function used to register to receive serialized updated from an observer
  */
 export type RegisterHandler = (key: string, reciever: changeHandler) => IDisposer;
 
 /**
  * Start observing the store (or some part of it) for changes.
  *
- * Returns a 2 element tuple. The first is used to register handlers to recieve
+ * Returns a 2 element tuple. The first is used to register handlers to receive
  * serialized changes to the store. The second is used to dispose of the observer.
  */
 export const observeStore = ({
   target,
   handler,
 }: ObserverStoreOpts): [RegisterHandler, IDisposer] => {
-  // Maintains a list of handlers that will be called in response to a serailized
+  // Maintains a list of handlers that will be called in response to a serialized
   // change in the store.
   const handlers: Map<string, changeHandler> = new Map();
 

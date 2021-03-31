@@ -60,7 +60,7 @@ export class DeviceStore {
    * loaded.
    */
   @serializable(rawJS)
-  @observable
+  @observable.ref
   track?: Track;
   /**
    * The artwork buffer of the loaded track. May be undefined if there is no
