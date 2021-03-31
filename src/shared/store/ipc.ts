@@ -91,14 +91,29 @@ function getAtPath(obj: any, path: string) {
  */
 export const applyChanges = action(
   (obj: any, {path, change, serializerModel}: SerializedChange) => {
-    try {
-      const target = getAtPath(obj, path);
+    let target: any;
 
-      if (target === undefined) {
-        // TODO: Race. Remove this and sometimes things happen
-        return;
+    try {
+      target = getAtPath(obj, path);
+    } catch (error) {
+      if (!error.message.startsWith('[MobX]')) {
+        throw error;
       }
 
+      Sentry.captureException(error, scope => {
+        scope.setExtra('serializeData', {type: 'In set', path, change, obj});
+        return scope;
+      });
+
+      throw error;
+    }
+
+    if (target === undefined) {
+      // TODO: Race. Remove this and sometimes things happen
+      return;
+    }
+
+    try {
       const model = serializerModelMap.get(serializerModel ?? '');
 
       // deserialization of our chnage object is a bit of a dance, we keep that
@@ -168,7 +183,14 @@ export const applyChanges = action(
       }
 
       Sentry.captureException(error, scope => {
-        scope.setContext('serializeData', {path, change, obj});
+        scope.setExtra('serializeData', {
+          type: 'In set',
+          path,
+          change,
+          obj,
+          target,
+          targetType: typeof target,
+        });
         return scope;
       });
 
