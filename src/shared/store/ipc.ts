@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/electron';
 import {
   action,
   get,
