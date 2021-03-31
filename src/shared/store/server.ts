@@ -119,6 +119,18 @@ export const startMainApiWebsocket = (store: AppStore, register: RegisterHandler
     );
   };
 
+  const checkLatency = async () => {
+    if (!store.cloudApiState.isReady) {
+      return;
+    }
+
+    const t0 = process.hrtime.bigint();
+    await new Promise<void>(resolve => conn.emit('latency-check', resolve));
+    const t1 = process.hrtime.bigint();
+
+    runInAction(() => (store.cloudApiState.latency = Number(t1 - t0) / 1e6));
+  };
+
   // If the server drops the connection it's likely we'll be able to reconnect
   conn.on('disconnect', () => {
     console.warn('Dropped connection to prolink api server');
@@ -130,6 +142,7 @@ export const startMainApiWebsocket = (store: AppStore, register: RegisterHandler
   });
 
   connect();
+  setInterval(checkLatency, 8000);
 
   return () => conn.disconnect();
 };

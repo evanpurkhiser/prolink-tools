@@ -8,6 +8,8 @@ import {apiHost} from 'src/shared/api/url';
 import {AppStore} from 'src/shared/store';
 import withStore from 'src/utils/withStore';
 
+import ConnectionStatus from './components/ConnectionStatus';
+
 type Props = {
   store: AppStore;
 };
@@ -16,28 +18,23 @@ const ApiConfig = observer(({store}: Props) => {
   const url = `${apiHost}/now-playing/${store.appKey}`;
 
   return (
-    <Section>
-      <State>
-        <div>Connection State: {store.cloudApiState.connectionState}</div>
-        <div>API Version: {store.cloudApiState.version}</div>
-      </State>
-      <Field
-        size="full"
-        name="Now-Playing URL"
-        description="This unique URL provides the currently playing track as a plain-text response. You may choose to use this with chat-bot services"
-      >
-        <Text disabled value={url} />
-      </Field>
-    </Section>
+    <React.Fragment>
+      <ConnectionStatus />
+      <Section>
+        <Field
+          size="full"
+          name="Now-Playing URL"
+          description="This unique URL provides the currently playing track as a plain-text response. You may choose to use this with chat-bot services"
+        >
+          <Text disabled value={url} />
+        </Field>
+      </Section>
+    </React.Fragment>
   );
 });
 
 const Section = styled('section')`
   margin: 1rem;
-`;
-
-const State = styled('section')`
-  font-family: Ubuntu;
 `;
 
 export default withStore(ApiConfig);

@@ -274,6 +274,12 @@ export class CloudApiState {
   @serializable
   @observable
   notice?: string;
+  /**
+   * Time in miliseconds it takes to communicate with the cloud API
+   */
+  @serializable
+  @observable
+  latency = 0;
 
   @action
   reset() {

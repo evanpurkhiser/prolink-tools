@@ -130,6 +130,8 @@ export async function registerAppConnection(appSocket: Socket) {
       ?.forEach(client => client.emit('store-update', change))
   );
 
+  appSocket.on('latency-check', (ack: () => void) => ack());
+
   runInAction(() => apiStore.clientCount++);
 
   appSocket.on('disconnect', () => {
