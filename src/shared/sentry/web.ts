@@ -12,3 +12,5 @@ Sentry.init({
   tracesSampleRate: 0.25,
   autoSessionTracking: true,
 });
+
+Sentry.setTag('service', 'web');

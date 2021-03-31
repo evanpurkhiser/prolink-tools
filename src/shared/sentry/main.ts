@@ -26,6 +26,8 @@ Sentry.init({
   tracesSampleRate: 0.25,
 });
 
+Sentry.setTag('service', 'main');
+
 (async () => {
   userInfo = loadUserInfo();
   Sentry.setUser(await userInfo);

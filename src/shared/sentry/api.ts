@@ -11,3 +11,5 @@ Sentry.init({
   sampleRate: 1,
   tracesSampleRate: 0.25,
 });
+
+Sentry.setTag('service', 'api');
