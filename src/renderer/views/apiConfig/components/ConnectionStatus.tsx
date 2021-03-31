@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import {observer} from 'mobx-react';
 
-import {ConnectionState} from 'src/api/types';
 import {AppStore} from 'src/shared/store';
 import withStore from 'src/utils/withStore';
 
@@ -19,14 +18,14 @@ const ConnectionStatus = withStore(
   ))
 );
 
-const colors = {
-  [ConnectionState.Offline]: 'red',
-  [ConnectionState.Connecting]: 'red',
-  [ConnectionState.Connected]: 'red',
-  [ConnectionState.Errored]: 'red',
-  [ConnectionState.Degraded]: 'red',
-  [ConnectionState.Outdated]: 'red',
-};
+// const colors = {
+//   [ConnectionState.Offline]: 'red',
+//   [ConnectionState.Connecting]: 'red',
+//   [ConnectionState.Connected]: 'red',
+//   [ConnectionState.Errored]: 'red',
+//   [ConnectionState.Degraded]: 'red',
+//   [ConnectionState.Outdated]: 'red',
+// };
 
 const Container = styled('section')`
   font-family: Ubuntu;
