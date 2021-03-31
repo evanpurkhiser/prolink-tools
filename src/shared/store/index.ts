@@ -54,21 +54,21 @@ export class DeviceStore {
    */
   @serializable(rawJS)
   @observable
-  state?: CDJStatus.State = undefined;
+  state?: CDJStatus.State;
   /**
    * The current loaded track of the device. May be undefined if there is no track
    * loaded.
    */
   @serializable(rawJS)
   @observable.ref
-  track?: Track = undefined;
+  track?: Track;
   /**
    * The artwork buffer of the loaded track. May be undefined if there is no
    * artwork for the loaded track.
    */
   @serializable(bufferSerialize)
   @observable.ref
-  artwork?: Uint8Array = undefined;
+  artwork?: Uint8Array;
   /**
    * Database fetch progress for each device slot
    */
@@ -267,13 +267,13 @@ export class CloudApiState {
    */
   @serializable
   @observable
-  version?: string = undefined;
+  version?: string;
   /**
    * A message from the API server
    */
   @serializable
   @observable
-  notice?: string = undefined;
+  notice?: string;
 
   @action
   reset() {
@@ -352,7 +352,7 @@ export class AppStore {
    */
   @serializable(rawJS)
   @observable
-  user?: User = undefined;
+  user?: User;
   /**
    * Get the appKey for this app instance.
    */
