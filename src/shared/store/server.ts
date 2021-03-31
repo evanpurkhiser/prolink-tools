@@ -112,7 +112,10 @@ export const startMainApiWebsocket = (store: AppStore, register: RegisterHandler
       .then(release => conn.emit('store-init', serialize(store), () => release()));
 
     clearObserver = register('api-ws', change =>
-      lock.acquire().then(release => conn.emit('store-update', change, () => release()))
+      lock
+        .acquire()
+        .then(release => conn.emit('store-update', change, () => release()))
+        .catch(err => console.warn(err))
     );
   };
 
