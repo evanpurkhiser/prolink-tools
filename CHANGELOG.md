@@ -25,6 +25,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Cloud Mode should now be more stable and will not intermittently lose
+  connection.
+
 - The <em>A State of Overlays</em> theme no longer has the italics bracket
   partially cutoff to the left.
 
