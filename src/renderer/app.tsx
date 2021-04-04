@@ -4,6 +4,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {Global} from '@emotion/react';
 import * as Sentry from '@sentry/electron';
+import {Mutex} from 'async-mutex';
 import {when} from 'mobx';
 
 import ThemeProvider from 'src/shared/components/ThemeProvider';
@@ -29,7 +30,8 @@ const main = (
 
 ReactDOM.render(main, mainElement);
 
-registerRendererIpc(rendererStore);
+const configLock = new Mutex();
+registerRendererIpc(rendererStore, configLock);
 
 when(
   () => rendererStore.user !== undefined,
@@ -38,5 +40,5 @@ when(
 
 when(
   () => rendererStore.isInitalized,
-  () => registerRendererConfigIpc(rendererStore)
+  () => registerRendererConfigIpc(rendererStore, configLock)
 );

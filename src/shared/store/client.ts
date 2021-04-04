@@ -1,3 +1,4 @@
+import {Mutex} from 'async-mutex';
 import {ipcRenderer} from 'electron';
 import {action, set} from 'mobx';
 import {deserialize} from 'serializr';
@@ -7,21 +8,28 @@ import {Socket as ClientSocket} from 'socket.io-client';
 import {applyChanges, observeStore, SerializedChange} from './ipc';
 import {AppStore} from '.';
 
-/**
- * Mark when we're applying a UI config change via IPC to avoid a loop over IPC.
- */
-let isApplyingConfigChange = false;
+function applyConfigLockedChange(
+  store: AppStore,
+  change: SerializedChange,
+  configLock?: Mutex
+) {
+  if (configLock && change.path.startsWith('config')) {
+    configLock.runExclusive(() => applyChanges(store, change));
+  } else {
+    applyChanges(store, change);
+  }
+}
 
 /**
  * Register this window to have it's store hydrated and synced from the main
  * process' store.
+ *
+ * The config lock is used to hold a lock when config updates are propagated
+ * from the main thread and should not be propagated back.
  */
-export const registerRendererIpc = (store: AppStore) => {
+export const registerRendererIpc = (store: AppStore, configLock: Mutex) => {
   ipcRenderer.on('store-update', (_, change: SerializedChange) => {
-    isApplyingConfigChange = change.path.startsWith('config');
-    applyChanges(store, change);
-    isApplyingConfigChange = false;
-
+    applyConfigLockedChange(store, change, configLock);
     ipcRenderer.send('store-update-done');
   });
 
@@ -41,22 +49,26 @@ export const registerRendererIpc = (store: AppStore) => {
  * Register this window to have configuration changes be propagated back to the
  * main thread.
  */
-export const registerRendererConfigIpc = (store: AppStore) =>
+export const registerRendererConfigIpc = (store: AppStore, configLock: Mutex) =>
   observeStore({
     target: store.config,
     handler: change =>
-      !isApplyingConfigChange && ipcRenderer.send('config-update', change),
+      !configLock.isLocked() && ipcRenderer.send('config-update', change),
   });
 
 /**
- * Register this client to recieve websocket broadcasts to update the store
+ * Register this client to receive websocket broadcasts to update the store.
+ *
+ * You may pass a config lock if config changes are also propegated back to the
+ * server, see registerRendererIpc above to understand the purpose of this.
  */
 export const registerWebsocketListener = (
   store: AppStore,
-  ws: ClientSocket | ServerSocker
+  ws: ClientSocket | ServerSocker,
+  configLock?: Mutex
 ) => {
   ws.on('store-update', (change: SerializedChange, done: () => void) => {
-    applyChanges(store, change);
+    applyConfigLockedChange(store, change, configLock);
     done?.();
   });
   ws.on(
