@@ -166,10 +166,32 @@ export class MixstatusStore {
   }
 }
 
+export class CloudToolsConfig {
+  /**
+   * Unique identifier used to identify the application to the server. Changing
+   * this will change all derrived identifiers.
+   *
+   * Will be generated on the users first run of the application.
+   */
+  @serializable
+  @observable
+  apiKey = '';
+
+  constructor() {
+    makeObservable(this);
+  }
+}
+
 export class AppConfig {
   @serializable(list(rawJS))
   @observable
   overlays = observable.array<OverlayInstance>();
+  /**
+   * Configuration for the Cloud tools API service
+   */
+  @serializable(object(CloudToolsConfig))
+  @observable
+  cloudTools = new CloudToolsConfig();
   /**
    * Should debug events be enabled to be stored and uploaded?
    */
@@ -182,15 +204,6 @@ export class AppConfig {
   @serializable
   @observable
   enableCloudApi = false;
-  /**
-   * Unique identifier used to identify the application to the server. Changing
-   * this will change all derrived identifiers.
-   *
-   * Will be generated on the users first run of the application.
-   */
-  @serializable
-  @observable
-  apiKey = '';
   /**
    * Mark tracks as 'IDs' using this string
    */
@@ -250,7 +263,8 @@ export class AppConfig {
 
   @action
   ensureDefaults() {
-    this.apiKey = this.apiKey === '' ? uuid() : this.apiKey;
+    this.cloudTools.apiKey =
+      this.cloudTools.apiKey === '' ? uuid() : this.cloudTools.apiKey;
   }
 
   constructor() {
@@ -364,8 +378,15 @@ export class AppStore {
    */
   @computed
   get appKey() {
-    // TODO: Duplicated logic in api/internalStore
-    return shajs('sha256').update(this.config.apiKey).digest('base64').slice(0, 20);
+    return this.makeOpaqueApiKey('appKey');
+  }
+
+  makeOpaqueApiKey(subKey: string) {
+    // XXX: Note this logic is duplicated in node-only form in api/internalStore
+    return shajs('sha256')
+      .update(`${this.config.cloudTools.apiKey}:${subKey}`)
+      .digest('base64')
+      .slice(0, 20);
   }
 
   @action

@@ -38,7 +38,21 @@ export class Connection {
    * Get the appKey for this connection.
    */
   get appKey(): AppKey {
-    return createHash('sha256').update(this.apiKey).digest('base64').slice(0, 20);
+    return this.makeOpaqueKey('appKey');
+  }
+
+  /**
+   * Genearte a asymetric key that can be used to verify app requests by
+   * comparing the API keys
+   *
+   * This uses the secret API key, that is only shared when the app first
+   * connects and is only known by the client esentially as a HMAC secret.
+   */
+  makeOpaqueKey(subKey: string) {
+    return createHash('sha256')
+      .update(`${this.apiKey}:${subKey}`)
+      .digest('base64')
+      .slice(0, 20);
   }
 
   constructor(apiKey: string, socket: Socket, store: AppStore) {

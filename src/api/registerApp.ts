@@ -1,9 +1,13 @@
+import {Mutex} from 'async-mutex';
 import {observable, observe, runInAction, when} from 'mobx';
 import {serialize} from 'serializr';
 import {Socket} from 'socket.io';
 
 import {AppStore, createAppStore} from 'src/shared/store';
-import {registerWebsocketListener} from 'src/shared/store/client';
+import {
+  registerWebsocketConfigListener,
+  registerWebsocketListener,
+} from 'src/shared/store/client';
 import {SerializedChange} from 'src/shared/store/ipc';
 
 import {Connection} from './internalStore';
@@ -19,7 +23,7 @@ function initClientStore(client: Socket, store: AppStore) {
   // XXX: We MUST scrub the API key when serializing the store. It is a
   // private value that must not be publicly available.
   const serializedStore = serialize(store);
-  serializedStore.config.apiKey = '';
+  serializedStore.config.cloudTools.apiKey = '';
 
   // Scrub user details
   serializedStore.user = {};
@@ -94,7 +98,14 @@ export async function registerAppConnection(appSocket: Socket) {
   }
 
   internalStore.addAppConnection(conn);
-  registerWebsocketListener(store, appSocket);
+
+  const configLock = new Mutex();
+  registerWebsocketListener(store, appSocket, configLock);
+
+  when(
+    () => store.isInitalized,
+    () => registerWebsocketConfigListener(store, appSocket, configLock)
+  );
 
   const {appStoreClients} = internalStore;
 

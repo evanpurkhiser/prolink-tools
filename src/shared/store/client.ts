@@ -79,3 +79,20 @@ export const registerWebsocketListener = (
     })
   );
 };
+
+/**
+ * Register a server websocket connection to have configuration changes
+ * propegated back to the app client.
+ *
+ * XXX: This should _not_ be used for any public clients. The API server as a
+ * client of the Prolink Tools API is the intended consumer.
+ */
+export const registerWebsocketConfigListener = (
+  store: AppStore,
+  ws: ServerSocker,
+  configLock: Mutex
+) =>
+  observeStore({
+    target: store.config,
+    handler: change => !configLock.isLocked() && ws.emit('config-update', change),
+  });

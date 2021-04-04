@@ -16,6 +16,7 @@ import {deserialize, serialize, update} from 'serializr';
 import {
   AppStore,
   CloudApiState,
+  CloudToolsConfig,
   DeviceStore,
   HydrationInfo,
   MixstatusStore,
@@ -53,10 +54,11 @@ export type SerializedChange = {
  */
 const serializableClasses = [
   AppStore,
+  CloudApiState,
+  CloudToolsConfig,
   DeviceStore,
   HydrationInfo,
   MixstatusStore,
-  CloudApiState,
   PlayedTrack,
 ];
 

@@ -72,9 +72,9 @@ export const registerMainIpc = (store: AppStore, register: RegisterHandler) => {
   });
 
   // Register listener for config object changes
-  ipcMain.on('config-update', (_e, change: SerializedChange) => {
-    configLock.runExclusive(() => applyChanges(store.config, change));
-  });
+  ipcMain.on('config-update', (_e, change: SerializedChange) =>
+    configLock.runExclusive(() => applyChanges(store.config, change))
+  );
 };
 
 /**
@@ -85,13 +85,15 @@ export const registerMainIpc = (store: AppStore, register: RegisterHandler) => {
 export const startMainApiWebsocket = (store: AppStore, register: RegisterHandler) => {
   const lock = new Mutex();
 
-  const conn = io(`${apiHost}/ingest/${store.config.apiKey}`, {
+  const conn = io(`${apiHost}/ingest/${store.config.cloudTools.apiKey}`, {
     transports: ['websocket'],
   });
 
   let clearObserver: IDisposer | undefined;
 
   const connect = async () => {
+    const configLock = new Mutex();
+
     runInAction(() => (store.cloudApiState.connectionState = ConnectionState.Connecting));
 
     // Must handshake with the server before we can setup IPC handlers. We need
@@ -109,13 +111,21 @@ export const startMainApiWebsocket = (store: AppStore, register: RegisterHandler
 
     lock
       .acquire()
-      .then(release => conn.emit('store-init', serialize(store), () => release()));
+      .then(release => conn.emit('store-init', serialize(store), () => release()))
+      .catch(err => console.warn(err));
 
-    clearObserver = register('api-ws', change =>
-      lock
-        .acquire()
-        .then(release => conn.emit('store-update', change, () => release()))
-        .catch(err => console.warn(err))
+    clearObserver = register(
+      'api-ws',
+      change =>
+        !configLock.isLocked() &&
+        lock
+          .acquire()
+          .then(release => conn.emit('store-update', change, () => release()))
+          .catch(err => console.warn(err))
+    );
+
+    conn.on('config-update', (change: SerializedChange) =>
+      configLock.runExclusive(() => applyChanges(store.config, change))
     );
   };
 
