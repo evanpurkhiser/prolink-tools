@@ -99,6 +99,7 @@ export async function registerAppConnection(appSocket: Socket) {
 
   internalStore.addAppConnection(conn);
 
+  // Setup IPC with the app itself
   const configLock = new Mutex();
   registerWebsocketListener(store, appSocket, configLock);
 
