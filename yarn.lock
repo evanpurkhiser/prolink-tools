@@ -1163,6 +1163,39 @@
     eslint-plugin-react "^7.21.5"
     eslint-plugin-simple-import-sort "^6.0.1"
 
+"@hapi/boom@9.x.x":
+  version "9.1.2"
+  resolved "https://registry.yarnpkg.com/@hapi/boom/-/boom-9.1.2.tgz#48bd41d67437164a2d636e3b5bc954f8c8dc5e38"
+  integrity sha512-uJEJtiNHzKw80JpngDGBCGAmWjBtzxDCz17A9NO2zCi8LLBlb5Frpq4pXwyN+2JQMod4pKz5BALwyneCgDg89Q==
+  dependencies:
+    "@hapi/hoek" "9.x.x"
+
+"@hapi/bourne@2.x.x":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@hapi/bourne/-/bourne-2.0.0.tgz#5bb2193eb685c0007540ca61d166d4e1edaf918d"
+  integrity sha512-WEezM1FWztfbzqIUbsDzFRVMxSoLy3HugVcux6KDDtTqzPsLE8NDRHfXvev66aH1i2oOKKar3/XDjbvh/OUBdg==
+
+"@hapi/hoek@9.x.x", "@hapi/hoek@^9.0.0", "@hapi/hoek@^9.0.4":
+  version "9.1.1"
+  resolved "https://registry.yarnpkg.com/@hapi/hoek/-/hoek-9.1.1.tgz#9daf5745156fd84b8e9889a2dc721f0c58e894aa"
+  integrity sha512-CAEbWH7OIur6jEOzaai83jq3FmKmv4PmX1JYfs9IrYcGEVI/lyL1EXJGCj7eFVJ0bg5QR8LMxBlEtA+xKiLpFw==
+
+"@hapi/topo@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@hapi/topo/-/topo-5.0.0.tgz#c19af8577fa393a06e9c77b60995af959be721e7"
+  integrity sha512-tFJlT47db0kMqVm3H4nQYgn6Pwg10GTZHb1pwmSiv1K4ks6drQOtfEF5ZnPjkvC+y4/bUPHK+bc87QvLcL+WMw==
+  dependencies:
+    "@hapi/hoek" "^9.0.0"
+
+"@hapi/wreck@^17.0.0":
+  version "17.1.0"
+  resolved "https://registry.yarnpkg.com/@hapi/wreck/-/wreck-17.1.0.tgz#fbdc380c6f3fa1f8052dc612b2d3b6ce3e88dbec"
+  integrity sha512-nx6sFyfqOpJ+EFrHX+XWwJAxs3ju4iHdbB/bwR8yTNZOiYmuhA8eCe7lYPtYmb4j7vyK/SlbaQsmTtUrMvPEBw==
+  dependencies:
+    "@hapi/boom" "9.x.x"
+    "@hapi/bourne" "2.x.x"
+    "@hapi/hoek" "9.x.x"
+
 "@icons/material@^0.2.4":
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/@icons/material/-/material-0.2.4.tgz#e90c9f71768b3736e76d7dd6783fc6c2afa88bc8"
@@ -1689,6 +1722,23 @@
   dependencies:
     "@sentry/types" "6.1.0"
     tslib "^1.9.3"
+
+"@sideway/address@^4.1.0":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@sideway/address/-/address-4.1.1.tgz#9e321e74310963fdf8eebfbee09c7bd69972de4d"
+  integrity sha512-+I5aaQr3m0OAmMr7RQ3fR9zx55sejEYR2BFJaxL+zT3VM2611X0SHvPWIbAUBZVTn/YzYKbV8gJ2oT/QELknfQ==
+  dependencies:
+    "@hapi/hoek" "^9.0.0"
+
+"@sideway/formula@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@sideway/formula/-/formula-3.0.0.tgz#fe158aee32e6bd5de85044be615bc08478a0a13c"
+  integrity sha512-vHe7wZ4NOXVfkoRb8T5otiENVlT7a3IAiw7H5M2+GO+9CDgcVUUsX1zalAztCmwyOr2RUTGJdgB+ZvSVqmdHmg==
+
+"@sideway/pinpoint@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@sideway/pinpoint/-/pinpoint-2.0.0.tgz#cff8ffadc372ad29fd3f78277aeb29e632cc70df"
+  integrity sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==
 
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
@@ -2310,6 +2360,11 @@
   integrity sha512-amxKgPy6WJTKuw8mpUwjX2BSxuBtBmZfRwIUDIuPJKNwGN8CWDli8JTg5ONTWOtcTkHIstvT7oAhhYXqEjStHQ==
   dependencies:
     "@types/node" "*"
+
+"@types/simple-oauth2@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@types/simple-oauth2/-/simple-oauth2-4.1.0.tgz#0538d25909b3a28f2b4144fefbbcf3acec9b67d9"
+  integrity sha512-FkAXBdBDFU6i2Rj+N/Sr5bZO8zrMnFnSvyzWtEUXgj7jdDZ0bcgxJ134ctwZbmNvSUzS4Qvt+NvszSbw8Zq+qg==
 
 "@types/source-list-map@*":
   version "0.1.2"
@@ -7690,6 +7745,17 @@ jest@^26.0.1:
     import-local "^3.0.2"
     jest-cli "^26.6.3"
 
+joi@^17.3.0:
+  version "17.4.0"
+  resolved "https://registry.yarnpkg.com/joi/-/joi-17.4.0.tgz#b5c2277c8519e016316e49ababd41a1908d9ef20"
+  integrity sha512-F4WiW2xaV6wc1jxete70Rw4V/VuMd6IN+a5ilZsxG4uYtUXWu2kq9W5P2dz30e7Gmw8RCbY/u/uk+dMPma9tAg==
+  dependencies:
+    "@hapi/hoek" "^9.0.0"
+    "@hapi/topo" "^5.0.0"
+    "@sideway/address" "^4.1.0"
+    "@sideway/formula" "^3.0.0"
+    "@sideway/pinpoint" "^2.0.0"
+
 js-cookie@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-2.2.1.tgz#69e106dc5d5806894562902aa5baec3744e9b2b8"
@@ -10602,11 +10668,6 @@ safe-regex@^1.1.0:
   dependencies:
     ret "~0.1.10"
 
-safe-stable-stringify@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/safe-stable-stringify/-/safe-stable-stringify-1.1.1.tgz#c8a220ab525cd94e60ebf47ddc404d610dc5d84a"
-  integrity sha512-ERq4hUjKDbJfE4+XtZLFPCDi8Vb1JqaxAPTxWFLBx8XcAlf9Bda/ZJdVezs/NAfsMQScyIlUMx+Yeu7P7rx5jw==
-
 "safer-buffer@>= 2.1.2 < 3", "safer-buffer@>= 2.1.2 < 3.0.0", safer-buffer@^2.0.2, safer-buffer@^2.1.0, safer-buffer@~2.1.0:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
@@ -10893,6 +10954,16 @@ simple-get@^3.0.3:
     decompress-response "^4.2.0"
     once "^1.3.1"
     simple-concat "^1.0.0"
+
+simple-oauth2@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/simple-oauth2/-/simple-oauth2-4.2.0.tgz#8f7015f2ccd0ea6e94d35d8bd3abfa379bfba681"
+  integrity sha512-AV62tGdq9JfLd/uveKpeNtQl+VVm89a35QKlwGuvisYIjCoz2ZmTGRGuSIGiYr+QUhSKJ5kYN1jq2BBa/ac/GQ==
+  dependencies:
+    "@hapi/hoek" "^9.0.4"
+    "@hapi/wreck" "^17.0.0"
+    debug "^4.1.1"
+    joi "^17.3.0"
 
 sisteransi@^1.0.5:
   version "1.0.5"
@@ -12508,9 +12579,9 @@ webpack-plugin-ramdisk@^0.1.2:
     superstruct "^0.12.1"
 
 webpack-plugin-serve@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/webpack-plugin-serve/-/webpack-plugin-serve-1.2.1.tgz#f9def36e4f8dd9ab5a225c401dfafa3dbd32272e"
-  integrity sha512-9FVTFFEqgMuc83pL6xdw3Cmhts9LlS1Oi/iRgvbbMaspfgCfL+DeZvCzoM5sFPm9YwQpMN97UW5OUjgz4/R7cA==
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/webpack-plugin-serve/-/webpack-plugin-serve-1.4.1.tgz#33f73fecde8c00786fd3aed84e5078d3c1d4ff32"
+  integrity sha512-0Gk3b2o2vMovUq1URBnT5rjNBxdETG60PywF1IHnUXDJV8zd+4rpkOfGtaVOhYk7AZW6ufHBT43grxoCJhiyWg==
   dependencies:
     chalk "^4.0.0"
     connect-history-api-fallback "^1.5.0"
@@ -12519,6 +12590,7 @@ webpack-plugin-serve@^1.2.1:
     http-proxy-middleware "^1.0.3"
     is-path-cwd "^2.2.0"
     is-promise "^4.0.0"
+    json-stringify-safe "^5.0.1"
     koa "^2.5.3"
     koa-compress "^5.0.1"
     koa-connect "^2.0.1"
@@ -12530,7 +12602,6 @@ webpack-plugin-serve@^1.2.1:
     open "^7.0.3"
     p-defer "^3.0.0"
     rimraf "^3.0.2"
-    safe-stable-stringify "^1.1.1"
     strip-ansi "^6.0.0"
     superstruct "^0.12.1"
     webpack-plugin-ramdisk "^0.1.2"

@@ -13,6 +13,7 @@ import {createServer} from 'http';
 import {observeStore} from 'src/shared/store/ipc';
 import {trackFormat} from 'src/utils/trackFormat';
 
+import {setupNightbot} from './integrations/nightbot';
 import {ApiStore, createApiStore} from './apiStore';
 import {createInternalStore} from './internalStore';
 import {ingestSocketNamespace, registerAppConnection} from './registerApp';
@@ -77,6 +78,8 @@ wss.of(clientAppStoreNamespace).on('connection', registerClientConnection);
 
 // TODO: Add API routes
 const router = new Router();
+
+setupNightbot(internalStore, router);
 
 /**
  * Get nowplaying text for a specific appKey

@@ -1,5 +1,8 @@
 import {makeObservable, observable} from 'mobx';
 import {serializable} from 'serializr';
+import type {Token} from 'simple-oauth2';
+
+import {rawJsSerialize} from 'src/shared/store/utils';
 
 export class CloudToolsConfig {
   /**
@@ -17,6 +20,12 @@ export class CloudToolsConfig {
   @serializable
   @observable
   apiKey = '';
+  /**
+   * When connected, this stores the Nightbot Token
+   */
+  @serializable(rawJsSerialize)
+  @observable.ref
+  nightbotAuth: Token | null = null;
 
   constructor() {
     makeObservable(this);
