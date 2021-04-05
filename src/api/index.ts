@@ -6,7 +6,7 @@ import Router from '@koa/router';
 import Koa from 'koa';
 import {when} from 'mobx';
 import {serialize} from 'serializr';
-import {Server, Socket} from 'socket.io';
+import {Server as SocketServer, Socket} from 'socket.io';
 
 import {createServer} from 'http';
 
@@ -23,7 +23,7 @@ const server = createServer(app.callback());
 /**
  * The active websocket server
  */
-const wss = new Server(server, {
+const wss = new SocketServer(server, {
   cors: {origin: '*', methods: ['GET', 'POST']},
 });
 

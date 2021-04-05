@@ -2,8 +2,8 @@ import * as React from 'react';
 import {io, Socket} from 'socket.io-client';
 
 import {connectToAppStore} from 'src/shared/api/client';
-import {apiHost} from 'src/shared/api/url';
 import {AppStore} from 'src/shared/store';
+import {apiBaseUrl} from 'src/utils/urls';
 
 /**
  * AppKeyResolver is used to resolve the appKey once the websocket has been
@@ -32,7 +32,7 @@ export function useWebsocketStore(resolver: AppKeyResolver) {
   const [store, setStore] = React.useState<AppStore | null>(null);
 
   const connectStore = async () => {
-    const ws = io(apiHost);
+    const ws = io(apiBaseUrl);
     const appKey = await resolver(ws);
     ws.close();
 

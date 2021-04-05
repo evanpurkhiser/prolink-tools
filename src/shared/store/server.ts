@@ -10,7 +10,7 @@ import {io} from 'socket.io-client';
 import http from 'http';
 
 import {AppHandshake, ConnectionState} from 'src/api/types';
-import {apiHost} from 'src/shared/api/url';
+import {apiBaseUrl} from 'src/utils/urls';
 
 import {LATEST_API_VERSION} from '../constants';
 
@@ -85,7 +85,7 @@ export const registerMainIpc = (store: AppStore, register: RegisterHandler) => {
 export const startMainApiWebsocket = (store: AppStore, register: RegisterHandler) => {
   const lock = new Mutex();
 
-  const conn = io(`${apiHost}/ingest/${store.config.cloudTools.apiKey}`, {
+  const conn = io(`${apiBaseUrl}/ingest/${store.config.cloudTools.apiKey}`, {
     transports: ['websocket'],
   });
 

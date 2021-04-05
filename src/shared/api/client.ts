@@ -1,15 +1,15 @@
 import {io} from 'socket.io-client';
 
-import {apiHost} from 'src/shared/api/url';
 import {createAppStore} from 'src/shared/store';
 import {registerWebsocketListener} from 'src/shared/store/client';
+import {apiBaseUrl} from 'src/utils/urls';
 
 /**
  * Connects to the AppStore given an appKey.
  */
 export function connectToAppStore(appKey: string) {
   const appStore = createAppStore();
-  const ws = io(`${apiHost}/store/${appKey}`);
+  const ws = io(`${apiBaseUrl}/store/${appKey}`);
 
   registerWebsocketListener(appStore, ws);
 

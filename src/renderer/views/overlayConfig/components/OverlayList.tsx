@@ -5,8 +5,8 @@ import {action} from 'mobx';
 import {observer} from 'mobx-react';
 
 import {OverlayInstance, registeredOverlays} from 'src/overlay';
-import {WEBSERVER_PORT} from 'src/shared/constants';
 import {AppStore} from 'src/shared/store';
+import {overlayBaseUrl, webBaseUrl} from 'src/utils/urls';
 import withStore from 'src/utils/withStore';
 
 import EmptyState from './EmptyState';
@@ -69,8 +69,8 @@ type UrlProps = {
 
 const OverlayUrl = ({instance, cloudEnabled}: UrlProps) => {
   const url = cloudEnabled
-    ? `https://prolink.tools/overlay/${instance.key}`
-    : `http://127.0.0.1:${WEBSERVER_PORT}/${instance.key}`;
+    ? `${webBaseUrl}/overlay/${instance.key}`
+    : `${overlayBaseUrl}/${instance.key}`;
 
   return (
     <UrlWrapper>

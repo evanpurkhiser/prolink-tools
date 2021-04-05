@@ -4,8 +4,8 @@ import {observer} from 'mobx-react';
 
 import Field from 'src/renderer/components/form/Field';
 import Text from 'src/renderer/components/form/Text';
-import {apiHost} from 'src/shared/api/url';
 import {AppStore} from 'src/shared/store';
+import {apiBaseUrl} from 'src/utils/urls';
 import withStore from 'src/utils/withStore';
 
 import ConnectionStatus from './components/ConnectionStatus';
@@ -15,7 +15,7 @@ type Props = {
 };
 
 const ApiConfig = observer(({store}: Props) => {
-  const url = `${apiHost}/now-playing/${store.appKey}`;
+  const url = `${apiBaseUrl}/now-playing/${store.appKey}`;
 
   return (
     <React.Fragment>

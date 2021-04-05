@@ -1,3 +1,4 @@
+import dotenv from 'dotenv';
 import TerserPlugin from 'terser-webpack-plugin';
 import webpack from 'webpack';
 
@@ -7,12 +8,18 @@ import {commit, releaseChannel, releaseId} from './scripts/release';
 
 export const IS_PROD = process.env.NODE_ENV === 'production';
 
+/**
+ * Load dotenv for overrides to some environment variables
+ */
+const dotenvConfig = dotenv.config().parsed!;
+
 const envConfig = {
   NODE_ENV: process.env.NODE_ENV ?? 'development',
-  USE_LOCAL_API: !!process.env.USE_LOCAL_API,
   RELEASE: releaseId,
   RELEASE_CHANNEL: releaseChannel,
   COMMIT: commit,
+  BASE_WEB_URL: dotenvConfig.BASE_WEB_URL,
+  BASE_API_URL: dotenvConfig.BASE_API_URL,
 };
 
 export const withWebpackPluginServe = (appList: string[]) =>
