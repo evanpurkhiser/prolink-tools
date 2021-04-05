@@ -30,16 +30,20 @@ export const overlayAppKeyResolver = (overlayKey: string) => (ws: Socket) =>
  */
 export function useWebsocketStore(resolver: AppKeyResolver) {
   const [store, setStore] = React.useState<AppStore | null>(null);
+  const [appWs, setAppWs] = React.useState<Socket | null>(null);
 
   const connectStore = async () => {
     const ws = io(apiBaseUrl);
     const appKey = await resolver(ws);
     ws.close();
 
-    setStore(connectToAppStore(appKey));
+    const [connectedStore, connectedWs] = connectToAppStore(appKey);
+
+    setAppWs(connectedWs);
+    setStore(connectedStore);
   };
 
   React.useEffect(() => void connectStore(), []);
 
-  return store;
+  return [store, appWs] as const;
 }

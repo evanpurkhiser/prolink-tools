@@ -13,5 +13,5 @@ export function connectToAppStore(appKey: string) {
 
   registerWebsocketListener(appStore, ws);
 
-  return appStore;
+  return [appStore, ws] as const;
 }

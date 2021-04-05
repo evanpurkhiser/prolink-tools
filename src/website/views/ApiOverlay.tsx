@@ -10,7 +10,7 @@ type Props = RouteComponentProps<{overlayKey: string}>;
 
 const ApiOverlay = ({match}: Props) => {
   const {overlayKey} = match.params;
-  const store = useWebsocketStore(overlayAppKeyResolver(overlayKey));
+  const [store] = useWebsocketStore(overlayAppKeyResolver(overlayKey));
 
   if (store === null) {
     return null;
