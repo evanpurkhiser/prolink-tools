@@ -132,6 +132,7 @@
     "babel-loader": "^8.0.6",
     "connect": "^3.7.0",
     "cookie": "^0.4.1",
+    "core-js": "^3.10.0",
     "cross-env": "^7.0.2",
     "cursor": "https://github.com/EvanPurkhiser/node-cursor.git#fix-buffer",
     "date-fns": "^2.14.0",

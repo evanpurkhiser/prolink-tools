@@ -1,3 +1,4 @@
+import 'core-js';
 import 'tsconfig-paths/register';
 import 'src/shared/sentry/api';
 
