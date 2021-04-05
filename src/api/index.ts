@@ -11,6 +11,7 @@ import {Server as SocketServer, Socket} from 'socket.io';
 import {createServer} from 'http';
 
 import {observeStore} from 'src/shared/store/ipc';
+import {trackFormat} from 'src/utils/trackFormat';
 
 import {ApiStore, createApiStore} from './apiStore';
 import {createInternalStore} from './internalStore';
@@ -98,7 +99,7 @@ router.get('/now-playing/:appKey', (ctx, next) => {
 
   const {track} = trackHistory[trackHistory.length - 1];
 
-  ctx.body = `${track.artist?.name ?? 'Unknown Artist'} - ${track.title}`;
+  ctx.body = trackFormat('{artist} - {title}', track);
   return next();
 });
 
