@@ -1,6 +1,8 @@
 import {app, Menu, shell} from 'electron';
+import isDev from 'electron-is-dev';
 
 import {AppStore} from 'src/shared/store';
+import playingTracksRoutine from 'src/website/demo/playingTracks';
 
 export function setupMenu(store: AppStore) {
   const isMac = process.platform === 'darwin';
@@ -54,6 +56,13 @@ export function setupMenu(store: AppStore) {
           accelerator: 'cmd + l',
           label: 'Toggle UI Theme',
           click: () => store.config.toggleTheme(),
+        },
+        {
+          visible: isDev,
+          enabled: isDev,
+          accelerator: 'cmd + d',
+          label: 'Run demo routine',
+          click: () => playingTracksRoutine.run(store),
         },
       ],
     },
