@@ -8,8 +8,8 @@ import {createBrowserHistory} from 'history';
 
 import globalCss from 'src/shared/globalCss';
 import theme from 'src/theme';
-import ApiOverlay from 'web/ApiOverlay';
-import Landing from 'web/Landing';
+import ApiOverlay from 'web/views/ApiOverlay';
+import Landing from 'web/views/Landing';
 
 // Create main element
 const mainElement = document.createElement('div');

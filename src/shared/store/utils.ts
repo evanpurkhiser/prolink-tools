@@ -1,5 +1,7 @@
-import {IReactionDisposer, IReactionPublic, observe, reaction} from 'mobx';
+import {identity} from 'lodash';
+import {IReactionDisposer, IReactionPublic, observe, reaction, toJS} from 'mobx';
 import {DeviceID} from 'prolink-connect/lib/types';
+import {custom} from 'serializr';
 
 import {AppStore, DeviceStore} from '.';
 
@@ -38,3 +40,16 @@ export function deviceReaction<T>(
     disposers.clear();
   };
 }
+
+/**
+ * Used with @serializable to (de)serialize a buffer
+ */
+export const bufferSerialize = custom(
+  value => (value instanceof Uint8Array ? Array.from(value) : undefined),
+  data => (Array.isArray(data) ? Uint8Array.from(data) : data)
+);
+
+/**
+ * Used with @serializable to deep serialize a whole object
+ */
+export const rawJsSerialize = custom(value => toJS(value), identity);

@@ -160,11 +160,11 @@ app.on('ready', async () => {
 
   // Connect to api.prolink.tools when enabled
   reaction(
-    () => mainStore.config.enableCloudApi,
+    () => mainStore.config.cloudTools.enabled,
     enabled => {
       if (enabled) {
         const disconnect = startMainApiWebsocket(mainStore, register);
-        when(() => mainStore.config.enableCloudApi === false, disconnect);
+        when(() => mainStore.config.cloudTools.enabled === false, disconnect);
       }
     },
     {fireImmediately: true}

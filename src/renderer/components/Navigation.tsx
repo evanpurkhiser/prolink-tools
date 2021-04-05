@@ -24,7 +24,7 @@ const items: NavItem[] = [
     name: 'API Setup',
     path: '/api-config',
     icon: Server,
-    enabled: store => store.config.enableCloudApi,
+    enabled: store => store.config.cloudTools.enabled,
   },
   {name: 'Settings', path: '/settings', icon: Settings},
 ];

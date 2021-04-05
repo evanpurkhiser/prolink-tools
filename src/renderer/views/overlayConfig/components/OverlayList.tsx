@@ -47,7 +47,7 @@ const OverlayEntry = observer(({store, index}: EntryProps) => {
   return (
     <div key={instance.key}>
       <Actions>
-        <OverlayUrl cloudEnabled={store.config.enableCloudApi} instance={instance} />
+        <OverlayUrl cloudEnabled={store.config.cloudTools.enabled} instance={instance} />
         <Remove onClick={action(() => store.config.overlays.remove(instance))}>
           <Delete size="1rem" />
         </Remove>

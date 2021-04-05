@@ -84,9 +84,9 @@ const Settings = observer(({store}: Props) => {
           }
         >
           <Checkbox
-            checked={config.enableCloudApi}
+            checked={config.cloudTools.enabled}
             onChange={action((e: React.ChangeEvent<HTMLInputElement>) =>
-              set(config, {enableCloudApi: e.target.checked})
+              set(config.cloudTools, {enabled: e.target.checked})
             )}
           />
         </Field>
