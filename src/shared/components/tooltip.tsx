@@ -119,7 +119,7 @@ const Tooltip: React.FC<Props> = ({
   const [tooltipEl, setTooltipEl] = React.useState<HTMLDivElement | null>(null);
 
   const {styles, state} = usePopper(referenceEl, tooltipEl, {
-    placement: 'top',
+    placement: position ?? 'top',
     modifiers: [{name: 'arrow'}, {name: 'offset', options: {offset: [0, 5]}}],
   });
 
