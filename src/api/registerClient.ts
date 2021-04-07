@@ -13,11 +13,6 @@ export const clientAppStoreNamespace = /^\/store\/([^/]+)$/;
  */
 export function registerClientConnection(client: Socket) {
   const appKey = client.nsp.name.match(clientAppStoreNamespace)![1];
-  const conn = internalStore.appConnections.get(appKey);
-
-  if (conn === undefined) {
-    return;
-  }
 
   // XXX: Subscribing the client to the app store is handled by observers in
   // the registerAppConnection. We only need to update the client in the store.
