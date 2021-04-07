@@ -8,7 +8,7 @@ import {
   registerWebsocketConfigListener,
   registerWebsocketListener,
 } from 'src/shared/store/client';
-import {SerializedChange} from 'src/shared/store/ipc';
+import {observeStore} from 'src/shared/store/ipc';
 
 import {Connection} from './internalStore';
 import {AppHandshake, ConnectionState} from './types';
@@ -97,6 +97,13 @@ export async function registerAppConnection(appSocket: Socket) {
     return;
   }
 
+  const {appStoreClients} = internalStore;
+
+  // Ensure the appStoreClients has an observable client list
+  if (!appStoreClients.has(conn.appKey)) {
+    appStoreClients.set(conn.appKey, observable.array<Socket>());
+  }
+
   internalStore.addAppConnection(conn);
 
   // Setup IPC with the app itself
@@ -107,13 +114,6 @@ export async function registerAppConnection(appSocket: Socket) {
     () => store.isInitalized,
     () => registerWebsocketConfigListener(store, appSocket, configLock)
   );
-
-  const {appStoreClients} = internalStore;
-
-  // Ensure the appStoreClients has an observable client list
-  if (!appStoreClients.has(conn.appKey)) {
-    appStoreClients.set(conn.appKey, observable.array<Socket>());
-  }
 
   // Init the app store in all existing clients. These clients will have
   // already been initialized from a prior connection, if they are still
@@ -133,7 +133,9 @@ export async function registerAppConnection(appSocket: Socket) {
   );
 
   // re-broadcast app store updates to subscribed clients
-  appSocket.on('store-update', (change: SerializedChange) =>
+  const [storeRegister, disposeChangeObserver] = observeStore({target: store});
+
+  storeRegister('app-pipe', change =>
     // TODO: We should probably maintain the list of clients on the
     // internalStore, so they are not lost when the app connection drops and
     // comes back.
@@ -147,7 +149,13 @@ export async function registerAppConnection(appSocket: Socket) {
   runInAction(() => apiStore.clientCount++);
 
   appSocket.on('disconnect', () => {
-    runInAction(() => apiStore.clientCount--);
+    runInAction(() => {
+      apiStore.clientCount--;
+      conn.store.isInitalized = false;
+      conn.store.cloudApiState.connectionState = ConnectionState.Offline;
+    });
+
+    disposeChangeObserver();
     disposeClientInitalizer();
     internalStore.removeAppConnection(conn.appKey);
   });
