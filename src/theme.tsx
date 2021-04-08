@@ -1,6 +1,8 @@
 import {mergeWith} from 'lodash';
 import {CDJStatus, NetworkState} from 'prolink-connect/lib/types';
 
+import {ConnectionState} from 'src/api/types';
+
 export type ProlinkTheme = typeof light;
 
 declare module '@emotion/react' {
@@ -33,6 +35,15 @@ const networkState: Record<NetworkState, {bg: string; text: string | null}> = {
   [NetworkState.Failed]: {bg: '#ff5757', text: null},
 };
 
+const apiState: Record<ConnectionState, string> = {
+  [ConnectionState.Offline]: '#8F8FA0',
+  [ConnectionState.Connected]: '#72d145',
+  [ConnectionState.Connecting]: '#4C98F8',
+  [ConnectionState.Errored]: '#ff5757',
+  [ConnectionState.Outdated]: '#ff5757',
+  [ConnectionState.Degraded]: '#FFC266',
+};
+
 const light = {
   primaryText: '#28272b',
   darkText: '#28272b',
@@ -57,6 +68,7 @@ const light = {
 
   playStates,
   networkState,
+  apiState,
 
   control: {
     border: '#ccc',

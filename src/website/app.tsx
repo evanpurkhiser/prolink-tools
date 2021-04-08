@@ -8,8 +8,10 @@ import {createBrowserHistory} from 'history';
 
 import globalCss from 'src/shared/globalCss';
 import theme from 'src/theme';
-import ApiOverlay from 'web/views/ApiOverlay';
-import Landing from 'web/views/Landing';
+
+import ApiOverlay from './views/ApiOverlay';
+import AppContainer from './views/AppContainer';
+import Landing from './views/Landing';
 
 // Create main element
 const mainElement = document.createElement('div');
@@ -24,6 +26,7 @@ const Routes = () => (
       <Switch>
         <Route exact path="/" component={Landing} />
         <Route exact path="/overlay/:overlayKey" component={ApiOverlay} />
+        <Route path="/app/:appKey" component={AppContainer} />
       </Switch>
     </Router>
   </ThemeProvider>
