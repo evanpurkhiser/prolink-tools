@@ -120,7 +120,17 @@ const Tooltip: React.FC<Props> = ({
 
   const {styles, state} = usePopper(referenceEl, tooltipEl, {
     placement: position ?? 'top',
-    modifiers: [{name: 'arrow'}, {name: 'offset', options: {offset: [0, 5]}}],
+    modifiers: [
+      {name: 'arrow'},
+      {name: 'offset', options: {offset: [0, 5]}},
+      {
+        name: 'preventOverflow',
+        options: {
+          altAxis: true,
+          padding: 16,
+        },
+      },
+    ],
   });
 
   const setClose = () => setOpen(false);
