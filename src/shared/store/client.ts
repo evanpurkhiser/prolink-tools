@@ -2,7 +2,7 @@ import {Mutex} from 'async-mutex';
 import {ipcRenderer} from 'electron';
 import {action, set} from 'mobx';
 import {deserialize} from 'serializr';
-import {Socket as ServerSocker} from 'socket.io';
+import {Socket as ServerSocket} from 'socket.io';
 import {Socket as ClientSocket} from 'socket.io-client';
 
 import {applyChanges, observeStore, SerializedChange} from './ipc';
@@ -64,7 +64,7 @@ export const registerRendererConfigIpc = (store: AppStore, configLock: Mutex) =>
  */
 export const registerWebsocketListener = (
   store: AppStore,
-  ws: ClientSocket | ServerSocker,
+  ws: ClientSocket | ServerSocket,
   configLock?: Mutex
 ) => {
   ws.on('store-update', (change: SerializedChange, done: () => void) => {
@@ -89,7 +89,7 @@ export const registerWebsocketListener = (
  */
 export const registerWebsocketConfigListener = (
   store: AppStore,
-  ws: ServerSocker,
+  ws: ServerSocket,
   configLock: Mutex
 ) =>
   observeStore({
