@@ -34,19 +34,14 @@
       {
         "from": "dist/",
         "to": "./",
-        "filter": [
-          "**/*",
-          "!**/*.map"
-        ]
+        "filter": ["**/*", "!**/*.map"]
       },
       "node_modules/better-sqlite3/**/*",
       "node_modules/bindings/**/*",
       "node_modules/file-uri-to-path/**/*",
       "package.json"
     ],
-    "extraFiles": [
-      "LICENSE"
-    ],
+    "extraFiles": ["LICENSE"],
     "npmRebuild": false,
     "linux": {
       "target": "tar.gz"
@@ -182,8 +177,8 @@
     "sha.js": "^2.4.11",
     "short-uuid": "^4.1.0",
     "simple-oauth2": "^4.2.0",
-    "socket.io": "^3.0.5",
-    "socket.io-client": "^3.0.5",
+    "socket.io": "^4.0.0",
+    "socket.io-client": "^4.0.0",
     "source-map-loader": "^2.0.0",
     "terser-webpack-plugin": "^5.0.3",
     "ts-node": "^9.1.1",

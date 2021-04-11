@@ -67,11 +67,14 @@ export const registerWebsocketListener = (
   ws: ClientSocket | ServerSocket,
   configLock?: Mutex
 ) => {
-  ws.on('store-update', (change: SerializedChange, done: () => void) => {
+  // XXX: work around type error... See https://github.com/socketio/socket.io/issues/3872
+  const castWs = ws as ClientSocket;
+
+  castWs.on('store-update', (change: SerializedChange, done: () => void) => {
     applyConfigLockedChange(store, change, configLock);
     done?.();
   });
-  ws.on(
+  castWs.on(
     'store-init',
     action((data: any, done: () => void) => {
       set(store, deserialize(AppStore, data));
