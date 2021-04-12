@@ -35,6 +35,9 @@ services:
     environment:
       - "VIRTUAL_HOST=api.prolink.tools"
       - "LETSENCRYPT_HOST=api.prolink.tools"
+    volumes:
+      # This is currently a manually managed secret file on the server
+      - /root/dotenv:/app/.env
     network_mode: bridge
     restart: always
 
