@@ -3,8 +3,6 @@ import {AccessToken, AuthorizationCode} from 'simple-oauth2';
 
 import {internalStore} from 'src/api';
 import {AppKey, Connection} from 'src/api/internalStore';
-import {OAuthProvider} from 'src/shared/store/types';
-import {ApiExternalServerSocket} from 'src/shared/websockeTypes';
 
 const nightbotApi = 'https://api.nightbot.tv';
 
@@ -32,6 +30,9 @@ const oauthClient = new AuthorizationCode({
   },
 });
 
+/**
+ * Registers a AppStore reaction to start the OAuth flow for nightbot
+ */
 export function nightbotLinkApp(appConn: Connection) {
   const {store} = appConn;
 
@@ -48,33 +49,30 @@ export function nightbotLinkApp(appConn: Connection) {
   );
 }
 
-export function nightbotLinkClients(appKey: AppKey, socket: ApiExternalServerSocket) {
-  socket.on(
-    'oauth/authorize',
-    async (provider: OAuthProvider, code: string, done: (err: string | null) => void) => {
-      const appConn = internalStore.appConnections.get(appKey);
+export async function handleAuthorize(
+  appKey: AppKey,
+  code: string,
+  resolve: (opts: {error: string | null}) => void
+) {
+  const appConn = internalStore.appConnections.get(appKey);
 
-      if (appConn === undefined) {
-        // The client will already be aware that it's not connected to the app,
-        // so this is just a formality.
-        done('app not connected');
-        return;
-      }
+  if (appConn === undefined) {
+    // The client will already be aware that it's not connected to the app,
+    // so this is just a formality.
+    resolve({error: 'app not connected'});
+    return;
+  }
 
-      const tokenParams = {...params, code};
-      let accessToken: AccessToken;
+  const tokenParams = {...params, code};
+  let accessToken: AccessToken;
 
-      try {
-        accessToken = await oauthClient.getToken(tokenParams);
-      } catch (error) {
-        done(error);
-        return;
-      }
+  try {
+    accessToken = await oauthClient.getToken(tokenParams);
+  } catch (error) {
+    resolve({error});
+    return;
+  }
 
-      runInAction(
-        () => (appConn.store.config.cloudTools.nightbotAuth = accessToken.token)
-      );
-      done(null);
-    }
-  );
+  runInAction(() => (appConn.store.config.cloudTools.nightbotAuth = accessToken.token));
+  resolve({error: null});
 }

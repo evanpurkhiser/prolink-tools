@@ -1,6 +1,6 @@
 import {ApiExternalServerSocket} from 'src/shared/websockeTypes';
 
-import {nightbotLinkClients} from './integrations/nightbot';
+import {listenOAuthAuthorize} from './integrations/oauth';
 import {internalStore} from '.';
 
 /**
@@ -19,7 +19,7 @@ export function registerClientConnection(client: ApiExternalServerSocket) {
   // the registerAppConnection. We only need to update the client in the store.
 
   // Setup integrations
-  nightbotLinkClients(appKey, client);
+  listenOAuthAuthorize(appKey, client);
 
   internalStore.addStoreClient(appKey, client);
   client.on('disconnect', () => internalStore.removeStoreClient(appKey, client));

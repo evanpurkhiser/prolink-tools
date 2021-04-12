@@ -48,10 +48,10 @@ type AppApiEvents = StoreUpdateEvents & {
  * Events specifc to API <-> External
  */
 type AppApiHandlers = {
-  'oauth/authorize': (
+  'oauth:authorize': (
     provider: OAuthProvider,
     code: string,
-    result: (error: string | null) => void
+    result: (opts: {error: string | null}) => void
   ) => void;
 };
 
