@@ -69,7 +69,7 @@ export async function handleAuthorize(
   try {
     accessToken = await oauthClient.getToken(tokenParams);
   } catch (error) {
-    resolve({error});
+    resolve({error: error?.data?.payload?.error_description ?? 'Unknown failure'});
     return;
   }
 
