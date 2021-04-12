@@ -170,11 +170,11 @@ export const registerMainWebsocket = (
 
   // Send the current state to all new comections
   wss.on('connection', client => {
-    client.emit('store-init', serialize(store), () => void 0);
+    client.emit('store-init', serialize(store));
   });
 
   // Send changes to the websocket
-  register('main-ws', change => wss.sockets.emit('store-update', change, () => void 0));
+  register('main-ws', change => wss.sockets.emit('store-update', change));
 
   return wss;
 };

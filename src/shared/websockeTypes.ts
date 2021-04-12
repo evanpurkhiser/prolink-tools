@@ -15,12 +15,12 @@ type StoreUpdateEvents = {
   /**
    * Initialize the AppStore in the API server
    */
-  'store-init': (serializedStore: any, done: () => void) => void;
+  'store-init': (serializedStore: any, done?: () => void) => void;
   /**
    * Update the AppStore representation on the API server with an incremental
    * change
    */
-  'store-update': (update: SerializedChange, done: () => void) => void;
+  'store-update': (update: SerializedChange, done?: () => void) => void;
 };
 
 /**

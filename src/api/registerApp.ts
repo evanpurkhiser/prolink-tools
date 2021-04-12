@@ -32,7 +32,7 @@ function initClientStore(client: ApiExternalServerSocket, store: AppStore) {
   // TODO: This should handle locking replies
 
   // Initialize the store on the client and subscribe it to receive updates
-  client.emit('store-init', serializedStore, () => void 0);
+  client.emit('store-init', serializedStore);
 }
 
 type HandshakeData = {
@@ -137,12 +137,9 @@ export async function registerAppConnection(appSocket: ApiAppServerSocket) {
   const [storeRegister, disposeChangeObserver] = observeStore({target: store});
 
   storeRegister('app-pipe', change =>
-    // TODO: We should probably maintain the list of clients on the
-    // internalStore, so they are not lost when the app connection drops and
-    // comes back.
     appStoreClients
       .get(conn.appKey)
-      ?.forEach(client => client.emit('store-update', change, () => void 0))
+      ?.forEach(client => client.emit('store-update', change))
   );
 
   // Register integrations
