@@ -32,6 +32,7 @@ export const loadTrack = async (
       sliderPitch: 0,
       beatInMeasure: 1,
       beatsUntilCue: null,
+      isEmergencyMode: false,
       beat: -1,
       packetNum: 0,
       ...state,
