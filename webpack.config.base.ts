@@ -18,8 +18,8 @@ const envConfig = {
   RELEASE: releaseId,
   RELEASE_CHANNEL: releaseChannel,
   COMMIT: commit,
-  BASE_WEB_URL: dotenvConfig.BASE_WEB_URL,
-  BASE_API_URL: dotenvConfig.BASE_API_URL,
+  BASE_WEB_URL: dotenvConfig.BASE_WEB_URL ?? null,
+  BASE_API_URL: dotenvConfig.BASE_API_URL ?? null,
 };
 
 export const withWebpackPluginServe = (appList: string[]) =>
