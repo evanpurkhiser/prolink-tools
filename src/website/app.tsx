@@ -12,6 +12,7 @@ import theme from 'src/theme';
 import ApiOverlay from './views/ApiOverlay';
 import AppContainer from './views/AppContainer';
 import Landing from './views/Landing';
+import OAuthCallback from './views/OAuthCallback';
 
 // Create main element
 const mainElement = document.createElement('div');
@@ -27,6 +28,7 @@ const Routes = () => (
         <Route exact path="/" component={Landing} />
         <Route exact path="/overlay/:overlayKey" component={ApiOverlay} />
         <Route path="/app/:appKey" component={AppContainer} />
+        <Route path="/oauth-callback" component={OAuthCallback} />
       </Switch>
     </Router>
   </ThemeProvider>
