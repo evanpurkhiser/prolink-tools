@@ -1,8 +1,9 @@
 import * as React from 'react';
-import {io, Socket} from 'socket.io-client';
+import {io} from 'socket.io-client';
 
 import {connectToAppStore} from 'src/shared/api/client';
 import {AppStore} from 'src/shared/store';
+import {ApiClientSocket, ApiExternalClientSocket} from 'src/shared/websockeTypes';
 import {apiBaseUrl} from 'src/utils/urls';
 
 /**
@@ -12,17 +13,17 @@ import {apiBaseUrl} from 'src/utils/urls';
  * This is useful if you need to make an RPC call to translate a different key
  * to an appKey.
  */
-type AppKeyResolver = (ws: Socket) => string | Promise<string>;
+type AppKeyResolver = (ws: ApiClientSocket) => string | Promise<string>;
 
 /**
  * Simply passes an app key through to use for connecting the store
  */
-export const simpleAppKeyResolver = (appKey: string) => (_ws: Socket) => appKey;
+export const simpleAppKeyResolver = (appKey: string) => (_ws: ApiClientSocket) => appKey;
 
 /**
  * Resolve the appKey from an overlayKey
  */
-export const overlayAppKeyResolver = (overlayKey: string) => (ws: Socket) =>
+export const overlayAppKeyResolver = (overlayKey: string) => (ws: ApiClientSocket) =>
   new Promise<string>(resolve => ws.emit('appKey:by-overlay-key', overlayKey, resolve));
 
 /**
@@ -30,10 +31,10 @@ export const overlayAppKeyResolver = (overlayKey: string) => (ws: Socket) =>
  */
 export function useWebsocketStore(resolver: AppKeyResolver) {
   const [store, setStore] = React.useState<AppStore | null>(null);
-  const [appWs, setAppWs] = React.useState<Socket | null>(null);
+  const [appWs, setAppWs] = React.useState<ApiExternalClientSocket | null>(null);
 
   const connectStore = async () => {
-    const ws = io(apiBaseUrl);
+    const ws: ApiClientSocket = io(apiBaseUrl);
     const appKey = await resolver(ws);
     ws.close();
 

@@ -1,8 +1,10 @@
-import Router from '@koa/router';
-import {runInAction} from 'mobx';
+import {action, reaction, runInAction} from 'mobx';
 import {AccessToken, AuthorizationCode} from 'simple-oauth2';
 
-import {InternalStore} from 'src/api/internalStore';
+import {internalStore} from 'src/api';
+import {AppKey, Connection} from 'src/api/internalStore';
+import {OAuthProvider} from 'src/shared/store/types';
+import {ApiExternalServerSocket} from 'src/shared/websockeTypes';
 
 const nightbotApi = 'https://api.nightbot.tv';
 
@@ -13,65 +15,66 @@ const scopes = [
   'commands',
 ];
 
-const redirectUrl = `${process.env.BASE_API_URL}/authorize/nightbot`;
-
 const params = {
-  redirect_uri: redirectUrl,
+  redirect_uri: `${process.env.BASE_WEB_URL}/oauth-callback`,
   scope: scopes.join(' '),
 };
 
-export function setupNightbot(apiStore: InternalStore, router: Router) {
-  const oauthClient = new AuthorizationCode({
-    client: {
-      id: process.env.NIGHTBOT_API_CLIENT_ID ?? '[disabled]',
-      secret: process.env.NIGHTBOT_API_SECRET ?? '[disabled]',
-    },
-    auth: {
-      tokenHost: nightbotApi,
-      tokenPath: 'oauth2/token',
-      authorizePath: 'oauth2/authorize',
-    },
-  });
+const oauthClient = new AuthorizationCode({
+  client: {
+    id: process.env.NIGHTBOT_API_CLIENT_ID ?? '[disabled]',
+    secret: process.env.NIGHTBOT_API_SECRET ?? '[disabled]',
+  },
+  auth: {
+    tokenHost: nightbotApi,
+    tokenPath: 'oauth2/token',
+    authorizePath: 'oauth2/authorize',
+  },
+});
 
-  router.get('/connect/nightbot/:appKey', (ctx, next) => {
-    const {appKey} = ctx.params;
-    const redirectUrl = oauthClient.authorizeURL({...params, state: appKey});
+export function nightbotLinkApp(appConn: Connection) {
+  const {store} = appConn;
 
-    if (ctx.accepts('json')) {
-      ctx.body = {redirectUrl};
-    } else {
-      ctx.redirect(redirectUrl);
+  reaction(
+    () =>
+      store.cloudApiState.oauthState !== null &&
+      store.cloudApiState.oauthState.provider === 'nightbot' &&
+      store.cloudApiState.oauthState.nonce,
+    action(() => {
+      const redirectUrl = oauthClient.authorizeURL({...params, state: appConn.appKey});
+      const oauthState = store.cloudApiState.oauthState!;
+      store.cloudApiState.oauthState = {...oauthState, redirectUrl};
+    })
+  );
+}
+
+export function nightbotLinkClients(appKey: AppKey, socket: ApiExternalServerSocket) {
+  socket.on(
+    'oauth/authorize',
+    async (provider: OAuthProvider, code: string, done: (err: string | null) => void) => {
+      const appConn = internalStore.appConnections.get(appKey);
+
+      if (appConn === undefined) {
+        // The client will already be aware that it's not connected to the app,
+        // so this is just a formality.
+        done('app not connected');
+        return;
+      }
+
+      const tokenParams = {...params, code};
+      let accessToken: AccessToken;
+
+      try {
+        accessToken = await oauthClient.getToken(tokenParams);
+      } catch (error) {
+        done(error);
+        return;
+      }
+
+      runInAction(
+        () => (appConn.store.config.cloudTools.nightbotAuth = accessToken.token)
+      );
+      done(null);
     }
-
-    next();
-  });
-
-  router.get('/authorize/nightbot', async (ctx, next) => {
-    const appKey = ctx.request.query.state;
-    const tokenParams = {...params, code: ctx.request.query.code};
-
-    let accessToken: AccessToken | null = null;
-
-    try {
-      accessToken = await oauthClient.getToken(tokenParams);
-    } catch (error) {
-      ctx.body = error.message;
-      ctx.status = 400;
-      return next();
-    }
-
-    const appConn = apiStore.appConnections.get(appKey);
-
-    if (appConn === undefined) {
-      ctx.body = 'Prolink Tools connection not present';
-      ctx.status = 400;
-      return next();
-    }
-
-    runInAction(
-      () => (appConn.store.config.cloudTools.nightbotAuth = accessToken!.token)
-    );
-
-    return next();
-  });
+  );
 }

@@ -1,10 +1,10 @@
 import {remove} from 'lodash';
 import {action, computed, IObservableArray, makeAutoObservable, observable} from 'mobx';
-import {Socket} from 'socket.io';
 
 import {createHash} from 'crypto';
 
 import {AppStore} from 'src/shared/store';
+import {ApiAppServerSocket, ApiExternalServerSocket} from 'src/shared/websockeTypes';
 
 /**
  * An AppKey represents a global way to identify connected prolink tools
@@ -12,27 +12,22 @@ import {AppStore} from 'src/shared/store';
  *
  * It is cryptographically derrived from the apiKey.
  */
-type AppKey = string;
+export type AppKey = string;
 
 export class Connection {
   /**
-   * The API key used to communicate with the app client.
+   * The API key used to communicate with the client app.
    */
   apiKey: string;
   /**
-   * The active websocket connection to the client
+   * The active websocket connection to the client app.
    */
-  socket: Socket;
+  socket: ApiAppServerSocket;
   /**
    * The observable store which will be synced to events recieved via the
    * socket
    */
   store: AppStore;
-  /**
-   * Clients subscribed to this store. Sockets in this list will be emitted
-   * store-update events
-   */
-  clients: Socket[] = [];
 
   /**
    * Get the appKey for this connection.
@@ -55,7 +50,7 @@ export class Connection {
       .slice(0, 20);
   }
 
-  constructor(apiKey: string, socket: Socket, store: AppStore) {
+  constructor(apiKey: string, socket: ApiAppServerSocket, store: AppStore) {
     this.apiKey = apiKey;
     this.socket = socket;
     this.store = store;
@@ -85,18 +80,18 @@ export class InternalStore {
    * app being connected.
    */
   @observable
-  appStoreClients = observable.map<AppKey, IObservableArray<Socket>>();
+  appStoreClients = observable.map<AppKey, IObservableArray<ApiExternalServerSocket>>();
 
   @action
-  addStoreClient(appKey: AppKey, client: Socket) {
+  addStoreClient(appKey: AppKey, client: ApiExternalServerSocket) {
     if (!this.appStoreClients.has(appKey)) {
-      this.appStoreClients.set(appKey, observable.array<Socket>());
+      this.appStoreClients.set(appKey, observable.array<ApiExternalServerSocket>());
     }
     this.appStoreClients.get(appKey)!.push(client);
   }
 
   @action
-  removeStoreClient(appKey: AppKey, client: Socket) {
+  removeStoreClient(appKey: AppKey, client: ApiExternalServerSocket) {
     const clients = this.appStoreClients.get(appKey) ?? [];
     remove(clients, client);
   }

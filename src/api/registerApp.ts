@@ -1,7 +1,6 @@
 import {Mutex} from 'async-mutex';
 import {observable, observe, runInAction, when} from 'mobx';
 import {serialize} from 'serializr';
-import {Socket} from 'socket.io';
 
 import {AppStore, createAppStore} from 'src/shared/store';
 import {
@@ -9,7 +8,9 @@ import {
   registerWebsocketListener,
 } from 'src/shared/store/client';
 import {observeStore} from 'src/shared/store/ipc';
+import {ApiAppServerSocket, ApiExternalServerSocket} from 'src/shared/websockeTypes';
 
+import {nightbotLinkApp} from './integrations/nightbot';
 import {Connection} from './internalStore';
 import {AppHandshake, ConnectionState} from './types';
 import {apiStore, internalStore} from '.';
@@ -19,7 +20,7 @@ import {apiStore, internalStore} from '.';
  */
 export const ingestSocketNamespace = /^\/ingest\/([^/]+)$/;
 
-function initClientStore(client: Socket, store: AppStore) {
+function initClientStore(client: ApiExternalServerSocket, store: AppStore) {
   // XXX: We MUST scrub the API key when serializing the store. It is a
   // private value that must not be publicly available.
   const serializedStore = serialize(store);
@@ -31,7 +32,7 @@ function initClientStore(client: Socket, store: AppStore) {
   // TODO: This should handle locking replies
 
   // Initialize the store on the client and subscribe it to receive updates
-  client.emit('store-init', serializedStore);
+  client.emit('store-init', serializedStore, () => void 0);
 }
 
 type HandshakeData = {
@@ -57,7 +58,7 @@ const HANDSHAKE_TIMEOUT = 5000;
  * completes app registration. This will resolve to false if we are not able to
  * complete the handshake with the app,
  */
-async function appHandshake(appSocket: Socket) {
+async function appHandshake(appSocket: ApiAppServerSocket) {
   const timeout = new Promise<null>(resolve =>
     setTimeout(() => resolve(null), HANDSHAKE_TIMEOUT)
   );
@@ -86,7 +87,7 @@ async function appHandshake(appSocket: Socket) {
 /**
  * Function called when a prolink tools app connects to the websocket API
  */
-export async function registerAppConnection(appSocket: Socket) {
+export async function registerAppConnection(appSocket: ApiAppServerSocket) {
   const apiKey = appSocket.nsp.name.match(ingestSocketNamespace)![1];
   const store = createAppStore();
   const conn = new Connection(apiKey, appSocket, store);
@@ -101,7 +102,7 @@ export async function registerAppConnection(appSocket: Socket) {
 
   // Ensure the appStoreClients has an observable client list
   if (!appStoreClients.has(conn.appKey)) {
-    appStoreClients.set(conn.appKey, observable.array<Socket>());
+    appStoreClients.set(conn.appKey, observable.array<ApiAppServerSocket>());
   }
 
   internalStore.addAppConnection(conn);
@@ -141,8 +142,11 @@ export async function registerAppConnection(appSocket: Socket) {
     // comes back.
     appStoreClients
       .get(conn.appKey)
-      ?.forEach(client => client.emit('store-update', change))
+      ?.forEach(client => client.emit('store-update', change, () => void 0))
   );
+
+  // Register integrations
+  nightbotLinkApp(conn);
 
   appSocket.on('latency-check', (ack: () => void) => ack());
 

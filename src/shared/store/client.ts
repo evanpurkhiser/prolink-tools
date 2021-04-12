@@ -2,8 +2,8 @@ import {Mutex} from 'async-mutex';
 import {ipcRenderer} from 'electron';
 import {action, set} from 'mobx';
 import {deserialize} from 'serializr';
-import {Socket as ServerSocket} from 'socket.io';
-import {Socket as ClientSocket} from 'socket.io-client';
+
+import {ApiAppServerSocket, AppOverlayClientSocket} from 'src/shared/websockeTypes';
 
 import {applyChanges, observeStore, SerializedChange} from './ipc';
 import {AppStore} from '.';
@@ -64,23 +64,23 @@ export const registerRendererConfigIpc = (store: AppStore, configLock: Mutex) =>
  */
 export const registerWebsocketListener = (
   store: AppStore,
-  ws: ClientSocket | ServerSocket,
+  ws: ApiAppServerSocket | AppOverlayClientSocket,
   configLock?: Mutex
 ) => {
-  // XXX: work around type error... See https://github.com/socketio/socket.io/issues/3872
-  const castWs = ws as ClientSocket;
-
-  castWs.on('store-update', (change: SerializedChange, done: () => void) => {
-    applyConfigLockedChange(store, change, configLock);
-    done?.();
-  });
-  castWs.on(
-    'store-init',
-    action((data: any, done: () => void) => {
-      set(store, deserialize(AppStore, data));
+  // XXX: work around type error...
+  // see: https://github.com/socketio/socket.io/issues/3872
+  (ws as ApiAppServerSocket)
+    .on('store-update', (change, done) => {
+      applyConfigLockedChange(store, change, configLock);
       done?.();
     })
-  );
+    .on(
+      'store-init',
+      action((data, done) => {
+        set(store, deserialize(AppStore, data));
+        done?.();
+      })
+    );
 };
 
 /**
@@ -92,7 +92,7 @@ export const registerWebsocketListener = (
  */
 export const registerWebsocketConfigListener = (
   store: AppStore,
-  ws: ServerSocket,
+  ws: ApiAppServerSocket,
   configLock: Mutex
 ) =>
   observeStore({

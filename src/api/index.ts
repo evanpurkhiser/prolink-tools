@@ -6,14 +6,14 @@ import Router from '@koa/router';
 import Koa from 'koa';
 import {when} from 'mobx';
 import {serialize} from 'serializr';
-import {Server as SocketServer, Socket} from 'socket.io';
+import {Server as SocketServer} from 'socket.io';
 
 import {createServer} from 'http';
 
 import {observeStore} from 'src/shared/store/ipc';
+import {ApiServer} from 'src/shared/websockeTypes';
 import {trackFormat} from 'src/utils/trackFormat';
 
-import {setupNightbot} from './integrations/nightbot';
 import {ApiStore, createApiStore} from './apiStore';
 import {createInternalStore} from './internalStore';
 import {ingestSocketNamespace, registerAppConnection} from './registerApp';
@@ -25,7 +25,7 @@ const server = createServer(app.callback());
 /**
  * The active websocket server
  */
-const wss = new SocketServer(server, {
+const wss: ApiServer = new SocketServer(server, {
   cors: {origin: '*', methods: ['GET', 'POST']},
 });
 
@@ -48,13 +48,13 @@ registerListener('global-api-store', change =>
   wss.sockets.emit('api-store-update', change)
 );
 
-wss.on('connection', (client: Socket) => {
+wss.on('connection', client => {
   client.emit('api-store-init', serialize(ApiStore, apiStore));
 
   /**
    * Respond to overlay key lookups, providng the appKey.
    */
-  client.on('appKey:by-overlay-key', (overlayKey: string, respond: any) => {
+  client.on('appKey:by-overlay-key', (overlayKey, respond) => {
     // If the app providing this overlay key isn't already connected we should
     // wait for it to show up.
     const disposeDeferredKeyLookup = when(
@@ -78,8 +78,6 @@ wss.of(clientAppStoreNamespace).on('connection', registerClientConnection);
 
 // TODO: Add API routes
 const router = new Router();
-
-setupNightbot(internalStore, router);
 
 /**
  * Get nowplaying text for a specific appKey

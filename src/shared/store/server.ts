@@ -4,15 +4,15 @@ import settings from 'electron-settings';
 import {runInAction, set} from 'mobx';
 import {deepObserve, IDisposer} from 'mobx-utils';
 import {deserialize, serialize} from 'serializr';
-import {Server} from 'socket.io';
+import {Server as WebsocketServer} from 'socket.io';
 import {io} from 'socket.io-client';
 
 import http from 'http';
 
 import {AppHandshake, ConnectionState} from 'src/api/types';
+import {LATEST_API_VERSION} from 'src/shared/constants';
+import {ApiAppClientSocket, AppOverlayServer} from 'src/shared/websockeTypes';
 import {apiBaseUrl} from 'src/utils/urls';
-
-import {LATEST_API_VERSION} from '../constants';
 
 import {applyChanges, RegisterHandler, SerializedChange} from './ipc';
 import {AppConfig, AppStore} from '.';
@@ -85,9 +85,10 @@ export const registerMainIpc = (store: AppStore, register: RegisterHandler) => {
 export const startMainApiWebsocket = (store: AppStore, register: RegisterHandler) => {
   const lock = new Mutex();
 
-  const conn = io(`${apiBaseUrl}/ingest/${store.config.cloudTools.apiKey}`, {
-    transports: ['websocket'],
-  });
+  const conn: ApiAppClientSocket = io(
+    `${apiBaseUrl}/ingest/${store.config.cloudTools.apiKey}`,
+    {transports: ['websocket']}
+  );
 
   let clearObserver: IDisposer | undefined;
 
@@ -102,7 +103,7 @@ export const startMainApiWebsocket = (store: AppStore, register: RegisterHandler
       conn.emit('handshake', {version: LATEST_API_VERSION}, resolve)
     );
 
-    store.cloudApiState.setFromHandshake(handshake);
+    store.cloudApiState.initFromHandshake(handshake);
 
     // Nothing we can do if we were rejected
     if (!store.cloudApiState.isReady) {
@@ -124,7 +125,7 @@ export const startMainApiWebsocket = (store: AppStore, register: RegisterHandler
           .catch(err => console.warn(err))
     );
 
-    conn.on('config-update', (change: SerializedChange) =>
+    conn.on('config-update', change =>
       configLock.runExclusive(() => applyChanges(store.config, change))
     );
   };
@@ -165,15 +166,15 @@ export const registerMainWebsocket = (
   httpServer: http.Server,
   register: RegisterHandler
 ) => {
-  const wss = new Server(httpServer, {serveClient: false});
+  const wss: AppOverlayServer = new WebsocketServer(httpServer, {serveClient: false});
 
   // Send the current state to all new comections
   wss.on('connection', client => {
-    client.emit('store-init', serialize(store));
+    client.emit('store-init', serialize(store), () => void 0);
   });
 
   // Send changes to the websocket
-  register('main-ws', change => wss.sockets.emit('store-update', change));
+  register('main-ws', change => wss.sockets.emit('store-update', change, () => void 0));
 
   return wss;
 };
