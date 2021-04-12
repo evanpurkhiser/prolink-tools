@@ -4429,7 +4429,8 @@ currently-unhandled@^0.4.1:
 
 cursor@^0.1.5:
   version "0.1.5"
-  resolved "https://github.com/EvanPurkhiser/node-cursor.git#adcf9fa334a6ceaf09c04720d72238fa0f486693"
+  resolved "https://registry.yarnpkg.com/cursor/-/cursor-0.1.5.tgz#ea778c2b09d33c2e564fd92147076750483ebb2c"
+  integrity sha1-6neMKwnTPC5WT9khRwdnUEg+uyw=
 
 cwebp-bin@^5.0.0:
   version "5.1.0"
