@@ -55,12 +55,15 @@ export const OAuthAuthorize = observer(({store, appSocket}: Props) => {
   React.useEffect(handleAuthorize, [oauthState, code]);
 
   if (oauthState === null) {
-    // TODO: Likely due to app being restarted
-    return null;
-  }
-
-  if (!isDone) {
-    return <Loading expand message="Authorizing" />;
+    return (
+      <Message>
+        <AlertTriangle />
+        <p>Whoops! There&apos;s no active account linking flow.</p>
+        <small>
+          Close this window and try restarting the linking flow from Prolink Tools
+        </small>
+      </Message>
+    );
   }
 
   if (error !== null) {
@@ -70,6 +73,10 @@ export const OAuthAuthorize = observer(({store, appSocket}: Props) => {
         <p>{error}</p>
       </Message>
     );
+  }
+
+  if (!isDone) {
+    return <Loading expand message="Authorizing" />;
   }
 
   return (
@@ -85,6 +92,7 @@ export const OAuthAuthorize = observer(({store, appSocket}: Props) => {
 
 const Message = styled('section')`
   display: flex;
+  max-width: 400px;
   flex-direction: column;
   align-self: center;
   justify-self: center;
