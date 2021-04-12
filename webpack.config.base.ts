@@ -11,7 +11,7 @@ export const IS_PROD = process.env.NODE_ENV === 'production';
 /**
  * Load dotenv for overrides to some environment variables
  */
-const dotenvConfig = dotenv.config().parsed!;
+const dotenvConfig = dotenv.config().parsed ?? {};
 
 const envConfig = {
   NODE_ENV: process.env.NODE_ENV ?? 'development',
