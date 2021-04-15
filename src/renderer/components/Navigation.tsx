@@ -97,7 +97,7 @@ const SidebarToggle = styled('div')`
   }
 `;
 
-const MenuItem = styled(motion.custom(NavLink))`
+const MenuItem = styled(motion(NavLink))`
   position: relative;
   padding: 0.375rem 0.75rem;
   display: flex;
