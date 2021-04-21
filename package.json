@@ -93,7 +93,7 @@
     "@octokit/types": "^6.13.0",
     "@popperjs/core": "^2.9.2",
     "@sentry/apm": "^5.16.1",
-    "@sentry/browser": "^6.2.5",
+    "@sentry/browser": "^6.3.0",
     "@sentry/electron": "^2.4.0",
     "@sentry/node": "^6.2.5",
     "@sentry/types": "^6.2.5",
