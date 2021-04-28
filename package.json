@@ -90,7 +90,7 @@
     "@emotion/styled": "^11.3.0",
     "@koa/router": "^10.0.0",
     "@octokit/request": "^5.4.15",
-    "@octokit/types": "^6.13.0",
+    "@octokit/types": "^6.14.0",
     "@popperjs/core": "^2.9.2",
     "@sentry/apm": "^5.16.1",
     "@sentry/browser": "^6.3.0",
