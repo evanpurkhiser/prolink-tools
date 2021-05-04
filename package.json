@@ -130,7 +130,7 @@
     "babel-loader": "^8.0.6",
     "connect": "^3.7.0",
     "cookie": "^0.4.1",
-    "core-js": "^3.10.2",
+    "core-js": "^3.11.2",
     "cross-env": "^7.0.2",
     "date-fns": "^2.21.1",
     "deep-diff": "^1.0.2",
