@@ -17,9 +17,10 @@ type Props = {
 export const OAuthConnect = observer(({store}: Props) => {
   const redirectUrl = store.cloudApiState.oauthState?.redirectUrl;
 
-  React.useEffect(() => void (redirectUrl && window.location.replace(redirectUrl)), [
-    redirectUrl,
-  ]);
+  React.useEffect(
+    () => void (redirectUrl && window.location.replace(redirectUrl)),
+    [redirectUrl]
+  );
 
   if (!store.isInitalized) {
     return <Loading expand message="Connecting to App" />;

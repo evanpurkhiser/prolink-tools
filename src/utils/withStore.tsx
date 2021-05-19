@@ -10,12 +10,13 @@ type InjectedProps = {
 /**
  * HoC that provides the current Application Store from context
  */
-const withStore = <P extends InjectedProps>(Component: React.ComponentType<P>) => (
-  props: Pick<P, Exclude<keyof P, keyof InjectedProps>>
-) => (
-  <StoreContext.Consumer>
-    {store => <Component {...(props as P)} store={store} />}
-  </StoreContext.Consumer>
-);
+const withStore =
+  <P extends InjectedProps>(Component: React.ComponentType<P>) =>
+  (props: Pick<P, Exclude<keyof P, keyof InjectedProps>>) =>
+    (
+      <StoreContext.Consumer>
+        {store => <Component {...(props as P)} store={store} />}
+      </StoreContext.Consumer>
+    );
 
 export default withStore;
