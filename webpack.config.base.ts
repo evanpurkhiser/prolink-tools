@@ -1,3 +1,4 @@
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import dotenv from 'dotenv';
 import TerserPlugin from 'terser-webpack-plugin';
 import webpack from 'webpack';
@@ -21,6 +22,10 @@ const envConfig = {
   BASE_WEB_URL: dotenvConfig.BASE_WEB_URL ?? null,
   BASE_API_URL: dotenvConfig.BASE_API_URL ?? null,
 };
+
+export const hotReloadPlugins = !IS_PROD
+  ? [new ReactRefreshWebpackPlugin(), new webpack.HotModuleReplacementPlugin()]
+  : [];
 
 export const baseConfig: webpack.Configuration = {
   mode: IS_PROD ? 'production' : 'development',
@@ -55,7 +60,6 @@ export const baseConfig: webpack.Configuration = {
       // FIXME: Not sure why webpack types are complaining here
       new TerserPlugin({terserOptions: {mangle: false}}) as any,
     ],
-    runtimeChunk: 'single',
   },
 
   plugins: [new webpack.EnvironmentPlugin(envConfig)],

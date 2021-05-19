@@ -51,6 +51,7 @@ jobs:
       - run: yarn electron-builder install-app-deps
       - run: yarn build-main
       - run: yarn build-renderer
+      - run: yarn build-overlay
       - run: yarn dist
 
       # Upload built executables

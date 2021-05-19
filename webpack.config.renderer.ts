@@ -1,4 +1,3 @@
-import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpack from 'webpack';
@@ -6,7 +5,7 @@ import merge from 'webpack-merge';
 
 import path from 'path';
 
-import {baseConfig} from './webpack.config.base';
+import {baseConfig, hotReloadPlugins} from './webpack.config.base';
 
 const rendererConfig: webpack.Configuration = merge(baseConfig, {
   target: 'electron-renderer',
@@ -23,7 +22,10 @@ const rendererConfig: webpack.Configuration = merge(baseConfig, {
     port: 2003,
     hot: true,
   },
-  optimization: {minimize: false},
+  optimization: {
+    minimize: false,
+    runtimeChunk: {name: 'runtime-renderer'},
+  },
   module: {
     rules: [
       {
@@ -45,10 +47,9 @@ const rendererConfig: webpack.Configuration = merge(baseConfig, {
     ],
   },
   plugins: [
+    ...hotReloadPlugins,
     new HtmlWebpackPlugin({title: 'Prolink Tools'}),
     new webpack.DefinePlugin({'process.type': '"renderer"'}),
-    new ReactRefreshWebpackPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
     new ForkTsCheckerWebpackPlugin({
       issue: {include: [{file: 'src/renderer/**/*'}, {file: 'src/shared/**/*'}]},
     }),

@@ -1,4 +1,3 @@
-import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpack from 'webpack';
@@ -6,7 +5,7 @@ import merge from 'webpack-merge';
 
 import path from 'path';
 
-import {baseConfig} from './webpack.config.base';
+import {baseConfig, hotReloadPlugins} from './webpack.config.base';
 
 const overlayConfig: webpack.Configuration = merge(baseConfig, {
   entry: {
@@ -29,7 +28,10 @@ const overlayConfig: webpack.Configuration = merge(baseConfig, {
       tls: 'empty',
     },
   },
-  optimization: {minimize: false},
+  optimization: {
+    minimize: false,
+    runtimeChunk: {name: 'runtime-overlay'},
+  },
   module: {
     rules: [
       {
@@ -43,9 +45,8 @@ const overlayConfig: webpack.Configuration = merge(baseConfig, {
     ],
   },
   plugins: [
+    ...hotReloadPlugins,
     new HtmlWebpackPlugin({title: 'Prolink Tools Overlay'}),
-    new ReactRefreshWebpackPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
     new ForkTsCheckerWebpackPlugin({
       issue: {include: [{file: 'src/overlay/**/*'}, {file: 'src/shared/**/*'}]},
     }),
