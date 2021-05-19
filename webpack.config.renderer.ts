@@ -5,7 +5,7 @@ import merge from 'webpack-merge';
 
 import path from 'path';
 
-import {baseConfig, hotReloadPlugins} from './webpack.config.base';
+import {baseConfig, hotReloadPlugins, IS_PROD} from './webpack.config.base';
 
 const rendererConfig: webpack.Configuration = merge(baseConfig, {
   target: 'electron-renderer',
@@ -21,7 +21,10 @@ const rendererConfig: webpack.Configuration = merge(baseConfig, {
   },
   optimization: {
     minimize: false,
-    runtimeChunk: {name: 'runtime-renderer'},
+
+    // Use runtime chunk in development to fix HMR. Do not use in production
+    // because runtime chunks break sentry. Probably worth fixing this.
+    runtimeChunk: !IS_PROD ? {name: 'runtime-renderer'} : false,
   },
   module: {
     rules: [
