@@ -22,12 +22,8 @@ const envConfig = {
   BASE_API_URL: dotenvConfig.BASE_API_URL ?? null,
 };
 
-export const withWebpackPluginServe = (appList: string[]) =>
-  [...appList, IS_PROD ? '' : 'webpack-plugin-serve/client'].filter(s => s !== '');
-
 export const baseConfig: webpack.Configuration = {
   mode: IS_PROD ? 'production' : 'development',
-  watch: process.env.NODE_ENV !== 'production',
 
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -59,6 +55,7 @@ export const baseConfig: webpack.Configuration = {
       // FIXME: Not sure why webpack types are complaining here
       new TerserPlugin({terserOptions: {mangle: false}}) as any,
     ],
+    runtimeChunk: 'single',
   },
 
   plugins: [new webpack.EnvironmentPlugin(envConfig)],
@@ -80,6 +77,7 @@ export const baseConfig: webpack.Configuration = {
           plugins: [
             ['@babel/plugin-proposal-decorators', {legacy: true}],
             ['@babel/plugin-proposal-class-properties', {loose: true}],
+            ['@babel/plugin-proposal-private-methods', {loose: true}],
             ['@babel/plugin-proposal-optional-chaining'],
             ['@babel/plugin-proposal-nullish-coalescing-operator'],
             !IS_PROD && require.resolve('react-refresh/babel'),

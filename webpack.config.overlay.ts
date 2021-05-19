@@ -8,51 +8,48 @@ import path from 'path';
 
 import {baseConfig} from './webpack.config.base';
 
-const rendererConfig: webpack.Configuration = merge(baseConfig, {
-  target: 'electron-renderer',
+const overlayConfig: webpack.Configuration = merge(baseConfig, {
   entry: {
-    app: './src/renderer/app.tsx',
-    sentry: './src/shared/sentry/renderer.ts',
+    overlay: './src/overlay/app.tsx',
   },
   output: {
-    publicPath: '/',
+    path: path.resolve(__dirname, 'dist/overlay'),
   },
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
+    contentBase: path.join(__dirname, 'dist/overlay'),
     historyApiFallback: true,
-    port: 2003,
+    port: 2005,
     hot: true,
+  },
+  resolve: {
+    fallback: {
+      fs: 'empty',
+      dgram: 'empty',
+      net: 'empty',
+      tls: 'empty',
+    },
   },
   optimization: {minimize: false},
   module: {
     rules: [
       {
-        test: /\.(gif|png|jpe?g|svg)$/,
-        use: [
-          'file-loader',
-          {
-            loader: 'image-webpack-loader',
-            options: {
-              disable: true,
-            },
-          },
-        ],
-      },
-      {
         test: /\.ttf$/,
         use: [{loader: 'file-loader'}],
+      },
+      {
+        test: /electron/,
+        use: 'null-loader',
       },
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin({title: 'Prolink Tools'}),
-    new webpack.DefinePlugin({'process.type': '"renderer"'}),
+    new HtmlWebpackPlugin({title: 'Prolink Tools Overlay'}),
     new ReactRefreshWebpackPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new ForkTsCheckerWebpackPlugin({
-      issue: {include: [{file: 'src/renderer/**/*'}, {file: 'src/shared/**/*'}]},
+      issue: {include: [{file: 'src/overlay/**/*'}, {file: 'src/shared/**/*'}]},
     }),
   ],
 });
 
-export default rendererConfig;
+export default overlayConfig;

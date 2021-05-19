@@ -3,19 +3,24 @@ import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpack from 'webpack';
 import merge from 'webpack-merge';
-import {WebpackPluginServe} from 'webpack-plugin-serve';
 
 import path from 'path';
 
-import {baseConfig, withWebpackPluginServe} from './webpack.config.base';
+import {baseConfig} from './webpack.config.base';
 
 const websiteConfig: webpack.Configuration = merge(baseConfig, {
   entry: {
-    app: withWebpackPluginServe(['./src/website/app.tsx']),
+    app: './src/website/app.tsx',
   },
   output: {
     path: path.resolve(__dirname, 'dist/website'),
     publicPath: '/',
+  },
+  devServer: {
+    contentBase: path.join(__dirname, 'dist/website'),
+    historyApiFallback: true,
+    port: 2004,
+    hot: true,
   },
   module: {
     rules: [
@@ -44,15 +49,9 @@ const websiteConfig: webpack.Configuration = merge(baseConfig, {
   plugins: [
     new HtmlWebpackPlugin({title: 'prolink tools', favicon: 'build/icon.png'}),
     new ReactRefreshWebpackPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
     new ForkTsCheckerWebpackPlugin({
       issue: {include: [{file: 'src/website/**/*'}, {file: 'src/shared/**/*'}]},
-    }),
-    new WebpackPluginServe({
-      port: 2004,
-      static: path.join(__dirname, 'dist/website'),
-      historyFallback: {
-        verbose: true,
-      },
     }),
   ],
 });
