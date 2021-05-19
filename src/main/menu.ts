@@ -1,8 +1,9 @@
 import {app, Menu, shell} from 'electron';
-import isDev from 'electron-is-dev';
 
 import {AppStore} from 'src/shared/store';
 import playingTracksRoutine from 'src/website/demo/playingTracks';
+
+import {isDev} from './main';
 
 export function setupMenu(store: AppStore) {
   const isMac = process.platform === 'darwin';

@@ -1,5 +1,4 @@
 import connect from 'connect';
-import isDev from 'electron-is-dev';
 import httpProxy from 'http-proxy';
 import httpStatic from 'node-static';
 
@@ -8,6 +7,8 @@ import http from 'http';
 import * as path from 'path';
 
 import {WEBSERVER_PORT} from 'src/shared/constants';
+
+import {isDev} from './main';
 
 const OVERLAY_ROOT = path.resolve(__dirname, 'overlay');
 
@@ -19,10 +20,7 @@ export async function startOverlayServer() {
   const fileServer = new httpStatic.Server(OVERLAY_ROOT);
 
   const handler: http.RequestListener = isDev
-    ? (req, resp) => {
-        const path = req.url?.startsWith('/sockjs-node') ? '' : 'overlay/';
-        proxy.web(req, resp, {target: `http://127.0.0.1:2003/${path}/`, ws: true});
-      }
+    ? (req, resp) => proxy.web(req, resp, {target: `http://127.0.0.1:2005/`, ws: true})
     : async (req, resp) => {
         const requestUrl = req.url?.replace(/^\//, '');
 

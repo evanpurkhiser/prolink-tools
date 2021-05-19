@@ -13,6 +13,7 @@ const overlayConfig: webpack.Configuration = merge(baseConfig, {
   },
   output: {
     path: path.resolve(__dirname, 'dist/overlay'),
+    publicPath: '/',
   },
   devServer: {
     contentBase: path.join(__dirname, 'dist/overlay'),

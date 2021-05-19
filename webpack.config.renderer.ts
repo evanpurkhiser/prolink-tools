@@ -13,9 +13,6 @@ const rendererConfig: webpack.Configuration = merge(baseConfig, {
     app: './src/renderer/app.tsx',
     sentry: './src/shared/sentry/renderer.ts',
   },
-  output: {
-    publicPath: '/',
-  },
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     historyApiFallback: true,

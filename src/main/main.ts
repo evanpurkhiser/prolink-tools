@@ -1,7 +1,6 @@
 import 'regenerator-runtime/runtime';
 
 import {app, BrowserWindow, nativeTheme, shell} from 'electron';
-import isDev from 'electron-is-dev';
 import {reaction, runInAction, set, when} from 'mobx';
 import {bringOnline, NetworkState, ProlinkNetwork} from 'prolink-connect';
 
@@ -25,6 +24,8 @@ import {
   startMainApiWebsocket,
 } from 'src/shared/store/server';
 import theme from 'src/theme';
+
+export const isDev = process.env.NODE_ENV !== 'production';
 
 const mainStore = createAppStore();
 
