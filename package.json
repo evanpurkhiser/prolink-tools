@@ -98,7 +98,7 @@
     "@sentry/browser": "^6.4.0",
     "@sentry/electron": "^2.4.1",
     "@sentry/node": "^6.4.0",
-    "@sentry/types": "^6.4.0",
+    "@sentry/types": "^6.4.1",
     "@types/connect": "^3.4.33",
     "@types/cookie": "^0.4.0",
     "@types/deep-diff": "^1.0.0",
