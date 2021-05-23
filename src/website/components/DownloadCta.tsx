@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import {format, parseISO} from 'date-fns';
 import {motion} from 'framer-motion';
 
-import {AppleLogo, LinuxLogo, WindowsLogo} from 'src/shared/components/Icons';
+import {AppleLogo, LinuxLogo, WindowsLogo} from 'src/shared/components/OsIcons';
 import useRelease from 'src/utils/useLatestRelease';
 
 type Platform = NonNullable<ReturnType<typeof getPlatform>>;
@@ -24,10 +24,10 @@ const getPlatform = () => {
   return null;
 };
 
-const PLATFORM: Record<Platform, {icon: React.ReactNode; label: string}> = {
-  mac: {icon: <AppleLogo />, label: 'macOS'},
-  win: {icon: <WindowsLogo />, label: 'windows'},
-  linux: {icon: <LinuxLogo />, label: 'linux'},
+const PLATFORM: Record<Platform, {Icon: typeof AppleLogo; label: string}> = {
+  mac: {Icon: AppleLogo, label: 'macOS'},
+  win: {Icon: WindowsLogo, label: 'windows'},
+  linux: {Icon: LinuxLogo, label: 'linux'},
 };
 
 const DownloadCta = (props: React.ComponentProps<typeof motion.div>) => {
@@ -48,12 +48,27 @@ const DownloadCta = (props: React.ComponentProps<typeof motion.div>) => {
     }
   };
 
-  const {icon, label} = PLATFORM[platform];
+  const {Icon, label} = PLATFORM[platform];
+
+  const otherPlatforms = (Object.keys(PLATFORM) as Platform[])
+    .filter(p => p !== platform)
+    .map(p => ({
+      url: release?.assets?.find(asset => asset.name.includes(p))?.browser_download_url,
+      ...PLATFORM[p],
+    }))
+    .map(({Icon, label, url}) =>
+      url ? (
+        <OtherPlatform href={url}>
+          <Icon size={16} />
+          {label}
+        </OtherPlatform>
+      ) : null
+    );
 
   return (
     <motion.div {...props}>
       <DownloadButton onClick={handleDownload}>
-        {icon}
+        <Icon />
         download for {label}
       </DownloadButton>
 
@@ -67,6 +82,9 @@ const DownloadCta = (props: React.ComponentProps<typeof motion.div>) => {
             : format(parseISO(release.published_at), 'MMMM do yyyy')}
         </small>
       </VersionTag>
+      <AlsoOn>
+        Also for <OtherList>{otherPlatforms}</OtherList>
+      </AlsoOn>
     </motion.div>
   );
 };
@@ -104,6 +122,31 @@ const VersionTag = styled('div')`
     line-height: 2;
     color: #939393;
   }
+`;
+
+const AlsoOn = styled('div')`
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  line-height: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+const OtherList = styled('div')`
+  display: inline-flex;
+  gap: 0.5rem;
+`;
+
+const OtherPlatform = styled('a')`
+  display: inline-flex;
+  gap: 0.25rem;
+  align-items: center;
+  background: #f6f6f6;
+  padding: 0 4px;
+  border-radius: 2px;
+  color: #939393;
+  text-decoration: none;
 `;
 
 export default DownloadCta;
