@@ -28,6 +28,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Cloud Mode should now be more stable and will not intermittently lose
   connection.
 
+- Player ID 7 is now used for the 'Virtual CDJ' that Prolink Tools acts as on
+  the network, no longer taking up slot 5. You can now use Player ID 5 with
+  your CDJ-3000s without a problem!
+
 - The <em>A State of Overlays</em> theme no longer has the italics bracket
   partially cutoff to the left.
 
