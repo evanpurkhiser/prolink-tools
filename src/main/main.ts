@@ -2,6 +2,7 @@ import 'regenerator-runtime/runtime';
 
 import {app, BrowserWindow, nativeTheme, shell} from 'electron';
 import {reaction, runInAction, set, when} from 'mobx';
+import fetch from 'node-fetch';
 import {bringOnline, NetworkState, ProlinkNetwork} from 'prolink-connect';
 
 import * as path from 'path';
@@ -24,6 +25,10 @@ import {
   startMainApiWebsocket,
 } from 'src/shared/store/server';
 import theme from 'src/theme';
+
+if (!globalThis.fetch) {
+  globalThis.fetch = fetch as any;
+}
 
 export const isDev = process.env.NODE_ENV !== 'production';
 
