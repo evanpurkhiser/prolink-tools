@@ -238,14 +238,15 @@ const connectMixstatus = (store: AppStore, network: ConnectedProlinkNetwork) => 
   network.mixstatus.on('nowPlaying', async state => {
     const playedAt = new Date();
 
-    const latestHistory =
-      store.mixstatus.trackHistory[store.mixstatus.trackHistory.length - 1];
+    const {tracks} = store.mixstatus.liveSet;
+
+    const latestTrack = tracks[tracks.length - 1];
 
     // TODO: The comparisons of track id are not sufficient here, since it's
     // possible for two USBs to have a track collision.
 
     // No need to report duplicate plays on tracks
-    if (state.trackId === latestHistory?.track.id) {
+    if (state.trackId === latestTrack?.track.id) {
       return;
     }
 
@@ -269,7 +270,7 @@ const connectMixstatus = (store: AppStore, network: ConnectedProlinkNetwork) => 
   /**
    * Clear active track history at the end of a set
    */
-  network.mixstatus.on('setEnded', () => store.mixstatus.trackHistory.clear());
+  network.mixstatus.on('setEnded', () => store.mixstatus.recordSetEnd());
 
   /**
    * Update mixstatus service when reconfigured

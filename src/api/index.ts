@@ -91,14 +91,14 @@ router.get('/now-playing/:appKey', (ctx, next) => {
     return next();
   }
 
-  const {trackHistory} = store.mixstatus;
+  const {tracks} = store.mixstatus.liveSet;
 
-  if (trackHistory.length === 0) {
+  if (tracks.length === 0) {
     ctx.body = 'Nothing is playing!';
     return next();
   }
 
-  const {track} = trackHistory[trackHistory.length - 1];
+  const {track} = tracks[tracks.length - 1];
 
   ctx.body = trackFormat('{artist} - {title}', track);
   return next();

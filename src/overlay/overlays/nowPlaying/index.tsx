@@ -103,8 +103,8 @@ type ExampleProps = {
 };
 
 const Example: React.FC<ExampleProps> = observer(({store, config, hideControls}) => {
-  const liveHistory = store.mixstatus.trackHistory;
-  const isLive = liveHistory.length > 0;
+  const {liveSet} = store.mixstatus;
+  const isLive = liveSet.tracks.length > 0;
 
   const demoHistory = useRandomHistory({
     enabled: !isLive,
@@ -112,7 +112,7 @@ const Example: React.FC<ExampleProps> = observer(({store, config, hideControls})
     updateInterval: 5000,
   });
 
-  const history = isLive ? liveHistory : demoHistory;
+  const history = isLive ? liveSet.tracks : demoHistory;
 
   const theme = config?.theme ?? 'tracklist';
   const Overlay = themes[theme].component;
@@ -165,7 +165,7 @@ type OverlayProps = {
 
 const NowPlayingOverlay: React.FC<OverlayProps> = observer(({store, config}) => {
   const Overlay = themes[config.theme].component;
-  const history = store.mixstatus.trackHistory.slice().reverse();
+  const history = store.mixstatus.liveSet.tracks.slice().reverse();
 
   return config.demoMode ? (
     <Example store={store} config={config} hideControls />
