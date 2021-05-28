@@ -5,7 +5,7 @@
   "author": "Evan Purkhiser <evanpurkhiser@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start-dev:main": "webpack --config=webpack.config.main.ts",
+    "start-dev:main": "webpack --watch --config=webpack.config.main.ts",
     "start-dev:renderer": "webpack serve --config=webpack.config.renderer.ts",
     "start-dev:overlay": "webpack serve --config=webpack.config.overlay.ts",
     "start-dev:website": "webpack serve --config=webpack.config.website.ts",
