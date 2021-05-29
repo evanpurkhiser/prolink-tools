@@ -12,7 +12,7 @@ import {createServer} from 'http';
 
 import {observeStore} from 'src/shared/store/ipc';
 import {ApiServer} from 'src/shared/websockeTypes';
-import {trackFormat} from 'src/utils/trackFormat';
+import trackFormat from 'src/utils/trackFormat';
 
 import {ApiStore, createApiStore} from './apiStore';
 import {createInternalStore} from './internalStore';
@@ -100,7 +100,7 @@ router.get('/now-playing/:appKey', (ctx, next) => {
 
   const {track} = tracks[tracks.length - 1];
 
-  ctx.body = trackFormat('{artist} - {title}', track);
+  ctx.body = trackFormat(track, '{artist} - {title}');
   return next();
 });
 
