@@ -33,6 +33,29 @@ export class IndividualSet {
    */
   tracks: PlayedTrack[];
 
+  /**
+   * Is this set happening right now?
+   */
+  isActive = false;
+
+  /**
+   * Returns a unique ID for the set. It is the timestamp of the first played
+   * track, but is not gaurenteed to always be in the future.
+   */
+  get id() {
+    const firstTrack = this.tracks[0];
+
+    if (firstTrack === undefined) {
+      return 'empty-set';
+    }
+
+    return firstTrack.playedAt.getTime();
+  }
+
+  get lastPlayed(): PlayedTrack | undefined {
+    return this.tracks[this.tracks.length - 1];
+  }
+
   constructor(history: PlayedTrack[]) {
     this.tracks = history;
   }
@@ -69,7 +92,7 @@ export class MixstatusStore {
    */
   @computed
   get setHistory() {
-    return [0, ...this.setEndIndexes]
+    const sets = [0, ...this.setEndIndexes]
       .reduce<PlayedTrack[][]>(
         (acc, start, end) => [
           ...acc,
@@ -78,6 +101,11 @@ export class MixstatusStore {
         []
       )
       .map(history => new IndividualSet(history));
+
+    // Mark the last set as being the current live set
+    sets[sets.length - 1].isActive = true;
+
+    return sets;
   }
 
   /**
