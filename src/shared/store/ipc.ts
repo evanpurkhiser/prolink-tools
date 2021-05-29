@@ -21,6 +21,7 @@ import {
   HydrationInfo,
   MixstatusStore,
   PlayedTrack,
+  SaveHistoryConfig,
 } from '.';
 
 type ValueChange = Omit<
@@ -55,6 +56,7 @@ export type SerializedChange = {
 const serializableClasses = [
   AppStore,
   CloudApiState,
+  SaveHistoryConfig,
   CloudToolsConfig,
   DeviceStore,
   HydrationInfo,

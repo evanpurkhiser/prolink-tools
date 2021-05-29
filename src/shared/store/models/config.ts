@@ -7,6 +7,7 @@ import {OverlayInstance} from 'src/overlay';
 import {rawJsSerialize} from 'src/shared/store/utils';
 
 import {CloudToolsConfig} from './configCloudTools';
+import {SaveHistoryConfig} from './saveHistoryConfig';
 
 export class AppConfig {
   @serializable(list(rawJsSerialize))
@@ -18,6 +19,12 @@ export class AppConfig {
   @serializable(object(CloudToolsConfig))
   @observable
   cloudTools = new CloudToolsConfig();
+  /**
+   * Configuration for the Cloud tools API service
+   */
+  @serializable(object(SaveHistoryConfig))
+  @observable
+  saveHistory = new SaveHistoryConfig();
   /**
    * Should debug events be enabled to be stored and uploaded?
    */

@@ -11,6 +11,7 @@ import {AppConfig} from './models/config';
 import {CloudToolsConfig} from './models/configCloudTools';
 import {DeviceStore, HydrationInfo} from './models/devices';
 import {MixstatusStore, PlayedTrack} from './models/mixStatus';
+import {SaveHistoryConfig} from './models/saveHistoryConfig';
 
 export {
   AppConfig,
@@ -20,6 +21,7 @@ export {
   HydrationInfo,
   MixstatusStore,
   PlayedTrack,
+  SaveHistoryConfig,
 };
 
 export class AppStore {

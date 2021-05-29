@@ -134,6 +134,7 @@
     "cookie": "^0.4.1",
     "core-js": "^3.15.2",
     "cross-env": "^7.0.2",
+    "csv-writer": "^1.6.0",
     "date-fns": "^2.21.3",
     "deep-diff": "^1.0.2",
     "dotenv": "^10.0.0",

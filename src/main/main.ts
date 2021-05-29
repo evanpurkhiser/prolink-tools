@@ -12,6 +12,7 @@ import {runConfigMigrations} from 'main/configMigrations';
 import {registerDebuggingEventsService} from 'main/debugEvents';
 import {setupMenu} from 'main/menu';
 import {startOverlayServer} from 'main/overlayServer';
+import {setupSaveHistory} from 'main/saveHistory';
 import {userInfo} from 'src/shared/sentry/main';
 import {AppStore, createAppStore} from 'src/shared/store';
 import {observeStore} from 'src/shared/store/ipc';
@@ -178,6 +179,7 @@ app.on('ready', async () => {
 
   connectNetworkStore(mainStore, network);
   registerDebuggingEventsService(mainStore, network);
+  setupSaveHistory(mainStore);
 });
 
 app.on('window-all-closed', () => {
