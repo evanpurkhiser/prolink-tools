@@ -123,7 +123,7 @@
     "@types/semver": "^7.3.6",
     "@types/sha.js": "^2.4.0",
     "@types/simple-oauth2": "^4.1.0",
-    "@types/terser-webpack-plugin": "^5.0.3",
+    "@types/terser-webpack-plugin": "^5.0.4",
     "@types/unist": "^2.0.6",
     "@types/webdriverio": "^5.0.0",
     "@types/webpack-env": "^1.16.2",
