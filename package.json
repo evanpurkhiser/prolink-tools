@@ -126,7 +126,7 @@
     "@types/terser-webpack-plugin": "^5.0.3",
     "@types/unist": "^2.0.6",
     "@types/webdriverio": "^5.0.0",
-    "@types/webpack-env": "^1.13.3",
+    "@types/webpack-env": "^1.16.2",
     "@types/webpack-merge": "^5.0.0",
     "async-mutex": "^0.3.1",
     "babel-loader": "^8.0.6",
