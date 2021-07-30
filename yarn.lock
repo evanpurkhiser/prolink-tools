@@ -12852,10 +12852,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript-styled-plugin@^0.17.0:
-  version "0.17.0"
-  resolved "https://registry.yarnpkg.com/typescript-styled-plugin/-/typescript-styled-plugin-0.17.0.tgz#00f10d7291b2a359c0c7c054cc89ae41e6f4f4d5"
-  integrity sha512-w0wu8cjQcYDVLwQXDLhXhw6HWsZ6ALaR5nXKyvK0EGQ6ZpkUE2pp0q9/y3CEPiXnB+aCee3qQX59IPrGEG42cQ==
+typescript-styled-plugin@^0.18.0:
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/typescript-styled-plugin/-/typescript-styled-plugin-0.18.0.tgz#4e20e99bd7938f693ee37ad20682cc2401d06898"
+  integrity sha512-GopdOs3twyZkuLMU2ActiZQAtCgyibmwmQczULoe47qJ2URIaHSWxtUIDwuv6QhKPLBIrV6jSo/qp+184hlwLg==
   dependencies:
     typescript-template-language-service-decorator "^2.2.0"
     vscode-css-languageservice "^5.1.1"
