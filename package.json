@@ -153,7 +153,7 @@
     "mobx-react": "^7.2.0",
     "mobx-utils": "^6.0.4",
     "module-alias": "^2.2.2",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^3.2.1",
     "node-gzip": "^1.1.2",
     "node-static": "^0.7.11",
     "oauth": "^0.9.15",
