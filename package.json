@@ -183,7 +183,7 @@
     "source-map-loader": "^3.0.0",
     "terser-webpack-plugin": "^5.1.2",
     "ts-node": "^10.1.0",
-    "tsconfig-paths": "^3.9.0",
+    "tsconfig-paths": "^3.13.0",
     "typescript": "^4.2.4",
     "unified": "^9.2.1",
     "uuid": "^8.3.2",
