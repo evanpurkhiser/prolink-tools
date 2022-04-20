@@ -125,7 +125,7 @@ const Settings = observer(({store}: Props) => {
         <Field
           top
           size="sm"
-          name="Wait for for track to end"
+          name="Wait for track to end"
           description={
             <React.Fragment>
               The upcoming track will not be reported until the previous track has been
