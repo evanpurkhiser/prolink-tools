@@ -9,17 +9,17 @@ compatible with.
 
 ### Features
 
-- **Device status panel**
+- **Device status panel**  
   The device status panel provides a at-a-glance overview of the payers and
   devices on the Pro DJ Link network.
 
-- **Livestream overlays**
+- **Livestream overlays**  
   Easily configure and use overlays to display information directly from your
   CDJs in livestreams using tools like the
   [OBS](<[https://obsproject.com/](https://obsproject.com/)>)'s [browser
   source](<[https://obsproject.com/forum/resources/browser-plugin.115/](https://obsproject.com/forum/resources/browser-plugin.115/)>).
 
-- **Full metadata capabilities**
+- **Full metadata capabilities**  
   The software is able to read track metadata when tracks are played through
   Rekordbox or loaded from a USB drive / SD card plugged into the CDJs.
 
