@@ -1,6 +1,6 @@
 ![logo](https://user-images.githubusercontent.com/1421724/87513748-0a30ff80-c62e-11ea-9a15-52f46b013087.png)
 
-[![Build Status](https://github.com/evanpurkhiser/prolink-tools/workflows/build/badge.svg)](https://github.com/EvanPurkhiser/prolink-tools/actions?query=workflow%3Abuild) [![Discord Chat](https://img.shields.io/discord/767974316587352074?color=%237289DA&label=discord&logo=discord)](http://discord.gg/3eyzdgXJuY)
+[![Build Status](https://github.com/evanpurkhiser/prolink-tools/workflows/build/badge.svg)](https://github.com/evanpurkhiser/prolink-tools/actions?query=workflow%3Abuild) [![Discord Chat](https://img.shields.io/discord/767974316587352074?color=%237289DA&label=discord&logo=discord)](http://discord.gg/3eyzdgXJuY)
 
 Prolink Tools is a collection of tools that can be used to interact with the
 Pioneer Pro DJ Link functionality that many of Pioneer's DJ equipment is
@@ -41,7 +41,7 @@ This project is currently still in the **beta phase** of testing. Testers are
 welcome and it is encouraged to create issues on the GitHub project issue
 tracker.
 
-[Development builds](https://github.com/EvanPurkhiser/prolink-tools/releases/tag/main-build) are available.
+[Development builds](https://github.com/evanpurkhiser/prolink-tools/releases/tag/main-build) are available.
 
 #### Disclaimer
 

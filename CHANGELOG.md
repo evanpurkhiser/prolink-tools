@@ -72,7 +72,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   webhooks, developer APIs, chat-bots, and more.
 
   This feature is currently disabled by default. You will need to enable it in
-  your settings to 
+  your settings to
 
   Currently the only feature this enables is allowing you to access your
   overlay URLs from any computer without needing to munge the IP address.
@@ -105,9 +105,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - This is the start of the changelog. All previous changelogs are available to
   view from the [GitHub
-  releases](https://github.com/EvanPurkhiser/prolink-tools/releases) for the
+  releases](https://github.com/evanpurkhiser/prolink-tools/releases) for the
   project.
 
-[Unreleased]: https://github.com/evanpurkhiser/prolink-tools/compare/v0.1.0-beta.5...HEAD
+[unreleased]: https://github.com/evanpurkhiser/prolink-tools/compare/v0.1.0-beta.5...HEAD
 [v0.1.0-beta.5]: https://github.com/evanpurkhiser/prolink-tools/compare/v0.1.0-beta.3...v0.1.0-beta.5
 [v0.1.0-beta.3]: https://github.com/evanpurkhiser/prolink-tools/compare/v0.1.0-beta.2...v0.1.0-beta.3
