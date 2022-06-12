@@ -20,6 +20,6 @@ const releaseChannel = isTagged
   ? prerelease(releaseId) !== null
     ? 'stable'
     : 'prerelease'
-  : 'master';
+  : 'main';
 
 export {releaseId, releaseChannel, commit};

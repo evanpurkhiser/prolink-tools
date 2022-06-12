@@ -214,7 +214,7 @@ const useReleaseModal = ({latestRelease}: InitOptions) =>
 
       const fetchChangelog = async () => {
         const resp = await fetch(
-          `https://raw.githubusercontent.com/${GITHUB_REPO.owner}/${GITHUB_REPO.repo}/master/CHANGELOG.md`
+          `https://raw.githubusercontent.com/${GITHUB_REPO.owner}/${GITHUB_REPO.repo}/main/CHANGELOG.md`
         );
         const text = await resp.text();
         setChangelog(text);

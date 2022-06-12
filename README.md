@@ -7,20 +7,19 @@ Pioneer Pro DJ Link functionality that many of Pioneer's DJ equipment is
 compatible with.
 [Read the User Manual](https://prolink.tools/manual) to get started
 
-
 ### Features
 
-* **Device status panel**  
+- **Device status panel**
   The device status panel provides a at-a-glance overview of the payers and
   devices on the Pro DJ Link network.
 
-* **Livestream overlays**  
+- **Livestream overlays**
   Easily configure and use overlays to display information directly from your
   CDJs in livestreams using tools like the
-  [OBS]([https://obsproject.com/](https://obsproject.com/))'s [browser
-  source]([https://obsproject.com/forum/resources/browser-plugin.115/](https://obsproject.com/forum/resources/browser-plugin.115/)).
+  [OBS](<[https://obsproject.com/](https://obsproject.com/)>)'s [browser
+  source](<[https://obsproject.com/forum/resources/browser-plugin.115/](https://obsproject.com/forum/resources/browser-plugin.115/)>).
 
-* **Full metadata capabilities**  
+- **Full metadata capabilities**
   The software is able to read track metadata when tracks are played through
   Rekordbox or loaded from a USB drive / SD card plugged into the CDJs.
 
@@ -42,8 +41,7 @@ This project is currently still in the **beta phase** of testing. Testers are
 welcome and it is encouraged to create issues on the GitHub project issue
 tracker.
 
-[Development builds](https://github.com/EvanPurkhiser/prolink-tools/releases/tag/master-build) are available.
-
+[Development builds](https://github.com/EvanPurkhiser/prolink-tools/releases/tag/main-build) are available.
 
 #### Disclaimer
 
