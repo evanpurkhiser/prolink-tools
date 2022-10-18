@@ -13,6 +13,7 @@
     "start-dev": "run-p start-dev:*",
     "start": "electron dist/main.js",
     "start-api": "ts-node -r dotenv/config ./src/api/index.ts",
+    "build": "run-p build-*",
     "build-main": "cross-env NODE_ENV=production webpack --config=webpack.config.main.ts",
     "build-renderer": "cross-env NODE_ENV=production webpack --config=webpack.config.renderer.ts",
     "build-overlay": "cross-env NODE_ENV=production webpack --config=webpack.config.overlay.ts",
@@ -64,8 +65,9 @@
   "devDependencies": {
     "@evanpurkhiser/eslint-config": "^0.10.0",
     "@types/webpack-dev-server": "^3.11.4",
-    "electron": "^12.0.9",
+    "electron": "^15.5.7",
     "electron-builder": "^22.10.5",
+    "electron-rebuild": "^3.2.9",
     "eslint": "^7.27.0",
     "jest": "^26.0.1",
     "lint-staged": "^11.0.0",
@@ -192,7 +194,7 @@
     "webpack-merge": "^5.7.3"
   },
   "volta": {
-    "node": "14.3.0",
-    "yarn": "1.22.5"
+    "node": "16.18.0",
+    "yarn": "1.22.19"
   }
 }

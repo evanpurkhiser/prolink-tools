@@ -46,9 +46,6 @@ export const withMainStore = (cb: (store: AppStore) => void) => cb(mainStore);
 // Intialize the store for the main thread immedaitely.
 runInAction(() => (mainStore.isInitalized = true));
 
-// see https://www.electronjs.org/docs/api/app#appallowrendererprocessreuse
-app.allowRendererProcessReuse = true;
-
 // Setup application menu
 setupMenu(mainStore);
 
