@@ -16,7 +16,8 @@ const ConnectingSplash = () => {
         <Help initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}}>
           Not seeing your CDJs? Ensure they are <strong>ON</strong> and connected to the{' '}
           <strong>same network</strong> as this computer. If they are simply linked to one
-          another they will need to be plugged into your network router.{' '}
+          another they will need to be plugged into your network router. Also make sure
+          you have allowed this app in your <strong>System Firewall</strong>.{' '}
           <a href="https://prolink.tools/manual">Read the manual</a>.
         </Help>
       )}
