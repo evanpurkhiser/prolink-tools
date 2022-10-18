@@ -65,7 +65,7 @@
   "devDependencies": {
     "@evanpurkhiser/eslint-config": "^0.10.0",
     "@types/webpack-dev-server": "^3.11.4",
-    "electron": "^15.5.7",
+    "electron": "^21.1.1",
     "electron-builder": "^22.10.5",
     "electron-rebuild": "^3.2.9",
     "eslint": "^7.27.0",
