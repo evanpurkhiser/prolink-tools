@@ -6,7 +6,7 @@ jobs:
     name: init-release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - uses: volta-cli/action@v1
       - name: Create Sentry release
         env:
@@ -34,7 +34,7 @@ jobs:
           - os: macos-latest
             ext: dmg
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - uses: volta-cli/action@v1
 
       # Test
@@ -75,7 +75,7 @@ jobs:
     needs: [build, init_release]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - uses: actions/download-artifact@v2
         with:
           path: release
