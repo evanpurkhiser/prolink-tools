@@ -62,12 +62,14 @@
       "category": "public.app-category.music"
     }
   },
+  "resolutions": {
+    "node-abi": "^3.0.0"
+  },
   "devDependencies": {
     "@evanpurkhiser/eslint-config": "^0.10.0",
     "@types/webpack-dev-server": "^3.11.4",
-    "electron": "^15.5.7",
-    "electron-builder": "^22.10.5",
-    "electron-rebuild": "^3.2.9",
+    "electron": "^18.3.15",
+    "electron-builder": "^23.6.0",
     "eslint": "^7.27.0",
     "jest": "^26.0.1",
     "lint-staged": "^11.0.0",
