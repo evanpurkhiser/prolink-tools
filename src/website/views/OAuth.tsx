@@ -53,7 +53,7 @@ export const OAuthAuthorize = observer(({store, appSocket}: Props) => {
     });
   };
 
-  React.useEffect(handleAuthorize, [oauthState, code]);
+  useEffect(handleAuthorize, [oauthState, code]);
 
   if (oauthState === null) {
     return (
