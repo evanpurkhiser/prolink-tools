@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {Fragment, useState} from 'react';
 import {ArrowLeft, Plus} from 'react-feather';
 import styled from '@emotion/styled';
 import {AnimatePresence} from 'framer-motion';
@@ -11,10 +11,10 @@ import AvailableOverlays from './components/AvailableOverlays';
 import OverlayList from './components/OverlayList';
 
 const OverlayConfig = observer(() => {
-  const [addNewOpen, setOpen] = React.useState(false);
+  const [addNewOpen, setOpen] = useState(false);
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Header>
         <HeaderInfo>
           Overlays are small websites that you can embed into a livestream using the{' '}
@@ -44,7 +44,7 @@ const OverlayConfig = observer(() => {
         </AnimatePresence>
         <OverlayList />
       </Container>
-    </React.Fragment>
+    </Fragment>
   );
 });
 

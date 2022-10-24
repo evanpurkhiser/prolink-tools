@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {Fragment} from 'react';
 import {HelpCircle} from 'react-feather';
 import styled from '@emotion/styled';
 
@@ -34,12 +34,12 @@ const HelpButton = () => {
   ));
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Button onClick={() => toggleModal(true)}>
         <HelpCircle size="1rem" />
       </Button>
       {modal}
-    </React.Fragment>
+    </Fragment>
   );
 };
 

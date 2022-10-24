@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {useEffect} from 'react';
 import {BrowserRouter, Route, RouteComponentProps} from 'react-router-dom';
 import {Global} from '@emotion/react';
 
@@ -18,7 +18,7 @@ const OverlayMapper: React.FC<Props> = ({match, store}) => (
 );
 
 const Router = () => {
-  React.useEffect(ensureNoOBSDefaultStyles, []);
+  useEffect(ensureNoOBSDefaultStyles, []);
 
   return (
     <BrowserRouter>

@@ -1,7 +1,6 @@
 import 'regenerator-runtime/runtime';
 
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import {render} from 'react-dom';
 import {Global} from '@emotion/react';
 import * as Sentry from '@sentry/electron';
 import {Mutex} from 'async-mutex';
@@ -28,7 +27,7 @@ const main = (
   </StoreContext.Provider>
 );
 
-ReactDOM.render(main, mainElement);
+render(main, mainElement);
 
 const configLock = new Mutex();
 registerRendererIpc(rendererStore, configLock);

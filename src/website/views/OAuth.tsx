@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {useEffect, useState} from 'react';
 import {AlertTriangle, Link} from 'react-feather';
 import {useLocation} from 'react-router-dom';
 import {useBoolean} from 'react-use';
@@ -17,7 +17,7 @@ type Props = {
 export const OAuthConnect = observer(({store}: Props) => {
   const redirectUrl = store.cloudApiState.oauthState?.redirectUrl;
 
-  React.useEffect(
+  useEffect(
     () => void (redirectUrl && window.location.replace(redirectUrl)),
     [redirectUrl]
   );
@@ -40,7 +40,7 @@ export const OAuthAuthorize = observer(({store, appSocket}: Props) => {
   const code = params.get('code');
 
   const [isDone, markDone] = useBoolean(false);
-  const [error, setError] = React.useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleAuthorize = () => {
     if (oauthState === null || code === null) {

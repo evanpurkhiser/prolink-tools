@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {useEffect, useState} from 'react';
 
 import {createAppStore} from 'src/shared/store';
 import {StoreContext} from 'src/shared/store/context';
@@ -13,9 +13,9 @@ type Props = {
 };
 
 const DemoContext = ({demoRoutine, children}: Props) => {
-  const [demoStore] = React.useState(createAppStore());
+  const [demoStore] = useState(createAppStore());
 
-  React.useEffect(() => void demoRoutine.run(demoStore), []);
+  useEffect(() => void demoRoutine.run(demoStore), []);
 
   return <StoreContext.Provider value={demoStore}>{children}</StoreContext.Provider>;
 };

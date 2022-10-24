@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {ChevronDown, X} from 'react-feather';
 import Control, {components} from 'react-select';
 import {Theme, useTheme} from '@emotion/react';

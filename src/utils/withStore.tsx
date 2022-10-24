@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import {AppStore} from 'src/shared/store';
 import {StoreContext} from 'src/shared/store/context';
 

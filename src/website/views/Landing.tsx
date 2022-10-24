@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {Box} from 'react-feather';
 import {css} from '@emotion/react';
 import styled from '@emotion/styled';

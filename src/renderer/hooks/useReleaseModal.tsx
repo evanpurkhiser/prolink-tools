@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {createElement, Fragment, useEffect, useState} from 'react';
 import {Radio} from 'react-feather';
 import styled from '@emotion/styled';
 import rehype2react from 'rehype-react';
@@ -180,7 +180,7 @@ function renderChangelog(changelogMd: string, {hideUnreleased = false}: Options 
       .runSync({type: 'root', children: releaseNotesAst});
 
     const releaseNotes = unified()
-      .use(rehype2react, {createElement: React.createElement, Fragment: React.Fragment})
+      .use(rehype2react, {createElement: createElement, Fragment: Fragment})
       .stringify(releaseNotesHtml);
 
     return (
@@ -210,7 +210,7 @@ type InitOptions = {
 const useReleaseModal = ({latestRelease}: InitOptions) =>
   useModal(
     ({Modal, hideUnreleased}: Props) => {
-      const [changelog, setChangelog] = React.useState<null | string>(null);
+      const [changelog, setChangelog] = useState<null | string>(null);
 
       const fetchChangelog = async () => {
         const resp = await fetch(
@@ -220,7 +220,7 @@ const useReleaseModal = ({latestRelease}: InitOptions) =>
         setChangelog(text);
       };
 
-      React.useEffect(() => void fetchChangelog(), []);
+      useEffect(() => void fetchChangelog(), []);
 
       if (changelog === null) {
         return null;
@@ -295,9 +295,9 @@ const LatestVersionOk = styled('div')`
 
 LatestVersionOk.defaultProps = {
   children: (
-    <React.Fragment>
+    <Fragment>
       You&apos;re up to date <CheckOk />
-    </React.Fragment>
+    </Fragment>
   ),
 };
 

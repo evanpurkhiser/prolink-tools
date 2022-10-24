@@ -1,7 +1,7 @@
 import 'regenerator-runtime/runtime';
 import 'src/shared/sentry/web';
 
-import * as ReactDOM from 'react-dom';
+import {render} from 'react-dom';
 import {io} from 'socket.io-client';
 
 import Router from 'overlay/Router';
@@ -21,6 +21,6 @@ const main = (
   </StoreContext.Provider>
 );
 
-ReactDOM.render(main, mainElement);
+render(main, mainElement);
 
 registerWebsocketListener(overlaysStore, io() as AppOverlayClientSocket);

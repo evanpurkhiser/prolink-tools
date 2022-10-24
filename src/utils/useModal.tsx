@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {useRef, useState} from 'react';
 import ReactDOM from 'react-dom';
 import {X} from 'react-feather';
 import {useClickAway, useKey} from 'react-use';
@@ -43,8 +43,8 @@ function useModal<P extends any = Record<string, never>>(
 ) {
   const {canClickOut, escapeCloses, withCloseButton} = {...defaultOptions, ...options};
 
-  const [content, setContent] = React.useState<React.ReactNode>(null);
-  const containerRef = React.useRef<HTMLDivElement>(null);
+  const [content, setContent] = useState<React.ReactNode>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useClickAway(containerRef, () => canClickOut && setContent(null));
   useKey(

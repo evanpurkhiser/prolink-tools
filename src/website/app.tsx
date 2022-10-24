@@ -1,6 +1,6 @@
 import 'regenerator-runtime/runtime';
 
-import * as ReactDOM from 'react-dom';
+import {render} from 'react-dom';
 import {Route, Router, Switch} from 'react-router-dom';
 import {Global} from '@emotion/react';
 import {ThemeProvider} from '@emotion/react';
@@ -35,4 +35,4 @@ const Routes = () => (
 );
 
 // Render components
-ReactDOM.render(<Routes />, mainElement);
+render(<Routes />, mainElement);

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {Fragment} from 'react';
 import styled from '@emotion/styled';
 import {observer} from 'mobx-react';
 
@@ -18,7 +18,7 @@ const ApiConfig = observer(({store}: Props) => {
   const url = `${apiBaseUrl}/now-playing/${store.appKey}`;
 
   return (
-    <React.Fragment>
+    <Fragment>
       <ConnectionStatus />
       <Section>
         <Field
@@ -29,7 +29,7 @@ const ApiConfig = observer(({store}: Props) => {
           <Text disabled value={url} />
         </Field>
       </Section>
-    </React.Fragment>
+    </Fragment>
   );
 });
 

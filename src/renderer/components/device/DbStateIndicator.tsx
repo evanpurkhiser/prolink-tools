@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {Fragment} from 'react';
 import styled from '@emotion/styled';
 import filesize from 'filesize';
 import {observer} from 'mobx-react';
@@ -58,7 +58,7 @@ const DbStateIndicator = observer(({store, deviceId}: Props) => {
     );
   });
 
-  return <React.Fragment>{indicators}</React.Fragment>;
+  return <Fragment>{indicators}</Fragment>;
 });
 
 const DownloadRing = styled(ProgressRing)`

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import styled from '@emotion/styled';
 import {format, parseISO} from 'date-fns';
 import {motion} from 'framer-motion';

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {RouteComponentProps} from 'react-router-dom';
 
 import MapOverlay from 'src/overlay/components/MapOverlay';

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {useEffect, useState} from 'react';
 import {io} from 'socket.io-client';
 
 import {connectToAppStore} from 'src/shared/api/client';
@@ -30,8 +30,8 @@ export const overlayAppKeyResolver = (overlayKey: string) => (ws: ApiClientSocke
  * Hook to retrieve a connected AppStore.
  */
 export function useWebsocketStore(resolver: AppKeyResolver) {
-  const [store, setStore] = React.useState<AppStore | null>(null);
-  const [appWs, setAppWs] = React.useState<ApiExternalClientSocket | null>(null);
+  const [store, setStore] = useState<AppStore | null>(null);
+  const [appWs, setAppWs] = useState<ApiExternalClientSocket | null>(null);
 
   const connectStore = async () => {
     const ws: ApiClientSocket = io(apiBaseUrl);
@@ -44,7 +44,7 @@ export function useWebsocketStore(resolver: AppKeyResolver) {
     setStore(connectedStore);
   };
 
-  React.useEffect(() => void connectStore(), []);
+  useEffect(() => void connectStore(), []);
 
   return [store, appWs] as const;
 }

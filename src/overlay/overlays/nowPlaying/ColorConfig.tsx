@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {useRef, useState} from 'react';
 import {ChromePicker, ColorResult} from 'react-color';
 import {X} from 'react-feather';
 import {usePopper} from 'react-popper';
@@ -47,10 +47,10 @@ const rgba = (color: ColorResult) =>
   `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})`;
 
 const Color = ({color, defaultColor, name, trimPrefix, onChange}: ColorProps) => {
-  const [showPicker, openPicker] = React.useState(false);
-  const containerRef = React.useRef<HTMLDivElement>(null);
-  const [indicatorEl, setIndicatorEl] = React.useState<HTMLDivElement | null>(null);
-  const [pickerEl, setPickerEl] = React.useState<HTMLDivElement | null>(null);
+  const [showPicker, openPicker] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [indicatorEl, setIndicatorEl] = useState<HTMLDivElement | null>(null);
+  const [pickerEl, setPickerEl] = useState<HTMLDivElement | null>(null);
   const {styles, state} = usePopper(indicatorEl, pickerEl, {
     placement: 'top',
     modifiers: [{name: 'arrow'}, {name: 'offset', options: {offset: [0, 15]}}],

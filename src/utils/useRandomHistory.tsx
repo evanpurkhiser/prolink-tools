@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {useEffect, useState} from 'react';
 
 import {PlayedTrack} from 'src/shared/store';
 
@@ -24,7 +24,7 @@ type Options = {
  * image API.
  */
 const useRandomHistory = ({enabled, cutoff, updateInterval}: Options) => {
-  const [history, setHistory] = React.useState<PlayedTrack[]>([]);
+  const [history, setHistory] = useState<PlayedTrack[]>([]);
 
   let isUpdating = true;
 
@@ -40,7 +40,7 @@ const useRandomHistory = ({enabled, cutoff, updateInterval}: Options) => {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     startUpdater();
     return () => {
       isUpdating = false;

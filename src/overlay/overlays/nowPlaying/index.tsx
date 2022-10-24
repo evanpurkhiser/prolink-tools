@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {Fragment} from 'react';
 import {Link} from 'react-router-dom';
 import styled from '@emotion/styled';
 import {action, set} from 'mobx';
@@ -131,14 +131,14 @@ const Example: React.FC<ExampleProps> = observer(({store, config, hideControls})
   return hideControls ? (
     example
   ) : (
-    <React.Fragment>
+    <Fragment>
       {config && !isLive && <DemoSwitch config={config} />}
       <LiveHistoryIndicator active={isLive} />
       {example}
       {config?.customCss && (
         <style dangerouslySetInnerHTML={{__html: config.customCss}} />
       )}
-    </React.Fragment>
+    </Fragment>
   );
 });
 
@@ -170,10 +170,10 @@ const NowPlayingOverlay: React.FC<OverlayProps> = observer(({store, config}) => 
   return config.demoMode ? (
     <Example store={store} config={config} hideControls />
   ) : (
-    <React.Fragment>
+    <Fragment>
       <Overlay appConfig={store.config} {...{history, config}} />
       {config.customCss && <style dangerouslySetInnerHTML={{__html: config.customCss}} />}
-    </React.Fragment>
+    </Fragment>
   );
 });
 
@@ -226,10 +226,10 @@ const ConfigInterface: React.FC<{config: NowPlayingConfig}> = observer(({config}
           size="sm"
           name="Mask IDs"
           description={
-            <React.Fragment>
+            <Fragment>
               Do not display metadata for tracks marked as IDs. Configure track ID
               detection in <Link to="/settings">the settings panel</Link>.
-            </React.Fragment>
+            </Fragment>
           }
         >
           <Checkbox

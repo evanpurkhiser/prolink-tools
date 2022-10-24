@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {Fragment} from 'react';
 import styled from '@emotion/styled';
 import {action, set} from 'mobx';
 import {observer} from 'mobx-react';
@@ -29,7 +29,7 @@ const Settings = observer(({store}: Props) => {
   const config = store.config;
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Heading>General</Heading>
       <Section>
         <Field
@@ -64,7 +64,7 @@ const Settings = observer(({store}: Props) => {
           size="sm"
           name="Enable cloud-based tools"
           description={
-            <React.Fragment>
+            <Fragment>
               Enabling this connects your Prolink Tools instance to the prolink.tools web
               service and will publish real-time event data. Some tools may only be used
               when this is enabled.
@@ -80,7 +80,7 @@ const Settings = observer(({store}: Props) => {
                   identifying your prolink tools instance.
                 </p>
               </InfoBox>
-            </React.Fragment>
+            </Fragment>
           }
         >
           <Checkbox
@@ -98,21 +98,21 @@ const Settings = observer(({store}: Props) => {
           top
           size="sm"
           name={
-            <React.Fragment>
+            <Fragment>
               Use smart timing{' '}
               {!store.onAirSupport.present && (
                 <Tooltip title="Without on-air support your tracks may be reported as playing without actually having the fader up!">
                   <Tag priority="ok">Not Recommended</Tag>
                 </Tooltip>
               )}
-            </React.Fragment>
+            </Fragment>
           }
           description={
-            <React.Fragment>
+            <Fragment>
               The upcoming track will not be reported until it has been playing for a
               configured number of beats. The track will only become live when it is
               on-air (if enabled) and wasn&apos;t restarted.
-            </React.Fragment>
+            </Fragment>
           }
         >
           <Radio
@@ -127,13 +127,13 @@ const Settings = observer(({store}: Props) => {
           size="sm"
           name="Wait for track to end"
           description={
-            <React.Fragment>
+            <Fragment>
               The upcoming track will not be reported until the previous track has been
               cued or paused (it must be paused for longer than the{' '}
               <strong>allowed beats during interrupt</strong> timer). You may want to
               enable this if your equipment does not support reporting decks as On-Air
               otherwise your tracks may be reported as now playing much to early.
-            </React.Fragment>
+            </Fragment>
           }
         >
           <Radio
@@ -148,7 +148,7 @@ const Settings = observer(({store}: Props) => {
           size="sm"
           name="Follow master"
           description={
-            <React.Fragment>
+            <Fragment>
               <p>The upcoming track will be reported when the player becomes master.</p>
               <InfoBox>
                 If you are using a mixer which reports the on-air status to the players,
@@ -158,7 +158,7 @@ const Settings = observer(({store}: Props) => {
                 may wish to unplug your mixer from the network when using the follow
                 master strategy, to avoid the CDJs automatically becoming master.
               </InfoBox>
-            </React.Fragment>
+            </Fragment>
           }
         >
           <Radio
@@ -175,14 +175,14 @@ const Settings = observer(({store}: Props) => {
             size="sm"
             name="Smart timing beat count"
             description={
-              <React.Fragment>
+              <Fragment>
                 The number of beats that must pass before the track is reported as now
                 playing. A general rule of thumb is to consider how many phrases of intro
                 the genre of music you play typically has. For example, if you cut over
                 the baseline of a track after 2 phrases of intro and want the new track to
                 show as now playing, that would equate to 128 beats (4 beats per bar, 16
                 bars in a phrase, 2 phrases).
-              </React.Fragment>
+              </Fragment>
             }
           >
             <Text
@@ -201,7 +201,7 @@ const Settings = observer(({store}: Props) => {
           size="sm"
           name="Allowed beats during interrupts"
           description={
-            <React.Fragment>
+            <Fragment>
               <p>
                 An &quot;Interrupt&quot; is when you pause (or cut the fader when{' '}
                 <em>use on-air status</em> is enabled) the current now-playing track, but
@@ -219,7 +219,7 @@ const Settings = observer(({store}: Props) => {
                 complete (you may want to instead get in the habit of cueing the outgoing
                 track)
               </p>
-            </React.Fragment>
+            </Fragment>
           }
         >
           <Text
@@ -235,21 +235,21 @@ const Settings = observer(({store}: Props) => {
           top
           size="sm"
           name={
-            <React.Fragment>
+            <Fragment>
               Use On-Air status
               {!store.onAirSupport.present && (
                 <Tooltip title={store.onAirSupport.disabledReason}>
                   <Tag priority="critical">Needs compatible DJM / CDJ</Tag>
                 </Tooltip>
               )}
-            </React.Fragment>
+            </Fragment>
           }
           description={
-            <React.Fragment>
+            <Fragment>
               When enabled (and your mixer supports indicating on-air status) the incoming
               track <strong>must be on-air</strong> (red ring on the CDJ platter) in order
               to be reported as live.
-            </React.Fragment>
+            </Fragment>
           }
         >
           <Checkbox
@@ -269,7 +269,7 @@ const Settings = observer(({store}: Props) => {
           size="sm"
           name="Collect track events"
           description={
-            <React.Fragment>
+            <Fragment>
               Enables collecting <em>all</em> events reported by PRO DJ LINK devices on
               the network. Events are anonymized, and do not include track names or other
               private metadata.
@@ -280,7 +280,7 @@ const Settings = observer(({store}: Props) => {
                 issues and can include that you&apos;ve enabled collecting track events
                 when reporting bugs.
               </InfoBox>
-            </React.Fragment>
+            </Fragment>
           }
         >
           <Checkbox
@@ -291,7 +291,7 @@ const Settings = observer(({store}: Props) => {
           />
         </Field>
       </Section>
-    </React.Fragment>
+    </Fragment>
   );
 });
 

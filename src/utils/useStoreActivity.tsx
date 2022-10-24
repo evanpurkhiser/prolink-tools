@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {deepObserve} from 'mobx-utils';
 
 import {StoreContext} from 'src/shared/store/context';
@@ -20,12 +20,12 @@ type Options = {
 };
 
 function useStoreActivity({targetTest, valueTest, blipTime}: Options) {
-  const store = React.useContext(StoreContext);
+  const store = useContext(StoreContext);
 
-  const [blip, setBlip] = React.useState<boolean>(false);
+  const [blip, setBlip] = useState<boolean>(false);
   const timeoutId = 0;
 
-  React.useEffect(() =>
+  useEffect(() =>
     deepObserve(store, (change: any, changePath) => {
       const nameSuffix = change.name !== undefined ? `/${change.name}` : '';
 
