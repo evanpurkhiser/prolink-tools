@@ -6,7 +6,7 @@
       "src": "/manual",
       "status": 302,
       "headers": {
-        "Location": "https://www.notion.so/Prolink-Tools-User-Manual-1c0e5b28732b435a9804b992939ed791"
+        "Location": "https://evanpurkhiser.notion.site/evanpurkhiser/Prolink-Tools-User-Manual-1c0e5b28732b435a9804b992939ed791"
       }
     },
     {"src": "/.*", "dest": "/index.html"}
