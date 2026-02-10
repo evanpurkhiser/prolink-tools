@@ -31,5 +31,12 @@ module.exports = {
     // Remove when I switch @evanpurkhiser to include this
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
+    // Allow decorators to be imported without being flagged as unused
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        varsIgnorePattern: '^(action|computed|observable|serializable|object|list|map|mapAsArray|primitive|date|rawJsSerialize|bufferSerialize|deviceToJs)$',
+      },
+    ],
   },
 };
