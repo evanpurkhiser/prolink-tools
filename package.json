@@ -34,11 +34,15 @@
     },
     "publish": null,
     "files": [
+      "!**/node_modules/**/*",
       "package.json",
       {
         "from": "dist",
         "to": ".",
-        "filter": ["**/*", "!**/*.map"]
+        "filter": [
+          "**/*",
+          "!**/*.map"
+        ]
       },
       "node_modules/better-sqlite3/**/*",
       "node_modules/bindings/**/*",
@@ -78,18 +82,20 @@
     "prettier": "^2.3.0",
     "typescript-styled-plugin": "^0.17.0",
     "webpack-cli": "^4.7.0",
-    "webpack-dev-server": "^3.11.2"
+    "webpack-dev-server": "^5.2.3"
   },
   "dependencies": {
-    "@babel/core": "^7.14.3",
-    "@babel/plugin-proposal-class-properties": "^7.13.0",
-    "@babel/plugin-proposal-decorators": "^7.14.2",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.14.2",
-    "@babel/plugin-proposal-optional-chaining": "^7.14.2",
+    "@babel/core": "^7.29.0",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-proposal-decorators": "^7.29.0",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
+    "@babel/plugin-proposal-optional-chaining": "^7.21.0",
+    "@babel/plugin-proposal-private-methods": "^7.18.6",
     "@babel/plugin-syntax-optional-chaining": "^7.8.3",
-    "@babel/preset-env": "^7.14.2",
-    "@babel/preset-react": "^7.13.13",
-    "@babel/preset-typescript": "^7.13.0",
+    "@babel/plugin-transform-private-property-in-object": "^7.28.6",
+    "@babel/preset-env": "^7.29.0",
+    "@babel/preset-react": "^7.28.5",
+    "@babel/preset-typescript": "^7.28.5",
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
     "@koa/router": "^10.0.0",
@@ -192,7 +198,7 @@
     "unified": "^9.2.1",
     "uuid": "^8.3.2",
     "webpack": "^5.105.0",
-    "webpack-merge": "^5.7.3"
+    "webpack-merge": "^6.0.1"
   },
   "volta": {
     "node": "20.18.2",
