@@ -183,10 +183,14 @@ const Tooltip: React.FC<Props> = ({
       (skipWrapper || typeof children.type === 'string')
     ) {
       // Basic DOM nodes can be cloned and have more props applied.
-      return React.cloneElement(children, {
-        ...propList,
-        ref,
-      });
+      // Cast to DetailedReactHTMLElement since we've verified children.type is a string (DOM element)
+      return React.cloneElement(
+        children as React.DetailedReactHTMLElement<any, HTMLElement>,
+        {
+          ...propList,
+          ref,
+        }
+      );
     }
 
     propList.containerDisplayMode = containerDisplayMode;

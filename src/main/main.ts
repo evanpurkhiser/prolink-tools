@@ -128,8 +128,15 @@ app.on('ready', async () => {
   // Open connections to the network
   try {
     network = await bringOnline();
-  } catch (e) {
-    if (e.errno !== 'EADDRINUSE') {
+  } catch (e: unknown) {
+    // Check if this is an EADDRINUSE error (port already in use)
+    const isAddressInUse =
+      typeof e === 'object' &&
+      e !== null &&
+      'errno' in e &&
+      (e as {errno: string}).errno === 'EADDRINUSE';
+
+    if (!isAddressInUse) {
       throw e;
     }
 
