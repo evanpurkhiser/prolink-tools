@@ -130,7 +130,7 @@ const connectTracks = (store: AppStore, network: ConnectedProlinkNetwork) =>
 
       runInAction(() => {
         deviceStore.track = track;
-        deviceStore.artwork = artwork ?? undefined;
+        deviceStore.artwork = artwork ? new Uint8Array(artwork) : undefined;
       });
 
       return null;

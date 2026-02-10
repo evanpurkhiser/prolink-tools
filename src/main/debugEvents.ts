@@ -49,7 +49,9 @@ async function uploadEvents(eventId: string, data: Buffer) {
   // Transform our event history into uploadable FormData
   const formData = new FormData();
 
-  formData.append('my-attachment', await gzip(data), {
+  // Convert Buffer to Uint8Array for TypeScript 5 compatibility
+  const compressed = await gzip(new Uint8Array(data));
+  formData.append('my-attachment', new Uint8Array(compressed), {
     filename: 'events.json.gz',
     contentType: 'application/json',
   });
