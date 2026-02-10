@@ -36,7 +36,8 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': [
       'error',
       {
-        varsIgnorePattern: '^(_|action|computed|observable|serializable|object|list|map|mapAsArray|primitive|date|rawJsSerialize|bufferSerialize|deviceToJs)',
+        varsIgnorePattern:
+          '^(_|action|computed|observable|serializable|object|list|map|mapAsArray|primitive|date|rawJsSerialize|bufferSerialize|deviceToJs)',
         argsIgnorePattern: '^_',
       },
     ],
