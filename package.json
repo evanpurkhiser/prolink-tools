@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/package.json",
   "name": "prolink-tools",
   "version": "0.1.0-beta.5",
   "description": "A collection of userfriendly tools for DJs using Pioneers PRO DJ LINK feature",
