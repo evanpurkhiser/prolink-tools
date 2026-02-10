@@ -14,7 +14,7 @@ jobs:
           SENTRY_PROJECT: prolink-tools
           SENTRY_AUTH_TOKEN: '${{ secrets.SENTRY_AUTH_TOKEN }}'
         run: |
-          RELEASE="$(git describe)"
+          RELEASE="$(git describe --always)"
           curl -sL https://sentry.io/get-cli/ | bash
           sentry-cli releases new "$RELEASE"
           sentry-cli releases set-commits "$RELEASE" --auto
@@ -56,7 +56,7 @@ jobs:
 
       # Upload built executables
       - name: Upload executable
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}
           path: ${{ github.workspace }}/release/*.${{ matrix.ext }}
@@ -64,7 +64,7 @@ jobs:
       # Upload sourcemaps (only once)
       - name: Upload sourcemaps
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: sourcemaps
           path: |
@@ -76,7 +76,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           path: release
       - name: Locate release files
@@ -114,7 +114,7 @@ jobs:
           SENTRY_PROJECT: prolink-tools
           SENTRY_AUTH_TOKEN: '${{ secrets.SENTRY_AUTH_TOKEN }}'
         run: |
-          RELEASE="$(git describe)"
+          RELEASE="$(git describe --always)"
           curl -sL https://sentry.io/get-cli/ | bash
           sentry-cli releases files "$RELEASE" upload-sourcemaps ${{ steps.locate.outputs.sourcemaps }}
           sentry-cli releases finalize "$RELEASE"
