@@ -32,10 +32,12 @@ module.exports = {
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
     // Allow decorators to be imported without being flagged as unused
+    // Also allow variables and args starting with underscore (intentionally unused)
     '@typescript-eslint/no-unused-vars': [
       'error',
       {
-        varsIgnorePattern: '^(action|computed|observable|serializable|object|list|map|mapAsArray|primitive|date|rawJsSerialize|bufferSerialize|deviceToJs)$',
+        varsIgnorePattern: '^(_|action|computed|observable|serializable|object|list|map|mapAsArray|primitive|date|rawJsSerialize|bufferSerialize|deviceToJs)',
+        argsIgnorePattern: '^_',
       },
     ],
   },
