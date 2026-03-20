@@ -4,8 +4,11 @@ import webpack from 'webpack';
 import merge from 'webpack-merge';
 
 import path from 'path';
+import {fileURLToPath} from 'url';
 
-import {baseConfig, hotReloadPlugins} from './webpack.config.base';
+import {baseConfig, hotReloadPlugins} from './webpack.config.base.ts';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const websiteConfig: webpack.Configuration = merge(baseConfig, {
   entry: {

@@ -2,7 +2,7 @@ import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import webpack from 'webpack';
 import merge from 'webpack-merge';
 
-import {baseConfig} from './webpack.config.base';
+import {baseConfig} from './webpack.config.base.ts';
 
 const config: webpack.Configuration = merge(baseConfig, {
   target: 'electron-main',

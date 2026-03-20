@@ -4,8 +4,11 @@ import TerserPlugin from 'terser-webpack-plugin';
 import webpack from 'webpack';
 
 import path from 'path';
+import {fileURLToPath} from 'url';
 
-import {commit, releaseChannel, releaseId} from './scripts/release';
+import {commit, releaseChannel, releaseId} from './scripts/release.ts';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export const IS_PROD = process.env.NODE_ENV === 'production';
 
