@@ -50,7 +50,9 @@ const Button = styled(ActionButton)`
   color: ${p => p.theme.subText};
   border-radius: 50%;
   padding: 0.25rem;
-  transition: background 150ms ease-in-out, color 150ms ease-in-out;
+  transition:
+    background 150ms ease-in-out,
+    color 150ms ease-in-out;
 
   &:hover {
     background: ${p => p.theme.backgroundBox};

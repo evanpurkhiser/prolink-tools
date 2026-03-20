@@ -50,7 +50,7 @@ const Navigation = observer(({store}: Props) => {
                   <item.icon size="1rem" />
                   {!store.config.sidebarCollapsed && item.name}
                 </MenuItem>
-              )
+              ),
           )}
         </AnimatePresence>
       </AnimateSharedLayout>

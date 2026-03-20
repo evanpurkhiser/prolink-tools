@@ -34,10 +34,10 @@ registerRendererIpc(rendererStore, configLock);
 
 when(
   () => rendererStore.user !== undefined,
-  () => Sentry.setUser(rendererStore.user!)
+  () => Sentry.setUser(rendererStore.user!),
 );
 
 when(
   () => rendererStore.isInitalized,
-  () => registerRendererConfigIpc(rendererStore, configLock)
+  () => registerRendererConfigIpc(rendererStore, configLock),
 );

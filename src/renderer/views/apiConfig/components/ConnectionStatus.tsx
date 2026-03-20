@@ -15,7 +15,7 @@ const ConnectionStatus = withStore(
       <div>API Version: {store.cloudApiState.version}</div>
       <div>Latency: {store.cloudApiState.latency.toFixed(1)}ms</div>
     </Container>
-  ))
+  )),
 );
 
 // const colors = {

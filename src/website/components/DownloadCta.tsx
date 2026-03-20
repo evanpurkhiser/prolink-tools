@@ -61,7 +61,7 @@ const DownloadCta = (props: React.ComponentProps<typeof motion.div>) => {
           <Icon size={16} />
           {label}
         </OtherPlatform>
-      ) : null
+      ) : null,
     );
 
   return (
@@ -77,8 +77,8 @@ const DownloadCta = (props: React.ComponentProps<typeof motion.div>) => {
           {!release
             ? 'Fetching release...'
             : !release.published_at
-            ? 'Unknown release date'
-            : format(parseISO(release.published_at), 'MMMM do yyyy')}
+              ? 'Unknown release date'
+              : format(parseISO(release.published_at), 'MMMM do yyyy')}
         </small>
       </VersionTag>
       <AlsoOn>

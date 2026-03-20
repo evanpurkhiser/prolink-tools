@@ -19,7 +19,7 @@ export const OAuthConnect = observer(({store}: Props) => {
 
   useEffect(
     () => void (redirectUrl && window.location.replace(redirectUrl)),
-    [redirectUrl]
+    [redirectUrl],
   );
 
   if (!store.isInitalized) {

@@ -24,7 +24,7 @@ function makeTrackLine(width: number, height: number) {
 function drawScrollingWaveform(
   store: AppStore,
   deviceId: DeviceID,
-  canvas: HTMLCanvasElement
+  canvas: HTMLCanvasElement,
 ) {
   const width = canvas.parentElement?.clientWidth ?? 0;
   const height = canvas.parentElement?.clientHeight ?? 0;

@@ -15,7 +15,7 @@ function trackFormat(track: Track, formatString: string) {
 
   return formatString.replaceAll(
     formatRegex,
-    (value: any, ...groups: any[]) => trackObject[groups.pop().key] ?? value
+    (value: any, ...groups: any[]) => trackObject[groups.pop().key] ?? value,
   );
 }
 

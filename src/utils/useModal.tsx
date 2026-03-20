@@ -39,7 +39,7 @@ const defaultOptions: Options = {
 
 function useModal<P extends any = Record<string, never>>(
   Content: Content<P>,
-  options: Options = {}
+  options: Options = {},
 ) {
   const {canClickOut, escapeCloses, withCloseButton} = {...defaultOptions, ...options};
 
@@ -49,7 +49,7 @@ function useModal<P extends any = Record<string, never>>(
   useClickAway(containerRef, () => canClickOut && setContent(null));
   useKey(
     key => key.key === 'Escape',
-    () => escapeCloses && setContent(null)
+    () => escapeCloses && setContent(null),
   );
 
   const ModalComponent: ModalProps['Modal'] = ({children, ...props}) => (
@@ -67,12 +67,12 @@ function useModal<P extends any = Record<string, never>>(
 
   const openModal = (isOpen: boolean, props?: P) =>
     setContent(
-      isOpen ? <Content Modal={ModalComponent} {...renderProps} {...props} /> : null
+      isOpen ? <Content Modal={ModalComponent} {...renderProps} {...props} /> : null,
     );
 
   const modal = ReactDOM.createPortal(
     <AnimatePresence>{content}</AnimatePresence>,
-    document.querySelector('body')!
+    document.querySelector('body')!,
   );
 
   return [modal, openModal] as const;

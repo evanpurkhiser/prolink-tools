@@ -63,7 +63,7 @@ type Props = {
  */
 function computeOriginFromArrow(
   placement: PopperProps<any>['placement'],
-  arrowState: PopperJS.State['modifiersData']['arrow']
+  arrowState: PopperJS.State['modifiersData']['arrow'],
 ): MotionStyle {
   if (!arrowState) {
     return {};
@@ -94,7 +94,7 @@ const getPortal = memoize(() => {
   portal.setAttribute('id', 'tooltip_portal');
   portal.setAttribute(
     'style',
-    'position: absolute; top: 0; left: 0; bottom: 0; right: 0; pointer-events: none;'
+    'position: absolute; top: 0; left: 0; bottom: 0; right: 0; pointer-events: none;',
   );
   document.body.appendChild(portal);
 
@@ -189,7 +189,7 @@ const Tooltip: React.FC<Props> = ({
         {
           ...propList,
           ref,
-        }
+        },
       );
     }
 

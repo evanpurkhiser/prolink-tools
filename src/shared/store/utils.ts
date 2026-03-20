@@ -13,14 +13,14 @@ import {AppStore, DeviceStore} from '.';
 export function deviceReaction<T>(
   store: AppStore,
   expression: (deviceStore: DeviceStore, r: IReactionPublic) => T,
-  effect: (deviceStore: DeviceStore, arg: T, r: IReactionPublic) => void
+  effect: (deviceStore: DeviceStore, arg: T, r: IReactionPublic) => void,
 ): () => void {
   const disposers = new Map<DeviceID, IReactionDisposer>();
 
   const createDeviceReaction = (deviceStore: DeviceStore) => {
     const disposer = reaction(
       r => expression(deviceStore, r),
-      (arg, _prev, r) => effect(deviceStore, arg, r)
+      (arg, _prev, r) => effect(deviceStore, arg, r),
     );
     disposers.set(deviceStore.device.id, disposer);
   };
@@ -46,7 +46,7 @@ export function deviceReaction<T>(
  */
 export const bufferSerialize = custom(
   value => (value instanceof Uint8Array ? Array.from(value) : undefined),
-  data => (Array.isArray(data) ? Uint8Array.from(data) : data)
+  data => (Array.isArray(data) ? Uint8Array.from(data) : data),
 );
 
 /**

@@ -131,7 +131,7 @@ function renderChangelog(changelogMd: string, {hideUnreleased = false}: Options 
   // Locate version headings
   const versionHeadingIndicies = changeNodes
     .map((node, i) =>
-      node.type === 'heading' && (node as HeadingNode).depth === 2 ? i : null
+      node.type === 'heading' && (node as HeadingNode).depth === 2 ? i : null,
     )
     .filter(index => index !== null) as number[];
 
@@ -139,13 +139,13 @@ function renderChangelog(changelogMd: string, {hideUnreleased = false}: Options 
   // pre-releases by trimming off the additional release info.
   const closestCurrentStableVersion = process.env.RELEASE?.replace(
     /-[0-9]+-g[0-9a-fA-F]+/,
-    ''
+    '',
   );
 
   // Locate the heading indicie that matches the currently running version.
   const mostCurrentVersionIndex = versionHeadingIndicies.find(
     index =>
-      changeNodes[index].children[0].children[0].value === closestCurrentStableVersion
+      changeNodes[index].children[0].children[0].value === closestCurrentStableVersion,
   );
 
   return versionHeadingIndicies.map((headingIndex, i) => {
@@ -214,7 +214,7 @@ const useReleaseModal = ({latestRelease}: InitOptions) =>
 
       const fetchChangelog = async () => {
         const resp = await fetch(
-          `https://raw.githubusercontent.com/${GITHUB_REPO.owner}/${GITHUB_REPO.repo}/main/CHANGELOG.md`
+          `https://raw.githubusercontent.com/${GITHUB_REPO.owner}/${GITHUB_REPO.repo}/main/CHANGELOG.md`,
         );
         const text = await resp.text();
         setChangelog(text);
@@ -247,7 +247,7 @@ const useReleaseModal = ({latestRelease}: InitOptions) =>
         </Modal>
       );
     },
-    {canClickOut: false}
+    {canClickOut: false},
   );
 
 const ModalHeader = styled('header')`

@@ -59,8 +59,8 @@ const BaseArtwork = ({animateIn, alignRight, ...p}: ArtworkProps) => {
       clipPath: !animateIn
         ? 'inset(0% 0% 0% 0%)'
         : alignRight
-        ? 'inset(0% 0% 0% 100%)'
-        : 'inset(0% 100% 0% 0%)',
+          ? 'inset(0% 0% 0% 100%)'
+          : 'inset(0% 100% 0% 0%)',
     },
     animate: {
       clipPath: 'inset(0% 0% 0% 0%)',
@@ -418,7 +418,7 @@ const ThemeModern: React.FC<Props> = observer(({appConfig, config, history}) =>
         </RecentWrapper>
       )}
     </React.Fragment>
-  )
+  ),
 );
 
 const RecentWrapper = styled('div')`

@@ -98,7 +98,7 @@ export class MixstatusStore {
           ...acc,
           this.trackHistory.slice(start, this.setEndIndexes.slice()[end]),
         ],
-        []
+        [],
       )
       .map(history => new IndividualSet(history));
 

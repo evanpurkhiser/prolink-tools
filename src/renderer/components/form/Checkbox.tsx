@@ -34,7 +34,9 @@ const Checkbox = styled('input')<Props>`
     width: ${p => (p.controlSize === 'sm' ? 0.5 : 0.75)}rem;
     border-radius: 100%;
     background: ${p => p.theme.control.knob};
-    transition: transform 200ms ease-in-out, background 200ms ease-in-out;
+    transition:
+      transform 200ms ease-in-out,
+      background 200ms ease-in-out;
   }
 
   &:checked:before {

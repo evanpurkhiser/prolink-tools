@@ -105,9 +105,9 @@ export class InternalStore {
       (mapping, conn) =>
         Object.assign(
           mapping,
-          ...conn.store.config.overlays.map(config => ({[config.key]: conn}))
+          ...conn.store.config.overlays.map(config => ({[config.key]: conn})),
         ),
-      {} as Record<string, Connection>
+      {} as Record<string, Connection>,
     );
   }
 

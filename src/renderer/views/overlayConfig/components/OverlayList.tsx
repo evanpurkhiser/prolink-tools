@@ -27,7 +27,7 @@ const OverlayList = observer(({store}: Props) =>
         <OverlayEntry store={store} index={i} key={instance.key} />
       ))}
     </Container>
-  )
+  ),
 );
 
 type EntryProps = {

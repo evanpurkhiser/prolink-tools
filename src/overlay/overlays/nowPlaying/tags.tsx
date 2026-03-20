@@ -7,7 +7,7 @@ import {PlayedTrack} from 'src/shared/store';
  */
 export const availableTags = ['album', 'label', 'comment', 'tempo', 'key'] as const;
 
-export type Tags = Array<typeof availableTags[number]>;
+export type Tags = Array<(typeof availableTags)[number]>;
 
 export type TagConfig = {
   icon: React.ComponentType<React.ComponentProps<typeof Disc>>;

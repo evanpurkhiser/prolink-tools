@@ -156,7 +156,7 @@ const dark = mergeWith(
     },
   } as Partial<ProlinkTheme>,
   light,
-  (value, srcValue) => (value !== undefined ? value : srcValue)
+  (value, srcValue) => (value !== undefined ? value : srcValue),
 );
 
 export default {light, dark};

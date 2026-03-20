@@ -67,13 +67,13 @@ export const registerMainIpc = (store: AppStore, register: RegisterHandler) => {
         lock.acquire().then(release => {
           event.sender.send('store-update', change);
           ipcMain.once('store-update-done', () => release());
-        })
+        }),
     );
   });
 
   // Register listener for config object changes
   ipcMain.on('config-update', (_e, change: SerializedChange) =>
-    configLock.runExclusive(() => applyChanges(store.config, change))
+    configLock.runExclusive(() => applyChanges(store.config, change)),
   );
 };
 
@@ -87,7 +87,7 @@ export const startMainApiWebsocket = (store: AppStore, register: RegisterHandler
 
   const conn: ApiAppClientSocket = io(
     `${apiBaseUrl}/ingest/${store.config.cloudTools.apiKey}`,
-    {transports: ['websocket']}
+    {transports: ['websocket']},
   );
 
   let clearObserver: IDisposer | undefined;
@@ -100,7 +100,7 @@ export const startMainApiWebsocket = (store: AppStore, register: RegisterHandler
     // Must handshake with the server before we can setup IPC handlers. We need
     // to know if it's OK to communicate with the server or not.
     const handshake = await new Promise<AppHandshake>(resolve =>
-      conn.emit('handshake', {version: LATEST_API_VERSION}, resolve)
+      conn.emit('handshake', {version: LATEST_API_VERSION}, resolve),
     );
 
     store.cloudApiState.initFromHandshake(handshake);
@@ -122,11 +122,11 @@ export const startMainApiWebsocket = (store: AppStore, register: RegisterHandler
         lock
           .acquire()
           .then(release => conn.emit('store-update', change, () => release()))
-          .catch(err => console.warn(err))
+          .catch(err => console.warn(err)),
     );
 
     conn.on('config-update', change =>
-      configLock.runExclusive(() => applyChanges(store.config, change))
+      configLock.runExclusive(() => applyChanges(store.config, change)),
     );
   };
 
@@ -164,7 +164,7 @@ export const startMainApiWebsocket = (store: AppStore, register: RegisterHandler
 export const registerMainWebsocket = (
   store: AppStore,
   httpServer: http.Server,
-  register: RegisterHandler
+  register: RegisterHandler,
 ) => {
   const wss: AppOverlayServer = new WebsocketServer(httpServer, {serveClient: false});
 

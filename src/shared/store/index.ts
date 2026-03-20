@@ -113,8 +113,8 @@ export class AppStore {
       disabledReason: has2000
         ? "The CDJ-2000 (non-nxs) does not properly support reporting it's on-air status. This may be fixed in a future update"
         : !hasDJM
-        ? 'No compatible DJM is currently detected on the network. Requires a DJM-900nxs or newer.'
-        : null,
+          ? 'No compatible DJM is currently detected on the network. Requires a DJM-900nxs or newer.'
+          : null,
     };
   }
 

@@ -3,8 +3,9 @@
   "name": "prolink-tools",
   "version": "0.1.0-beta.5",
   "description": "A collection of userfriendly tools for DJs using Pioneers PRO DJ LINK feature",
-  "author": "Evan Purkhiser <evanpurkhiser@gmail.com>",
   "license": "MIT",
+  "author": "Evan Purkhiser <evanpurkhiser@gmail.com>",
+  "main": "main.js",
   "scripts": {
     "start-dev:main": "webpack --watch --config=webpack.config.main.ts",
     "start-dev:renderer": "webpack serve --config=webpack.config.renderer.ts",
@@ -23,66 +24,6 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "lint": "eslint src/"
-  },
-  "main": "main.js",
-  "build": {
-    "productName": "Prolink Tools",
-    "appId": "com.evanpurkhiser.tools.prolink",
-    "artifactName": "${name}-${version}-${os}.${ext}",
-    "directories": {
-      "output": "release"
-    },
-    "publish": null,
-    "files": [
-      "!**/node_modules/**/*",
-      "package.json",
-      {
-        "from": "dist",
-        "to": ".",
-        "filter": [
-          "**/*",
-          "!**/*.map"
-        ]
-      },
-      "node_modules/better-sqlite3/**/*",
-      "node_modules/bindings/**/*",
-      "node_modules/file-uri-to-path/**/*"
-    ],
-    "extraFiles": [
-      "LICENSE"
-    ],
-    "npmRebuild": false,
-    "linux": {
-      "target": "tar.gz"
-    },
-    "win": {
-      "target": "portable"
-    },
-    "mac": {
-      "target": "dmg",
-      "category": "public.app-category.music"
-    }
-  },
-  "resolutions": {
-    "node-abi": "^3.0.0",
-    "better-sqlite3": "^12.6.2",
-    "loader-utils": "^2.0.4"
-  },
-  "devDependencies": {
-    "@evanpurkhiser/eslint-config": "^0.10.0",
-    "@types/webpack-dev-server": "^3.11.4",
-    "electron": "^18.3.15",
-    "electron-builder": "^23.6.0",
-    "eslint": "^7.27.0",
-    "jest": "^26.0.1",
-    "lint-staged": "^11.0.0",
-    "nodemon": "^2.0.12",
-    "npm-run-all": "^4.1.5",
-    "null-loader": "^4.0.0",
-    "prettier": "^2.3.0",
-    "typescript-styled-plugin": "^0.17.0",
-    "webpack-cli": "^4.7.0",
-    "webpack-dev-server": "^5.2.3"
   },
   "dependencies": {
     "@babel/core": "^7.29.0",
@@ -200,8 +141,67 @@
     "webpack": "^5.105.0",
     "webpack-merge": "^6.0.1"
   },
+  "devDependencies": {
+    "@evanpurkhiser/eslint-config": "^0.10.0",
+    "@types/webpack-dev-server": "^3.11.4",
+    "electron": "^18.3.15",
+    "electron-builder": "^23.6.0",
+    "eslint": "^7.27.0",
+    "jest": "^26.0.1",
+    "lint-staged": "^11.0.0",
+    "nodemon": "^2.0.12",
+    "npm-run-all": "^4.1.5",
+    "null-loader": "^4.0.0",
+    "oxfmt": "^0.41.0",
+    "typescript-styled-plugin": "^0.17.0",
+    "webpack-cli": "^4.7.0",
+    "webpack-dev-server": "^5.2.3"
+  },
+  "resolutions": {
+    "better-sqlite3": "^12.6.2",
+    "loader-utils": "^2.0.4",
+    "node-abi": "^3.0.0"
+  },
   "volta": {
     "node": "20.18.2",
     "yarn": "1.22.19"
+  },
+  "build": {
+    "productName": "Prolink Tools",
+    "appId": "com.evanpurkhiser.tools.prolink",
+    "artifactName": "${name}-${version}-${os}.${ext}",
+    "directories": {
+      "output": "release"
+    },
+    "publish": null,
+    "files": [
+      "!**/node_modules/**/*",
+      "package.json",
+      {
+        "from": "dist",
+        "to": ".",
+        "filter": [
+          "**/*",
+          "!**/*.map"
+        ]
+      },
+      "node_modules/better-sqlite3/**/*",
+      "node_modules/bindings/**/*",
+      "node_modules/file-uri-to-path/**/*"
+    ],
+    "extraFiles": [
+      "LICENSE"
+    ],
+    "npmRebuild": false,
+    "linux": {
+      "target": "tar.gz"
+    },
+    "win": {
+      "target": "portable"
+    },
+    "mac": {
+      "target": "dmg",
+      "category": "public.app-category.music"
+    }
   }
 }

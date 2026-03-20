@@ -25,7 +25,7 @@ export async function startOverlayServer() {
         const requestUrl = req.url?.replace(/^\//, '');
 
         const accessErr = await new Promise<NodeJS.ErrnoException | null>(resolve =>
-          fs.stat(path.resolve(OVERLAY_ROOT, requestUrl ?? ''), resolve)
+          fs.stat(path.resolve(OVERLAY_ROOT, requestUrl ?? ''), resolve),
         );
 
         if (requestUrl !== undefined && accessErr !== null) {
@@ -39,7 +39,7 @@ export async function startOverlayServer() {
 
   // Start listening for connections
   await new Promise<void>(resolve =>
-    httpServer.listen(WEBSERVER_PORT, '0.0.0.0', resolve)
+    httpServer.listen(WEBSERVER_PORT, '0.0.0.0', resolve),
   );
 
   return httpServer;

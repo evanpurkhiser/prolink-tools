@@ -45,14 +45,14 @@ export function nightbotLinkApp(appConn: Connection) {
       const redirectUrl = oauthClient.authorizeURL({...params, state: appConn.appKey});
       const oauthState = store.cloudApiState.oauthState!;
       store.cloudApiState.oauthState = {...oauthState, redirectUrl};
-    })
+    }),
   );
 }
 
 export async function handleAuthorize(
   appKey: AppKey,
   code: string,
-  resolve: (opts: {error: string | null}) => void
+  resolve: (opts: {error: string | null}) => void,
 ) {
   const appConn = internalStore.appConnections.get(appKey);
 

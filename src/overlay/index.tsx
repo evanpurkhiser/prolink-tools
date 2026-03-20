@@ -1,6 +1,6 @@
 import nowPlaying from './overlays/nowPlaying';
 
-type OverlayType = typeof registeredOverlays[number]['type'];
+type OverlayType = (typeof registeredOverlays)[number]['type'];
 
 type OverlayMeta = {
   type: string;
@@ -8,7 +8,7 @@ type OverlayMeta = {
 };
 
 type OverlayConfigMap = {
-  [K in OverlayType]: typeof registeredOverlays[number] & {type: K};
+  [K in OverlayType]: (typeof registeredOverlays)[number] & {type: K};
 };
 
 /**

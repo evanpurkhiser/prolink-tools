@@ -12,7 +12,7 @@ export const ExampleOverlay = withStore(
   observer(({store}: Props) => {
     const instance = store.config.overlays.find(i => i.key === 'exampleNowPlaying');
     const descriptor = registeredOverlays?.find(
-      overlay => overlay.type === instance?.type
+      overlay => overlay.type === instance?.type,
     );
 
     if (instance === undefined || descriptor === undefined) {
@@ -21,14 +21,14 @@ export const ExampleOverlay = withStore(
     }
 
     return <descriptor.component config={instance.config} />;
-  })
+  }),
 );
 
 export const ExampleConfig = withStore(
   observer(({store}: Props) => {
     const instance = store.config.overlays.find(i => i.key === 'exampleNowPlaying');
     const descriptor = registeredOverlays?.find(
-      overlay => overlay.type === instance?.type
+      overlay => overlay.type === instance?.type,
     );
 
     if (instance === undefined || descriptor === undefined) {
@@ -37,5 +37,5 @@ export const ExampleConfig = withStore(
     }
 
     return <descriptor.configInterface config={instance.config} />;
-  })
+  }),
 );

@@ -45,7 +45,7 @@ export const internalStore = createInternalStore();
 const [registerListener] = observeStore({target: apiStore});
 
 registerListener('global-api-store', change =>
-  wss.sockets.emit('api-store-update', change)
+  wss.sockets.emit('api-store-update', change),
 );
 
 wss.on('connection', client => {
@@ -59,7 +59,7 @@ wss.on('connection', client => {
     // wait for it to show up.
     const disposeDeferredKeyLookup = when(
       () => overlayKey in internalStore.overlayKeyMap,
-      () => respond(internalStore.overlayKeyMap[overlayKey]!.appKey)
+      () => respond(internalStore.overlayKeyMap[overlayKey]!.appKey),
     );
     // Client disconnected, avoid memory leaks and dispose of remaining reactions
     client.on('disconnect', () => disposeDeferredKeyLookup());

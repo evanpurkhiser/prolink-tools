@@ -18,10 +18,10 @@ const Tag = styled('div')<Props>`
     p.priority === 'good'
       ? p.theme.active
       : p.priority === 'critical'
-      ? p.theme.critical
-      : p.priority === 'ok'
-      ? p.theme.activeAlt
-      : p.theme.activeAlt};
+        ? p.theme.critical
+        : p.priority === 'ok'
+          ? p.theme.activeAlt
+          : p.theme.activeAlt};
 `;
 
 export default Tag;

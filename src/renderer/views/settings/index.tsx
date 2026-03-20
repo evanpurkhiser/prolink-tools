@@ -55,7 +55,7 @@ const Settings = observer(({store}: Props) => {
             type="text"
             value={config.idMarker}
             onChange={action((e: React.ChangeEvent<HTMLInputElement>) =>
-              set(config, {idMarker: e.target.value})
+              set(config, {idMarker: e.target.value}),
             )}
           />
         </Field>
@@ -86,7 +86,7 @@ const Settings = observer(({store}: Props) => {
           <Checkbox
             checked={config.cloudTools.enabled}
             onChange={action((e: React.ChangeEvent<HTMLInputElement>) =>
-              set(config.cloudTools, {enabled: e.target.checked})
+              set(config.cloudTools, {enabled: e.target.checked}),
             )}
           />
         </Field>
@@ -118,7 +118,7 @@ const Settings = observer(({store}: Props) => {
           <Radio
             checked={config.mixstatusConfig.mode === MixstatusMode.SmartTiming}
             onChange={action(() =>
-              set(config.mixstatusConfig, {mode: MixstatusMode.SmartTiming})
+              set(config.mixstatusConfig, {mode: MixstatusMode.SmartTiming}),
             )}
           />
         </Field>
@@ -139,7 +139,7 @@ const Settings = observer(({store}: Props) => {
           <Radio
             checked={config.mixstatusConfig.mode === MixstatusMode.WaitsForSilence}
             onChange={action(() =>
-              set(config.mixstatusConfig, {mode: MixstatusMode.WaitsForSilence})
+              set(config.mixstatusConfig, {mode: MixstatusMode.WaitsForSilence}),
             )}
           />
         </Field>
@@ -164,7 +164,7 @@ const Settings = observer(({store}: Props) => {
           <Radio
             checked={config.mixstatusConfig.mode === MixstatusMode.FollowsMaster}
             onChange={action(() =>
-              set(config.mixstatusConfig, {mode: MixstatusMode.FollowsMaster})
+              set(config.mixstatusConfig, {mode: MixstatusMode.FollowsMaster}),
             )}
           />
         </Field>
@@ -190,7 +190,7 @@ const Settings = observer(({store}: Props) => {
               style={{appearance: 'textfield'}}
               value={config.mixstatusConfig.beatsUntilReported}
               onChange={action((e: React.ChangeEvent<HTMLInputElement>) =>
-                set(config.mixstatusConfig, {beatsUntilReported: Number(e.target.value)})
+                set(config.mixstatusConfig, {beatsUntilReported: Number(e.target.value)}),
               )}
             />
           </Field>
@@ -227,7 +227,9 @@ const Settings = observer(({store}: Props) => {
             style={{appearance: 'textfield'}}
             value={config.mixstatusConfig.allowedInterruptBeats}
             onChange={action((e: React.ChangeEvent<HTMLInputElement>) =>
-              set(config.mixstatusConfig, {allowedInterruptBeats: Number(e.target.value)})
+              set(config.mixstatusConfig, {
+                allowedInterruptBeats: Number(e.target.value),
+              }),
             )}
           />
         </Field>
@@ -256,7 +258,7 @@ const Settings = observer(({store}: Props) => {
             style={{filter: store.onAirSupport.present ? 'none' : 'grayscale(1)'}}
             checked={config.mixstatusConfig.useOnAirStatus}
             onChange={action((e: React.ChangeEvent<HTMLInputElement>) =>
-              set(config.mixstatusConfig, {useOnairStatus: e.target.checked})
+              set(config.mixstatusConfig, {useOnairStatus: e.target.checked}),
             )}
           />
         </Field>
@@ -286,7 +288,7 @@ const Settings = observer(({store}: Props) => {
           <Checkbox
             checked={config.reportDebugEvents}
             onChange={action((e: React.ChangeEvent<HTMLInputElement>) =>
-              set(config, {reportDebugEvents: e.target.checked})
+              set(config, {reportDebugEvents: e.target.checked}),
             )}
           />
         </Field>

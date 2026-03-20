@@ -44,7 +44,7 @@ function useStoreActivity({targetTest, valueTest, blipTime}: Options) {
       setBlip(true);
       clearInterval(timeoutId);
       setTimeout(() => setBlip(false), blipTime ?? 300);
-    })
+    }),
   );
 
   return [blip];

@@ -9,6 +9,8 @@ module.exports = {
   },
 
   rules: {
+    // @evanpurkhiser enables prettier/prettier, but formatting now uses oxfmt
+    'prettier/prettier': 'off',
     'simple-import-sort/imports': [
       'error',
       {

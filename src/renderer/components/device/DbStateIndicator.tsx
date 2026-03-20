@@ -46,8 +46,8 @@ const DbStateIndicator = observer(({store, deviceId}: Props) => {
           {!hydration
             ? 'Fetching database...'
             : hydration.total !== hydration.complete
-            ? 'Hydrating database...'
-            : 'Flushing database...'}
+              ? 'Hydrating database...'
+              : 'Flushing database...'}
           <small>
             {hydration
               ? `${hydration.complete} / ${hydration.total} entries`

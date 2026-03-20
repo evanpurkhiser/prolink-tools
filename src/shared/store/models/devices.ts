@@ -16,7 +16,7 @@ type PerTableHydrationProgress = Omit<HydrationProgress, 'table'>;
 
 const deviceToJs = custom(
   value => ({...toJS(value), ip: value.ip.address}),
-  data => ({...data, ip: new ip.Address4(data.ip)})
+  data => ({...data, ip: new ip.Address4(data.ip)}),
 );
 
 /**

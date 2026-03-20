@@ -66,7 +66,7 @@ const serializableClasses = [
 
 const serializerModelMap = serializableClasses.reduce(
   (acc, klass) => acc.set(klass.name, klass),
-  new Map<string, typeof serializableClasses[number]>()
+  new Map<string, (typeof serializableClasses)[number]>(),
 );
 
 function getAtPath(obj: any, path: string) {
@@ -151,7 +151,7 @@ export const applyChanges = action(
         target.splice(
           arrChange.index,
           arrChange.removedCount,
-          ...arrChange.added.map(getNewValue)
+          ...arrChange.added.map(getNewValue),
         );
         return;
       }
@@ -164,7 +164,7 @@ export const applyChanges = action(
     if (objChange.type === 'remove' || mapChange.type === 'delete') {
       remove(target, objChange.name as string);
     }
-  }
+  },
 );
 
 type ObserverStoreOpts = {
@@ -227,7 +227,7 @@ export const observeStore = ({
       const parentClass = getAtPath(target, path)?.constructor;
       const serializer = anyChange.newValue?.constructor?.serializeInfo
         ? serialize
-        : parentClass?.serializeInfo?.props?.[anyChange.name]?.serializer ?? toJS;
+        : (parentClass?.serializeInfo?.props?.[anyChange.name]?.serializer ?? toJS);
 
       anyChange.newValue = serializer(anyChange.newValue);
     }
@@ -244,7 +244,7 @@ export const observeStore = ({
       const parentClass = getAtPath(target, path)?.constructor;
       const serializer = anyChange.added[0]?.constructor?.serializeInfo
         ? serialize
-        : parentClass?.serializeInfo?.props?.[anyChange.name]?.serializer ?? toJS;
+        : (parentClass?.serializeInfo?.props?.[anyChange.name]?.serializer ?? toJS);
 
       anyChange.added = anyChange.added.map((v: any) => serializer(v));
     }
@@ -260,7 +260,7 @@ export const observeStore = ({
       const parentClass = getAtPath(target, path)?.constructor;
       const serializer = anyChange.removed[0]?.constructor?.serializeInfo
         ? serialize
-        : parentClass?.serializeInfo?.props?.[anyChange.name]?.serializer ?? toJS;
+        : (parentClass?.serializeInfo?.props?.[anyChange.name]?.serializer ?? toJS);
 
       anyChange.removed = anyChange.removed.map((v: any) => serializer(v));
     }

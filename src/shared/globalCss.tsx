@@ -37,7 +37,9 @@ const globalCss = (theme: Theme) => css`
   button {
     color: ${theme.primaryText};
     font-family: 'DM Mono';
-    transition: background 200ms, color 200ms;
+    transition:
+      background 200ms,
+      color 200ms;
     cursor: pointer;
   }
 

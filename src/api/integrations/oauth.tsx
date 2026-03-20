@@ -7,7 +7,7 @@ import {handleAuthorize as nightbotAuthorize} from './nightbot';
 type OAuthAuthorizeHandler = (
   appKey: AppKey,
   code: string,
-  done: (opts: {error: string | null}) => void
+  done: (opts: {error: string | null}) => void,
 ) => void;
 
 /**
@@ -23,5 +23,5 @@ const authorizeHandlers: Record<OAuthProvider, OAuthAuthorizeHandler> = {
  */
 export const listenOAuthAuthorize = (appKey: AppKey, client: ApiExternalServerSocket) =>
   client.on('oauth:authorize', (provider, code, resolve) =>
-    authorizeHandlers[provider]?.(appKey, code, resolve)
+    authorizeHandlers[provider]?.(appKey, code, resolve),
   );

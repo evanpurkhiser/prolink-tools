@@ -27,7 +27,7 @@ const ColorConfig = observer(({config, defaultColors, trimPrefix}: Props) => (
         defaultColor={defaultColors[name]}
         onReset={() => set(config, {colors: {...config?.colors, [name]: undefined}})}
         onChange={action((color: string) =>
-          set(config, {colors: {...config?.colors, [name]: color}})
+          set(config, {colors: {...config?.colors, [name]: color}}),
         )}
       />
     ))}

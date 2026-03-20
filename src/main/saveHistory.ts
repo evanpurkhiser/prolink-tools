@@ -71,6 +71,6 @@ export const setupSaveHistory = (store: AppStore) => {
         when(() => store.config.saveHistory.enabled === false, disable);
       }
     },
-    {fireImmediately: true}
+    {fireImmediately: true},
   );
 };

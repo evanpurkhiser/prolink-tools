@@ -10,11 +10,10 @@ type InjectedProps = {
  */
 const withStore =
   <P extends InjectedProps>(Component: React.ComponentType<P>) =>
-  (props: Pick<P, Exclude<keyof P, keyof InjectedProps>>) =>
-    (
-      <StoreContext.Consumer>
-        {store => <Component {...(props as P)} store={store} />}
-      </StoreContext.Consumer>
-    );
+  (props: Pick<P, Exclude<keyof P, keyof InjectedProps>>) => (
+    <StoreContext.Consumer>
+      {store => <Component {...(props as P)} store={store} />}
+    </StoreContext.Consumer>
+  );
 
 export default withStore;

@@ -34,7 +34,7 @@ const Field = styled(
         {description && <small>{description}</small>}
       </div>
     </label>
-  )
+  ),
 )<Props>`
   font-family: Ubuntu;
   line-height: 1.4;

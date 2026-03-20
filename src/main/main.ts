@@ -60,7 +60,7 @@ reaction(
       : theme.light.background;
     win?.setBackgroundColor(bg);
   },
-  {fireImmediately: true}
+  {fireImmediately: true},
 );
 
 // Require overlay main functionality
@@ -178,7 +178,7 @@ app.on('ready', async () => {
         when(() => mainStore.config.cloudTools.enabled === false, disconnect);
       }
     },
-    {fireImmediately: true}
+    {fireImmediately: true},
   );
 
   connectNetworkStore(mainStore, network);

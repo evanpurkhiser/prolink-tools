@@ -51,7 +51,7 @@ type AppApiHandlers = {
   'oauth:authorize': (
     provider: OAuthProvider,
     code: string,
-    result: (opts: {error: string | null}) => void
+    result: (opts: {error: string | null}) => void,
   ) => void;
 };
 
@@ -78,7 +78,7 @@ type ApiControlHandlers = {
    */
   'appKey:by-overlay-key': (
     overlayKey: string,
-    respond: (appKey: string) => void
+    respond: (appKey: string) => void,
   ) => void;
 };
 

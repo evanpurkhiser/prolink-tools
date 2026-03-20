@@ -60,11 +60,11 @@ const HANDSHAKE_TIMEOUT = 5000;
  */
 async function appHandshake(appSocket: ApiAppServerSocket) {
   const timeout = new Promise<null>(resolve =>
-    setTimeout(() => resolve(null), HANDSHAKE_TIMEOUT)
+    setTimeout(() => resolve(null), HANDSHAKE_TIMEOUT),
   );
 
   const handshake = new Promise<HandshakeReply>(resolve =>
-    appSocket.once('handshake', (data, reply) => resolve({data, reply}))
+    appSocket.once('handshake', (data, reply) => resolve({data, reply})),
   );
 
   const result = await Promise.race([timeout, handshake]);
@@ -113,7 +113,7 @@ export async function registerAppConnection(appSocket: ApiAppServerSocket) {
 
   when(
     () => store.isInitalized,
-    () => registerWebsocketConfigListener(store, appSocket, configLock)
+    () => registerWebsocketConfigListener(store, appSocket, configLock),
   );
 
   // Init the app store in all existing clients. These clients will have
@@ -122,7 +122,7 @@ export async function registerAppConnection(appSocket: ApiAppServerSocket) {
   when(
     () => store.isInitalized,
     () =>
-      appStoreClients.get(conn.appKey)?.forEach(client => initClientStore(client, store))
+      appStoreClients.get(conn.appKey)?.forEach(client => initClientStore(client, store)),
   );
 
   // Init the app store for newly added clients
@@ -130,7 +130,7 @@ export async function registerAppConnection(appSocket: ApiAppServerSocket) {
     internalStore.appStoreClients.get(conn.appKey)!,
     change =>
       change.type === 'splice' &&
-      change.added.forEach(client => initClientStore(client, store))
+      change.added.forEach(client => initClientStore(client, store)),
   );
 
   // re-broadcast app store updates to subscribed clients
@@ -139,7 +139,7 @@ export async function registerAppConnection(appSocket: ApiAppServerSocket) {
   storeRegister('app-pipe', change =>
     appStoreClients
       .get(conn.appKey)
-      ?.forEach(client => client.emit('store-update', change))
+      ?.forEach(client => client.emit('store-update', change)),
   );
 
   // Register integrations

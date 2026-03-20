@@ -250,7 +250,7 @@ const ConfigInterface: React.FC<{config: NowPlayingConfig}> = observer(({config}
             style={{textAlign: 'center', appearance: 'textfield'}}
             value={config.historyCount}
             onChange={action((e: React.ChangeEvent<HTMLInputElement>) =>
-              set(config, {historyCount: Math.max(0, Number(e.target.value))})
+              set(config, {historyCount: Math.max(0, Number(e.target.value))}),
             )}
           />
         </Field>
@@ -267,7 +267,7 @@ const ConfigInterface: React.FC<{config: NowPlayingConfig}> = observer(({config}
             options={valueTransform(availableTags)}
             value={valueTransform(config.tags ?? [])}
             onChange={action((values: any) =>
-              set(config, {tags: values?.map((v: any) => v.value) ?? []})
+              set(config, {tags: values?.map((v: any) => v.value) ?? []}),
             )}
           />
         </Field>

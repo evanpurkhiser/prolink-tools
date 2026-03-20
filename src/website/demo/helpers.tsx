@@ -8,7 +8,7 @@ import {makeRandomTrack} from 'src/utils/randomMetadata';
 export const loadTrack = async (
   store: AppStore,
   deviceId: number,
-  state: Partial<CDJStatus.State>
+  state: Partial<CDJStatus.State>,
 ) => {
   const d = store.devices.get(deviceId)!;
   const track = await makeRandomTrack({artwork: true});
@@ -49,7 +49,7 @@ export const updateState = action(
     const d = store.devices.get(deviceId)!;
 
     d.state = {...d.state!, ...state};
-  }
+  },
 );
 
 export const tapCue = async (store: AppStore, deviceId: number) => {

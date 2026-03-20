@@ -11,6 +11,6 @@ withMainStore(store =>
     () =>
       store.config.overlays
         ?.filter(overlay => overlay.type === 'nowPlaying')
-        ?.forEach(instance => set(instance.config, {demoMode: false}))
-  )
+        ?.forEach(instance => set(instance.config, {demoMode: false})),
+  ),
 );

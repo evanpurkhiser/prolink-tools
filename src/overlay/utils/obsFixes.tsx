@@ -12,7 +12,7 @@ const DEFAULT_STYLES =
  */
 export const findDefaultOBSStlyeNode = () =>
   Array.from(document.querySelectorAll('head style:not([data-emotion])')).find(
-    el => el.innerHTML === DEFAULT_STYLES
+    el => el.innerHTML === DEFAULT_STYLES,
   );
 
 export const ensureNoOBSDefaultStyles = () => {

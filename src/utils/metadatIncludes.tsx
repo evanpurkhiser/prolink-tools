@@ -12,7 +12,7 @@ const propertiesToCheck = [
 const metadataIncludes = (track: Track, marker: string) =>
   propertiesToCheck.some(property => {
     const prop = track[property];
-    const value = typeof prop === 'string' ? prop.toLowerCase() : prop?.name ?? '';
+    const value = typeof prop === 'string' ? prop.toLowerCase() : (prop?.name ?? '');
 
     return value.toLowerCase().includes(marker.toLowerCase());
   });

@@ -39,19 +39,19 @@ const connectDevices = (store: AppStore, network: ConnectedProlinkNetwork) => {
   const deviceEntries = deviceList.map(d => [d.id, new DeviceStore(d)]);
 
   runInAction(() =>
-    store.devices.replace(new Map(deviceEntries as [DeviceID, DeviceStore][]))
+    store.devices.replace(new Map(deviceEntries as [DeviceID, DeviceStore][])),
   );
 
   // Create device stores for new devices
   network.deviceManager.on(
     'connected',
-    action(device => store.devices.set(device.id, new DeviceStore(device)))
+    action(device => store.devices.set(device.id, new DeviceStore(device))),
   );
 
   // Remove device stores
   network.deviceManager.on(
     'disconnected',
-    action(device => store.devices.delete(device.id))
+    action(device => store.devices.delete(device.id)),
   );
 };
 
@@ -79,7 +79,7 @@ const connectStatus = (store: AppStore, network: ConnectedProlinkNetwork) =>
 
       // Only mutate the values that have changed using deep-diff
       applyDiff(deviceStore.state, state);
-    })
+    }),
   );
 
 /**
@@ -134,7 +134,7 @@ const connectTracks = (store: AppStore, network: ConnectedProlinkNetwork) =>
       });
 
       return null;
-    }
+    },
   );
 
 /**
@@ -158,7 +158,7 @@ const connectLocaldbFetch = (store: AppStore, network: ConnectedProlinkNetwork) 
       }
 
       applyDiff(progress, status.progress);
-    })
+    }),
   );
 
 const deboucnedApplyDiff = debounce(applyDiff, 10, {
@@ -205,7 +205,7 @@ const connectLocaldbHydrate = (store: AppStore, network: ConnectedProlinkNetwork
       } else {
         deboucnedApplyDiff(tableProgress, value);
       }
-    })
+    }),
   );
 
 /**
@@ -228,7 +228,7 @@ const connectLocaldbHydrateDone = (store: AppStore, network: ConnectedProlinkNet
       }
 
       progress.isDone = true;
-    })
+    }),
   );
 
 /**
@@ -280,6 +280,6 @@ const connectMixstatus = (store: AppStore, network: ConnectedProlinkNetwork) => 
         store.config.mixstatusConfig.useOnAirStatus && store.onAirSupport.present,
     }),
     config => network.mixstatus.configure(config),
-    {fireImmediately: true}
+    {fireImmediately: true},
   );
 };

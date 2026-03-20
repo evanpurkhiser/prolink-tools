@@ -11,7 +11,7 @@ import {AppStore} from '.';
 function applyConfigLockedChange(
   store: AppStore,
   change: SerializedChange,
-  configLock?: Mutex
+  configLock?: Mutex,
 ) {
   if (configLock && change.path.startsWith('config')) {
     configLock.runExclusive(() => applyChanges(store, change));
@@ -38,7 +38,7 @@ export const registerRendererIpc = (store: AppStore, configLock: Mutex) => {
     action((event, data: any) => {
       set(store, deserialize(AppStore, data));
       event.sender.send('store-init-done');
-    })
+    }),
   );
 
   // Kick things off
@@ -65,7 +65,7 @@ export const registerRendererConfigIpc = (store: AppStore, configLock: Mutex) =>
 export const registerWebsocketListener = (
   store: AppStore,
   ws: ApiAppServerSocket | AppOverlayClientSocket,
-  configLock?: Mutex
+  configLock?: Mutex,
 ) => {
   // XXX: work around type error...
   // see: https://github.com/socketio/socket.io/issues/3872
@@ -79,7 +79,7 @@ export const registerWebsocketListener = (
       action((data, done) => {
         set(store, deserialize(AppStore, data));
         done?.();
-      })
+      }),
     );
 };
 
@@ -93,7 +93,7 @@ export const registerWebsocketListener = (
 export const registerWebsocketConfigListener = (
   store: AppStore,
   ws: ApiAppServerSocket,
-  configLock: Mutex
+  configLock: Mutex,
 ) =>
   observeStore({
     target: store.config,

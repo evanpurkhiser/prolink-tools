@@ -5,10 +5,10 @@ services:
     image: jwilder/nginx-proxy
     container_name: nginx-proxy
     environment:
-      - "DEFAULT_EMAIL=evanpurkhiser@gmail.com"
+      - 'DEFAULT_EMAIL=evanpurkhiser@gmail.com'
     ports:
-      - "80:80"
-      - "443:443"
+      - '80:80'
+      - '443:443'
     volumes:
       - conf:/etc/nginx/conf.d
       - vhost:/etc/nginx/vhost.d
@@ -33,8 +33,8 @@ services:
     image: evanpurkhiser/prolink-tools-api
     container_name: prolink-tools
     environment:
-      - "VIRTUAL_HOST=api.prolink.tools"
-      - "LETSENCRYPT_HOST=api.prolink.tools"
+      - 'VIRTUAL_HOST=api.prolink.tools'
+      - 'LETSENCRYPT_HOST=api.prolink.tools'
     volumes:
       # This is currently a manually managed secret file on the server
       - /root/dotenv:/app/.env

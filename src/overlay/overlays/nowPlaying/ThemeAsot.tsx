@@ -58,7 +58,7 @@ type AttributeProps = React.ComponentProps<typeof Text> & {
 };
 
 const Attribute = styled(({text, ...p}: AttributeProps) =>
-  text === '' || text === undefined ? null : <Text {...p}>[{text}]</Text>
+  text === '' || text === undefined ? null : <Text {...p}>[{text}]</Text>,
 )`
   font-size: 0.9em;
   font-style: italic;
@@ -255,7 +255,7 @@ const ThemeAsot: React.FC<Props> = observer(({appConfig, config, history}) =>
       idMask={config.maskId ? appConfig.idMarker : ''}
       played={history[0]}
     />
-  )
+  ),
 );
 
 const CurrentWrapper = styled('div')`

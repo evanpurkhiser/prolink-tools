@@ -6,7 +6,7 @@ type Props = React.HTMLAttributes<HTMLDivElement> & {
 };
 
 const text = Object.fromEntries(
-  Object.entries(CDJStatus.PlayState).map(([k, v]) => [v, k])
+  Object.entries(CDJStatus.PlayState).map(([k, v]) => [v, k]),
 );
 
 const PlayState = styled(({playState, ...p}: Props) => (
