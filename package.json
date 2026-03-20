@@ -20,7 +20,7 @@
     "build-renderer": "cross-env NODE_ENV=production webpack --config=webpack.config.renderer.ts",
     "build-overlay": "cross-env NODE_ENV=production webpack --config=webpack.config.overlay.ts",
     "build-website": "cross-env NODE_ENV=production webpack --config=webpack.config.website.ts",
-    "vercel-build-website": "git fetch --tags && yarn build-website",
+    "vercel-build-website": "cross-env TS_NODE_COMPILER_OPTIONS='{\"module\":\"nodenext\",\"allowImportingTsExtensions\":true}' yarn build-website",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "lint": "eslint src/"
