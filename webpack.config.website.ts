@@ -1,7 +1,7 @@
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpack from 'webpack';
-import merge from 'webpack-merge';
+import {merge} from 'webpack-merge';
 
 import path from 'path';
 import {fileURLToPath} from 'url';
