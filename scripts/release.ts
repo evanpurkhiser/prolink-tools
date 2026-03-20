@@ -1,5 +1,5 @@
 import {execSync} from 'child_process';
-import {prerelease} from 'semver';
+import semver from 'semver';
 
 const commit = execSync('git rev-parse HEAD').toString().trim();
 let releaseId: string;
@@ -17,7 +17,7 @@ const isTagged = latestTag === releaseId;
 
 // Specify the release channel (environment)
 const releaseChannel = isTagged
-  ? prerelease(releaseId) !== null
+  ? semver.prerelease(releaseId) !== null
     ? 'stable'
     : 'prerelease'
   : 'main';
