@@ -1,10 +1,11 @@
 import {Route, RouteComponentProps} from 'react-router-dom';
-import styled from '@emotion/styled';
 
-import {StoreContext} from 'src/shared/store/context';
+import styled from '@emotion/styled';
 import FooterLogo from 'web/components/FooterLogo';
 import FooterStatus from 'web/components/FooterStatus';
 import {simpleAppKeyResolver, useWebsocketStore} from 'web/hooks/websocketStore';
+
+import {StoreContext} from 'src/shared/store/context';
 
 import {OAuthAuthorize, OAuthConnect} from './OAuth';
 

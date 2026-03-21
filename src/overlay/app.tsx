@@ -1,10 +1,11 @@
 import 'regenerator-runtime/runtime';
-import 'src/shared/sentry/web';
 
 import {render} from 'react-dom';
-import {io} from 'socket.io-client';
 
 import Router from 'overlay/Router';
+import {io} from 'socket.io-client';
+
+import 'src/shared/sentry/web';
 import {createAppStore} from 'src/shared/store';
 import {registerWebsocketListener} from 'src/shared/store/client';
 import {StoreContext} from 'src/shared/store/context';

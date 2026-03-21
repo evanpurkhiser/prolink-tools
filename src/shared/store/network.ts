@@ -4,8 +4,8 @@ import {debounce} from 'lodash';
 import {action, reaction, runInAction, when} from 'mobx';
 import {ConnectedProlinkNetwork, DeviceID, ProlinkNetwork} from 'prolink-connect';
 
-import {deviceReaction} from './utils';
 import {AppStore, DeviceStore, HydrationInfo, PlayedTrack} from '.';
+import {deviceReaction} from './utils';
 
 /**
  * Connect the electron main process's prolink network instance to the

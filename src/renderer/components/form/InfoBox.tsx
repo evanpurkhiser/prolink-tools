@@ -1,4 +1,5 @@
 import {Bookmark} from 'react-feather';
+
 import styled from '@emotion/styled';
 
 const InfoBox = styled(({children, ...p}: React.HTMLProps<HTMLDivElement>) => (

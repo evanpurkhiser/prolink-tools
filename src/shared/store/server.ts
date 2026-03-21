@@ -14,8 +14,8 @@ import {LATEST_API_VERSION} from 'src/shared/constants';
 import {ApiAppClientSocket, AppOverlayServer} from 'src/shared/websockeTypes';
 import {apiBaseUrl} from 'src/utils/urls';
 
-import {applyChanges, RegisterHandler, SerializedChange} from './ipc';
 import {AppConfig, AppStore} from '.';
+import {applyChanges, RegisterHandler, SerializedChange} from './ipc';
 
 /**
  * Load and deserialize the app config from the settings file

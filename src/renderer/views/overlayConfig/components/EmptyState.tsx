@@ -1,4 +1,5 @@
 import {Layers} from 'react-feather';
+
 import styled from '@emotion/styled';
 
 const EmptyState = () => (

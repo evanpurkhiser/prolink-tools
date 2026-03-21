@@ -3,6 +3,7 @@ import {ChromePicker, ColorResult} from 'react-color';
 import {X} from 'react-feather';
 import {usePopper} from 'react-popper';
 import {useClickAway} from 'react-use';
+
 import styled from '@emotion/styled';
 import {AnimatePresence, motion} from 'framer-motion';
 import {action, set} from 'mobx';

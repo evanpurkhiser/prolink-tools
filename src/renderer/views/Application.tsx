@@ -1,8 +1,9 @@
 import {MemoryRouter, Redirect, Route, Switch} from 'react-router-dom';
+
 import styled from '@emotion/styled';
+import Titlebar from 'ui/components/Titlebar';
 
 import Navigation from 'src/renderer/components/Navigation';
-import Titlebar from 'ui/components/Titlebar';
 
 import ApiConfig from './apiConfig';
 import Devices from './devices';

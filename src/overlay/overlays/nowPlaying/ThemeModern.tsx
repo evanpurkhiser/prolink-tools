@@ -1,5 +1,6 @@
 import React from 'react';
 import {Disc, X} from 'react-feather';
+
 import styled from '@emotion/styled';
 import {formatDistance} from 'date-fns';
 import {AnimatePresence, motion} from 'framer-motion';
@@ -10,8 +11,8 @@ import TimeTicker from 'src/shared/components/TimeTicker';
 import {PlayedTrack} from 'src/shared/store';
 import {idTrack} from 'src/utils/dummyData';
 
-import {Tags, tagsConfig} from './tags';
 import {ThemeComponentProps, ThemeDescriptor} from '.';
+import {Tags, tagsConfig} from './tags';
 
 const artToSrc = (d: Uint8Array | undefined) =>
   d && d.length > 0

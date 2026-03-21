@@ -1,4 +1,5 @@
 import React from 'react';
+
 import styled from '@emotion/styled';
 import {AnimatePresence, motion} from 'framer-motion';
 import {toJS} from 'mobx';
@@ -7,8 +8,8 @@ import {observer} from 'mobx-react';
 import {PlayedTrack} from 'src/shared/store';
 import {idTrack} from 'src/utils/dummyData';
 
-import {Tags, tagsConfig} from './tags';
 import {ThemeComponentProps, ThemeDescriptor} from '.';
+import {Tags, tagsConfig} from './tags';
 
 type MotionDivProps = React.ComponentProps<typeof motion.div>;
 

@@ -10,10 +10,10 @@ import {
 import {observeStore} from 'src/shared/store/ipc';
 import {ApiAppServerSocket, ApiExternalServerSocket} from 'src/shared/websockeTypes';
 
+import {apiStore, internalStore} from '.';
 import {nightbotLinkApp} from './integrations/nightbot';
 import {Connection} from './internalStore';
 import {AppHandshake, ConnectionState} from './types';
-import {apiStore, internalStore} from '.';
 
 /**
  * Matches the ingest namespace, where the matched group is the private API key

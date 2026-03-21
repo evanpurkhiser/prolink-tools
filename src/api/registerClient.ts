@@ -1,7 +1,7 @@
 import {ApiExternalServerSocket} from 'src/shared/websockeTypes';
 
-import {listenOAuthAuthorize} from './integrations/oauth';
 import {internalStore} from '.';
+import {listenOAuthAuthorize} from './integrations/oauth';
 
 /**
  * Matches the store namespace. The matched group is the AppKey which allows us

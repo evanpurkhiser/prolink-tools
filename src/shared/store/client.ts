@@ -5,8 +5,8 @@ import {deserialize} from 'serializr';
 
 import {ApiAppServerSocket, AppOverlayClientSocket} from 'src/shared/websockeTypes';
 
-import {applyChanges, observeStore, SerializedChange} from './ipc';
 import {AppStore} from '.';
+import {applyChanges, observeStore, SerializedChange} from './ipc';
 
 function applyConfigLockedChange(
   store: AppStore,

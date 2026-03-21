@@ -1,5 +1,6 @@
 import {useEffect} from 'react';
 import {BrowserRouter, Route, RouteComponentProps} from 'react-router-dom';
+
 import {Global} from '@emotion/react';
 
 import globalCss from 'src/shared/globalCss';

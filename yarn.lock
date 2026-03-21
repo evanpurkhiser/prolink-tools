@@ -1467,6 +1467,13 @@
     eslint-plugin-react "^7.23.1"
     eslint-plugin-simple-import-sort "^7.0.0"
 
+"@evanpurkhiser/oxc-config@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@evanpurkhiser/oxc-config/-/oxc-config-0.4.0.tgz#26166ad3558d343905ea2b3cc03942ca164070f3"
+  integrity sha512-taIsXcwyl97OaiIGbmEvTWZ/6KK0XlkHY4toedbIJXOm1yapvJIOWKhxDEysCC1Z9vNTI50w1KeqvcXmEoURCg==
+  dependencies:
+    eslint-plugin-simple-import-sort "^12.1.1"
+
 "@hapi/boom@9.x.x":
   version "9.1.2"
   resolved "https://registry.yarnpkg.com/@hapi/boom/-/boom-9.1.2.tgz#48bd41d67437164a2d636e3b5bc954f8c8dc5e38"
@@ -6700,6 +6707,11 @@ eslint-plugin-react@^7.23.1:
     prop-types "^15.7.2"
     resolve "^2.0.0-next.3"
     string.prototype.matchall "^4.0.4"
+
+eslint-plugin-simple-import-sort@^12.1.1:
+  version "12.1.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-simple-import-sort/-/eslint-plugin-simple-import-sort-12.1.1.tgz#e64bfdaf91c5b98a298619aa634a9f7aa43b709e"
+  integrity sha512-6nuzu4xwQtE3332Uz0to+TxDQYRLTKRESSc2hefVT48Zc8JthmN23Gx9lnYhu0FtkRSL1oxny3kJ2aveVhmOVA==
 
 eslint-plugin-simple-import-sort@^7.0.0:
   version "7.0.0"

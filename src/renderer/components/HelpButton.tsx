@@ -1,5 +1,6 @@
 import {Fragment} from 'react';
 import {HelpCircle} from 'react-feather';
+
 import styled from '@emotion/styled';
 
 import LogoBig from 'src/shared/components/LogoBig';

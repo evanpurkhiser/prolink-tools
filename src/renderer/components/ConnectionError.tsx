@@ -1,4 +1,5 @@
 import {AlertCircle} from 'react-feather';
+
 import styled from '@emotion/styled';
 
 const ConnectionError = () => (

@@ -1,6 +1,5 @@
 import 'core-js';
 import 'tsconfig-paths/register';
-import 'src/shared/sentry/api';
 
 import Router from '@koa/router';
 import Koa from 'koa';
@@ -10,6 +9,7 @@ import {Server as SocketServer} from 'socket.io';
 
 import {createServer} from 'http';
 
+import 'src/shared/sentry/api';
 import {observeStore} from 'src/shared/store/ipc';
 import {ApiServer} from 'src/shared/websockeTypes';
 import trackFormat from 'src/utils/trackFormat';
