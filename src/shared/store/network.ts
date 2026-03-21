@@ -39,7 +39,7 @@ const connectDevices = (store: AppStore, network: ConnectedProlinkNetwork) => {
   const deviceEntries = deviceList.map(d => [d.id, new DeviceStore(d)]);
 
   runInAction(() =>
-    store.devices.replace(new Map(deviceEntries as [DeviceID, DeviceStore][])),
+    store.devices.replace(new Map(deviceEntries as Array<[DeviceID, DeviceStore]>)),
   );
 
   // Create device stores for new devices

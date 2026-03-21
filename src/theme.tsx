@@ -6,7 +6,7 @@ import {ConnectionState} from 'src/api/types';
 export type ProlinkTheme = typeof light;
 
 declare module '@emotion/react' {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  // oxlint-disable-next-line @typescript-eslint/no-empty-interface
   export interface Theme extends ProlinkTheme {}
 }
 

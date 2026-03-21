@@ -135,7 +135,7 @@ export const applyChanges = action(
       objChange.newValue !== null &&
       objChange.newValue !== undefined
     ) {
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      // oxlint-disable-next-line @typescript-eslint/no-empty-function
       update(serializeSchema, target, {[objChange.name]: getNewValue()}, () => {});
       return;
     }

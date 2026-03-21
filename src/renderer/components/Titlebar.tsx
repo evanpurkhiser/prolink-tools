@@ -32,11 +32,14 @@ const Toolbar = ({store}: Props) => {
     process.env.RELEASE_CHANNEL === 'stable';
 
   // Open the release notes modal on first run
+  // TODO figure out if it's safe to pass all deps
+  /* oxlint-disable react-hooks/exhaustive-deps */
   React.useEffect(() => {
     if (isNewVersion) {
       setTimeout(() => openNotesModal(true, {hideUnreleased: true}), 500);
     }
   }, [isNewVersion]);
+  /* oxlint-enable react-hooks/exhaustive-deps */
 
   return (
     <Container>

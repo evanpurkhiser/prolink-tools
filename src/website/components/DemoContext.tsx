@@ -15,6 +15,8 @@ type Props = {
 const DemoContext = ({demoRoutine, children}: Props) => {
   const [demoStore] = useState(createAppStore());
 
+  // TODO figure out if it's safe to pass all deps
+  // oxlint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => void demoRoutine.run(demoStore), []);
 
   return <StoreContext.Provider value={demoStore}>{children}</StoreContext.Provider>;

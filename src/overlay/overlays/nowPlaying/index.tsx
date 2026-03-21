@@ -94,7 +94,7 @@ export type ThemeDescriptor = {
   /**
    * Enabled settings for this theme
    */
-  enabledConfigs: Exclude<keyof NowPlayingConfig, 'theme'>[];
+  enabledConfigs: Array<Exclude<keyof NowPlayingConfig, 'theme'>>;
 };
 
 type ExampleProps = {

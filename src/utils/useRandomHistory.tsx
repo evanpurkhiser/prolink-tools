@@ -40,12 +40,15 @@ const useRandomHistory = ({enabled, cutoff, updateInterval}: Options) => {
     }
   };
 
+  // TODO figure out if it's safe to pass all deps
+  /* oxlint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     startUpdater();
     return () => {
       isUpdating = false;
     };
   }, [enabled, cutoff, updateInterval]);
+  /* oxlint-enable react-hooks/exhaustive-deps */
 
   return history;
 };

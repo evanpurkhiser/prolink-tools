@@ -54,6 +54,8 @@ export const OAuthAuthorize = observer(({store, appSocket}: Props) => {
     });
   };
 
+  // TODO figure out if it's safe to pass all deps
+  // oxlint-disable-next-line react-hooks/exhaustive-deps
   useEffect(handleAuthorize, [oauthState, code]);
 
   if (oauthState === null) {

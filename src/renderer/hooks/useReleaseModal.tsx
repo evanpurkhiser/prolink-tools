@@ -208,47 +208,55 @@ type InitOptions = {
   latestRelease: LatestRelease;
 };
 
+const ReleaseModalContent = ({
+  Modal,
+  hideUnreleased,
+  latestRelease,
+}: Props & InitOptions) => {
+  const [changelog, setChangelog] = useState<null | string>(null);
+
+  const fetchChangelog = async () => {
+    const resp = await fetch(
+      `https://raw.githubusercontent.com/${GITHUB_REPO.owner}/${GITHUB_REPO.repo}/main/CHANGELOG.md`,
+    );
+    const text = await resp.text();
+    setChangelog(text);
+  };
+
+  useEffect(() => void fetchChangelog(), []);
+
+  if (changelog === null) {
+    return null;
+  }
+
+  const hasNewVersion =
+    latestRelease &&
+    process.env.RELEASE_CHANNEL === 'stable' &&
+    process.env.RELEASE !== latestRelease.name;
+
+  return (
+    <Modal>
+      <ModalHeader>
+        <h1>What&apos;s new in Prolink Tools</h1>
+        {latestRelease && hasNewVersion ? (
+          <NewVersionButton onClick={() => location.assign(latestRelease.html_url)}>
+            Download {latestRelease.name}
+          </NewVersionButton>
+        ) : (
+          <LatestVersionOk />
+        )}
+      </ModalHeader>
+      {renderChangelog(changelog, {hideUnreleased})}
+    </Modal>
+  );
+};
+
 const useReleaseModal = ({latestRelease}: InitOptions) =>
   useModal(
-    ({Modal, hideUnreleased}: Props) => {
-      const [changelog, setChangelog] = useState<null | string>(null);
-
-      const fetchChangelog = async () => {
-        const resp = await fetch(
-          `https://raw.githubusercontent.com/${GITHUB_REPO.owner}/${GITHUB_REPO.repo}/main/CHANGELOG.md`,
-        );
-        const text = await resp.text();
-        setChangelog(text);
-      };
-
-      useEffect(() => void fetchChangelog(), []);
-
-      if (changelog === null) {
-        return null;
-      }
-
-      const hasNewVersion =
-        latestRelease &&
-        process.env.RELEASE_CHANNEL === 'stable' &&
-        process.env.RELEASE !== latestRelease.name;
-
-      return (
-        <Modal>
-          <ModalHeader>
-            <h1>What&apos;s new in Prolink Tools</h1>
-            {latestRelease && hasNewVersion ? (
-              <NewVersionButton onClick={() => location.assign(latestRelease.html_url)}>
-                Download {latestRelease.name}
-              </NewVersionButton>
-            ) : (
-              <LatestVersionOk />
-            )}
-          </ModalHeader>
-          {renderChangelog(changelog, {hideUnreleased})}
-        </Modal>
-      );
+    (props: Props) => <ReleaseModalContent {...props} latestRelease={latestRelease} />,
+    {
+      canClickOut: false,
     },
-    {canClickOut: false},
   );
 
 const ModalHeader = styled('header')`

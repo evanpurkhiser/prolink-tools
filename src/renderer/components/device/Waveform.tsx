@@ -162,6 +162,8 @@ type Props = {
 const Waveform = ({store, deviceId}: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
+  // TODO figure out if it's safe to pass all deps
+  // oxlint-disable-next-line react-hooks/exhaustive-deps
   React.useEffect(() => drawScrollingWaveform(store, deviceId, canvasRef.current!), []);
 
   return (

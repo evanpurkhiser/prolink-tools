@@ -45,6 +45,8 @@ export function useWebsocketStore(resolver: AppKeyResolver) {
     setStore(connectedStore);
   };
 
+  // TODO figure out if it's safe to pass all deps
+  // oxlint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => void connectStore(), []);
 
   return [store, appWs] as const;
