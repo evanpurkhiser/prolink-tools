@@ -2,6 +2,7 @@ import {ThemeProvider} from '@emotion/react';
 import styled from '@emotion/styled';
 import {action, set} from 'mobx';
 import {observer} from 'mobx-react';
+
 import Checkbox from 'ui/components/form/Checkbox';
 
 type Props = {

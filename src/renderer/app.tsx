@@ -6,13 +6,13 @@ import {Global} from '@emotion/react';
 import * as Sentry from '@sentry/electron';
 import {Mutex} from 'async-mutex';
 import {when} from 'mobx';
-import Application from 'ui/views/Application';
 
 import ThemeProvider from 'src/shared/components/ThemeProvider';
 import globalCss, {background, noSelect} from 'src/shared/globalCss';
 import {createAppStore} from 'src/shared/store';
 import {registerRendererConfigIpc, registerRendererIpc} from 'src/shared/store/client';
 import {StoreContext} from 'src/shared/store/context';
+import Application from 'ui/views/Application';
 
 const mainElement = document.createElement('div');
 document.body.appendChild(mainElement);

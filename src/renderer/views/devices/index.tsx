@@ -5,6 +5,9 @@ import {AnimatePresence, motion} from 'framer-motion';
 import {groupBy} from 'lodash';
 import {observer} from 'mobx-react';
 import {DeviceType, NetworkState} from 'prolink-connect/lib/types';
+
+import {AppStore, DeviceStore} from 'src/shared/store';
+import withStore from 'src/utils/withStore';
 import ConnectingSplash from 'ui/components/ConnectingSplash';
 import ConnectionError from 'ui/components/ConnectionError';
 import BeatCounter from 'ui/components/device/BeatCounter';
@@ -16,9 +19,6 @@ import PlayState from 'ui/components/device/PlayState';
 import IconCdj from 'ui/icons/cdj';
 import IconDjm from 'ui/icons/djm';
 import IconRekordbox from 'ui/icons/rekordbox';
-
-import {AppStore, DeviceStore} from 'src/shared/store';
-import withStore from 'src/utils/withStore';
 
 const sortById = (a: DeviceStore, b: DeviceStore) => a.device.id - b.device.id;
 

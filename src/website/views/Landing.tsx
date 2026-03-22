@@ -3,15 +3,15 @@ import {Box} from 'react-feather';
 import {css} from '@emotion/react';
 import styled from '@emotion/styled';
 import {motion, Variants} from 'framer-motion';
+
+import LogoBig from 'src/shared/components/LogoBig';
+import {noSelect} from 'src/shared/globalCss';
 import Application from 'ui/views/Application';
 import ActivityLink from 'web/components/ActivityLink';
 import DemoContext from 'web/components/DemoContext';
 import DownloadCta from 'web/components/DownloadCta';
 import {ExampleConfig, ExampleOverlay} from 'web/components/OverlayExamples';
 import playingTracksRoutine from 'web/demo/playingTracks';
-
-import LogoBig from 'src/shared/components/LogoBig';
-import {noSelect} from 'src/shared/globalCss';
 
 const animateInfo: Variants = {
   initial: {

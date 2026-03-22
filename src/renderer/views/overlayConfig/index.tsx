@@ -4,6 +4,7 @@ import {ArrowLeft, Plus} from 'react-feather';
 import styled from '@emotion/styled';
 import {AnimatePresence} from 'framer-motion';
 import {observer} from 'mobx-react';
+
 import ActionButton from 'ui/components/ActionButton';
 import {Header, HeaderInfo} from 'ui/components/PaneHeader';
 

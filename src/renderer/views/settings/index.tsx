@@ -4,17 +4,17 @@ import styled from '@emotion/styled';
 import {action, set} from 'mobx';
 import {observer} from 'mobx-react';
 import {MixstatusMode} from 'prolink-connect/lib/types';
-import Checkbox from 'ui/components/form/Checkbox';
-import Field from 'ui/components/form/Field';
-import InfoBox from 'ui/components/form/InfoBox';
-import Radio from 'ui/components/form/Radio';
-import Text from 'ui/components/form/Text';
 
 import Select from 'src/renderer/components/form/Select';
 import Tag from 'src/shared/components/Tag';
 import Tooltip from 'src/shared/components/tooltip';
 import {AppStore} from 'src/shared/store';
 import withStore from 'src/utils/withStore';
+import Checkbox from 'ui/components/form/Checkbox';
+import Field from 'ui/components/form/Field';
+import InfoBox from 'ui/components/form/InfoBox';
+import Radio from 'ui/components/form/Radio';
+import Text from 'ui/components/form/Text';
 
 type Props = {
   store: AppStore;

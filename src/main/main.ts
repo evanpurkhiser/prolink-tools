@@ -1,11 +1,6 @@
 import 'regenerator-runtime/runtime';
 
 import {app, BrowserWindow, nativeTheme, shell} from 'electron';
-import {runConfigMigrations} from 'main/configMigrations';
-import {registerDebuggingEventsService} from 'main/debugEvents';
-import {setupMenu} from 'main/menu';
-import {startOverlayServer} from 'main/overlayServer';
-import {setupSaveHistory} from 'main/saveHistory';
 import {reaction, runInAction, set, when} from 'mobx';
 import fetch from 'node-fetch';
 import {bringOnline, NetworkState, ProlinkNetwork} from 'prolink-connect';
@@ -13,6 +8,11 @@ import {bringOnline, NetworkState, ProlinkNetwork} from 'prolink-connect';
 import * as path from 'path';
 import * as url from 'url';
 
+import {runConfigMigrations} from 'main/configMigrations';
+import {registerDebuggingEventsService} from 'main/debugEvents';
+import {setupMenu} from 'main/menu';
+import {startOverlayServer} from 'main/overlayServer';
+import {setupSaveHistory} from 'main/saveHistory';
 import {userInfo} from 'src/shared/sentry/main';
 import {AppStore, createAppStore} from 'src/shared/store';
 import {observeStore} from 'src/shared/store/ipc';
