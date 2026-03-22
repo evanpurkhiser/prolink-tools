@@ -4,11 +4,10 @@ import webpack from 'webpack';
 import {merge} from 'webpack-merge';
 
 import path from 'path';
-import {fileURLToPath} from 'url';
 
 import {baseConfig, hotReloadPlugins, IS_PROD} from './webpack.config.base.ts';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const projectRoot = process.cwd();
 
 const rendererConfig: webpack.Configuration = merge(baseConfig, {
   target: 'electron-renderer',
@@ -17,7 +16,7 @@ const rendererConfig: webpack.Configuration = merge(baseConfig, {
     sentry: './src/shared/sentry/renderer.ts',
   },
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
+    contentBase: path.join(projectRoot, 'dist'),
     historyApiFallback: true,
     port: 2003,
     hot: true,

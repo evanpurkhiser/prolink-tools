@@ -4,22 +4,21 @@ import webpack from 'webpack';
 import {merge} from 'webpack-merge';
 
 import path from 'path';
-import {fileURLToPath} from 'url';
 
 import {baseConfig, hotReloadPlugins} from './webpack.config.base.ts';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const projectRoot = process.cwd();
 
 const overlayConfig: webpack.Configuration = merge(baseConfig, {
   entry: {
     overlay: './src/overlay/app.tsx',
   },
   output: {
-    path: path.resolve(__dirname, 'dist/overlay'),
+    path: path.resolve(projectRoot, 'dist/overlay'),
     publicPath: '/',
   },
   devServer: {
-    contentBase: path.join(__dirname, 'dist/overlay'),
+    contentBase: path.join(projectRoot, 'dist/overlay'),
     historyApiFallback: true,
     port: 2005,
     hot: true,

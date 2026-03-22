@@ -4,22 +4,21 @@ import webpack from 'webpack';
 import {merge} from 'webpack-merge';
 
 import path from 'path';
-import {fileURLToPath} from 'url';
 
 import {baseConfig, hotReloadPlugins} from './webpack.config.base.ts';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const projectRoot = process.cwd();
 
 const websiteConfig: webpack.Configuration = merge(baseConfig, {
   entry: {
     app: './src/website/app.tsx',
   },
   output: {
-    path: path.resolve(__dirname, 'dist/website'),
+    path: path.resolve(projectRoot, 'dist/website'),
     publicPath: '/',
   },
   devServer: {
-    contentBase: path.join(__dirname, 'dist/website'),
+    contentBase: path.join(projectRoot, 'dist/website'),
     historyApiFallback: true,
     port: 2004,
     hot: true,

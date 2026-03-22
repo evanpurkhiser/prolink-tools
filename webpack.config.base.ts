@@ -4,11 +4,10 @@ import TerserPlugin from 'terser-webpack-plugin';
 import webpack from 'webpack';
 
 import path from 'path';
-import {fileURLToPath} from 'url';
 
 import {commit, releaseChannel, releaseId} from './scripts/release.ts';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const projectRoot = process.cwd();
 
 export const IS_PROD = process.env.NODE_ENV === 'production';
 
@@ -34,7 +33,7 @@ export const baseConfig: webpack.Configuration = {
   mode: IS_PROD ? 'production' : 'development',
 
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(projectRoot, 'dist'),
     filename: '[name].js',
   },
   node: {
@@ -45,12 +44,12 @@ export const baseConfig: webpack.Configuration = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.ttf'],
     alias: {
-      src: path.resolve(__dirname, 'src/'),
-      main: path.resolve(__dirname, 'src/main/'),
-      ui: path.resolve(__dirname, 'src/renderer/'),
-      overlay: path.resolve(__dirname, 'src/overlay/'),
-      web: path.resolve(__dirname, 'src/website/'),
-      api: path.resolve(__dirname, 'src/api/'),
+      src: path.resolve(projectRoot, 'src/'),
+      main: path.resolve(projectRoot, 'src/main/'),
+      ui: path.resolve(projectRoot, 'src/renderer/'),
+      overlay: path.resolve(projectRoot, 'src/overlay/'),
+      web: path.resolve(projectRoot, 'src/website/'),
+      api: path.resolve(projectRoot, 'src/api/'),
     },
   },
   devtool: IS_PROD ? 'source-map' : 'eval-source-map',
