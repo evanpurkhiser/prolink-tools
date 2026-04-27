@@ -30,15 +30,7 @@ const websiteConfig: webpack.Configuration = merge(baseConfig, {
     rules: [
       {
         test: /\.(gif|png|jpe?g|svg|mp4|webm)$/,
-        use: [
-          'file-loader',
-          {
-            loader: 'image-webpack-loader',
-            options: {
-              disable: true,
-            },
-          },
-        ],
+        use: ['file-loader'],
       },
       {
         test: /\.ttf$/,

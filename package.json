@@ -98,7 +98,6 @@
     "framer-motion": "^4.1.17",
     "html-webpack-plugin": "^5.3.1",
     "http-proxy": "^1.18.1",
-    "image-webpack-loader": "^7.0.1",
     "ip-address": "^7.0.1",
     "koa": "^2.13.1",
     "lodash": "^4.17.21",
