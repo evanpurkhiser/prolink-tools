@@ -26,14 +26,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
         include:
-          - os: ubuntu-latest
+          - os: ubuntu-24.04
             ext: tar.gz
+            arch: x64
+          - os: ubuntu-24.04-arm
+            ext: tar.gz
+            arch: arm64
           - os: windows-latest
             ext: exe
-          - os: macos-latest
+            arch: x64
+          - os: macos-14
             ext: dmg
+            arch: universal
     steps:
       - uses: actions/checkout@v3
       - uses: volta-cli/action@v4
@@ -46,25 +51,25 @@ jobs:
       - name: Set dev-build artifact name
         shell: bash
         if: ${{ github.ref == 'refs/heads/main' }}
-        run: echo "$(jq -r '.build.artifactName="${name}-dev-'"$(git rev-parse --short HEAD)"'-${os}.${ext}"' package.json)" > package.json
+        run: echo "$(jq -r '.build.artifactName="${name}-dev-'"$(git rev-parse --short HEAD)"'-${os}-${arch}.${ext}"' package.json)" > package.json
 
       # Build
       - run: yarn electron-builder install-app-deps
       - run: yarn build-main
       - run: yarn build-renderer
       - run: yarn build-overlay
-      - run: yarn dist
+      - run: yarn dist --${{ matrix.arch }}
 
       # Upload built executables
       - name: Upload executable
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.os }}
+          name: ${{ matrix.os }}-${{ matrix.arch }}
           path: ${{ github.workspace }}/release/*.${{ matrix.ext }}
 
       # Upload sourcemaps (only once)
       - name: Upload sourcemaps
-        if: ${{ matrix.os == 'ubuntu-latest' }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.arch == 'x64' }}
         uses: actions/upload-artifact@v4
         with:
           name: sourcemaps
@@ -82,11 +87,18 @@ jobs:
           path: release
       - name: Locate release files
         id: locate
+        shell: bash
         run: |
-          echo ::set-output name=macos::$(ls ${{ github.workspace }}/release/macos-latest/*)
-          echo ::set-output name=ubuntu::$(ls ${{ github.workspace }}/release/ubuntu-latest/*)
-          echo ::set-output name=windows::$(ls ${{ github.workspace }}/release/windows-latest/*)
-          echo ::set-output name=sourcemaps::${{ github.workspace }}/release/sourcemaps
+          {
+            echo "macos<<EOF"
+            ls ${{ github.workspace }}/release/macos-*/*
+            echo EOF
+            echo "ubuntu<<EOF"
+            ls ${{ github.workspace }}/release/ubuntu-*/*
+            echo EOF
+            echo "windows=$(ls ${{ github.workspace }}/release/windows-latest-x64/*)"
+            echo "sourcemaps=${{ github.workspace }}/release/sourcemaps"
+          } >> "$GITHUB_OUTPUT"
       - name: Release latest main
         uses: marvinpinto/action-automatic-releases@latest
         if: ${{ github.ref == 'refs/heads/main' }}
