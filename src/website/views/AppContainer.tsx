@@ -1,4 +1,5 @@
-import {Route, RouteComponentProps} from 'react-router-dom';
+import type {RouteComponentProps} from 'react-router-dom';
+import {Route} from 'react-router-dom';
 
 import styled from '@emotion/styled';
 

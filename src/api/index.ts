@@ -11,7 +11,7 @@ import {createServer} from 'http';
 
 import 'src/shared/sentry/api';
 import {observeStore} from 'src/shared/store/ipc';
-import {ApiServer} from 'src/shared/websockeTypes';
+import type {ApiServer} from 'src/shared/websockeTypes';
 import trackFormat from 'src/utils/trackFormat';
 
 import {ApiStore, createApiStore} from './apiStore';

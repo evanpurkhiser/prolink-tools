@@ -1,8 +1,9 @@
 import {action, reaction, runInAction} from 'mobx';
-import {AccessToken, AuthorizationCode} from 'simple-oauth2';
+import type {AccessToken} from 'simple-oauth2';
+import {AuthorizationCode} from 'simple-oauth2';
 
 import {internalStore} from 'src/api';
-import {AppKey, Connection} from 'src/api/internalStore';
+import type {AppKey, Connection} from 'src/api/internalStore';
 
 const nightbotApi = 'https://api.nightbot.tv';
 

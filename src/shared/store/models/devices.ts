@@ -1,6 +1,6 @@
 import * as ip from 'ip-address';
 import {computed, makeObservable, observable, toJS} from 'mobx';
-import {
+import type {
   CDJStatus,
   Device,
   FetchProgress,

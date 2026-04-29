@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 
-import {PlayedTrack} from 'src/shared/store';
+import type {PlayedTrack} from 'src/shared/store';
 
 import {makeRandomTrack} from './randomMetadata';
 

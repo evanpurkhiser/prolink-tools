@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 
 import {request} from '@octokit/request';
-import {Endpoints} from '@octokit/types';
+import type {Endpoints} from '@octokit/types';
 
 import {GITHUB_REPO} from 'src/shared/constants';
 

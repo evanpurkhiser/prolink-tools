@@ -1,12 +1,13 @@
-import {Mutex} from 'async-mutex';
+import type {Mutex} from 'async-mutex';
 import {ipcRenderer} from 'electron';
 import {action, set} from 'mobx';
 import {deserialize} from 'serializr';
 
-import {ApiAppServerSocket, AppOverlayClientSocket} from 'src/shared/websockeTypes';
+import type {ApiAppServerSocket, AppOverlayClientSocket} from 'src/shared/websockeTypes';
 
 import {AppStore} from '.';
-import {applyChanges, observeStore, SerializedChange} from './ipc';
+import type {SerializedChange} from './ipc';
+import {applyChanges, observeStore} from './ipc';
 
 function applyConfigLockedChange(
   store: AppStore,

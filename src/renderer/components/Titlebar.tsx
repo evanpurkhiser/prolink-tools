@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 
 import useReleaseModal from 'src/renderer/hooks/useReleaseModal';
 import Tooltip from 'src/shared/components/tooltip';
-import {AppStore} from 'src/shared/store';
+import type {AppStore} from 'src/shared/store';
 import useRelease from 'src/utils/useLatestRelease';
 import withStore from 'src/utils/withStore';
 

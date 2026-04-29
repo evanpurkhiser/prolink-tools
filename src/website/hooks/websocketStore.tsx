@@ -3,8 +3,8 @@ import {useEffect, useState} from 'react';
 import {io} from 'socket.io-client';
 
 import {connectToAppStore} from 'src/shared/api/client';
-import {AppStore} from 'src/shared/store';
-import {ApiClientSocket, ApiExternalClientSocket} from 'src/shared/websockeTypes';
+import type {AppStore} from 'src/shared/store';
+import type {ApiClientSocket, ApiExternalClientSocket} from 'src/shared/websockeTypes';
 import {apiBaseUrl} from 'src/utils/urls';
 
 /**

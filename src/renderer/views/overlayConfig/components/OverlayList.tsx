@@ -5,8 +5,9 @@ import styled from '@emotion/styled';
 import {action} from 'mobx';
 import {observer} from 'mobx-react';
 
-import {OverlayInstance, registeredOverlays} from 'src/overlay';
-import {AppStore} from 'src/shared/store';
+import type {OverlayInstance} from 'src/overlay';
+import {registeredOverlays} from 'src/overlay';
+import type {AppStore} from 'src/shared/store';
 import {overlayBaseUrl, webBaseUrl} from 'src/utils/urls';
 import withStore from 'src/utils/withStore';
 

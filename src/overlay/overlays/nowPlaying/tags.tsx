@@ -1,6 +1,6 @@
 import {Activity, Code, Disc, Hash, Layers} from 'react-feather';
 
-import {PlayedTrack} from 'src/shared/store';
+import type {PlayedTrack} from 'src/shared/store';
 
 /**
  * Tags that can be shown on any of the now playing themes

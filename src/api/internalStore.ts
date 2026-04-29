@@ -1,10 +1,11 @@
 import {remove} from 'lodash';
-import {action, computed, IObservableArray, makeAutoObservable, observable} from 'mobx';
+import type {IObservableArray} from 'mobx';
+import {action, computed, makeAutoObservable, observable} from 'mobx';
 
 import {createHash} from 'crypto';
 
-import {AppStore} from 'src/shared/store';
-import {ApiAppServerSocket, ApiExternalServerSocket} from 'src/shared/websockeTypes';
+import type {AppStore} from 'src/shared/store';
+import type {ApiAppServerSocket, ApiExternalServerSocket} from 'src/shared/websockeTypes';
 
 /**
  * An AppKey represents a global way to identify connected prolink tools

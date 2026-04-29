@@ -6,7 +6,7 @@ import {autorun, reaction, runInAction, when} from 'mobx';
 import {mkdir, writeFile} from 'fs/promises';
 import path from 'path';
 
-import {AppStore} from 'src/shared/store';
+import type {AppStore} from 'src/shared/store';
 import trackFormat from 'src/utils/trackFormat';
 import trackToObject from 'src/utils/trackToObject';
 

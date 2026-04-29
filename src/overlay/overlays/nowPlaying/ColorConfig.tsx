@@ -1,5 +1,6 @@
 import {useRef, useState} from 'react';
-import {ChromePicker, ColorResult} from 'react-color';
+import type {ColorResult} from 'react-color';
+import {ChromePicker} from 'react-color';
 import {X} from 'react-feather';
 import {usePopper} from 'react-popper';
 import {useClickAway} from 'react-use';
@@ -9,7 +10,7 @@ import {AnimatePresence, motion} from 'framer-motion';
 import {action, set} from 'mobx';
 import {observer} from 'mobx-react';
 
-import {NowPlayingConfig} from '.';
+import type {NowPlayingConfig} from '.';
 
 type Props = {
   config: NowPlayingConfig;

@@ -1,4 +1,4 @@
-import {AppStore} from 'src/shared/store';
+import type {AppStore} from 'src/shared/store';
 
 type Control = {
   /**

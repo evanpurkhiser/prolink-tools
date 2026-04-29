@@ -5,11 +5,11 @@ import styled from '@emotion/styled';
 import {action, set} from 'mobx';
 import {observer} from 'mobx-react';
 
-import {OverlayDescriptor} from 'src/overlay';
+import type {OverlayDescriptor} from 'src/overlay';
 import DemoSwitch from 'src/overlay/components/demoSwitch';
 import LiveHistoryIndicator from 'src/overlay/components/liveHistoryIndicator';
 import Select from 'src/renderer/components/form/Select';
-import {AppConfig, AppStore, PlayedTrack} from 'src/shared/store';
+import type {AppConfig, AppStore, PlayedTrack} from 'src/shared/store';
 import useRandomHistory from 'src/utils/useRandomHistory';
 import withStore from 'src/utils/withStore';
 import Checkbox from 'ui/components/form/Checkbox';
@@ -17,7 +17,8 @@ import Field from 'ui/components/form/Field';
 import Text from 'ui/components/form/Text';
 
 import ColorConfig from './ColorConfig';
-import {availableTags, Tags} from './tags';
+import type {Tags} from './tags';
+import {availableTags} from './tags';
 import themeAsot from './ThemeAsot';
 import themeModern from './ThemeModern';
 

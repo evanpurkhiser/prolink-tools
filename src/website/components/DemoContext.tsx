@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 
 import {createAppStore} from 'src/shared/store';
 import {StoreContext} from 'src/shared/store/context';
-import Routine from 'src/website/demo/routine';
+import type Routine from 'src/website/demo/routine';
 
 type Props = {
   /**

@@ -1,6 +1,6 @@
-import {AppKey} from 'src/api/internalStore';
-import {OAuthProvider} from 'src/shared/store/types';
-import {ApiExternalServerSocket} from 'src/shared/websockeTypes';
+import type {AppKey} from 'src/api/internalStore';
+import type {OAuthProvider} from 'src/shared/store/types';
+import type {ApiExternalServerSocket} from 'src/shared/websockeTypes';
 
 import {handleAuthorize as nightbotAuthorize} from './nightbot';
 

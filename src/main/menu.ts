@@ -1,6 +1,6 @@
 import {app, Menu, shell} from 'electron';
 
-import {AppStore} from 'src/shared/store';
+import type {AppStore} from 'src/shared/store';
 import playingTracksRoutine from 'src/website/demo/playingTracks';
 
 import {isDev} from './main';

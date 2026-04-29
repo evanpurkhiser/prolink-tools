@@ -1,10 +1,10 @@
-import {Server, Socket as ServerSocket} from 'socket.io';
-import {Socket as ClientSocket} from 'socket.io-client';
+import type {Server, Socket as ServerSocket} from 'socket.io';
+import type {Socket as ClientSocket} from 'socket.io-client';
 
-import {AppHandshake} from 'src/api/types';
-import {SerializedChange} from 'src/shared/store/ipc';
+import type {AppHandshake} from 'src/api/types';
+import type {SerializedChange} from 'src/shared/store/ipc';
 
-import {OAuthProvider} from './store/types';
+import type {OAuthProvider} from './store/types';
 
 type NoEvents = Record<string, never>;
 

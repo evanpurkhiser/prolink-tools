@@ -7,8 +7,8 @@ import styled from '@emotion/styled';
 import {observer} from 'mobx-react';
 
 import Loading from 'src/shared/components/Loading';
-import {AppStore} from 'src/shared/store';
-import {ApiExternalClientSocket} from 'src/shared/websockeTypes';
+import type {AppStore} from 'src/shared/store';
+import type {ApiExternalClientSocket} from 'src/shared/websockeTypes';
 
 type Props = {
   store: AppStore;

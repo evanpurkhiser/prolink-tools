@@ -2,20 +2,24 @@ import {Mutex} from 'async-mutex';
 import {ipcMain} from 'electron';
 import settings from 'electron-settings';
 import {runInAction, set} from 'mobx';
-import {deepObserve, IDisposer} from 'mobx-utils';
+import type {IDisposer} from 'mobx-utils';
+import {deepObserve} from 'mobx-utils';
 import {deserialize, serialize} from 'serializr';
 import {Server as WebsocketServer} from 'socket.io';
 import {io} from 'socket.io-client';
 
-import http from 'http';
+import type http from 'http';
 
-import {AppHandshake, ConnectionState} from 'src/api/types';
+import type {AppHandshake} from 'src/api/types';
+import {ConnectionState} from 'src/api/types';
 import {LATEST_API_VERSION} from 'src/shared/constants';
-import {ApiAppClientSocket, AppOverlayServer} from 'src/shared/websockeTypes';
+import type {ApiAppClientSocket, AppOverlayServer} from 'src/shared/websockeTypes';
 import {apiBaseUrl} from 'src/utils/urls';
 
-import {AppConfig, AppStore} from '.';
-import {applyChanges, RegisterHandler, SerializedChange} from './ipc';
+import type {AppStore} from '.';
+import {AppConfig} from '.';
+import type {RegisterHandler, SerializedChange} from './ipc';
+import {applyChanges} from './ipc';
 
 /**
  * Load and deserialize the app config from the settings file

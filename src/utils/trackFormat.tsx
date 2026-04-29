@@ -1,4 +1,4 @@
-import {Track} from 'prolink-connect/lib/types';
+import type {Track} from 'prolink-connect/lib/types';
 
 import trackToObject from './trackToObject';
 

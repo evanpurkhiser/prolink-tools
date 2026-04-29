@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import {Device} from 'prolink-connect/lib/types';
+import type {Device} from 'prolink-connect/lib/types';
 
 type Props = {
   device: Device;

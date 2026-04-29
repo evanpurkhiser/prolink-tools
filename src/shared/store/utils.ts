@@ -1,9 +1,10 @@
 import {identity} from 'lodash';
-import {IReactionDisposer, IReactionPublic, observe, reaction, toJS} from 'mobx';
-import {DeviceID} from 'prolink-connect/lib/types';
+import type {IReactionDisposer, IReactionPublic} from 'mobx';
+import {observe, reaction, toJS} from 'mobx';
+import type {DeviceID} from 'prolink-connect/lib/types';
 import {custom} from 'serializr';
 
-import {AppStore, DeviceStore} from '.';
+import type {AppStore, DeviceStore} from '.';
 
 /**
  * A wrapper on the mobx reaction API to add reactors for every device on the

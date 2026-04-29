@@ -1,10 +1,11 @@
 import {useEffect} from 'react';
-import {BrowserRouter, Route, RouteComponentProps} from 'react-router-dom';
+import type {RouteComponentProps} from 'react-router-dom';
+import {BrowserRouter, Route} from 'react-router-dom';
 
 import {Global} from '@emotion/react';
 
 import globalCss from 'src/shared/globalCss';
-import {AppStore} from 'src/shared/store';
+import type {AppStore} from 'src/shared/store';
 import withStore from 'src/utils/withStore';
 
 import MapOverlay from './components/MapOverlay';

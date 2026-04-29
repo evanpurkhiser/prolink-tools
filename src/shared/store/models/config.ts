@@ -1,9 +1,10 @@
 import {action, makeObservable, observable} from 'mobx';
-import {MixstatusConfig, MixstatusMode} from 'prolink-connect/lib/types';
+import type {MixstatusConfig} from 'prolink-connect/lib/types';
+import {MixstatusMode} from 'prolink-connect/lib/types';
 import {list, object, serializable} from 'serializr';
 import {uuid} from 'short-uuid';
 
-import {OverlayInstance} from 'src/overlay';
+import type {OverlayInstance} from 'src/overlay';
 import {rawJsSerialize} from 'src/shared/store/utils';
 
 import {CloudToolsConfig} from './configCloudTools';

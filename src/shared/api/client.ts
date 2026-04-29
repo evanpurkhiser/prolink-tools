@@ -4,7 +4,7 @@ import {createAppStore} from 'src/shared/store';
 import {registerWebsocketListener} from 'src/shared/store/client';
 import {apiBaseUrl} from 'src/utils/urls';
 
-import {ApiExternalClientSocket} from '../websockeTypes';
+import type {ApiExternalClientSocket} from '../websockeTypes';
 
 /**
  * Connects to the API server representation AppStore of an App given an

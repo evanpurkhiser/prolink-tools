@@ -2,9 +2,10 @@ import {action, computed, makeObservable, observable} from 'mobx';
 import {serializable} from 'serializr';
 import {uuid} from 'short-uuid';
 
-import {AppHandshake, ConnectionState} from 'src/api/types';
+import type {AppHandshake} from 'src/api/types';
+import {ConnectionState} from 'src/api/types';
 
-import {OAuthProvider} from '../types';
+import type {OAuthProvider} from '../types';
 import {rawJsSerialize} from '../utils';
 
 /**

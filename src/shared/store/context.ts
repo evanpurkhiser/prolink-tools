@@ -1,6 +1,7 @@
 import {createContext} from 'react';
 
-import {AppStore, createAppStore} from '.';
+import type {AppStore} from '.';
+import {createAppStore} from '.';
 
 const defaultStore = createAppStore();
 

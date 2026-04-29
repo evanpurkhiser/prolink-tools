@@ -2,9 +2,10 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 import {autorun} from 'mobx';
-import {CDJStatus, DeviceID} from 'prolink-connect/lib/types';
+import type {DeviceID} from 'prolink-connect/lib/types';
+import {CDJStatus} from 'prolink-connect/lib/types';
 
-import {AppStore} from 'src/shared/store';
+import type {AppStore} from 'src/shared/store';
 import withStore from 'src/utils/withStore';
 
 function makeTrackLine(width: number, height: number) {

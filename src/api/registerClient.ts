@@ -1,4 +1,4 @@
-import {ApiExternalServerSocket} from 'src/shared/websockeTypes';
+import type {ApiExternalServerSocket} from 'src/shared/websockeTypes';
 
 import {internalStore} from '.';
 import {listenOAuthAuthorize} from './integrations/oauth';

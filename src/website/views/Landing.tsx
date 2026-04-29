@@ -2,7 +2,8 @@ import {Box} from 'react-feather';
 
 import {css} from '@emotion/react';
 import styled from '@emotion/styled';
-import {motion, Variants} from 'framer-motion';
+import type {Variants} from 'framer-motion';
+import {motion} from 'framer-motion';
 
 import LogoBig from 'src/shared/components/LogoBig';
 import {noSelect} from 'src/shared/globalCss';

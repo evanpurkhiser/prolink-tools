@@ -1,6 +1,6 @@
 import {observer} from 'mobx-react';
 
-import {OverlayDescriptor} from 'src/overlay';
+import type {OverlayDescriptor} from 'src/overlay';
 
 type Config = {
   /**

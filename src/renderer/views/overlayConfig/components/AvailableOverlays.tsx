@@ -5,8 +5,9 @@ import {motion} from 'framer-motion';
 import {action} from 'mobx';
 import short from 'short-uuid';
 
-import {OverlayDescriptor, OverlayInstance, registeredOverlays} from 'src/overlay';
-import {AppStore} from 'src/shared/store';
+import type {OverlayDescriptor, OverlayInstance} from 'src/overlay';
+import {registeredOverlays} from 'src/overlay';
+import type {AppStore} from 'src/shared/store';
 import withStore from 'src/utils/withStore';
 
 import Example from './Example';

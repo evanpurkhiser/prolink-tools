@@ -5,7 +5,7 @@ import {observer} from 'mobx-react';
 
 import {ConnectionState} from 'src/api/types';
 import Tooltip from 'src/shared/components/tooltip';
-import {AppStore} from 'src/shared/store';
+import type {AppStore} from 'src/shared/store';
 import withStore from 'src/utils/withStore';
 
 type Props = {store: AppStore};

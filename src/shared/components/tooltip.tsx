@@ -1,11 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {PopperProps, usePopper} from 'react-popper';
+import type {PopperProps} from 'react-popper';
+import {usePopper} from 'react-popper';
 
 import {useTheme} from '@emotion/react';
 import styled from '@emotion/styled';
-import * as PopperJS from '@popperjs/core';
-import {AnimatePresence, motion, MotionStyle} from 'framer-motion';
+import type * as PopperJS from '@popperjs/core';
+import type {MotionStyle} from 'framer-motion';
+import {AnimatePresence, motion} from 'framer-motion';
 import memoize from 'lodash/memoize';
 
 export const OPEN_DELAY = 50;

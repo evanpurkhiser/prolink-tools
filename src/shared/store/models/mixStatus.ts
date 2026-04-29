@@ -1,5 +1,5 @@
 import {action, computed, makeObservable, observable} from 'mobx';
-import {Track} from 'prolink-connect/lib/types';
+import type {Track} from 'prolink-connect/lib/types';
 import {date, list, object, primitive, serializable} from 'serializr';
 
 import {bufferSerialize, rawJsSerialize} from 'src/shared/store/utils';

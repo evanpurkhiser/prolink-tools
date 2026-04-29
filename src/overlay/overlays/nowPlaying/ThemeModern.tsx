@@ -8,11 +8,12 @@ import {toJS} from 'mobx';
 import {observer} from 'mobx-react';
 
 import TimeTicker from 'src/shared/components/TimeTicker';
-import {PlayedTrack} from 'src/shared/store';
+import type {PlayedTrack} from 'src/shared/store';
 import {idTrack} from 'src/utils/dummyData';
 
-import {ThemeComponentProps, ThemeDescriptor} from '.';
-import {Tags, tagsConfig} from './tags';
+import type {ThemeComponentProps, ThemeDescriptor} from '.';
+import type {Tags} from './tags';
+import {tagsConfig} from './tags';
 
 const artToSrc = (d: Uint8Array | undefined) =>
   d && d.length > 0

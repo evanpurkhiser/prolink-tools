@@ -1,4 +1,4 @@
-import {AppStore} from 'src/shared/store';
+import type {AppStore} from 'src/shared/store';
 import {StoreContext} from 'src/shared/store/context';
 
 type InjectedProps = {

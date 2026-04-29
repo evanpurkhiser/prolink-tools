@@ -1,4 +1,4 @@
-import {Track} from 'prolink-connect/lib/types';
+import type {Track} from 'prolink-connect/lib/types';
 
 import {PlayedTrack} from 'src/shared/store';
 import exampleMetadata from 'src/utils/exampleMetadata';

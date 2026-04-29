@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import {observer} from 'mobx-react';
 import {NetworkState} from 'prolink-connect/lib/types';
 
-import {AppStore} from 'src/shared/store';
+import type {AppStore} from 'src/shared/store';
 import withStore from 'src/utils/withStore';
 
 const status = {

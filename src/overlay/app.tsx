@@ -9,7 +9,7 @@ import 'src/shared/sentry/web';
 import {createAppStore} from 'src/shared/store';
 import {registerWebsocketListener} from 'src/shared/store/client';
 import {StoreContext} from 'src/shared/store/context';
-import {AppOverlayClientSocket} from 'src/shared/websockeTypes';
+import type {AppOverlayClientSocket} from 'src/shared/websockeTypes';
 
 const overlaysStore = createAppStore();
 

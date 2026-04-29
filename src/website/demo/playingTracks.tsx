@@ -1,8 +1,10 @@
 import {Address4} from 'ip-address';
 import {action, runInAction} from 'mobx';
-import {CDJStatus, Device, DeviceType, NetworkState} from 'prolink-connect/lib/types';
+import type {Device} from 'prolink-connect/lib/types';
+import {CDJStatus, DeviceType, NetworkState} from 'prolink-connect/lib/types';
 
-import {AppStore, DeviceStore} from 'src/shared/store';
+import type {AppStore} from 'src/shared/store';
+import {DeviceStore} from 'src/shared/store';
 import Routine from 'src/website/demo/routine';
 
 import {

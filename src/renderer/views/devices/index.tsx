@@ -6,7 +6,7 @@ import {groupBy} from 'lodash';
 import {observer} from 'mobx-react';
 import {DeviceType, NetworkState} from 'prolink-connect/lib/types';
 
-import {AppStore, DeviceStore} from 'src/shared/store';
+import type {AppStore, DeviceStore} from 'src/shared/store';
 import withStore from 'src/utils/withStore';
 import ConnectingSplash from 'ui/components/ConnectingSplash';
 import ConnectionError from 'ui/components/ConnectionError';

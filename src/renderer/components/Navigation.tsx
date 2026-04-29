@@ -1,11 +1,12 @@
-import {Activity, Icon, Layers, Server, Settings} from 'react-feather';
+import type {Icon} from 'react-feather';
+import {Activity, Layers, Server, Settings} from 'react-feather';
 import {NavLink, useLocation} from 'react-router-dom';
 
 import styled from '@emotion/styled';
 import {AnimatePresence, AnimateSharedLayout, motion} from 'framer-motion';
 import {observer} from 'mobx-react';
 
-import {AppStore} from 'src/shared/store';
+import type {AppStore} from 'src/shared/store';
 import withStore from 'src/utils/withStore';
 
 import HelpButton from './HelpButton';

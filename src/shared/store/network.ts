@@ -2,9 +2,10 @@ import {captureMessage, Severity} from '@sentry/electron';
 import {applyDiff} from 'deep-diff';
 import {debounce} from 'lodash';
 import {action, reaction, runInAction, when} from 'mobx';
-import {ConnectedProlinkNetwork, DeviceID, ProlinkNetwork} from 'prolink-connect';
+import type {ConnectedProlinkNetwork, DeviceID, ProlinkNetwork} from 'prolink-connect';
 
-import {AppStore, DeviceStore, HydrationInfo, PlayedTrack} from '.';
+import type {AppStore} from '.';
+import {DeviceStore, HydrationInfo, PlayedTrack} from '.';
 import {deviceReaction} from './utils';
 
 /**

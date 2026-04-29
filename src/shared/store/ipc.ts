@@ -1,16 +1,15 @@
+import type {IArrayDidChange, IMapDidChange, IObjectDidChange} from 'mobx';
 import {
   action,
   get,
-  IArrayDidChange,
-  IMapDidChange,
-  IObjectDidChange,
   isObservableArray,
   isObservableObject,
   remove,
   set,
   toJS,
 } from 'mobx';
-import {deepObserve, IDisposer} from 'mobx-utils';
+import type {IDisposer} from 'mobx-utils';
+import {deepObserve} from 'mobx-utils';
 import {deserialize, serialize, update} from 'serializr';
 
 import {

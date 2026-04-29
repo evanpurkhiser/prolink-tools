@@ -5,7 +5,7 @@ import {observer} from 'mobx-react';
 
 import Field from 'src/renderer/components/form/Field';
 import Text from 'src/renderer/components/form/Text';
-import {AppStore} from 'src/shared/store';
+import type {AppStore} from 'src/shared/store';
 import {apiBaseUrl} from 'src/utils/urls';
 import withStore from 'src/utils/withStore';
 

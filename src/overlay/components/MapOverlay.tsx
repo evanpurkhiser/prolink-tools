@@ -3,7 +3,7 @@ import {observer} from 'mobx-react';
 
 import {registeredOverlays} from 'overlay';
 import NotFound from 'overlay/components/NotFound';
-import {AppStore} from 'src/shared/store';
+import type {AppStore} from 'src/shared/store';
 
 type Props = {
   store: AppStore;

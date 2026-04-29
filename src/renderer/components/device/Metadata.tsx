@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import {motion} from 'framer-motion';
 import {observer} from 'mobx-react';
 
-import {AppStore} from 'src/shared/store';
+import type {AppStore} from 'src/shared/store';
 import withStore from 'src/utils/withStore';
 
 type Props = React.ComponentProps<typeof motion.div> & {

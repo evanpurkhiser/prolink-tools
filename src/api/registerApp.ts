@@ -2,18 +2,20 @@ import {Mutex} from 'async-mutex';
 import {observable, observe, runInAction, when} from 'mobx';
 import {serialize} from 'serializr';
 
-import {AppStore, createAppStore} from 'src/shared/store';
+import type {AppStore} from 'src/shared/store';
+import {createAppStore} from 'src/shared/store';
 import {
   registerWebsocketConfigListener,
   registerWebsocketListener,
 } from 'src/shared/store/client';
 import {observeStore} from 'src/shared/store/ipc';
-import {ApiAppServerSocket, ApiExternalServerSocket} from 'src/shared/websockeTypes';
+import type {ApiAppServerSocket, ApiExternalServerSocket} from 'src/shared/websockeTypes';
 
 import {apiStore, internalStore} from '.';
 import {nightbotLinkApp} from './integrations/nightbot';
 import {Connection} from './internalStore';
-import {AppHandshake, ConnectionState} from './types';
+import type {AppHandshake} from './types';
+import {ConnectionState} from './types';
 
 /**
  * Matches the ingest namespace, where the matched group is the private API key

@@ -1,6 +1,6 @@
 import {runInAction, set} from 'mobx';
 
-import {AppStore} from 'src/shared/store';
+import type {AppStore} from 'src/shared/store';
 
 /**
  * There may be some situations where we have to implement migrations of the

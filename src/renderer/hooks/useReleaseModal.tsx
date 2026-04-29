@@ -6,12 +6,13 @@ import rehype2react from 'rehype-react';
 import markdown from 'remark-parse';
 import remark2rehype from 'remark-rehype';
 import unified from 'unified';
-import {Node} from 'unist';
+import type {Node} from 'unist';
 
 import Tag from 'src/shared/components/Tag';
 import {GITHUB_REPO} from 'src/shared/constants';
-import {LatestRelease} from 'src/utils/useLatestRelease';
-import useModal, {ModalProps} from 'src/utils/useModal';
+import type {LatestRelease} from 'src/utils/useLatestRelease';
+import type {ModalProps} from 'src/utils/useModal';
+import useModal from 'src/utils/useModal';
 
 import ActionButton from '../components/ActionButton';
 

@@ -1,4 +1,4 @@
-import {RouteComponentProps} from 'react-router-dom';
+import type {RouteComponentProps} from 'react-router-dom';
 
 import MapOverlay from 'src/overlay/components/MapOverlay';
 import {StoreContext} from 'src/shared/store/context';

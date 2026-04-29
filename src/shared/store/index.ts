@@ -1,6 +1,7 @@
-import {User} from '@sentry/types';
+import type {User} from '@sentry/types';
 import {action, computed, makeObservable, observable} from 'mobx';
-import {DeviceID, DeviceType, NetworkState} from 'prolink-connect/lib/types';
+import type {DeviceID} from 'prolink-connect/lib/types';
+import {DeviceType, NetworkState} from 'prolink-connect/lib/types';
 import {mapAsArray, object, serializable} from 'serializr';
 import shajs from 'sha.js';
 

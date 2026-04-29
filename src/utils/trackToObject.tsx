@@ -1,4 +1,4 @@
-import {Track} from 'prolink-connect/lib/types';
+import type {Track} from 'prolink-connect/lib/types';
 
 const keyMapping: Record<string, (track: Track) => string> = {
   album: t => t.album?.name ?? '',
