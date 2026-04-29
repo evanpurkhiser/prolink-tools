@@ -1,5 +1,3 @@
-import {Fragment} from 'react';
-
 import styled from '@emotion/styled';
 import {observer} from 'mobx-react';
 

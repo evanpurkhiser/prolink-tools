@@ -54,7 +54,7 @@ class Routine {
         let timesRan = 0;
 
         while (timesRan < (repeat ?? 1)) {
-          await new Promise(r => setTimeout(r, delay ?? 0));
+          await new Promise(resolve => setTimeout(resolve, delay ?? 0));
           await fn?.(store, {run: timesRan});
           timesRan++;
         }

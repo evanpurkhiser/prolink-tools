@@ -42,7 +42,7 @@ const Devices = observer(({store}: Props) => {
           return (
             <Device key={device.id}>
               <Indicator>
-                <PlayerId onair={!!state?.isOnAir}>
+                <PlayerId onair={Boolean(state?.isOnAir)}>
                   {device.id.toString().padStart(2, '0')}
                 </PlayerId>
                 <IconCdj />

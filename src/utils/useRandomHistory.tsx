@@ -35,7 +35,7 @@ const useRandomHistory = ({enabled, cutoff, updateInterval}: Options) => {
       lastHistory = [...lastHistory, await makeRandomTrack()].slice(-1 * cutoff);
       if (enabled && isUpdating) {
         setHistory(lastHistory);
-        await new Promise(r => setTimeout(r, updateInterval));
+        await new Promise(resolve => setTimeout(resolve, updateInterval));
       }
     }
   };

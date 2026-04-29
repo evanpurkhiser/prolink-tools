@@ -9,7 +9,7 @@ export async function fetchRandomArtwork() {
     const imageBuffer = await imageResp.arrayBuffer();
     return new Uint8Array(imageBuffer);
   } catch {
-    return;
+    /* swallow */
   }
 }
 

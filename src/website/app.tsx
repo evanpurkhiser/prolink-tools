@@ -3,8 +3,7 @@ import 'regenerator-runtime/runtime';
 import {render} from 'react-dom';
 import {Route, Router, Switch} from 'react-router-dom';
 
-import {Global} from '@emotion/react';
-import {ThemeProvider} from '@emotion/react';
+import {Global, ThemeProvider} from '@emotion/react';
 import {createBrowserHistory} from 'history';
 
 import globalCss from 'src/shared/globalCss';

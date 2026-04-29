@@ -1,4 +1,4 @@
-import {Fragment, useState} from 'react';
+import {useState} from 'react';
 import {ArrowLeft, Plus} from 'react-feather';
 
 import styled from '@emotion/styled';

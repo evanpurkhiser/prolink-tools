@@ -1,5 +1,3 @@
-import {Fragment} from 'react';
-
 import styled from '@emotion/styled';
 import filesize from 'filesize';
 import {observer} from 'mobx-react';
@@ -59,6 +57,7 @@ const DbStateIndicator = observer(({store, deviceId}: Props) => {
     );
   });
 
+  // oxlint-disable-next-line react/jsx-no-useless-fragment -- needed for React 17 JSX return type
   return <>{indicators}</>;
 });
 

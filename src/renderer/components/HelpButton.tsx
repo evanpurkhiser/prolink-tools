@@ -1,4 +1,3 @@
-import {Fragment} from 'react';
 import {HelpCircle} from 'react-feather';
 
 import styled from '@emotion/styled';

@@ -57,7 +57,7 @@ const DownloadCta = (props: React.ComponentProps<typeof motion.div>) => {
     }))
     .map(({Icon, label, url}) =>
       url ? (
-        <OtherPlatform href={url}>
+        <OtherPlatform key={label} href={url}>
           <Icon size={16} />
           {label}
         </OtherPlatform>

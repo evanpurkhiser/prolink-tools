@@ -82,7 +82,10 @@ function getAtPath(obj: any, path: string) {
     // We lose some type information when computing the deep observation path
     // of the store. If we get a number lets just assume it needs to be
     // coerced. This may need to be revisited.
-    target = get(target, isNaN(segment as any) === false ? Number(segment) : segment);
+    target = get(
+      target,
+      Number.isNaN(Number(segment)) === false ? Number(segment) : segment,
+    );
   }
 
   return target;

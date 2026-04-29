@@ -40,7 +40,7 @@ export const loadTrack = async (
     };
   });
 
-  await new Promise(r => setTimeout(r, 500));
+  await new Promise(resolve => setTimeout(resolve, 500));
 
   runInAction(() => (d.state!.playState = CDJStatus.PlayState.Cued));
 };
@@ -61,12 +61,12 @@ export const tapCue = async (store: AppStore, deviceId: number) => {
       s.playState = CDJStatus.PlayState.Cuing;
       s.beatInMeasure = 2;
     });
-    await new Promise(r => setTimeout(r, 100));
+    await new Promise(resolve => setTimeout(resolve, 100));
     runInAction(() => {
       s.playState = CDJStatus.PlayState.Cued;
       s.beatInMeasure = 1;
     });
-    await new Promise(r => setTimeout(r, 160));
+    await new Promise(resolve => setTimeout(resolve, 160));
   }
 };
 
@@ -75,7 +75,7 @@ export const setPitch = async (store: AppStore, deviceId: number, pitch: number)
 
   while (s.sliderPitch < pitch) {
     runInAction(() => (s.sliderPitch += 0.02));
-    await new Promise(r => setTimeout(r, random(1, 5)));
+    await new Promise(resolve => setTimeout(resolve, random(1, 5)));
   }
 };
 
