@@ -2,7 +2,7 @@ import {remove} from 'lodash';
 import type {IObservableArray} from 'mobx';
 import {action, computed, makeAutoObservable, observable} from 'mobx';
 
-import {createHash} from 'crypto';
+import {createHash} from 'node:crypto';
 
 import type {AppStore} from 'src/shared/store';
 import type {ApiAppServerSocket, ApiExternalServerSocket} from 'src/shared/websockeTypes';

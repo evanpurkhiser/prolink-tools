@@ -8,7 +8,7 @@ import {deserialize, serialize} from 'serializr';
 import {Server as WebsocketServer} from 'socket.io';
 import {io} from 'socket.io-client';
 
-import type http from 'http';
+import type http from 'node:http';
 
 import type {AppHandshake} from 'src/api/types';
 import {ConnectionState} from 'src/api/types';

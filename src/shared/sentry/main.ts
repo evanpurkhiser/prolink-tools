@@ -3,7 +3,7 @@ import '@sentry/apm';
 import * as Sentry from '@sentry/electron';
 import publicIp from 'public-ip';
 
-import os from 'os';
+import os from 'node:os';
 
 import {dsn} from './dsn';
 

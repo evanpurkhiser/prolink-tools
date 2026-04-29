@@ -3,8 +3,8 @@ import {formatISO} from 'date-fns';
 import {app} from 'electron';
 import {autorun, reaction, runInAction, when} from 'mobx';
 
-import {mkdir, writeFile} from 'fs/promises';
-import path from 'path';
+import {mkdir, writeFile} from 'node:fs/promises';
+import path from 'node:path';
 
 import type {AppStore} from 'src/shared/store';
 import trackFormat from 'src/utils/trackFormat';

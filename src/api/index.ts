@@ -7,7 +7,7 @@ import {when} from 'mobx';
 import {serialize} from 'serializr';
 import {Server as SocketServer} from 'socket.io';
 
-import {createServer} from 'http';
+import {createServer} from 'node:http';
 
 import 'src/shared/sentry/api';
 import {observeStore} from 'src/shared/store/ipc';

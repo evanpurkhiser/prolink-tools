@@ -2,9 +2,9 @@ import connect from 'connect';
 import httpProxy from 'http-proxy';
 import httpStatic from 'node-static';
 
-import fs from 'fs';
-import http from 'http';
-import * as path from 'path';
+import fs from 'node:fs';
+import http from 'node:http';
+import * as path from 'node:path';
 
 import {WEBSERVER_PORT} from 'src/shared/constants';
 
