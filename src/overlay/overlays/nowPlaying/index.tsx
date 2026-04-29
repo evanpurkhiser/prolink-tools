@@ -133,14 +133,14 @@ const Example: React.FC<ExampleProps> = observer(({store, config, hideControls})
   return hideControls ? (
     example
   ) : (
-    <Fragment>
+    <>
       {config && !isLive && <DemoSwitch config={config} />}
       <LiveHistoryIndicator active={isLive} />
       {example}
       {config?.customCss && (
         <style dangerouslySetInnerHTML={{__html: config.customCss}} />
       )}
-    </Fragment>
+    </>
   );
 });
 
@@ -172,10 +172,10 @@ const NowPlayingOverlay: React.FC<OverlayProps> = observer(({store, config}) => 
   return config.demoMode ? (
     <Example store={store} config={config} hideControls />
   ) : (
-    <Fragment>
+    <>
       <Overlay appConfig={store.config} {...{history, config}} />
       {config.customCss && <style dangerouslySetInnerHTML={{__html: config.customCss}} />}
-    </Fragment>
+    </>
   );
 });
 
@@ -228,10 +228,10 @@ const ConfigInterface: React.FC<{config: NowPlayingConfig}> = observer(({config}
           size="sm"
           name="Mask IDs"
           description={
-            <Fragment>
+            <>
               Do not display metadata for tracks marked as IDs. Configure track ID
               detection in <Link to="/settings">the settings panel</Link>.
-            </Fragment>
+            </>
           }
         >
           <Checkbox

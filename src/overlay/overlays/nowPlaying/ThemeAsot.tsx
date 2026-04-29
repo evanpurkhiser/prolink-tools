@@ -98,7 +98,7 @@ const NowPlayingLabel = styled(motion.div)`
 `;
 
 NowPlayingLabel.defaultProps = {
-  children: <React.Fragment>Now Playing</React.Fragment>,
+  children: <>Now Playing</>,
   className: 'metadata-asot-label',
   variants: {
     initial: {

@@ -237,10 +237,10 @@ const Tooltip: React.FC<Props> = ({
   ) : null;
 
   return (
-    <React.Fragment>
+    <>
       {renderTrigger(children, setReferenceEl)}
       {ReactDOM.createPortal(<AnimatePresence>{tip}</AnimatePresence>, getPortal())}
-    </React.Fragment>
+    </>
   );
 };
 

@@ -19,7 +19,7 @@ const ApiConfig = observer(({store}: Props) => {
   const url = `${apiBaseUrl}/now-playing/${store.appKey}`;
 
   return (
-    <Fragment>
+    <>
       <ConnectionStatus />
       <Section>
         <Field
@@ -30,7 +30,7 @@ const ApiConfig = observer(({store}: Props) => {
           <Text disabled value={url} />
         </Field>
       </Section>
-    </Fragment>
+    </>
   );
 });
 

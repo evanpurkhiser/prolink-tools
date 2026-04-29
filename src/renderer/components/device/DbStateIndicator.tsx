@@ -59,7 +59,7 @@ const DbStateIndicator = observer(({store, deviceId}: Props) => {
     );
   });
 
-  return <Fragment>{indicators}</Fragment>;
+  return <>{indicators}</>;
 });
 
 const DownloadRing = styled(ProgressRing)`

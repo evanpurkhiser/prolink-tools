@@ -157,7 +157,7 @@ function renderChangelog(changelogMd: string, {hideUnreleased = false}: Options 
     const releaseNotesAst = changeNodes.slice(headingIndex + 1, nextHeading);
 
     const release = headingNode.children[0].children[0].value as string;
-    const date = (headingNode.children[1]?.value as string)?.substring(3);
+    const date = (headingNode.children[1]?.value as string)?.slice(3);
 
     const isUnreleaseRelease = release === 'Unreleased';
 
@@ -182,7 +182,7 @@ function renderChangelog(changelogMd: string, {hideUnreleased = false}: Options 
       .runSync({type: 'root', children: releaseNotesAst});
 
     const releaseNotes = unified()
-      .use(rehype2react, {createElement: createElement, Fragment: Fragment})
+      .use(rehype2react, {createElement, Fragment})
       .stringify(releaseNotesHtml);
 
     return (
@@ -305,9 +305,9 @@ const LatestVersionOk = styled('div')`
 
 LatestVersionOk.defaultProps = {
   children: (
-    <Fragment>
+    <>
       You&apos;re up to date <CheckOk />
-    </Fragment>
+    </>
   ),
 };
 

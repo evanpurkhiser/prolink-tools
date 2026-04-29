@@ -197,7 +197,7 @@ export const observeStore = ({
 }: ObserverStoreOpts): [RegisterHandler, IDisposer] => {
   // Maintains a list of handlers that will be called in response to a serialized
   // change in the store.
-  const handlers: Map<string, changeHandler> = new Map();
+  const handlers = new Map<string, changeHandler>();
 
   if (handler) {
     handlers.set('root', handler);
@@ -219,7 +219,7 @@ export const observeStore = ({
     // serialization definitions that have been placed onto our store
     // objects to do the serialization. The same will be done for
     // deserialization.
-    if (Object.prototype.hasOwnProperty.call(anyChange, 'newValue')) {
+    if (Object.hasOwn(anyChange, 'newValue')) {
       // mark the direct serializer class name for the value if we can
       serializedChange.serializerModel = anyChange.newValue?.constructor?.name;
 
@@ -233,10 +233,7 @@ export const observeStore = ({
 
     // We do the same thing for spliced values in an arrays, which are handled
     // slightly differently
-    if (
-      Object.prototype.hasOwnProperty.call(anyChange, 'added') &&
-      anyChange.added.length > 0
-    ) {
+    if (Object.hasOwn(anyChange, 'added') && anyChange.added.length > 0) {
       // mark the direct serializer class name for the value if we can
       serializedChange.serializerModel = anyChange.added[0]?.constructor?.name;
 
@@ -249,10 +246,7 @@ export const observeStore = ({
     }
 
     // XXX: Duplicated remove code from above. Maybe this should be refactored
-    if (
-      Object.prototype.hasOwnProperty.call(anyChange, 'removed') &&
-      anyChange.removed.length > 0
-    ) {
+    if (Object.hasOwn(anyChange, 'removed') && anyChange.removed.length > 0) {
       // mark the direct serializer class name for the value if we can
       serializedChange.serializerModel = anyChange.removed[0]?.constructor?.name;
 

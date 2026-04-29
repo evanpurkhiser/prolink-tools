@@ -273,7 +273,7 @@ const FullTrack = ({
     {!hideArtwork && (
       <Artwork
         alignRight={props.alignRight}
-        animateIn={!!firstPlayed}
+        animateIn={Boolean(firstPlayed)}
         src={artToSrc(played.artwork)}
         size="80px"
       />
@@ -388,7 +388,7 @@ type Props = ThemeComponentProps;
 
 const ThemeModern: React.FC<Props> = observer(({appConfig, config, history}) =>
   history.length === 0 ? null : (
-    <React.Fragment>
+    <>
       <CurrentTrack
         style={toJS(config.colors)}
         className="track-current"
@@ -419,7 +419,7 @@ const ThemeModern: React.FC<Props> = observer(({appConfig, config, history}) =>
           </AnimatePresence>
         </RecentWrapper>
       )}
-    </React.Fragment>
+    </>
   ),
 );
 

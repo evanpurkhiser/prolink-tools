@@ -35,12 +35,12 @@ const HelpButton = () => {
   ));
 
   return (
-    <Fragment>
+    <>
       <Button onClick={() => toggleModal(true)}>
         <HelpCircle size="1rem" />
       </Button>
       {modal}
-    </Fragment>
+    </>
   );
 };
 

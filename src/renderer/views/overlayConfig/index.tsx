@@ -15,7 +15,7 @@ const OverlayConfig = observer(() => {
   const [addNewOpen, setOpen] = useState(false);
 
   return (
-    <Fragment>
+    <>
       <Header>
         <HeaderInfo>
           Overlays are small websites that you can embed into a livestream using the{' '}
@@ -45,7 +45,7 @@ const OverlayConfig = observer(() => {
         </AnimatePresence>
         <OverlayList />
       </Container>
-    </Fragment>
+    </>
   );
 });
 

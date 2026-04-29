@@ -30,7 +30,7 @@ const Settings = observer(({store}: Props) => {
   const config = store.config;
 
   return (
-    <Fragment>
+    <>
       <Heading>General</Heading>
       <Section>
         <Field
@@ -294,7 +294,7 @@ const Settings = observer(({store}: Props) => {
           />
         </Field>
       </Section>
-    </Fragment>
+    </>
   );
 });
 

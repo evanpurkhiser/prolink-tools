@@ -11,11 +11,11 @@ type Props = {
 
 const DemoSwitch = observer(({config}: Props) => (
   <ThemeProvider theme={{active: '#fff'}}>
-    <Container enabled={!!config.demoMode}>
+    <Container enabled={Boolean(config.demoMode)}>
       Show demo data on live overlay
       <Checkbox
         controlSize="sm"
-        checked={!!config.demoMode}
+        checked={Boolean(config.demoMode)}
         onChange={action(() => set(config, {demoMode: !config.demoMode}))}
       />
     </Container>

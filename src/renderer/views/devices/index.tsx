@@ -35,7 +35,7 @@ const Devices = observer(({store}: Props) => {
   ];
 
   return (
-    <React.Fragment>
+    <>
       <AnimatePresence initial={false}>
         {deviceMap[DeviceType.CDJ]?.sort(sortById).map(deviceStore => {
           const {device, state} = deviceStore;
@@ -82,7 +82,7 @@ const Devices = observer(({store}: Props) => {
         <ConnectingSplash key="splash" />
       )}
       {store.networkState === NetworkState.Failed && <ConnectionError key="error" />}
-    </React.Fragment>
+    </>
   );
 });
 
