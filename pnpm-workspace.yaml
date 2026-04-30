@@ -1,0 +1,13 @@
+overrides:
+  better-sqlite3: ^12.6.2
+  loader-utils: ^2.0.4
+  node-abi: ^3.0.0
+
+allowBuilds:
+  better-sqlite3: true
+  core-js: true
+  core-js-pure: true
+  electron: true
+  electron-winstaller: true
+  esbuild: true
+  nodemon: true

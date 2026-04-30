@@ -6,8 +6,8 @@ jobs:
     name: init-release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: volta-cli/action@v4
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v4
       - name: Create Sentry release
         continue-on-error: true
         env:
@@ -40,12 +40,12 @@ jobs:
             ext: dmg
             arch: universal
     steps:
-      - uses: actions/checkout@v3
-      - uses: volta-cli/action@v4
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v4
 
       # Test
-      - run: yarn install
-      - run: yarn lint
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
 
       # Use the short has for the
       - name: Set dev-build artifact name
@@ -54,11 +54,11 @@ jobs:
         run: echo "$(jq -r '.build.artifactName="${name}-dev-'"$(git rev-parse --short HEAD)"'-${os}-${arch}.${ext}"' package.json)" > package.json
 
       # Build
-      - run: yarn electron-builder install-app-deps
-      - run: yarn build-main
-      - run: yarn build-renderer
-      - run: yarn build-overlay
-      - run: yarn dist --${{ matrix.arch }}
+      - run: pnpm electron-builder install-app-deps
+      - run: pnpm build-main
+      - run: pnpm build-renderer
+      - run: pnpm build-overlay
+      - run: pnpm dist --${{ matrix.arch }}
 
       # Upload built executables
       - name: Upload executable
@@ -81,7 +81,7 @@ jobs:
     needs: [build, init_release]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
           path: release
