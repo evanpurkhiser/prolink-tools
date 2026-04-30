@@ -217,6 +217,9 @@ importers:
       framer-motion:
         specifier: ^4.1.17
         version: 4.1.17(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+      history:
+        specifier: ^4.10.1
+        version: 4.10.1
       html-webpack-plugin:
         specifier: ^5.3.1
         version: 5.6.6(webpack@5.105.0)
@@ -356,6 +359,9 @@ importers:
       '@evanpurkhiser/oxc-config':
         specifier: ^0.8.0
         version: 0.8.0(oxlint@1.62.0)
+      '@types/history':
+        specifier: ^4.7.11
+        version: 4.7.11
       '@types/webpack-dev-server':
         specifier: ^3.11.4
         version: 3.11.4
@@ -1938,6 +1944,9 @@ packages:
 
   '@types/graceful-fs@4.1.5':
     resolution: {integrity: sha512-anKkLmZZ+xm4p8JWBf4hElkM4XR+EZeA2M9BAkkTldmcyDY4mbdIJnRghDJH3Ov5ooY7/UAoENtmdMSkaAd7Cw==}
+
+  '@types/history@4.7.11':
+    resolution: {integrity: sha512-qjDJRrmvBMiTx+jyLxvLfJU7UznFuokDv4f3WRuriHKERccVpFU+8XMQUAbDzoiJCsmexxRExQeMwwCdamSKDA==}
 
   '@types/history@4.7.8':
     resolution: {integrity: sha512-S78QIYirQcUoo6UJZx9CSP0O2ix9IaeAXwQi26Rhr/+mg7qqPy8TzaxHSUut7eGjL8WmLccT7/MXf304WjqHcA==}
@@ -9045,6 +9054,8 @@ snapshots:
   '@types/graceful-fs@4.1.5':
     dependencies:
       '@types/node': 16.18.0
+
+  '@types/history@4.7.11': {}
 
   '@types/history@4.7.8': {}
 
