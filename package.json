@@ -154,6 +154,7 @@
     "webpack-merge": "^6.0.1"
   },
   "devDependencies": {
+    "@electron/rebuild": "^4.0.4",
     "@evanpurkhiser/oxc-config": "^0.8.0",
     "@types/history": "^4.7.11",
     "@types/webpack-dev-server": "^3.11.4",
