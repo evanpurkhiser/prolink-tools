@@ -1,3 +1,8 @@
+# electron-builder doesn't traverse pnpm's symlinked node_modules layout, so
+# native deps like better-sqlite3 don't make it into the packaged .app. Use a
+# flat (yarn-like) layout so build.files patterns resolve normally.
+nodeLinker: hoisted
+
 overrides:
   better-sqlite3: ^12.6.2
   loader-utils: ^2.0.4
