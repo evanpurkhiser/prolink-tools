@@ -179,7 +179,7 @@ function renderChangelog(changelogMd: string, {hideUnreleased = false}: Options 
     const releaseNotesHtml = unified()
       .use(markdown)
       .use(remark2rehype)
-      .runSync({type: 'root', children: releaseNotesAst});
+      .runSync({type: 'root', children: releaseNotesAst} as Node);
 
     const releaseNotes = unified()
       .use(rehype2react, {createElement, Fragment})
