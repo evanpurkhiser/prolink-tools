@@ -112,8 +112,8 @@ const connectTracks = (store: AppStore, network: ConnectedProlinkNetwork) =>
         trackSlot,
       });
 
-      // Ensure that once we've actually recieved our track metadata, this is still
-      // the track that's laoded on the player.
+      // Ensure that once we've actually received our track metadata, this is still
+      // the track that's loaded on the player.
       if (trackId !== deviceStore.state?.trackId) {
         return null;
       }
@@ -225,7 +225,7 @@ const connectLocaldbHydrateDone = (store: AppStore, network: ConnectedProlinkNet
       const progress = deviceStore.hydrationProgress.get(slot);
 
       if (progress === undefined) {
-        throw new Error('Recieved hydration completion before any progress');
+        throw new Error('Received hydration completion before any progress');
       }
 
       progress.isDone = true;

@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import TerserPlugin from 'terser-webpack-plugin';
 import webpack from 'webpack';
 
-import path from 'path';
+import path from 'node:path';
 
 import {commit, releaseChannel, releaseId} from './scripts/release.ts';
 

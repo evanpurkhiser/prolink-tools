@@ -60,7 +60,7 @@ export const registerRendererConfigIpc = (store: AppStore, configLock: Mutex) =>
 /**
  * Register this client to receive websocket broadcasts to update the store.
  *
- * You may pass a config lock if config changes are also propegated back to the
+ * You may pass a config lock if config changes are also propagated back to the
  * server, see registerRendererIpc above to understand the purpose of this.
  */
 export const registerWebsocketListener = (
@@ -86,7 +86,7 @@ export const registerWebsocketListener = (
 
 /**
  * Register a server websocket connection to have configuration changes
- * propegated back to the app client.
+ * propagated back to the app client.
  *
  * XXX: This should _not_ be used for any public clients. The API server as a
  * client of the Prolink Tools API is the intended consumer.

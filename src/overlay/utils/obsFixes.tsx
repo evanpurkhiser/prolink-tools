@@ -10,13 +10,13 @@ const DEFAULT_STYLES =
 /**
  * Locate the style element containing the default OBS browser source styles
  */
-export const findDefaultOBSStlyeNode = () =>
+export const findDefaultOBSStyleNode = () =>
   Array.from(document.querySelectorAll('head style:not([data-emotion])')).find(
     el => el.innerHTML === DEFAULT_STYLES,
   );
 
 export const ensureNoOBSDefaultStyles = () => {
-  findDefaultOBSStlyeNode()?.remove();
+  findDefaultOBSStyleNode()?.remove();
 
   const head = document.querySelector('head');
 
@@ -24,7 +24,7 @@ export const ensureNoOBSDefaultStyles = () => {
     return () => null;
   }
   const observer = new MutationObserver(() => {
-    findDefaultOBSStlyeNode()?.remove();
+    findDefaultOBSStyleNode()?.remove();
   });
 
   observer.observe(head, {childList: true, attributes: false});

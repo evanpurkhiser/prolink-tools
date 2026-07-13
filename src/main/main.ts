@@ -45,8 +45,8 @@ export const withMainStore = (cb: (store: AppStore) => void) => cb(mainStore);
   runInAction(() => set(mainStore, {user}));
 })();
 
-// Intialize the store for the main thread immedaitely.
-runInAction(() => (mainStore.isInitalized = true));
+// Initialize the store for the main thread immediately.
+runInAction(() => (mainStore.isInitialized = true));
 
 // Setup application menu
 setupMenu(mainStore);
@@ -156,7 +156,7 @@ app.on('ready', async () => {
 
   // Start overlay http / websocket server.
   //
-  // XXX: Becuase of a strange bug in MacOS's firewall dialog, if two
+  // XXX: Because of a strange bug in MacOS's firewall dialog, if two
   // connections are opened at the same time before the program is given
   // permission to open connections, when the software is closed the kernel
   // will not correctly close one of the ports.

@@ -11,7 +11,7 @@ import type {ApiAppServerSocket, ApiExternalServerSocket} from 'src/shared/webso
  * An AppKey represents a global way to identify connected prolink tools
  * instances on the API server.
  *
- * It is cryptographically derrived from the apiKey.
+ * It is cryptographically derived from the apiKey.
  */
 export type AppKey = string;
 
@@ -25,7 +25,7 @@ export class Connection {
    */
   socket: ApiAppServerSocket;
   /**
-   * The observable store which will be synced to events recieved via the
+   * The observable store which will be synced to events received via the
    * socket
    */
   store: AppStore;
@@ -38,11 +38,11 @@ export class Connection {
   }
 
   /**
-   * Genearte a asymetric key that can be used to verify app requests by
+   * Generate a asymmetric key that can be used to verify app requests by
    * comparing the API keys
    *
    * This uses the secret API key, that is only shared when the app first
-   * connects and is only known by the client esentially as a HMAC secret.
+   * connects and is only known by the client essentially as a HMAC secret.
    */
   makeOpaqueKey(subKey: string) {
     return createHash('sha256')

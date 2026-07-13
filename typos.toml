@@ -1,0 +1,2 @@
+[files]
+extend-exclude = ["src/utils/exampleMetadata.tsx"]

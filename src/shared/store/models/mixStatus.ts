@@ -3,7 +3,7 @@ import type {Track} from 'prolink-connect/lib/types';
 import {date, list, object, primitive, serializable} from 'serializr';
 
 import {bufferSerialize, rawJsSerialize} from 'src/shared/store/utils';
-import metadatIncludes from 'src/utils/metadatIncludes';
+import metadataIncludes from 'src/utils/metadataIncludes';
 
 export class PlayedTrack {
   @serializable(date())
@@ -17,7 +17,7 @@ export class PlayedTrack {
 
   metadataIncludes(marker?: string) {
     return marker !== undefined && marker !== ''
-      ? metadatIncludes(this.track, marker)
+      ? metadataIncludes(this.track, marker)
       : false;
   }
 
@@ -40,7 +40,7 @@ export class IndividualSet {
 
   /**
    * Returns a unique ID for the set. It is the timestamp of the first played
-   * track, but is not gaurenteed to always be in the future.
+   * track, but is not guaranteed to always be in the future.
    */
   get id() {
     const firstTrack = this.tracks[0];
@@ -71,7 +71,7 @@ export class MixstatusStore {
 
   /**
    * The set markers mark when a specific track index in the trackHistory is
-   * the "last" track of a set. This can be used to partiton
+   * the "last" track of a set. This can be used to partition
    */
   @serializable(list(primitive()))
   @observable

@@ -27,7 +27,7 @@ const Toolbar = ({store}: Props) => {
 
   // Is this their first time using this version?
   const isNewVersion =
-    store.isInitalized &&
+    store.isInitialized &&
     store.config.lastUsedVersion !== process.env.RELEASE &&
     process.env.RELEASE_CHANNEL === 'stable';
 

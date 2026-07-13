@@ -44,7 +44,7 @@ export class CloudApiState {
   @observable
   notice?: string;
   /**
-   * Time in miliseconds it takes to communicate with the cloud API
+   * Time in milliseconds it takes to communicate with the cloud API
    */
   @serializable
   @observable
@@ -55,7 +55,7 @@ export class CloudApiState {
   oauthState: OAuthState | null = null;
 
   /**
-   * Initalizes an OAuth flow
+   * Initializes an OAuth flow
    */
   @action
   initOauthFlow(provider: OAuthProvider) {

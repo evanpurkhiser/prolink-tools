@@ -51,12 +51,12 @@ type HandshakeReply = {
 
 /**
  * Older clients don't do the handshake. This is how long we will wait before
- * receiveing a handhash and considering the app "old".
+ * receiving a handhash and considering the app "old".
  */
 const HANDSHAKE_TIMEOUT = 5000;
 
 /**
- * The app handshake is done immedaitely after a app connects, before the API
+ * The app handshake is done immediately after a app connects, before the API
  * completes app registration. This will resolve to false if we are not able to
  * complete the handshake with the app,
  */
@@ -114,7 +114,7 @@ export async function registerAppConnection(appSocket: ApiAppServerSocket) {
   registerWebsocketListener(store, appSocket, configLock);
 
   when(
-    () => store.isInitalized,
+    () => store.isInitialized,
     () => registerWebsocketConfigListener(store, appSocket, configLock),
   );
 
@@ -122,13 +122,13 @@ export async function registerAppConnection(appSocket: ApiAppServerSocket) {
   // already been initialized from a prior connection, if they are still
   // connected. But we should consider their state outdated.
   when(
-    () => store.isInitalized,
+    () => store.isInitialized,
     () =>
       appStoreClients.get(conn.appKey)?.forEach(client => initClientStore(client, store)),
   );
 
   // Init the app store for newly added clients
-  const disposeClientInitalizer = observe(
+  const disposeClientInitializer = observe(
     internalStore.appStoreClients.get(conn.appKey)!,
     change =>
       change.type === 'splice' &&
@@ -154,12 +154,12 @@ export async function registerAppConnection(appSocket: ApiAppServerSocket) {
   appSocket.on('disconnect', () => {
     runInAction(() => {
       apiStore.clientCount--;
-      conn.store.isInitalized = false;
+      conn.store.isInitialized = false;
       conn.store.cloudApiState.connectionState = ConnectionState.Offline;
     });
 
     disposeChangeObserver();
-    disposeClientInitalizer();
+    disposeClientInitializer();
     internalStore.removeAppConnection(conn.appKey);
   });
 }

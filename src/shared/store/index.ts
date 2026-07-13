@@ -27,12 +27,12 @@ export {
 
 export class AppStore {
   /**
-   * Indicates that the store has been initalized. Useful for ensuring we have
+   * Indicates that the store has been initialized. Useful for ensuring we have
    * real data before showing things like empty-states.
    */
   @serializable
   @observable
-  isInitalized = false;
+  isInitialized = false;
   /**
    * The current state of the prolink network
    */
@@ -60,7 +60,7 @@ export class AppStore {
   /**
    * Configuration is stored here.
    *
-   * This config is observed in client app and will propegate changes back to
+   * This config is observed in client app and will propagate changes back to
    * the main thread via IPC.
    */
   @serializable(object(AppConfig))

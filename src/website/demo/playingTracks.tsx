@@ -21,7 +21,7 @@ const ONE_BEAT = (1 / (140 / 60)) * 1000;
 const bootRoutine = new Routine([
   {
     fn: action((s: AppStore) => {
-      s.isInitalized = true;
+      s.isInitialized = true;
       s.config.markLatestVersion();
       s.networkState = NetworkState.Online;
       s.config.sidebarCollapsed = true;

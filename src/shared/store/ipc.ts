@@ -186,7 +186,7 @@ type changeHandler = (change: SerializedChange) => void;
 /**
  * Function used to register to receive serialized updated from an observer
  */
-export type RegisterHandler = (key: string, reciever: changeHandler) => IDisposer;
+export type RegisterHandler = (key: string, receiver: changeHandler) => IDisposer;
 
 /**
  * Start observing the store (or some part of it) for changes.

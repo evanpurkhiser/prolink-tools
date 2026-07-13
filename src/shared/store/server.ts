@@ -51,19 +51,19 @@ export const persistConfig = (store: AppStore) => settings.set(serialize(store.c
 export const registerMainIpc = (store: AppStore, register: RegisterHandler) => {
   const lock = new Mutex();
 
-  // Lock for applying configuration changes from the UI, to avoid propegating
+  // Lock for applying configuration changes from the UI, to avoid propagating
   // the changes back via IPC causing a loop.
   const configLock = new Mutex();
 
   ipcMain.on('store-subscribe', event => {
     // Send the current state of the store. Do not release lock until store
-    // initalization is done.
+    // initialization is done.
     lock.acquire().then(release => {
       event.sender.send('store-init', serialize(store));
       ipcMain.once('store-init-done', () => release());
     });
 
-    // Register this window to recieve store changes over ipc.
+    // Register this window to receive store changes over ipc.
     register(
       'main-ipc',
       change =>

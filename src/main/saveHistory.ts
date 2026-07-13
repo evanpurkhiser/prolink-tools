@@ -16,7 +16,7 @@ import trackToObject from 'src/utils/trackToObject';
 export const setupSaveHistory = (store: AppStore) => {
   const {saveHistory} = store.config;
 
-  // Use the dcouments folder if this hasn't already been configured
+  // Use the documents folder if this hasn't already been configured
   if (saveHistory.fileDirectory === '') {
     runInAction(() => (saveHistory.fileDirectory = app.getPath('documents')));
   }

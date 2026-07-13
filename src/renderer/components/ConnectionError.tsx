@@ -23,7 +23,7 @@ const ConnectionError = () => (
           50002.
         </li>
         <li>
-          See the <a href="https://prolink.tools/manual">Manual for Troublshooting</a>.
+          See the <a href="https://prolink.tools/manual">Manual for Troubleshooting</a>.
         </li>
       </ul>
     </Help>

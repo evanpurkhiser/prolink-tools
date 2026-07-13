@@ -11,7 +11,7 @@ type Props = {
 };
 
 const MapOverlay: React.FC<Props> = observer(({store, overlayKey}) => {
-  if (!store.isInitalized) {
+  if (!store.isInitialized) {
     return null;
   }
 

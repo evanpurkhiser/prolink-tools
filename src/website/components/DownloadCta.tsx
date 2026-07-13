@@ -40,7 +40,7 @@ const DownloadCta = (props: React.ComponentProps<typeof motion.div>) => {
       return;
     }
 
-    // Find the asset for the paltform they're on
+    // Find the asset for the platform they're on
     const asset = release.assets.find(asset => asset.name.includes(platform));
     if (asset) {
       window.location.replace(asset.browser_download_url);

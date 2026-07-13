@@ -7,7 +7,7 @@ export enum ConnectionState {
    */
   Offline = 'offline',
   /**
-   * We are connceting to the API server...
+   * We are connecting to the API server...
    */
   Connecting = 'connecting',
   /**

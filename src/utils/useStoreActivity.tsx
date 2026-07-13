@@ -6,7 +6,7 @@ import {StoreContext} from 'src/shared/store/context';
 
 type Options = {
   /**
-   * The paths in the device object ot watch for activity.
+   * The paths in the device object to watch for activity.
    */
   targetTest: (path: string) => boolean;
   /**

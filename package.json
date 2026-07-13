@@ -6,16 +6,6 @@
   "license": "MIT",
   "author": "Evan Purkhiser <evanpurkhiser@gmail.com>",
   "main": "main.js",
-  "devEngines": {
-    "runtime": {
-      "name": "node",
-      "version": "^24.15.0"
-    },
-    "packageManager": {
-      "name": "pnpm",
-      "version": "11.0.0"
-    }
-  },
   "scripts": {
     "start-dev:main": "webpack --watch --config=webpack.config.main.ts",
     "start-dev:renderer": "webpack serve --config=webpack.config.renderer.ts",
@@ -170,6 +160,16 @@
     "typescript-styled-plugin": "^0.17.0",
     "webpack-cli": "^4.7.0",
     "webpack-dev-server": "^5.2.3"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "11.0.0"
+    },
+    "runtime": {
+      "name": "node",
+      "version": "^24.15.0"
+    }
   },
   "build": {
     "productName": "Prolink Tools",

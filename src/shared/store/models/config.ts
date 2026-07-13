@@ -39,7 +39,7 @@ export class AppConfig {
   @observable
   idMarker = '[ID]';
   /**
-   * The theme to ues in the app
+   * The theme to use in the app
    */
   @serializable
   @observable

@@ -23,7 +23,7 @@ export const OAuthConnect = observer(({store}: Props) => {
     [redirectUrl],
   );
 
-  if (!store.isInitalized) {
+  if (!store.isInitialized) {
     return <Loading expand message="Connecting to App" />;
   }
 

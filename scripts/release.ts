@@ -1,6 +1,6 @@
 import semver from 'semver';
 
-import {execSync} from 'child_process';
+import {execSync} from 'node:child_process';
 
 const commit = execSync('git rev-parse HEAD').toString().trim();
 let releaseId: string;

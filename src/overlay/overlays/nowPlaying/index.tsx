@@ -150,7 +150,7 @@ const EmptyExample = styled('div')`
 
   &:after {
     color: #aaa;
-    content: 'loading exmaple demo';
+    content: 'loading example demo';
     display: flex;
     align-items: center;
     justify-content: center;

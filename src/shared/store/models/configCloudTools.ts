@@ -13,7 +13,7 @@ export class CloudToolsConfig {
   enabled = false;
   /**
    * Unique identifier used to identify the application to the server. Changing
-   * this will change all derrived identifiers.
+   * this will change all derived identifiers.
    *
    * Will be generated on the users first run of the application.
    */

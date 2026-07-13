@@ -1,2 +1,7 @@
 [settings]
 idiomatic_version_file_enable_tools = ["node", "pnpm"]
+
+[tools]
+prek = "0.4.9"
+shellcheck = "0.11.0"
+actionlint = "1.7.12"

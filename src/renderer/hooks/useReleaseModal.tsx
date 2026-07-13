@@ -131,7 +131,7 @@ function renderChangelog(changelogMd: string, {hideUnreleased = false}: Options 
     .filter(node => node.type !== 'definition');
 
   // Locate version headings
-  const versionHeadingIndicies = changeNodes
+  const versionHeadingIndices = changeNodes
     .map((node, i) =>
       node.type === 'heading' && (node as HeadingNode).depth === 2 ? i : null,
     )
@@ -145,13 +145,13 @@ function renderChangelog(changelogMd: string, {hideUnreleased = false}: Options 
   );
 
   // Locate the heading indicie that matches the currently running version.
-  const mostCurrentVersionIndex = versionHeadingIndicies.find(
+  const mostCurrentVersionIndex = versionHeadingIndices.find(
     index =>
       changeNodes[index].children[0].children[0].value === closestCurrentStableVersion,
   );
 
-  return versionHeadingIndicies.map((headingIndex, i) => {
-    const nextHeading = versionHeadingIndicies[i + 1];
+  return versionHeadingIndices.map((headingIndex, i) => {
+    const nextHeading = versionHeadingIndices[i + 1];
 
     const headingNode = changeNodes[headingIndex];
     const releaseNotesAst = changeNodes.slice(headingIndex + 1, nextHeading);
@@ -169,7 +169,7 @@ function renderChangelog(changelogMd: string, {hideUnreleased = false}: Options 
       release === process.env.RELEASE && process.env.RELEASE_CHANNEL === 'stable';
 
     const isMostClosestStable =
-      release === closestCurrentStableVersion && i !== versionHeadingIndicies.length - 1;
+      release === closestCurrentStableVersion && i !== versionHeadingIndices.length - 1;
 
     const isNewVersion =
       !isUnreleaseRelease &&

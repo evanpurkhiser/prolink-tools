@@ -81,7 +81,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - **Release Notes** 📒
 
-  Release notes may now be viewed when a new version is avaiable and will be
+  Release notes may now be viewed when a new version is available and will be
   shown after you install the new version!
 
 ### Fixed

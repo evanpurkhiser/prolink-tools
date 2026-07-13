@@ -39,6 +39,6 @@ when(
 );
 
 when(
-  () => rendererStore.isInitalized,
+  () => rendererStore.isInitialized,
   () => registerRendererConfigIpc(rendererStore, configLock),
 );

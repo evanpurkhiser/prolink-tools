@@ -16,7 +16,7 @@ const messages = {
   [ConnectionState.Connected]:
     'Connection established to an active Prolink Tools application.',
   [ConnectionState.Errored]:
-    'Failed to connect to the Prolink tools application for an uknown reason',
+    'Failed to connect to the Prolink tools application for an unknown reason',
   [ConnectionState.Outdated]:
     'The version of Prolink Tools is not supported by the API server. Upgrade to fix this.',
   [ConnectionState.Degraded]:
