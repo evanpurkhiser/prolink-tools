@@ -10,7 +10,7 @@ jobs:
     name: prek
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: jdx/mise-action@v4
       - run: pnpm install --frozen-lockfile
       - run: prek run --all-files
