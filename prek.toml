@@ -28,6 +28,11 @@ rev = "v1.7.12"
 hooks = [{ id = "actionlint-system", priority = 11 }]
 
 [[repos]]
+repo = "https://github.com/zizmorcore/zizmor-pre-commit"
+rev = "v1.27.0"
+hooks = [{ id = "zizmor", args = ["--min-severity", "high"], priority = 11 }]
+
+[[repos]]
 repo = "https://github.com/evanpurkhiser/prek-personal"
 rev = "v1.0.2"
 hooks = [{ id = "oxfmt-system", priority = 10 }, { id = "oxlint-system", priority = 11 }]
