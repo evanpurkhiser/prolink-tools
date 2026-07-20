@@ -14,7 +14,7 @@ hooks = [
   { id = "detect-private-key", priority = 100 },
   { id = "check-json", priority = 100 },
   { id = "check-toml", priority = 100 },
-  { id = "check-yaml", priority = 100 },
+  { id = "check-yaml", args = ["--allow-multiple-documents"], priority = 100 },
 ]
 
 [[repos]]
