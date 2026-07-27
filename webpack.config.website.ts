@@ -9,6 +9,21 @@ import {baseConfig, hotReloadPlugins} from './webpack.config.base.ts';
 
 const projectRoot = process.cwd();
 
+class CloudflareRedirectsPlugin {
+  apply(compiler: webpack.Compiler) {
+    compiler.hooks.thisCompilation.tap('CloudflareRedirectsPlugin', compilation => {
+      const notionManualUrl =
+        'https://evanpurkhiser.notion.site/Prolink-Tools-User-Manual-1c0e5b28732b435a9804b992939ed791';
+      const redirects = `/manual ${notionManualUrl} 302\n`;
+
+      compilation.emitAsset(
+        '_redirects',
+        new compiler.webpack.sources.RawSource(redirects),
+      );
+    });
+  }
+}
+
 const websiteConfig: webpack.Configuration = merge(baseConfig, {
   entry: {
     app: './src/website/app.tsx',
@@ -45,6 +60,7 @@ const websiteConfig: webpack.Configuration = merge(baseConfig, {
   plugins: [
     ...hotReloadPlugins,
     new HtmlWebpackPlugin({title: 'prolink tools', favicon: 'build/icon.png'}),
+    new CloudflareRedirectsPlugin(),
     new ForkTsCheckerWebpackPlugin({
       issue: {include: [{file: 'src/website/**/*'}, {file: 'src/shared/**/*'}]},
     }),
