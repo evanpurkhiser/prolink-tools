@@ -1,11 +1,18 @@
-import {Activity, Code, Disc, Hash, Layers} from 'react-feather';
+import {Activity, Code, Disc, Hash, Layers, Music} from 'react-feather';
 
 import type {PlayedTrack} from 'src/shared/store';
 
 /**
  * Tags that can be shown on any of the now playing themes
  */
-export const availableTags = ['album', 'label', 'comment', 'tempo', 'key'] as const;
+export const availableTags = [
+  'album',
+  'label',
+  'comment',
+  'genre',
+  'tempo',
+  'key',
+] as const;
 
 export type Tags = Array<(typeof availableTags)[number]>;
 
@@ -20,6 +27,7 @@ export const tagsConfig = makeTagConfig({
   album: {icon: Disc, getter: track => track.album?.name},
   label: {icon: Layers, getter: track => track.label?.name},
   comment: {icon: Hash, getter: track => track.comment},
+  genre: {icon: Music, getter: track => track.genre?.name},
   tempo: {icon: Activity, getter: track => (track.tempo > 0 ? `${track.tempo} BPM` : '')},
   key: {icon: Code, getter: track => track.key?.name},
 });
