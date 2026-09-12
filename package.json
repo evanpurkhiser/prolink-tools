@@ -4,7 +4,7 @@
   "version": "0.1.0-beta.5",
   "description": "A collection of userfriendly tools for DJs using Pioneers PRO DJ LINK feature",
   "license": "MIT",
-  "author": "Evan Purkhiser <evanpurkhiser@gmail.com>",
+  "author": "Evan Purkhiser <prolink-tools.js@evanpurkhiser.com>",
   "main": "main.js",
   "scripts": {
     "start-dev:main": "webpack --watch --config=webpack.config.main.ts",
