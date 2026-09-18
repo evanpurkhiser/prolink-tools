@@ -16,3 +16,5 @@ allowBuilds:
   electron-winstaller: true
   esbuild: true
   nodemon: true
+minimumReleaseAgeExclude:
+  - '@evanpurkhiser/*'
