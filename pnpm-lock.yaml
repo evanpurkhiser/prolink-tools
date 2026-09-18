@@ -559,8 +559,8 @@ importers:
         specifier: ^4.0.4
         version: 4.0.4
       '@evanpurkhiser/oxc-config':
-        specifier: ^0.8.0
-        version: 0.8.0(oxlint@1.62.0)
+        specifier: ^0.16.0
+        version: 0.16.0(oxlint@1.62.0)
       '@types/history':
         specifier: ^4.7.11
         version: 4.7.11
@@ -1359,8 +1359,8 @@ packages:
   '@emotion/weak-memoize@0.2.5':
     resolution: {integrity: sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==}
 
-  '@evanpurkhiser/oxc-config@0.8.0':
-    resolution: {integrity: sha512-hk2a8Jk30Gn8WxOKqiaIKxmxloQeTtVv30doXpTrS9gXV9ive6sLJc1XGvaR56cSpEK2zjWBMZnktLS31a/c2w==}
+  '@evanpurkhiser/oxc-config@0.16.0':
+    resolution: {integrity: sha512-FGJRko0Y/XvXrhSQLwRB3Cfd7tz6niEosLWUECtRtzCKojvRd9o4CprXfultUPab0/9PzKX2gEf+3X/IMZieTQ==}
     peerDependencies:
       oxlint: '>=1.56.0'
 
@@ -8406,7 +8406,7 @@ snapshots:
 
   '@emotion/weak-memoize@0.2.5': {}
 
-  '@evanpurkhiser/oxc-config@0.8.0(oxlint@1.62.0)':
+  '@evanpurkhiser/oxc-config@0.16.0(oxlint@1.62.0)':
     dependencies:
       oxlint: 1.62.0
 

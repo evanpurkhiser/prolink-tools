@@ -145,7 +145,7 @@
   },
   "devDependencies": {
     "@electron/rebuild": "^4.0.4",
-    "@evanpurkhiser/oxc-config": "^0.8.0",
+    "@evanpurkhiser/oxc-config": "^0.16.0",
     "@types/history": "^4.7.11",
     "@types/webpack-dev-server": "^3.11.4",
     "electron": "^18.3.15",
