@@ -38,7 +38,7 @@ jobs:
           - os: windows-latest
             ext: exe
             arch: x64
-          - os: macos-14
+          - os: macos-15
             ext: dmg
             arch: universal
     steps:
