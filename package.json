@@ -164,7 +164,7 @@
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
-      "version": "11.15.1"
+      "version": "12.9.1"
     },
     "runtime": {
       "name": "node",
