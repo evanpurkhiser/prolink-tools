@@ -29,7 +29,7 @@ hooks = [{ id = "actionlint-system", priority = 11 }]
 
 [[repos]]
 repo = "https://github.com/zizmorcore/zizmor-pre-commit"
-rev = "v1.27.0"
+rev = "v1.32.0"
 hooks = [{ id = "zizmor", args = ["--min-severity", "high"], priority = 11 }]
 
 [[repos]]
