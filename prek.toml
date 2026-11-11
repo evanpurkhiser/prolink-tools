@@ -1,4 +1,9 @@
 [[repos]]
+repo = "https://github.com/rvben/rumdl-pre-commit"
+rev = "v0.3.3"
+hooks = [{ id = "rumdl", args = ["--fix"], priority = 10 }]
+
+[[repos]]
 repo = "https://github.com/pre-commit/pre-commit-hooks"
 rev = "v6.0.0"
 hooks = [
